@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-16T09:22:40.978Z",
+  "request": "ux có nhiều lỗi chưa tuân thủ master design",
+  "normalizedRequest": "ux có nhiều lỗi chưa tuân thủ master design",
+  "canonicalCommand": "/make-ui-spec",
+  "legacyAliasMatched": null,
+  "targetAgent": "ux-agent",
+  "routeReason": "UI/design intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 93,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:make-ui-spec",
+      "type": "workflow",
+      "canonical": "make-ui-spec",
+      "source": "/.agent/workflows/make-ui-spec.md"
+    },
+    {
+      "id": "skill-visual-fidelity-gate",
+      "type": "skill",
+      "canonical": "skill-visual-fidelity-gate",
+      "source": "/.agent/skills/visual-fidelity-gate/SKILL.md"
+    },
+    {
+      "id": "skill-design-consultation",
+      "type": "skill",
+      "canonical": "skill-design-consultation",
+      "source": "/.agent/skills/design-consultation/SKILL.md"
+    },
+    {
+      "id": "skill-ux-pro-max",
+      "type": "skill",
+      "canonical": "skill-ux-pro-max",
+      "source": "/.agent/skills/ux-pro-max/SKILL.md"
+    },
+    {
+      "id": "agent-alias:android-18",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "/.agent/agents/ux-agent.md"
+    },
+    {
+      "id": "canonical-agent:ux-agent",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "/.agent/agents/ux-agent.md"
+    },
+    {
+      "id": "skill-package:github-deep-research",
+      "type": "skill",
+      "canonical": "github-deep-research",
+      "source": "/.agent/skills/github-deep-research/SKILL.md"
+    },
+    {
+      "id": "skill-package:visual-fidelity-gate",
+      "type": "skill",
+      "canonical": "visual-fidelity-gate",
+      "source": "/.agent/skills/visual-fidelity-gate/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": true,
+    "recommendedQueueType": "design-tweak"
+  }
+}

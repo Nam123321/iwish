@@ -1,0 +1,19 @@
+id: agent-pm-agent
+name: pm-agent
+kind: agent
+shape: agent
+role: process-primary
+phases: [plan]
+stages: [product-brief, prd, prioritization]
+triggers: [plan, prd, product brief, roadmap]
+anti_triggers: [code-patch]
+primary_agents: [pm-agent]
+primary_workflows: [plan]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Prefer before solutioning when the request is about product intent or priority.
+review_pack: docs/open-modules/pm-agent-integration-guide.md
+source_path: /.agent/agents/pm-agent.md
+story_refs: [story-1.7]
+tags: [planning, canonical]

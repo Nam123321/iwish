@@ -1,0 +1,18 @@
+id: workflow-codebase-health
+name: codebase-health
+kind: workflow
+shape: workflow
+role: supportive
+phases: [discover, validate]
+stages: [health-scan, graph-health, dead-code-detection]
+triggers: [codebase health, dead code, circular dependency, complexity hotspot]
+anti_triggers: [simple-story-slicing]
+primary_agents: [architect-agent, review-agent]
+primary_workflows: [codebase-health]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Advisory-only if graph support is lite-static or partial for CodebaseGraph.
+source_path: /.agent/workflows/codebase-health.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, graph, codebase]

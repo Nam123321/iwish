@@ -1,0 +1,17 @@
+id: workflow-absorb-repo
+name: absorb-repo
+kind: workflow
+shape: workflow
+role: supportive
+phases: [operate-learn]
+stages: [repo-intake, repo-analysis, integration-planning]
+triggers: [repo, github, absorb, ingest, learn repository]
+anti_triggers: [simple-doc-edit]
+primary_agents: [capability-agent, orch-agent]
+primary_workflows: [absorb-repo]
+supportive_skills: [repo-absorption, security-guardian]
+tool_dependencies: [graph]
+constraints:
+  - Human checkpoints are mandatory before integration.
+source_path: /_iwish/catalog/routing-profiles/workflow-absorb-repo.yaml
+tags: [starter-bundle, canonical]

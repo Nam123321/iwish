@@ -1,0 +1,54 @@
+{
+  "ignorePatterns": [
+    ".husky",
+    "node_modules",
+    "dist",
+    ".bmad-sandbox",
+    "tmp",
+    "build",
+    ".git",
+    "dragonball_distribution",
+    "_bmad-output",
+    "distro",
+    "Knowledge",
+    "Test",
+    ".agent/workflows",
+    ".agent/fragments",
+    ".agent/memory",
+    ".agent/templates",
+    "docs/data-strategy-upgrade",
+    "docs/ux-pro-max-integration",
+    "docs/data-architecture",
+    "docs/Production Readiness Analysis",
+    "docs/Rca Schema Drift Report",
+    "docs/bmad-graph-backend-selection.md",
+    "docs/bmad-profile-aware-runtime-home.md",
+    "docs/bmad-public-runtime-policy.md",
+    "docs/bmad-workflow-runtime-materialization.md",
+    "docs/code-intelligence-evaluation.md",
+    "docs/gitnexus-evaluation.md",
+    ".agent/skills/user-simulation-guardian/personas",
+    ".agent/skills/user-simulation-guardian/scenarios",
+    ".agent/configs",
+    ".agent/skills/clone-website",
+    ".agent/skills/socratic-review",
+    ".agent/skills/ux-pro-max",
+    "package-lock.json",
+    ".DS_Store"
+  ],
+  "registry": {
+    "targetDirectories": [
+      "src",
+      ".agent",
+      "docs"
+    ],
+    "includeRootFiles": true
+  },
+  "magicNumbers": {
+    "threshold": 1,
+    "failOnIssue": true
+  },
+  "contextLeak": {
+    "failOnIssue": true
+  }
+}

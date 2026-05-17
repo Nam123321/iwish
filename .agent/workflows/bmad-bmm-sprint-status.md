@@ -4,6 +4,10 @@ description: 'Summarize sprint-status.yaml, surface risks, and route to the righ
 disable-model-invocation: true
 ---
 
+> [!IMPORTANT]
+> **DEPLOYMENT READINESS GATE (CONDITIONAL):**
+> When stories are marked `done` and ready to ship, you MUST use `view_file` to load `/.agent/skills/canary/SKILL.md` and `/.agent/skills/land-and-deploy/SKILL.md`. Apply the Landing Protocol to validate merge readiness and the Canary Protocol for production deployments.
+
 IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the current agent persona you may have loaded:
 
 <steps CRITICAL="TRUE">

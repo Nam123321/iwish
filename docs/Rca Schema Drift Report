@@ -15,7 +15,7 @@ Three database fields were referenced extensively in `admin-order.service.ts` bu
 |---|---|---|---|---|
 | `parentOrderId` | `Order` | Story 3.4d | ❌ No data spec | ❌ Never |
 | `splitOrders` | `Order` (relation) | Story 3.4d | ❌ No data spec | ❌ Never |
-| `netCommission` | `OrderItem` | Story 3.13 | ✅ [3-13-data-spec.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/data-specs/3-13-data-spec.md) | ❌ Never |
+| `netCommission` | `OrderItem` | Story 3.13 | ✅ 3-13-data-spec.md (`3-13-data-spec.md`) | ❌ Never |
 
 This caused `PrismaClientValidationError` → 500 Internal Server Error on every `GET /admin/orders/:id` call and every order status transition involving cancellation.
 
@@ -25,11 +25,11 @@ This caused `PrismaClientValidationError` → 500 Internal Server Error on every
 
 ### 🔴 Finding 1: `parentOrderId` — False Assumption in Story 3.4d Spec
 
-**Evidence:** [story-3.4d-partial-fulfillment.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/implementation-artifacts/story-3.4d-partial-fulfillment.md#L41)
+**Evidence:** story-3.4d-partial-fulfillment.md (`story-3.4d-partial-fulfillment.md`)
 
 > Line 41: *"The schema already has `parentOrderId` `(String?)` and `isForceProcessed` `(Boolean)` on the `Order` model from Phase 1."*
 
-**Reality:** The actual [schema.prisma Order model](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/distro/prisma/schema.prisma#L1550-L1646) has **neither field**. The spec author (AI) fabricated the existence of these fields and built the entire implementation plan on a false premise.
+**Reality:** The actual schema.prisma Order model (`schema.prisma`) has **neither field**. The spec author (AI) fabricated the existence of these fields and built the entire implementation plan on a false premise.
 
 **Root Cause:** The AI agent that wrote Story 3.4d **hallucinated** the existence of `parentOrderId` and `isForceProcessed` without verifying against the actual schema file. No human or automated check caught this before the code was generated.
 
@@ -37,13 +37,13 @@ This caused `PrismaClientValidationError` → 500 Internal Server Error on every
 
 ### 🔴 Finding 2: `netCommission` — Data Spec Written, Migration Never Executed
 
-**Evidence:** [3-13-data-spec.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/data-specs/3-13-data-spec.md#L99-L101)
+**Evidence:** 3-13-data-spec.md (`3-13-data-spec.md`)
 
 > Line 101: *"OrderItem missing requested columns: Need to run Prisma migration for `expectedCommissionAmount`, `discountAbsorbed`, `netCommission`, `commissionRate`, `commissionType`. (Severity: **INFO**)"*
 
 The Data Architect (Kira) correctly identified these fields needed migration. Yet:
 1. The migration was **never created** (`prisma migrate dev`)
-2. The implementation code in [3-13-commission-checkout-engine.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/implementation-artifacts/3-13-commission-checkout-engine-and-flexible-pricing.md#L58) marked it as `[x] done`
+2. The implementation code in 3-13-commission-checkout-engine.md (`3-13-commission-checkout-engine-and-flexible-pricing.md`) marked it as `[x] done`
 3. Code review rounds **never verified** schema parity
 
 **Root Cause:** The workflow lacks a mandatory **"Migration Execution Gate"** — a step that blocks code merge until database schema changes are actually applied and verified.

@@ -173,7 +173,7 @@ interface {{ResponseType}} {
 ## 8. Visual References
 
 ### Design System Source
-- **Style:** {{style_name}} (from ui-ux-pro-max)
+- **Style:** {{style_name}} (from ui-ux)
 - **Color Palette:** {{palette_name}}
 - **Typography:** {{font_pairing}}
 - **UX Spec Section:** {{ux_spec_reference}}

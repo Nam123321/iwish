@@ -5,13 +5,23 @@ description: 'Step W-04: Validate — Lint, test, and register the new capabilit
 # Step W-04: Validation & Registration
 
 ## Objective
-Verify that the newly created capability files are structurally sound, follow BMAD conventions, and are properly registered in the system.
+Verify that the newly created draft capability files are structurally sound, follow BMAD conventions, and are ready for explicit promotion into the canonical system.
 
 ## Instructions
 
 ### 1. Structural Validation
 
-#### For SKILL files (`.agent/skills/<name>/SKILL.md`):
+#### For all generated capability drafts:
+- [ ] Draft directory contains `metadata.yaml`, `lineage.jsonl`, and `promotion-plan.md`
+- [ ] `metadata.yaml` follows `.agent/fragments/capability-provenance-lineage.md`
+- [ ] `lineage.jsonl` has at least one append-only `candidate_created` event
+- [ ] Loadable skill/workflow/agent content does not embed raw memorygraph dumps, transcripts, bug reports, review logs, or absorbed source artifacts
+- [ ] Any stale, superseded, low-confidence, private, or security-sensitive source reference is flagged for curator/evolution review using `.agent/fragments/capability-authoring-curator-rules.md`
+- [ ] If creating a Skill draft, apply `.agent/fragments/draft-skill-creation-governance.md` and verify draft creation gates passed before writing `${IWISH_HOME:-${BMAD_HOME:-~/.iwish}}/generated-skills/<name>/`
+- [ ] If creating a Skill draft, verify the draft quality gate: trigger quality, scope boundary, frontmatter, anti-patterns, best practices, verification notes, provenance, lineage, promotion plan, and context budget
+- [ ] If the Skill candidate overlaps an existing skill or adds only a small rule, verify `enhance-skill` patch/merge/split/rewrite routing was considered before allowing a new draft
+
+#### For SKILL files (`${BMAD_HOME}/generated-skills/<name>/SKILL.md`):
 - [ ] File has valid YAML frontmatter with `name` and `description` fields
 - [ ] Contains required sections: "When to Use", "Core Rules", "Anti-Patterns", "Best Practices"
 - [ ] No broken markdown formatting (unclosed code blocks, missing headers)
@@ -34,25 +44,41 @@ Verify that the newly created capability files are structurally sound, follow BM
 
 Run the following checks:
 - [ ] File names use kebab-case (lowercase with hyphens)
-- [ ] No hardcoded absolute paths (all use `{project-root}` placeholder)
-- [ ] Template wrapper exists in `templates/core/workflows/` (if applicable)
-- [ ] Active copy exists in `.agent/workflows/` or `.agent/agents/`
+- [ ] No hardcoded absolute paths (all use `{project-root}`, repo-relative paths, or `${BMAD_HOME}`)
+- [ ] Draft files exist only under `${BMAD_HOME}/generated-*`
+- [ ] Template wrapper draft exists when the promotion plan marks the capability public
+- [ ] Promotion plan names the canonical `.agent/` and `templates/` destinations
 
 ### 3. Integration Smoke Test
 
-- [ ] If creating a Skill: Verify another agent (e.g., Vegeta) can reference it via `{project-root}/.agent/skills/<name>/SKILL.md`
-- [ ] If creating a Workflow: Verify the gateway `.md` correctly chains to all step files
-- [ ] If creating an Agent: Verify the agent can be activated and displays its menu
+- [ ] If creating a Skill draft: Verify another agent (e.g., Vegeta) can reference the draft via `${BMAD_HOME}/generated-skills/<name>/SKILL.md`; verify canonical `{project-root}/.agent/skills/<name>/SKILL.md` only after promotion approval.
+- [ ] If creating a Workflow draft: Verify the generated gateway `.md` under `${BMAD_HOME}/generated-workflows/<name>/` correctly chains to all generated step files; verify canonical `.agent/workflows/` paths only after promotion approval.
+- [ ] If creating an Agent draft: Verify the generated agent under `${BMAD_HOME}/generated-agents/<name>/` can be parsed and has menu structure; verify canonical `.agent/agents/` paths only after promotion approval.
 
-### 4. Register in System
+### 4. Promotion Gate
+
+Present the draft files, `metadata.yaml`, `lineage.jsonl`, and `promotion-plan.md` to the user. Wait for explicit approval before promoting.
+
+If approved:
+- Copy approved files into their canonical `.agent/` destinations.
+- Sync `templates/` only when the promotion plan marks the capability public.
+- Register the new capability with `.agent/scripts/add-to-kg.sh`.
+- Run `.agent/scripts/validate-kg.sh`.
+- Run `.agent/scripts/validate-portability.sh`.
+- Update `metadata.yaml` from `status: draft` to `status: promoted`.
+- Append a `candidate_promoted` event to `lineage.jsonl`.
+
+If not approved, leave the draft under `${BMAD_HOME}` and do not change canonical repo files.
+
+### 5. Register in System
 
 - Log the new capability creation as an Instinct (meta-learning):
 ```jsonl
-{"ts":"<today>","src":"create-capability","ctx":"meta,<capability-type>","bad":"capability gap","good":"<name> created","sev":1}
+{"ts":"<today>","src":"create-skill","ctx":"meta,<capability-type>","bad":"capability gap","good":"<name> created","sev":1}
 ```
-- Append the above to `.agent/memory/instincts.jsonl`
+- Append the above to `.agent/memory/instincts.jsonl` only after promotion approval
 
-### 5. Finalize Sprint Tracker
+### 6. Finalize Sprint Tracker
 
 ```yaml
 phases:
@@ -61,7 +87,7 @@ status: complete
 completed_at: <date>
 ```
 
-### 6. Report to User
+### 7. Report to User
 
 Present a summary:
 ```
@@ -82,6 +108,8 @@ Next Steps:
 - [ ] All structural validations pass
 - [ ] Convention compliance verified
 - [ ] Integration smoke test passed
-- [ ] Instinct logged
+- [ ] User approved promotion or draft was left unpromoted
+- [ ] KG and portability validation pass after promotion
+- [ ] Instinct logged after promotion approval
 - [ ] Sprint tracker finalized
 - [ ] User has received the completion report

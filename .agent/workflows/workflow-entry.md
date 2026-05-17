@@ -27,7 +27,7 @@ Before running this workflow:
 ```
 1. Read the story file to determine which portal this story belongs to
 2. Map portal to slug: Admin → "admin-portal", Webstore → "webstore", Sales → "sales-app", SaaS → "saas-dashboard"
-3. CHECK: Does `{planning_artifacts}/design-system/{portal-slug}/MASTER.md` exist?
+3. CHECK: Does `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md` exist?
 
 IF EXISTS → ✅ Proceed with workflow
 IF NOT EXISTS → ❌ BLOCK with message:
@@ -37,6 +37,32 @@ IF NOT EXISTS → ❌ BLOCK with message:
 ```
 
 **The agent MUST NOT skip this check.** No story UI spec can exist without a portal Design System.
+
+### PAGE OVERRIDE RETRIEVAL RULE (AFTER DESIGN SYSTEM GATE)
+
+If the story targets a specific page or page state:
+
+```
+0. Derive the active page identifier from the story title, UI spec target screen, or explicitly named page state:
+   - `page` = human-readable page or page-state name
+   - `page-slug` = normalized lowercase slug for filesystem lookup
+1. Read the approved portal Design System first:
+   - `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md`
+2. Then check for a page-specific override:
+   - `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md`
+3. If the page override exists:
+   - apply it only to the active page/story context
+   - do not treat it as a second portal-wide master
+   - record which master rules still remain in force
+4. If an approved Stitch screen already exists for that exact page state:
+   - the approved Stitch visual contract remains authoritative until a newer screen is approved
+   - the page override may shape future generation only if no approved page-state Stitch artifact already exists
+```
+
+**Authority resolution for page-specific design work:**
+- `DESIGN.md` defines the portal-wide base rules
+- `pages/{page-slug}.md` may narrow or justify a page-specific deviation
+- approved Stitch screens for the same page state remain the active visual source of truth when they already exist
 
 ### 🧑‍💼 USER SIMULATION GATE (MANDATORY for UI Stories)
 
@@ -50,13 +76,93 @@ IF NOT EXISTS → ❌ BLOCK with message:
    - Admin Portal → P3 (Admin) + P4 (Supervisor)
 3. Run REAL-USER Protocol (8 dimensions) for MIN 3 personas
 4. Apply scenario overlays: rush-hour, low-connectivity, first-time-user (pick ≥2)
-5. Check: feature-validation checklist ({project-root}/.agent/skills/user-simulation-guardian/checklists/feature-validation.md)
+   > [!IMPORTANT]
+   > **DOUBLE-LOCK CONTEXT INJECTION:**
+   > You MUST use the `view_file` tool to load the checklist fragment:
+   > - `/.agent/fragments/feature-validation.md`
+
+5. Check against the loaded feature-validation checklist
 
 IF PASS → ✅ Proceed — include simulation findings in UI spec
 IF FAIL → Fix non-linear paths BEFORE generating UI spec options
 ```
 
 **The agent MUST include the simulation findings in the UI spec output** — section "User Simulation Results" with personas tested, scenarios applied, and non-linear paths identified.
+
+### UI/UX PRO MAX STORY-SPEC GATE (MANDATORY for Story UI Specs)
+
+**Only after the Design System GATE and User Simulation GATE pass, the agent may invoke `ui-ux`:**
+
+```
+1. Verify both gates are already satisfied:
+   - Design System exists for the portal
+   - User Simulation findings have been completed and recorded
+2. ENRICH-UX SCORING STEP (Touchpoint 1.2): Assess the interaction complexity of the story to determine if UI Enrichment is required.
+   Calculate the Enrich-UX Score (0-10) using this formula: `Score = (E1*2 + E2*2 + E3 + E4) / 30 * 10`
+   - **E1**: Interactivity & Animation Density (0-5)
+   - **E2**: State Management & Data Choreography (0-5)
+   - **E3**: Contextual Transitions (0-5)
+   - **E4**: Non-Standard Visual Geometry (0-5)
+   
+   **Decision Matrix:**
+   - **Score 0-3**: Skip (Static HTML/CSS suffices). Set `Enrichment_Required: false`.
+   - **Score 4-6**: Standard (CSS enhancements, micro-interactions). Set `Enrichment_Required: true`, `Enrichment_Tier: Standard`.
+   - **Score 7-10**: Pro-Max (JS observers, GSAP, complex state choreography). Set `Enrichment_Required: true`, `Enrichment_Tier: Pro-Max`.
+   
+   -> If `Enrichment_Required: true`, when the User approves the Stitch version, the agent MUST automatically record the approval and call `/enrich-ux` workflow to populate the `[POST_STITCH_ENRICHMENT_LOGIC]` section.
+3. Prepare a story-specific specialist request with:
+   - Product
+   - Portal
+   - Story key + story title
+   - Acceptance criteria bullets
+   - Persona + device context
+   - Design System summary from {design_system_path}
+   - Page override summary from `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md` when it exists for the active page/story context
+   - Any approved brand, portal, or BMAD authority constraints relevant to this story
+3. Invoke `ui-ux` only for story-level guidance
+4. Do NOT use it to re-run portal-wide design discovery or to override approved Stitch / Design System authority
+5. If the specialist conflicts with approved Stitch screens or extracted visual contract:
+   - reject the conflicting recommendation, or
+   - downgrade it to a checklist / advisory note
+   - keep the Stitch visual contract authoritative
+6. After the user approves the final story-level Stitch screen(s):
+   - re-check `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check` against the approved Stitch visual contract
+   - update the `UI-UX Orchestrator Notes` section so it reflects the final approved story-level visual authority
+   - do not leave pre-approval conflict fields stale in the final UI spec or handoff
+```
+
+**The agent MUST include the specialist output in the final UI spec** under section `UI-UX Orchestrator Notes`.
+That section MUST use this exact governed BMAD contract template:
+```markdown
+### UI-UX Orchestrator Notes
+
+Product Type: [from specialist output]
+Recommended Direction: [from specialist output]
+Alternatives: [from specialist output]
+Color/Tone: [from specialist output]
+Typography: [from specialist output]
+Interaction Notes: [from specialist output]
+Anti-Patterns: [from specialist output]
+Implementation Checklist: [from specialist output]
+Conflict Status: [from final reconciled specialist output]
+Winning Authority: [from final reconciled specialist output]
+BMAD Conflict Check: [from final reconciled specialist output]
+Next Workflow Use: [from specialist output, updated if the final approved Stitch result changes downstream usage]
+```
+
+The section MUST preserve these exact fields:
+- `Product Type`
+- `Recommended Direction`
+- `Alternatives`
+- `Color/Tone`
+- `Typography`
+- `Interaction Notes`
+- `Anti-Patterns`
+- `Implementation Checklist`
+- `Conflict Status`
+- `Winning Authority`
+- `BMAD Conflict Check`
+- `Next Workflow Use`
 
 ## INITIALIZATION
 
@@ -74,21 +180,33 @@ Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
 - `template_path` = `{installed_path}/template.md`
 - `output_folder` = `{implementation_artifacts}/ui-specs`
 - `default_output_file` = `{output_folder}/{story_key}-ui-spec.md`
-- `design_system_path` = `{planning_artifacts}/design-system/{portal-slug}/MASTER.md`
+- `design_system_path` = `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md`
+- `page_override_path` = `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md`
 - `mkt_materials_dir` = `{output_folder_root}/mkt-materials/`
 
 ### UI/UX SKILL Integration
 
-If `{project-root}/.agent/skills/ui-ux-pro-max/SKILL.md` exists:
+If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
 - Load the SKILL instructions for design system intelligence
 - Use `--design-system` command for portal-specific style recommendations
 - Cross-reference with existing UX spec design tokens
 
-### Stitch MCP Integration
+If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
+- Load the SKILL instructions for governed BMAD story-level recommendation behavior
+- Use it only after Design System Gate and User Simulation Gate pass
+- Treat approved Design System, approved Stitch screens, extracted visual contract, User Simulation Guardian, Design Consultation, and UX Guardian as higher authority
 
-Load the portal's existing Stitch project (if any) from Design System metadata:
-- Read `{planning_artifacts}/design-system/{portal-slug}/stitch-project.json` for project ID
-- Use this Stitch project for generating story-specific screens
+### Stitch MCP Integration & Project Consistency ⚠️ MANDATORY
+
+**Project Consistency Rule:**
+- Every portal has a specific Stitch project mapped to its `DESIGN.md`.
+- Read `{planning_artifacts}/design-system/{portal-slug}/stitch-project.json` for `projectId` and `assetId`.
+- When making any `generate_screen_from_text` or `edit_screens` calls for a story, you **MUST** pass the correct `projectId` and `designSystem` (as `assetId`) for the portal that the screen belongs to.
+- If a story requires screens for multiple portals (e.g., Admin and Webstore), you MUST separate the generation into two different projects. **NEVER** generate a Webstore screen inside the Admin Stitch project.
+
+**Sync Approval Flow:**
+- After generating or editing Stitch screens and presenting them to the user, the agent MUST explicitly ask: *"Do you approve this design to be synchronized to the Stitch Design System?"*
+- ONLY if the user says yes/approves, the agent may trigger the `/sync-stitch-design` workflow or proceed to finalizing the design system on the server.
 
 ## 5-OPTION FRAMEWORK
 
@@ -109,8 +227,39 @@ Portal: {portal_name}
 Story: {story_key} — {story_title}
 Acceptance Criteria: {acceptance_criteria_bullets}
 Persona: {persona} — {device}
-Design System: loaded from {design_system_path}
+Design System: Use Stitch MCP Asset ID {assetId}. If {assetId} is missing, STOP and request user to run `/sync-stitch-design` first.
+Page Override: load from {page_override_path} only when it exists for the active page/story context
+UI-UX Story Notes: include only approved or non-conflicting story-level specialist guidance
+Conflict Rule: approved Stitch screens and extracted visual contract remain authoritative if specialist guidance conflicts
 ```
+
+## REQUIRED UI SPEC OUTPUT SECTIONS
+
+The final story UI spec MUST include these sections in addition to the existing workflow artifacts:
+
+### User Simulation Results
+- Personas tested
+- Scenario overlays applied
+- Non-linear paths identified
+- Key recovery or edge-case findings
+
+### UI-UX Orchestrator Notes
+- Record the specialist output using the exact governed BMAD contract template above
+- Keep the notes story-specific and bounded by the approved portal Design System
+- If a recommendation conflicts with approved Stitch screens or extracted visual contract, record it as rejected or downgraded advisory guidance
+- Preserve `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check`
+- Reconcile the section again after final story-level Stitch approval so the conflict fields reflect the final approved visual contract, not a pre-approval draft
+
+### Stitch Visual Contract Protection
+- State that approved Stitch screens and extracted HTML/CSS visual contract remain authoritative for implementation
+- Call out any specialist recommendation that was downgraded to checklist-only or advisory-only because of conflict with approved visual artifacts
+- If a page override exists, state whether it actively shaped this story/page context or was superseded by an already approved Stitch screen for the same page state
+
+### [POST_STITCH_ENRICHMENT_LOGIC]
+- Mandatory placeholder section for dynamic interactions.
+- If `Enrichment_Required: true`, this section MUST be populated by the `/enrich-ux` workflow AFTER Stitch approval.
+- Before Stitch approval, leave this section empty with a note: "Pending `/enrich-ux` execution post-Stitch approval."
+- This section strictly decouples dynamic interaction from the static layout.
 
 **Comparison table MUST be included in the UI spec:**
 
@@ -257,6 +406,11 @@ After Stitch screens are approved by user, **APPEND** this section to the UI Spe
 > This handoff section is the **SINGLE SOURCE OF TRUTH** for Vegeta-story implementation.
 > Vegeta agent reads ONE file (UI Spec + Amendment) — no hunting across multiple docs.
 > See `/stitch-first-Vegeta` workflow for full scoring and variant logic.
+
+**Authority reminder for the handoff:**
+- `UI-UX Orchestrator Notes` enrich story context but do not override the approved portal Design System or approved Stitch visual contract
+- If any specialist recommendation was downgraded, the handoff must carry only the accepted checklist or advisory note, not the rejected source-of-truth change
+- The handoff must use the post-approval reconciled version of `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check`
 
 ## EXECUTION
 

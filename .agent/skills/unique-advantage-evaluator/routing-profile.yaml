@@ -1,0 +1,38 @@
+id: skill-unique-advantage-evaluator
+name: unique-advantage-evaluator
+kind: skill
+shape: skill-attachment
+role: supportive
+phases: [discover, plan, implement]
+stages: [idea-forging, strategic-evaluation, plan-pivot]
+triggers:
+  - unique advantage
+  - business advantage
+  - strategic advantage
+  - unfair advantage
+  - business model advantage
+  - pricing advantage
+  - distribution advantage
+  - competitive edge
+  - moat
+  - defensibility
+  - biz stack
+  - lợi thế cạnh tranh
+  - lợi thế kinh doanh
+  - lợi thế mô hình
+  - lợi thế bền vững
+anti_triggers:
+  - trivial code patch
+  - css tweak
+  - unit test only
+primary_agents: [pm-agent, research-agent, orch-agent]
+primary_workflows: [idea-challenge, plan, research, pivot-project]
+supportive_skills: [socratic-review]
+tool_dependencies: [graph]
+constraints:
+  - Treat unknown strategic claims as hypotheses until research evidence exists.
+  - Do not force moat language on users; accept business-friendly and local vocabulary.
+review_pack: docs/open-modules/unique-advantage-evaluator-integration-guide.md
+source_path: /.agent/skills/unique-advantage-evaluator/SKILL.md
+story_refs: [story-1.13]
+tags: [strategy, business, supportive, biz-stack]

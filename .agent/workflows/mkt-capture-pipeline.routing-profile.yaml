@@ -1,0 +1,18 @@
+id: workflow-mkt-capture-pipeline
+name: mkt-capture-pipeline
+kind: workflow
+shape: workflow
+role: supportive
+phases: [deliver, operate-learn]
+stages: [artifact-capture, rationale-capture, marketing-story-capture]
+triggers: [mkt capture, design option approved, screenshot marketing]
+anti_triggers: [backend-only-refactor]
+primary_agents: [creative-agent, product-agent]
+primary_workflows: [mkt-capture-pipeline]
+supportive_skills: []
+tool_dependencies: [design, browser]
+constraints:
+  - Capture should follow approved design artifacts and not replace product source-of-truth.
+source_path: /.agent/workflows/mkt-capture-pipeline.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, marketing, design, browser]

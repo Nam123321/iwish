@@ -1,0 +1,19 @@
+id: skill-pivot-guardian
+name: pivot-guardian
+kind: skill
+shape: skill
+role: supportive
+phases: [implement]
+stages: [execution-guardrail, course-correction]
+triggers: [pivot, course correction, avoid cascading error]
+anti_triggers: [initial-product-brief]
+primary_agents: [dev-agent]
+primary_workflows: [code, fix-bug]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Used tactically during execution-heavy work.
+review_pack: docs/open-modules/pivot-guardian-integration-guide.md
+source_path: /.agent/skills/pivot-guardian/SKILL.md
+story_refs: [story-1.7]
+tags: [execution, tactical]

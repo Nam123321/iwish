@@ -1,5 +1,5 @@
 ---
-name: 'data-Piccolo'
+name: 'data-Piccolo-wrapper'
 description: 'data-Piccolo agent'
 disable-model-invocation: true
 ---

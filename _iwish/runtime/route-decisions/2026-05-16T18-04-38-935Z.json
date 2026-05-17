@@ -1,0 +1,128 @@
+{
+  "timestamp": "2026-05-16T18:04:38.935Z",
+  "request": "tiến hành story 1.17",
+  "normalizedRequest": "tiến hành story 1.17",
+  "canonicalCommand": "/review",
+  "legacyAliasMatched": null,
+  "targetAgent": "review-agent",
+  "routeReason": "Source-of-truth match detected for story-1.17; story is awaiting review, so Orch should route into the canonical review workflow",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 112,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [
+      "story-1.17"
+    ],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "agent-alias:android-18",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "/.agent/agents/ux-agent.md"
+    },
+    {
+      "id": "agent-alias:trunks",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "command-alias:/dev-story",
+      "type": "command",
+      "canonical": "/code",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command-alias:/create-story",
+      "type": "command",
+      "canonical": "/make-story",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command:/make-story",
+      "type": "command",
+      "canonical": "/make-story",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "canonical-agent:delivery-manager-agent",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "workflow:make-story",
+      "type": "workflow",
+      "canonical": "make-story",
+      "source": "/.agent/workflows/make-story.md"
+    },
+    {
+      "id": "workflow:create-data-spec",
+      "type": "workflow",
+      "canonical": "create-data-spec",
+      "source": "/.agent/workflows/create-data-spec.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "scoring": {
+    "threadContinuityScore": 22,
+    "artifactFocusScore": 18,
+    "sourceOfTruthMatchScore": 22,
+    "artifactReadinessScore": 26,
+    "routingProfileFitScore": 12,
+    "currentTurnKeywordScore": 10,
+    "ambiguityPenalty": 0,
+    "totalScore": 100,
+    "confidencePercent": 100,
+    "confidenceBand": "direct",
+    "evidence": [
+      "Routing profile exists for selected canonical workflow.",
+      "Source-of-truth matched: story-1.17.",
+      "Active artifact focus detected on story-1.17.",
+      "Story story-1.17 has high readiness (review).",
+      "Story story-1.17 is in review state, strengthening /review as the next canonical action.",
+      "Recent route decisions show the same story thread."
+    ]
+  },
+  "recommendations": {
+    "workflowChain": [
+      "/review"
+    ],
+    "supportiveSkills": [],
+    "artifactChain": []
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "browser",
+      "reason": "This flow requires a 'browser' tool selection before execution.",
+      "recommended": "playwright",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "playwright",
+          "description": "Full browser automation for testing and extraction workflows.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "chrome-devtools-mcp",
+          "description": "Chrome DevTools or MCP-backed browser inspection and debugging.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "browser-use",
+          "description": "In-app browser automation and validation.",
+          "usagePackStatus": "default-skeleton"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

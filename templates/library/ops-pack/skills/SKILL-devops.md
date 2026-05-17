@@ -34,7 +34,7 @@ Krillin operates a lightweight "Pulse" to monitor agent execution health:
 
 ## 5. Continuous Learning (Auto-Trigger Whis Scan)
 Upon successful completion of a story or epic (all AC met, PR merged):
-- **Auto-Trigger:** Krillin MUST invoke the `/enhance-capability` workflow (Whis) with the diff of the completed story as input.
+- **Auto-Trigger:** Krillin MUST invoke the `/enhance-skill` workflow (Whis) with the diff of the completed story as input.
 - **Scan Scope:** Whis will analyze the implementation diff for:
   - Newly invented utility functions or helper patterns worthy of extraction into a shared SKILL.
   - Recurring code patterns that should become project-context rules.

@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-05-16T09:38:11.570Z",
+  "request": "Tôi muốn dùng Canva thay vì Figma để làm UI cho story-1.6",
+  "normalizedRequest": "tôi muốn dùng canva thay vì figma để làm ui cho story-1.6",
+  "canonicalCommand": "/make-ui-spec",
+  "legacyAliasMatched": null,
+  "targetAgent": "ux-agent",
+  "routeReason": "UI/design intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 93,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [
+      "story-1.6"
+    ],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "skill-package:qa-simulator-guardian",
+      "type": "skill",
+      "canonical": "qa-simulator-guardian",
+      "source": "/.agent/skills/qa-simulator-guardian/SKILL.md"
+    },
+    {
+      "id": "skill-package:visual-fidelity-gate",
+      "type": "skill",
+      "canonical": "visual-fidelity-gate",
+      "source": "/.agent/skills/visual-fidelity-gate/SKILL.md"
+    },
+    {
+      "id": "skill-visual-fidelity-gate",
+      "type": "skill",
+      "canonical": "skill-visual-fidelity-gate",
+      "source": "/.agent/skills/visual-fidelity-gate/SKILL.md"
+    },
+    {
+      "id": "fragment-anti-sycophancy",
+      "type": "skill",
+      "canonical": "fragment-anti-sycophancy",
+      "source": "/.agent/fragments/anti-sycophancy.md"
+    },
+    {
+      "id": "agent-alias:grand-priest",
+      "type": "agent",
+      "canonical": "orch-agent",
+      "source": "/.agent/agents/orch-agent.md"
+    },
+    {
+      "id": "agent-alias:whis",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "agent-alias:vegeta",
+      "type": "agent",
+      "canonical": "dev-agent",
+      "source": "/.agent/agents/dev-agent.md"
+    },
+    {
+      "id": "agent-alias:hit",
+      "type": "agent",
+      "canonical": "review-agent",
+      "source": "/.agent/agents/review-agent.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": true,
+    "recommendedQueueType": "design-tweak"
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "design",
+      "reason": "This flow requires a 'design' tool selection before execution.",
+      "recommended": "stitch",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "figma",
+          "description": "Figma-based design inspection and implementation handoff. Requires a usage pack such as figma-first-dev / figma-to-code for full orchestration.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "stitch",
+          "description": "Stitch-first design generation and synchronization. Backed by stitch-first-dev / stitch-to-code usage workflows.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "claude-design",
+          "description": "Design-oriented generation and handoff. Requires a usage pack such as claude-design-first-dev / claude-design-to-code for full orchestration.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "canva",
+          "description": "Canva-based design authoring and handoff. Requires a usage pack such as canva-first-dev / canva-to-code for full orchestration.",
+          "usagePackStatus": "default-skeleton"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

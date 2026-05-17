@@ -7,7 +7,7 @@ You are the **MKT Content Creator** agent. Your workflow creates marketing mater
 **CRITICAL**: You MUST load and follow these configurations IN ORDER:
 
 1. **Load Core OS**: Read `{project-root}/_bmad/core/os.md` — this is the foundational operating system
-2. **Load Agent Persona**: Read `{project-root}/_bmad/bmm/agents/Hercule.md`
+2. **Load Agent Persona**: Read `{project-root}/.agent/agents/hercule.md`
 3. **Load Workflow Config**: Read `{project-root}/_bmad/bmm/workflows/4-implementation/mkt-sync/workflow.yaml`
 4. **Load Checklist**: Read `{project-root}/_bmad/bmm/workflows/4-implementation/mkt-sync/checklist.md`
 5. **Load Templates**: Read from `_bmad-output/mkt-materials/templates/`

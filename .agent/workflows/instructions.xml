@@ -155,7 +155,7 @@
 
       <!-- Verify UI Spec quality: Stitch screens and Design System GATE -->
       <action>Search UI spec for "Stitch" references — verify story-specific Stitch screens exist (not just design system screens)</action>
-      <action>Search UI spec for "Design System GATE" or "MASTER.md" — verify Design System was cross-referenced</action>
+      <action>Search UI spec for "Design System GATE" or "DESIGN.md" — verify Design System was cross-referenced</action>
       <check if="UI spec has NO story-specific Stitch screens AND story has [FE] tasks">
         <output>⚠️ **UI Spec Incomplete** — Missing Stitch screen references for this story.
 
@@ -204,7 +204,7 @@
           <check if="user chooses '2'">
             <action>Set {{stitch_css_mapping_loaded}} = false</action>
             <action>Set {{stitch_handoff_loaded}} = false</action>
-            <output>⚠️ Continuing without Stitch-First process. Design System GATE still enforced via MASTER.md.</output>
+            <output>⚠️ Continuing without Stitch-First process. Design System GATE still enforced via DESIGN.md.</output>
           </check>
         </check>
       </check>
@@ -221,7 +221,7 @@
 
         **The `create-ui-spec` workflow MUST be run before `dev-story` for stories with frontend tasks.**
         This ensures:
-        ✅ Design System GATE verified (MASTER.md cross-referenced)
+        ✅ Design System GATE verified (DESIGN.md cross-referenced)
         ✅ Stitch screens generated for visual reference
         ✅ Component hierarchy, design tokens, and interactions documented
         ✅ Dev agent has authoritative frontend implementation guide

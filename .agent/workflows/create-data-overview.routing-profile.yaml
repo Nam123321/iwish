@@ -1,0 +1,18 @@
+id: workflow-create-data-overview
+name: create-data-overview
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution]
+stages: [cross-epic-data-architecture, dependency-map, data-blueprint]
+triggers: [create data overview, cross-epic data, dependency map]
+anti_triggers: [small-bugfix]
+primary_agents: [data-architect-agent, architect-agent]
+primary_workflows: [create-data-overview]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Cross-epic data architecture is only strong when graph-backed relationships are available or explicitly marked degraded.
+source_path: /.agent/workflows/create-data-overview.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, data, graph]

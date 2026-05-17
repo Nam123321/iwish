@@ -1,0 +1,19 @@
+id: skill-design-consultation
+name: design-consultation
+kind: skill
+shape: skill
+role: supportive
+phases: [solution, validate]
+stages: [design-review, ui-critique]
+triggers: [design consultation, ui critique, ux review]
+anti_triggers: [backend-only-fix]
+primary_agents: [ux-agent, review-agent]
+primary_workflows: [make-ui-spec, review]
+supportive_skills: [ux-guardian, visual-fidelity-gate]
+tool_dependencies: [design]
+constraints:
+  - Best used as a specialist support layer under a parent design workflow.
+review_pack: docs/open-modules/design-consultation-integration-guide.md
+source_path: /.agent/skills/design-consultation/SKILL.md
+story_refs: [story-1.7]
+tags: [design, specialist]

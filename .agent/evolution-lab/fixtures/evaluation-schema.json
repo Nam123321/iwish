@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Evolution Lab Evaluation Result Schema",
+  "type": "object",
+  "properties": {
+    "axes": {
+      "type": "object",
+      "properties": {
+        "constraint_retention": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Score for how well the candidate retains core constraints, safety rules, and boundaries from the baseline."
+        },
+        "novelty": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Score for how much useful, novel behavior or improvement the candidate introduces."
+        },
+        "brevity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Score for conciseness and lack of token waste."
+        }
+      },
+      "required": ["constraint_retention", "novelty", "brevity"]
+    },
+    "total_score": {
+      "type": "integer",
+      "description": "Sum of the axes scores."
+    },
+    "fatal_degradations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of any catastrophic rule omissions, safety violations, or structural corruptions. If empty, the candidate is valid. If populated, the candidate is disqualified."
+    }
+  },
+  "required": ["axes", "total_score", "fatal_degradations"]
+}

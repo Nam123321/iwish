@@ -1,0 +1,19 @@
+id: agent-review-agent
+name: review-agent
+kind: agent
+shape: agent
+role: process-primary
+phases: [validate]
+stages: [review, audit, risk-assessment]
+triggers: [review, audit, findings, quality]
+anti_triggers: [greenfield-planning]
+primary_agents: [review-agent]
+primary_workflows: [review]
+supportive_skills: [qa-simulator-guardian]
+tool_dependencies: []
+constraints:
+  - Findings-first output posture.
+review_pack: docs/open-modules/review-agent-integration-guide.md
+source_path: /.agent/agents/review-agent.md
+story_refs: [story-1.7]
+tags: [review, canonical]

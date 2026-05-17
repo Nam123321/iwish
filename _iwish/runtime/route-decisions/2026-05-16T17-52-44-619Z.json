@@ -1,0 +1,132 @@
+{
+  "timestamp": "2026-05-16T17:52:44.619Z",
+  "request": "create story 1.16",
+  "normalizedRequest": "create story 1.16",
+  "canonicalCommand": "/make-story",
+  "legacyAliasMatched": null,
+  "targetAgent": "delivery-manager-agent",
+  "routeReason": "Planning/story intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 112,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "command-alias:/create-story",
+      "type": "command",
+      "canonical": "/make-story",
+      "source": "alias-registry"
+    },
+    {
+      "id": "workflow:create-data-spec",
+      "type": "workflow",
+      "canonical": "create-data-spec",
+      "source": "/.agent/workflows/create-data-spec.md"
+    },
+    {
+      "id": "workflow:bmad-bmm-create-story",
+      "type": "workflow",
+      "canonical": "bmad-bmm-create-story",
+      "source": "/.agent/workflows/bmad-bmm-create-story.md"
+    },
+    {
+      "id": "agent-alias:whis",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "agent-alias:android-18",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "/.agent/agents/ux-agent.md"
+    },
+    {
+      "id": "agent-alias:trunks",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "command-alias:/dev-story",
+      "type": "command",
+      "canonical": "/code",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command-alias:/create-ui-spec",
+      "type": "command",
+      "canonical": "/make-ui-spec",
+      "source": "alias-registry"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "scoring": {
+    "threadContinuityScore": 14,
+    "artifactFocusScore": 0,
+    "sourceOfTruthMatchScore": 0,
+    "artifactReadinessScore": 0,
+    "routingProfileFitScore": 12,
+    "currentTurnKeywordScore": 18,
+    "ambiguityPenalty": 0,
+    "totalScore": 44,
+    "confidencePercent": 44,
+    "confidenceBand": "clarify",
+    "evidence": [
+      "Routing profile exists for selected canonical workflow.",
+      "Recent route decisions show command continuity."
+    ]
+  },
+  "recommendations": {
+    "workflowChain": [
+      "/make-story"
+    ],
+    "supportiveSkills": [],
+    "artifactChain": []
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

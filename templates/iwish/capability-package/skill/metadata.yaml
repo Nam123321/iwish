@@ -1,0 +1,9 @@
+status: draft
+type: SKILL
+path_policy: runtime
+origin:
+  created_by: create-skill
+  type: manual
+promotion_target: .agent/skills/<name>/SKILL.md
+approval:
+  required: true

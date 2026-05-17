@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-05-15T17:01:57.171Z",
+  "request": "Tôi cần fix story-1.6, nhưng trước khi code hãy review scope và xem có skill external nào từ Superpower nên dùng không",
+  "normalizedRequest": "tôi cần fix story-1.6, nhưng trước khi code hãy review scope và xem có skill external nào từ superpower nên dùng không",
+  "canonicalCommand": "/review",
+  "legacyAliasMatched": null,
+  "targetAgent": "review-agent",
+  "routeReason": "Review intent detected",
+  "graphStatus": "degraded",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [
+      "story-1.6"
+    ],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "fragment-plan-tune-heuristic",
+      "type": "skill",
+      "canonical": "fragment-plan-tune-heuristic",
+      "source": "/.agent/fragments/plan-tune-heuristic.md"
+    },
+    {
+      "id": "command:/enhance-skill",
+      "type": "command",
+      "canonical": "/enhance-skill",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "skill-github-deep-research",
+      "type": "skill",
+      "canonical": "skill-github-deep-research",
+      "source": "/.agent/skills/github-deep-research/SKILL.md"
+    },
+    {
+      "id": "fragment-anti-sycophancy",
+      "type": "skill",
+      "canonical": "fragment-anti-sycophancy",
+      "source": "/.agent/fragments/anti-sycophancy.md"
+    },
+    {
+      "id": "skill-qa-simulator-guardian",
+      "type": "skill",
+      "canonical": "skill-qa-simulator-guardian",
+      "source": "/.agent/skills/qa-simulator-guardian/SKILL.md"
+    },
+    {
+      "id": "skill-design-consultation",
+      "type": "skill",
+      "canonical": "skill-design-consultation",
+      "source": "/.agent/skills/design-consultation/SKILL.md"
+    },
+    {
+      "id": "skill-canary",
+      "type": "skill",
+      "canonical": "skill-canary",
+      "source": "/.agent/skills/canary/SKILL.md"
+    },
+    {
+      "id": "skill-land-and-deploy",
+      "type": "skill",
+      "canonical": "skill-land-and-deploy",
+      "source": "/.agent/skills/land-and-deploy/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  }
+}

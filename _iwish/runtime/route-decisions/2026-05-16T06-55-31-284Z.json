@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-16T06:55:31.284Z",
+  "request": "Tạo product brief HTML để share với stakeholder",
+  "normalizedRequest": "tạo product brief html để share với stakeholder",
+  "canonicalCommand": "/plan",
+  "legacyAliasMatched": null,
+  "targetAgent": "pm-agent",
+  "routeReason": "Product planning intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:bmad-bmm-create-product-brief",
+      "type": "workflow",
+      "canonical": "bmad-bmm-create-product-brief",
+      "source": "/.agent/workflows/bmad-bmm-create-product-brief.md"
+    },
+    {
+      "id": "skill-stitch-design-taste",
+      "type": "skill",
+      "canonical": "skill-stitch-design-taste",
+      "source": "/.agent/skills/stitch-design-taste/SKILL.md"
+    },
+    {
+      "id": "fragment-anti-sycophancy",
+      "type": "skill",
+      "canonical": "fragment-anti-sycophancy",
+      "source": "/.agent/fragments/anti-sycophancy.md"
+    },
+    {
+      "id": "skill-caveman-mode",
+      "type": "skill",
+      "canonical": "skill-caveman-mode",
+      "source": "/.agent/skills/caveman-mode/SKILL.md"
+    },
+    {
+      "id": "workflow-prototype",
+      "type": "skill",
+      "canonical": "workflow-prototype",
+      "source": "/.agent/workflows/prototype.md"
+    },
+    {
+      "id": "agent-alias:vegeta",
+      "type": "agent",
+      "canonical": "dev-agent",
+      "source": "alias-registry"
+    },
+    {
+      "id": "agent-alias:hit",
+      "type": "agent",
+      "canonical": "review-agent",
+      "source": "alias-registry"
+    },
+    {
+      "id": "agent-alias:trunks",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "alias-registry"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  }
+}

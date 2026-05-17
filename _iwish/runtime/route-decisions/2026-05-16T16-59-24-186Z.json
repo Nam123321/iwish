@@ -1,0 +1,122 @@
+{
+  "timestamp": "2026-05-16T16:59:24.186Z",
+  "request": "Tìm repo hoặc skill có thể giải quyết bài toán browser automation và visual QA này",
+  "normalizedRequest": "tìm repo hoặc skill có thể giải quyết bài toán browser automation và visual qa này",
+  "canonicalCommand": "/research-solution-sources",
+  "legacyAliasMatched": null,
+  "targetAgent": "capability-agent",
+  "routeReason": "Capability/repo solution-source research intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 110,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:research-solution-sources",
+      "type": "workflow",
+      "canonical": "research-solution-sources",
+      "source": "/.agent/workflows/research-solution-sources.md"
+    },
+    {
+      "id": "agent-alias:whis",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "canonical-agent:capability-agent",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "workflow:fix-bug",
+      "type": "workflow",
+      "canonical": "fix-bug",
+      "source": "/.agent/workflows/fix-bug.md"
+    },
+    {
+      "id": "skill-package:github-deep-research",
+      "type": "skill",
+      "canonical": "github-deep-research",
+      "source": "/.agent/skills/github-deep-research/SKILL.md"
+    },
+    {
+      "id": "skill-package:idea-hardening",
+      "type": "skill",
+      "canonical": "idea-hardening",
+      "source": "/.agent/skills/idea-hardening/SKILL.md"
+    },
+    {
+      "id": "skill-package:qa-simulator-guardian",
+      "type": "skill",
+      "canonical": "qa-simulator-guardian",
+      "source": "/.agent/skills/qa-simulator-guardian/SKILL.md"
+    },
+    {
+      "id": "skill-package:repo-absorption",
+      "type": "skill",
+      "canonical": "repo-absorption",
+      "source": "/.agent/skills/repo-absorption/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "recommendations": {
+    "workflowChain": [
+      "/research-solution-sources"
+    ],
+    "supportiveSkills": [
+      "github-deep-research",
+      "repo-absorption"
+    ],
+    "artifactChain": [
+      "solution source comparison",
+      "recommendation: enhance-skill | create-skill | register-skill-pack | absorb-repo"
+    ]
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

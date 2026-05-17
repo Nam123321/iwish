@@ -1,6 +1,6 @@
 ---
 name: clone-website
-description: 'Suite of skills for reverse-engineering websites. Includes DOM extraction, design token extraction, and interaction analysis. Used by Cell agent and available as sub-skills for Piccolo, Vegeta, and Tien-Shinhan.'
+description: 'Use when instructed to extract DOM structure, design tokens, or interaction specs from a provided URL.'
 ---
 
 # Clone Website — Skill Suite
@@ -47,3 +47,35 @@ All extraction outputs are saved under the project's `docs/research/cloned-specs
 - `PAGE_TOPOLOGY.md` — Section map
 - `BEHAVIORS.md` — Interaction analysis
 - `components/*.spec.md` — Individual component specifications
+
+## Fallback Protocol (When MCP Unavailable)
+
+> ⚠️ **CRITICAL:** Only invoke this fallback AFTER `browser_subagent` or `chrome-devtools-mcp` has been attempted and failed.
+
+If `chrome-devtools-mcp` fails due to Captcha, timeout, connection error, or the browser environment is not available:
+
+### Step 1: HTTP Header Check
+```bash
+curl -sI "<TARGET_URL>" | head -20
+```
+Verify HTTP status (200 OK), content-type (text/html), and follow redirects if needed.
+
+### Step 2: Static Content Fetch
+Use the built-in `read_url_content` tool (zero-dependency, converts HTML → Markdown):
+```
+read_url_content(Url: "<TARGET_URL>")
+```
+This provides the page content as clean Markdown without JavaScript execution.
+
+### Step 3: Manual Token Extraction
+From the Markdown output, manually identify:
+- **Colors:** Search for hex codes (`#xxx`, `#xxxxxx`), `rgb()`, `hsl()` patterns.
+- **Fonts:** Search for font-family names in `<style>` blocks or inline styles.
+- **Layout patterns:** Identify grid/flex references from class names.
+
+### Limitations
+- ❌ No JavaScript execution — dynamic content will be missing.
+- ❌ No computed styles — only inline/embedded CSS is captured.
+- ❌ No interaction analysis — hover states, animations are not observable.
+- ✅ Document all gaps in the output file header under a `## Fallback Limitations` section.
+

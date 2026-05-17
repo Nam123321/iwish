@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Anything trong I-Wish</title>
+    <style>
+      :root {
+        --bg: #f6f1e8;
+        --panel: rgba(255, 252, 247, 0.92);
+        --ink: #1f2a37;
+        --muted: #5f6b7a;
+        --line: rgba(31, 42, 55, 0.12);
+        --brand: #0f766e;
+        --brand-2: #c2410c;
+        --accent: #1d4ed8;
+        --shadow: 0 18px 50px rgba(31, 42, 55, 0.12);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 36%),
+          radial-gradient(circle at top right, rgba(29, 78, 216, 0.12), transparent 34%),
+          linear-gradient(180deg, #fcfaf5 0%, var(--bg) 100%);
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .page {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 32px auto 64px;
+      }
+
+      .hero,
+      .section-card,
+      .phase-card,
+      .matrix-card,
+      .scenario-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero {
+        padding: 36px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto -80px -100px auto;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(194, 65, 12, 0.16), transparent 68%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(15, 118, 110, 0.09);
+        color: var(--brand);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-size: clamp(32px, 6vw, 56px);
+        line-height: 1.02;
+        margin: 18px 0 14px;
+      }
+
+      .lead {
+        max-width: 820px;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .phase-grid,
+      .scenario-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .hero-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        margin-top: 28px;
+      }
+
+      .metric {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(31, 42, 55, 0.08);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 28px;
+        margin-bottom: 6px;
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 22px 0 0;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        background: white;
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 160ms ease;
+      }
+
+      .chip.active,
+      .chip:hover {
+        transform: translateY(-1px);
+        border-color: rgba(15, 118, 110, 0.28);
+        background: rgba(15, 118, 110, 0.08);
+        color: var(--brand);
+      }
+
+      section {
+        margin-top: 26px;
+      }
+
+      .section-card {
+        padding: 26px;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 28px;
+      }
+
+      h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      ul {
+        margin: 8px 0 0 18px;
+        padding: 0;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      }
+
+      .matrix-card {
+        padding: 18px;
+      }
+
+      .matrix-card .label {
+        color: var(--brand-2);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+      }
+
+      .phase-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      .phase-card {
+        padding: 20px;
+      }
+
+      .phase-card .phase-tag {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(29, 78, 216, 0.08);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .scenario-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .scenario-card {
+        padding: 20px;
+      }
+
+      .scenario-card code,
+      .section-card code,
+      .matrix-card code,
+      .phase-card code {
+        background: rgba(31, 42, 55, 0.06);
+        padding: 2px 6px;
+        border-radius: 8px;
+        color: var(--ink);
+      }
+
+      .callout {
+        margin-top: 18px;
+        padding: 18px 20px;
+        border-left: 4px solid var(--brand);
+        border-radius: 16px;
+        background: rgba(15, 118, 110, 0.07);
+      }
+
+      .footer {
+        margin-top: 26px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      [data-panel] {
+        display: none;
+      }
+
+      [data-panel].active {
+        display: block;
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100vw - 18px, 1180px);
+          margin: 14px auto 40px;
+        }
+
+        .hero,
+        .section-card {
+          padding: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="eyebrow">I-Wish Open Module Guide</div>
+        <h1>HTML Anything trong I-Wish</h1>
+        <p class="lead">
+          `html-anything` là một external capability bundle rất mạnh để biến output của I-Wish thành artifact HTML
+          đọc tốt, trình bày tốt, share tốt. Trong hệ của chúng ta, nó không phải xương sống delivery mà là một
+          <strong>supportive compound module</strong> phục vụ nhiều phase từ idea đến deliver.
+        </p>
+
+        <div class="hero-grid">
+          <div class="metric">
+            <strong>75</strong>
+            <span>template skills trong repo nguồn</span>
+          </div>
+          <div class="metric">
+            <strong>9</strong>
+            <span>deliverable surfaces</span>
+          </div>
+          <div class="metric">
+            <strong>8</strong>
+            <span>coding-agent CLIs được README công bố</span>
+          </div>
+          <div class="metric">
+            <strong>supportive</strong>
+            <span>vai trò trong I-Wish framework</span>
+          </div>
+        </div>
+
+        <div class="toolbar" id="tabs">
+          <button class="chip active" data-target="overview">Tổng quan</button>
+          <button class="chip" data-target="framework">Khung hệ thống</button>
+          <button class="chip" data-target="agents">Agent / Workflow / Skill</button>
+          <button class="chip" data-target="scenarios">Ví dụ sử dụng</button>
+        </div>
+      </header>
+
+      <section class="section-card active" data-panel="overview">
+        <h2>Tổng quan tích hợp</h2>
+        <div class="grid-2">
+          <div class="matrix-card">
+            <div class="label">Snapshot</div>
+            <ul>
+              <li>Repo nguồn: <a href="https://github.com/nexu-io/html-anything">nexu-io/html-anything</a></li>
+              <li>Đã đăng ký vào runtime tại <code>_iwish/catalog/external-modules/html-anything.json</code></li>
+              <li>Module class: <code>compound-external</code></li>
+              <li>Mode: <code>absorb</code></li>
+              <li>Triggers: <code>html export docs deck prototype design social report</code></li>
+            </ul>
+          </div>
+          <div class="matrix-card">
+            <div class="label">Funnel Decision</div>
+            <ul>
+              <li>Shape: <code>compound</code></li>
+              <li>Role: <code>supportive</code></li>
+              <li>Placement: <code>cross-phase</code></li>
+              <li>Tool deps hiện gắn: <code>playwright</code>, <code>stitch</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Kết luận ngắn:</strong> `html-anything` không thay thế `plan`, `make-ui-spec`, `review`, `code` hay
+          `research`. Nó tăng chất lượng output theo hướng human-facing: dễ đọc, dễ chụp màn hình, dễ share, dễ
+          handoff.
+        </div>
+      </section>
+
+      <section class="section-card" data-panel="framework">
+        <h2>Vị trí trong khung phát triển</h2>
+        <p>
+          Trong I-Wish, user nên nhìn hệ thống theo trục <code>Delivery Framework → Process-primary capability →
+          Supportive capability → Foundational injection</code>. `html-anything` nằm ở lớp supportive capability.
+        </p>
+
+        <div class="phase-grid">
+          <article class="phase-card">
+            <div class="phase-tag">Discover</div>
+            <h3>Research artifact</h3>
+            <p>Tóm tắt market/domain/technical research thành HTML brief hoặc deck dễ đọc.</p>
+            <p><strong>Primary flows:</strong> <code>research</code>, <code>bmad-bmm-market-research</code></p>
+          </article>
+          <article class="phase-card">
+            <div class="phase-tag">Plan</div>
+            <h3>Product brief / PRD packaging</h3>
+            <p>Biến brief, PRD summary, roadmap thành output có thể share với stakeholder.</p>
+            <p><strong>Primary flows:</strong> <code>plan</code>, <code>bmad-bmm-create-prd</code></p>
+          </article>
+          <article class="phase-card">
+            <div class="phase-tag">Solution</div>
+            <h3>UI/UX support</h3>
+            <p>Tạo UI concept page, docs page, prototype HTML, visual review artifact.</p>
+            <p><strong>Primary flows:</strong> <code>make-ui-spec</code>, <code>bmad-bmm-create-ui-spec</code></p>
+          </article>
+          <article class="phase-card">
+            <div class="phase-tag">Implement</div>
+            <h3>Implementation handoff</h3>
+            <p>Tạo implementation note, bug report, review artifact hoặc prototype gần với thực thi.</p>
+            <p><strong>Primary flows:</strong> <code>code</code>, <code>fix-bug</code>, <code>review</code></p>
+          </article>
+          <article class="phase-card">
+            <div class="phase-tag">Validate / Deliver</div>
+            <h3>Status & communication</h3>
+            <p>Tạo sprint report, release note, status deck, stakeholder-facing summary.</p>
+            <p><strong>Primary flows:</strong> <code>status</code>, <code>retro</code></p>
+          </article>
+          <article class="phase-card">
+            <div class="phase-tag">Operate / Learn</div>
+            <h3>Knowledge packaging</h3>
+            <p>Đóng gói learning, guide, repo summary, reusable docs sau absorb hoặc evolution.</p>
+            <p><strong>Primary flows:</strong> <code>absorb-repo</code>, <code>create-skill</code>, <code>enhance-skill</code></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card" data-panel="agents">
+        <h2>Agent, workflow, skill và tác vụ liên quan</h2>
+        <div class="grid-3">
+          <div class="matrix-card">
+            <div class="label">Primary agents</div>
+            <ul>
+              <li><code>orch-agent</code>: phát hiện nhu cầu human-facing artifact</li>
+              <li><code>pm-agent</code>: brief, PRD, roadmap, stakeholder deck</li>
+              <li><code>ux-agent</code>: UI spec, prototype, design review page</li>
+              <li><code>review-agent</code>: QA / UX / code review summary</li>
+              <li><code>creative-agent</code>: poster, social, editorial output</li>
+            </ul>
+          </div>
+          <div class="matrix-card">
+            <div class="label">Primary workflows</div>
+            <ul>
+              <li><code>plan</code></li>
+              <li><code>make-ui-spec</code></li>
+              <li><code>review</code></li>
+              <li><code>research</code></li>
+              <li><code>status</code></li>
+              <li><code>register-skill-pack</code></li>
+            </ul>
+          </div>
+          <div class="matrix-card">
+            <div class="label">Supportive skills</div>
+            <ul>
+              <li><code>design-consultation</code></li>
+              <li><code>ux-guardian</code></li>
+              <li><code>ui-ux</code></li>
+              <li><code>user-simulation-guardian</code></li>
+              <li><code>pivot-guardian</code></li>
+              <li><code>github-deep-research</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Nguyên tắc dùng:</strong> Orch không nên route trực tiếp vào `html-anything` như main flow. Nó nên route
+          vào process chính trước, rồi gắn `html-anything` khi user cần output dạng docs/deck/prototype/report/shareable
+          HTML.
+        </div>
+      </section>
+
+      <section class="section-card" data-panel="scenarios">
+        <h2>Tình huống sử dụng thực tế</h2>
+        <div class="scenario-grid">
+          <article class="scenario-card">
+            <h3>Case 1 — Product brief dễ share</h3>
+            <p><strong>User:</strong> “Tạo product brief HTML để share với stakeholder.”</p>
+            <p><strong>Orch:</strong> <code>pm-agent</code> + <code>/plan</code> + supportive module `html-anything`</p>
+            <p><strong>Output gợi ý:</strong> `pm-spec`, `doc`, `deck-pitch`, `deck-simple`</p>
+          </article>
+          <article class="scenario-card">
+            <h3>Case 2 — UX lỗi so với master design</h3>
+            <p><strong>User:</strong> “UX có nhiều lỗi chưa tuân thủ master design.”</p>
+            <p><strong>Orch:</strong> <code>ux-agent</code> + <code>/make-ui-spec</code> hoặc <code>/review</code></p>
+            <p><strong>Supportive:</strong> `design-consultation`, `ux-guardian`, `ui-ux`, `html-anything`</p>
+          </article>
+          <article class="scenario-card">
+            <h3>Case 3 — Sprint status deck</h3>
+            <p><strong>User:</strong> “Tạo deck sprint status để họp với stakeholder.”</p>
+            <p><strong>Orch:</strong> <code>delivery-manager-agent</code> hoặc <code>pm-agent</code> + <code>/status</code></p>
+            <p><strong>Output gợi ý:</strong> `weekly-update`, `deck-tech-sharing`, `deck-simple`</p>
+          </article>
+          <article class="scenario-card">
+            <h3>Case 4 — Prototype HTML trước khi code</h3>
+            <p><strong>User:</strong> “Tạo prototype HTML cho landing page để team góp ý trước khi code.”</p>
+            <p><strong>Orch:</strong> <code>ux-agent</code> + <code>/make-ui-spec</code> + `html-anything`</p>
+            <p><strong>Output gợi ý:</strong> `prototype-web`, `saas-landing`, `docs-page`, `dashboard`</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong>Khi không nên dùng:</strong> backend-only work, DB-only work, governance decisions, source-of-truth PRD/story
+          ownership, hoặc task không cần human-facing artifact.
+        </div>
+      </section>
+
+      <p class="footer">
+        Tài liệu này được tạo như một onboarding artifact cho Open Module test của I-Wish với
+        <code>nexu-io/html-anything</code>.
+      </p>
+    </div>
+
+    <script>
+      const tabs = document.querySelectorAll("[data-target]");
+      const panels = document.querySelectorAll("[data-panel]");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((node) => node.classList.remove("active"));
+          panels.forEach((node) => node.classList.remove("active"));
+          tab.classList.add("active");
+          const panel = document.querySelector(`[data-panel="${tab.dataset.target}"]`);
+          if (panel) panel.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>

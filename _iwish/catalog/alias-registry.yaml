@@ -1,0 +1,26 @@
+agents:
+  grand-priest: orch-agent
+  whis: capability-agent
+  vegeta: dev-agent
+  piccolo: architect-agent
+  android-18: ux-agent
+  tien-shinhan: qa-agent
+  hit: review-agent
+  king-kai: pm-agent
+  trunks: delivery-manager-agent
+  bulma: analyst-agent
+  shenron: data-architect-agent
+  gotenks: creative-agent
+  master-roshi: research-agent
+commands:
+  /dev-story: /code
+  /create-story: /make-story
+  /create-ui-spec: /make-ui-spec
+  /code-review: /review
+  /create-capability: /create-skill
+  /enhance-capability: /enhance-skill
+  /retrospective: /retro
+  /market-research: /research
+  /domain-research: /research
+  /technical-research: /research
+  /bmad-help: /status

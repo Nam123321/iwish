@@ -49,7 +49,7 @@ Present to the user:
 
 Append a meta-instinct to `instincts.jsonl`:
 ```jsonl
-{"ts":"YYYY-MM-DD","src":"enhance-capability","ctx":"meta,evolution","bad":"capability gap","good":"<N> skills evolved","sev":1}
+{"ts":"YYYY-MM-DD","src":"enhance-skill","ctx":"meta,evolution","bad":"capability gap","good":"<N> skills evolved","sev":1}
 ```
 
 ### 4. Cleanup

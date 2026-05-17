@@ -9,6 +9,8 @@ description: Research and determine which BMAD Library modules to install for th
 ## 1. Goal
 After defining the Product Requirements and Architecture (Tech Stack), the next vital step before implementation is deciding whether the project needs specialized AI workflows or skills from the **BMAD-DragonBall Library**.
 
+If the question is broader than project-pack selection and includes finding external repos, third-party skills, or comparing internal-vs-external capability options, hand off to `research-solution-sources.md`.
+
 ## 2. Steps
 
 1. **Review Context**: Read the `task.md`, PRD, and Architecture document.

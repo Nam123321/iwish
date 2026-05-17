@@ -32,7 +32,19 @@ From the collected raw data, extract:
 
 ### 3. Generate `capability-spec.md`
 
-Write the specification document to the project's output folder:
+**MANDATORY: Adversarial Spec Review**
+Before writing the spec, invoke `.agent/fragments/anti-sycophancy-guard.md` and perform a self-audit:
+1. **The "Why Not" Test:** Provide one strong argument against building this capability.
+2. **Failure Analysis:** If this skill leads to a production error, what is the most likely architectural cause?
+3. **Redundancy Check:** Does this solve a problem that is already covered by an existing BMAD fragment or skill?
+
+Write the specification document to the runtime draft folder under `${IWISH_HOME:-${BMAD_HOME:-~/.iwish}}`:
+
+```text
+${BMAD_HOME}/generated-skills/<name>/capability-spec.md
+${BMAD_HOME}/generated-workflows/<name>/capability-spec.md
+${BMAD_HOME}/generated-agents/<name>/capability-spec.md
+```
 
 ```markdown
 # Capability Spec: <name>
@@ -63,7 +75,22 @@ Write the specification document to the project's output folder:
 - [ ] File 2: (if workflow/agent)
 ```
 
-### 4. Create Sprint Tracker
+### 4. Create Draft Metadata and Sprint Tracker
+
+Create `metadata.yaml` alongside the spec:
+
+```yaml
+id: <name>
+type: <SKILL|WORKFLOW|AGENT>
+status: draft
+origin: create-skill
+origin_repo: <source-url-or-null>
+created_at: <date>
+source_artifacts:
+  - capability-spec
+promotion_target: <canonical-target-path>
+path_policy: runtime
+```
 
 Create `forge-sprint-status.yaml` alongside the spec:
 ```yaml
@@ -80,5 +107,6 @@ phases:
 ## Exit Criteria
 - [ ] All data sources have been ingested and distilled
 - [ ] `capability-spec.md` exists and is reviewed by user
+- [ ] `metadata.yaml` exists with `status: draft`
 - [ ] `forge-sprint-status.yaml` is created
 - [ ] User approves the spec before proceeding to Forge

@@ -1,0 +1,7 @@
+[skill]
+description = "Override sparse fields only. Do not copy the full base package."
+
+[workflow]
+activation_steps_prepend = []
+activation_steps_append = []
+persistent_facts = []

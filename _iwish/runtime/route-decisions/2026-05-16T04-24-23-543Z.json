@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-16T04:24:23.543Z",
+  "request": "ux có nhiều lỗi chưa tuân thủ master design",
+  "normalizedRequest": "ux có nhiều lỗi chưa tuân thủ master design",
+  "canonicalCommand": "/make-ui-spec",
+  "legacyAliasMatched": null,
+  "targetAgent": "ux-agent",
+  "routeReason": "UI/design intent detected",
+  "graphStatus": "degraded",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "skill-design-consultation",
+      "type": "skill",
+      "canonical": "skill-design-consultation",
+      "source": "/.agent/skills/design-consultation/SKILL.md"
+    },
+    {
+      "id": "skill-ux-pro-max",
+      "type": "skill",
+      "canonical": "skill-ux-pro-max",
+      "source": "/.agent/skills/ux-pro-max/SKILL.md"
+    },
+    {
+      "id": "skill-github-deep-research",
+      "type": "skill",
+      "canonical": "skill-github-deep-research",
+      "source": "/.agent/skills/github-deep-research/SKILL.md"
+    },
+    {
+      "id": "skill-stitch-design-taste",
+      "type": "skill",
+      "canonical": "skill-stitch-design-taste",
+      "source": "/.agent/skills/stitch-design-taste/SKILL.md"
+    },
+    {
+      "id": "skill-ux-guardian",
+      "type": "skill",
+      "canonical": "skill-ux-guardian",
+      "source": "/.agent/skills/ux-guardian/SKILL.md"
+    },
+    {
+      "id": "context-bmad-architecture",
+      "type": "workflow",
+      "canonical": "context-bmad-architecture",
+      "source": "/.agent/BMAD-ARCHITECTURE.md"
+    },
+    {
+      "id": "fragment-taxonomy-8-pillars",
+      "type": "skill",
+      "canonical": "fragment-taxonomy-8-pillars",
+      "source": "/.agent/fragments/taxonomy-8-pillars.md"
+    },
+    {
+      "id": "skill-land-and-deploy",
+      "type": "skill",
+      "canonical": "skill-land-and-deploy",
+      "source": "/.agent/skills/land-and-deploy/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": true,
+    "recommendedQueueType": "design-tweak"
+  }
+}

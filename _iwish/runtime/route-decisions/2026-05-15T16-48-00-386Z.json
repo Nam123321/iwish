@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-15T16:48:00.386Z",
+  "request": "register external skill pack from superpower",
+  "normalizedRequest": "register external skill pack from superpower",
+  "canonicalCommand": "/status",
+  "legacyAliasMatched": null,
+  "targetAgent": "orch-agent",
+  "routeReason": "Defaulted to orchestration status/help route",
+  "graphStatus": "degraded",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "command:/create-skill",
+      "type": "command",
+      "canonical": "/create-skill",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "command:/enhance-skill",
+      "type": "command",
+      "canonical": "/enhance-skill",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "skill-repo-absorption",
+      "type": "skill",
+      "canonical": "skill-repo-absorption",
+      "source": "/.agent/skills/repo-absorption/SKILL.md"
+    },
+    {
+      "id": "skill-github-deep-research",
+      "type": "skill",
+      "canonical": "skill-github-deep-research",
+      "source": "/.agent/skills/github-deep-research/SKILL.md"
+    },
+    {
+      "id": "skill-pivot-guardian",
+      "type": "skill",
+      "canonical": "skill-pivot-guardian",
+      "source": "/.agent/skills/pivot-guardian/SKILL.md"
+    },
+    {
+      "id": "fragment-plan-tune-heuristic",
+      "type": "skill",
+      "canonical": "fragment-plan-tune-heuristic",
+      "source": "/.agent/fragments/plan-tune-heuristic.md"
+    },
+    {
+      "id": "fragment-terminal-safety",
+      "type": "skill",
+      "canonical": "fragment-terminal-safety",
+      "source": "/.agent/fragments/terminal-safety.md"
+    },
+    {
+      "id": "command-alias:/create-capability",
+      "type": "command",
+      "canonical": "/create-skill",
+      "source": "alias-registry"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  }
+}

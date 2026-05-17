@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-16T06:55:51.207Z",
+  "request": "Tạo deck sprint status dạng HTML",
+  "normalizedRequest": "tạo deck sprint status dạng html",
+  "canonicalCommand": "/status",
+  "legacyAliasMatched": null,
+  "targetAgent": "orch-agent",
+  "routeReason": "Defaulted to orchestration status/help route",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "external-module:html-anything",
+      "type": "module",
+      "canonical": "html-anything",
+      "source": "https://github.com/nexu-io/html-anything"
+    },
+    {
+      "id": "workflow:bmad-bmm-sprint-planning",
+      "type": "workflow",
+      "canonical": "bmad-bmm-sprint-planning",
+      "source": "/.agent/workflows/bmad-bmm-sprint-planning.md"
+    },
+    {
+      "id": "workflow:bmad-bmm-sprint-status",
+      "type": "workflow",
+      "canonical": "bmad-bmm-sprint-status",
+      "source": "/.agent/workflows/bmad-bmm-sprint-status.md"
+    },
+    {
+      "id": "command-alias:/bmad-help",
+      "type": "command",
+      "canonical": "/status",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command:/code",
+      "type": "command",
+      "canonical": "/code",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "command:/plan",
+      "type": "command",
+      "canonical": "/plan",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "command:/make-story",
+      "type": "command",
+      "canonical": "/make-story",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "command:/status",
+      "type": "command",
+      "canonical": "/status",
+      "source": "canonical-command-registry"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  }
+}

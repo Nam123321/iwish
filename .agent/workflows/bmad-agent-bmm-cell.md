@@ -1,5 +1,5 @@
 ---
-name: 'Cell'
+name: 'Cell-wrapper'
 description: 'Cell agent — Website Cloner & UI Absorber. Activate to clone websites, extract component specs, or absorb design tokens from any URL.'
 disable-model-invocation: true
 ---

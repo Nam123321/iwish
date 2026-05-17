@@ -1,0 +1,19 @@
+id: workflow-register-skill-pack
+name: register-skill-pack
+kind: workflow
+shape: workflow
+role: supportive
+phases: [operate-learn]
+stages: [open-module-intake, capability-normalization]
+triggers: [register skill pack, external module, custom module, superpower]
+anti_triggers: [simple-bugfix]
+primary_agents: [capability-agent, orch-agent]
+primary_workflows: [register-skill-pack]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Keep imported capability external until explicit promotion approval.
+review_pack: docs/open-modules/register-skill-pack-integration-guide.md
+source_path: /.agent/workflows/register-skill-pack.md
+story_refs: [story-1.7]
+tags: [open-module, canonical]

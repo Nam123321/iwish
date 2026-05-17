@@ -1,0 +1,10 @@
+# Evolution Lab Configuration
+# Enables the dual-run execution environment for candidate mutations.
+dual_run_enabled: true
+
+# Formalized Trial Statuses (to prevent magic string bloat and typos)
+trial_statuses:
+  - PENDING    # Trial has run, candidates generated, awaiting review
+  - REFINING   # Human or Agent is actively pivoting/editing candidates
+  - REJECTED   # Trial aborted, do not promote
+  - APPROVED   # Trial candidate chosen and ready for promotion

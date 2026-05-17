@@ -1,0 +1,17 @@
+id: workflow-pivot-project
+name: pivot-project
+kind: workflow
+shape: workflow
+role: supportive
+phases: [implement, validate, operate-learn]
+stages: [pivot-assessment, severity-classification, rerouting]
+triggers: [pivot project, course correct, pivot, rescope, scope drift, major change, mid sprint, reroute]
+anti_triggers: [greenfield project bootstrap, external repo intake]
+primary_agents: [orch-agent, delivery-manager-agent, review-agent]
+primary_workflows: [pivot-project]
+supportive_skills: [pivot-guardian]
+tool_dependencies: [graph]
+constraints:
+  - Must classify whether the change is local, story, epic, or plan level before recommending the next workflow.
+source_path: /_iwish/catalog/routing-profiles/workflow-pivot-project.yaml
+tags: [starter-bundle, pivot]

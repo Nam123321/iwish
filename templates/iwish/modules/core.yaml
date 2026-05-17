@@ -1,0 +1,4 @@
+code: core
+name: I-Wish Core
+class: core
+description: Canonical orchestration, runtime, aliasing, and configuration substrate.

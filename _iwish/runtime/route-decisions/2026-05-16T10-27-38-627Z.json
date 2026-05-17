@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-16T10:27:38.627Z",
+  "request": "/course-correct",
+  "normalizedRequest": "/course-correct",
+  "canonicalCommand": "/course-correct",
+  "legacyAliasMatched": null,
+  "targetAgent": "orch-agent",
+  "routeReason": "Explicit command /course-correct requested",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 101,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:course-correct",
+      "type": "workflow",
+      "canonical": "course-correct",
+      "source": "/.agent/workflows/course-correct.md"
+    },
+    {
+      "id": "skill-package:pivot-guardian",
+      "type": "skill",
+      "canonical": "pivot-guardian",
+      "source": "/.agent/skills/pivot-guardian/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

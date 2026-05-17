@@ -226,7 +226,7 @@ After all stories AND edge case analysis for an epic are complete:
 
 After edge case analysis, if the epic or any of its stories involve AI features (LLM calls, prompts, RAG pipeline, Cognee integration, embeddings, AI-assisted UI):
 
-**CRITICAL: Invoke the Songoku AI Engineer agent (`{project-root}/_bmad/bmm/agents/songoku.md`) to analyze AI requirements for the epic.**
+**CRITICAL: Invoke the Songoku AI Engineer agent (`{project-root}/.agent/agents/songoku.md`) to analyze AI requirements for the epic.**
 
 #### A. AI Feature Detection
 - Scan all stories in the epic for AI keywords: "AI", "LLM", "prompt", "GPT", "embedding", "RAG", "Cognee", "knowledge graph", "model", "token"

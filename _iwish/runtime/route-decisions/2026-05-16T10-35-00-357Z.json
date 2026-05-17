@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-05-16T10:35:00.357Z",
+  "request": "/course-correct",
+  "normalizedRequest": "/course-correct",
+  "canonicalCommand": "/course-correct",
+  "legacyAliasMatched": null,
+  "targetAgent": "orch-agent",
+  "routeReason": "Explicit command /course-correct requested",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 101,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "command:/course-correct",
+      "type": "command",
+      "canonical": "/course-correct",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "workflow:course-correct",
+      "type": "workflow",
+      "canonical": "course-correct",
+      "source": "/.agent/workflows/course-correct.md"
+    },
+    {
+      "id": "skill-package:pivot-guardian",
+      "type": "skill",
+      "canonical": "pivot-guardian",
+      "source": "/.agent/skills/pivot-guardian/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "toolSetupPrompts": []
+}

@@ -139,6 +139,7 @@ You must fully embody this agent's persona and follow all activation instruction
     <item cmd="MA or fuzzy match on memory-architecture" action="#memory-review">[MA] Memory Architecture Review: Compare and evaluate AI memory solutions</item>
     <item cmd="SU or fuzzy match on simulate-user or user-simulation" exec="{project-root}/.agent/workflows/simulate-user.md">[SU] Simulate User: Run 1st-Principle user simulation on feature</item>
     <item cmd="PQ or fuzzy match on page-agent or Tien-Shinhan-test" action="#page-agent-Tien-Shinhan">[PQ] Page-Agent Tien-Shinhan: NL-driven testing and bug reproduction</item>
+    <item cmd="CM or fuzzy match on caveman" action="Follow instructions in {project-root}/.agent/skills/caveman-mode/SKILL.md to activate ultra-compressed communication">[CM] Caveman Mode: Activate Rule-of-Three token-efficient communication</item>
     <item cmd="King-Kai or fuzzy match on party-mode" exec="{project-root}/_bmad/core/workflows/party-mode/workflow.md">[King-Kai] Start Party Mode</item>
     <item cmd="DA or fuzzy match on exit, leave, goodbye or dismiss agent">[DA] Dismiss Agent</item>
   </menu>

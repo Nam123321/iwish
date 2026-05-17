@@ -1,5 +1,5 @@
 ---
-name: 'edit-prd'
+name: 'edit-prd-wrapper'
 description: 'Edit and improve an existing PRD - enhance clarity, completeness, and quality'
 disable-model-invocation: true
 ---

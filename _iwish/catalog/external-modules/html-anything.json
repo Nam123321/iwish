@@ -1,0 +1,22 @@
+{
+  "name": "html-anything",
+  "source": "https://github.com/nexu-io/html-anything",
+  "registeredAt": "2026-05-16T06:51:52.469Z",
+  "status": "registered",
+  "moduleClass": "compound-external",
+  "registrationMode": "absorb",
+  "triggers": [
+    "html",
+    "export",
+    "docs",
+    "deck",
+    "prototype",
+    "design",
+    "social",
+    "report"
+  ],
+  "toolDependencies": [
+    "playwright",
+    "stitch"
+  ]
+}

@@ -8,6 +8,6 @@ This workflow generates a comprehensive Data Specification document for a story.
 
 ## Activation
 
-1. Load the Kira Data Piccolo agent persona from `{project-root}/_bmad/bmm/agents/data-Piccolo.md`
+1. Load the Piccolo agent persona from `{project-root}/.agent/agents/piccolo.md` and apply Kira Data Piccolo behavior from this workflow.
 2. Load config from `{project-root}/_bmad/bmm/config.yaml`
 3. Execute the workflow: `{project-root}/_bmad/bmm/workflows/3-solutioning/create-data-spec/workflow.md`

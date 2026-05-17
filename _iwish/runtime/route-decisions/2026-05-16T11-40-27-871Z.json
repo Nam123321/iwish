@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-05-16T11:40:27.871Z",
+  "request": "Tôi muốn stress-test ý tưởng này, nghiên cứu thêm thị trường và tìm lợi thế cạnh tranh trước khi viết PRD",
+  "normalizedRequest": "tôi muốn stress-test ý tưởng này, nghiên cứu thêm thị trường và tìm lợi thế cạnh tranh trước khi viết prd",
+  "canonicalCommand": "/idea-challenge",
+  "legacyAliasMatched": null,
+  "targetAgent": "pm-agent",
+  "routeReason": "Strategic advantage or business differentiation intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 108,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:idea-challenge",
+      "type": "workflow",
+      "canonical": "idea-challenge",
+      "source": "/.agent/workflows/idea-challenge.md"
+    },
+    {
+      "id": "skill-package:unique-advantage-evaluator",
+      "type": "skill",
+      "canonical": "unique-advantage-evaluator",
+      "source": "/.agent/skills/unique-advantage-evaluator/SKILL.md"
+    },
+    {
+      "id": "agent-alias:king-kai",
+      "type": "agent",
+      "canonical": "pm-agent",
+      "source": "/.agent/agents/pm-agent.md"
+    },
+    {
+      "id": "command:/plan",
+      "type": "command",
+      "canonical": "/plan",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "canonical-agent:pm-agent",
+      "type": "agent",
+      "canonical": "pm-agent",
+      "source": "/.agent/agents/pm-agent.md"
+    },
+    {
+      "id": "workflow:plan",
+      "type": "workflow",
+      "canonical": "plan",
+      "source": "/.agent/workflows/plan.md"
+    },
+    {
+      "id": "workflow:prd-purpose",
+      "type": "workflow",
+      "canonical": "prd-purpose",
+      "source": "/.agent/workflows/prd-purpose.md"
+    },
+    {
+      "id": "workflow:bmad-bmm-create-prd",
+      "type": "workflow",
+      "canonical": "bmad-bmm-create-prd",
+      "source": "/.agent/workflows/bmad-bmm-create-prd.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

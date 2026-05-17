@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-05-16T06:55:51.206Z",
+  "request": "Tạo HTML review artifact cho các lỗi UX của story-1.6",
+  "normalizedRequest": "tạo html review artifact cho các lỗi ux của story-1.6",
+  "canonicalCommand": "/review",
+  "legacyAliasMatched": null,
+  "targetAgent": "review-agent",
+  "routeReason": "Review intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [
+      "story-1.6"
+    ],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "fragment-anti-sycophancy",
+      "type": "skill",
+      "canonical": "fragment-anti-sycophancy",
+      "source": "/.agent/fragments/anti-sycophancy.md"
+    },
+    {
+      "id": "skill-design-consultation",
+      "type": "skill",
+      "canonical": "skill-design-consultation",
+      "source": "/.agent/skills/design-consultation/SKILL.md"
+    },
+    {
+      "id": "skill-ux-pro-max",
+      "type": "skill",
+      "canonical": "skill-ux-pro-max",
+      "source": "/.agent/skills/ux-pro-max/SKILL.md"
+    },
+    {
+      "id": "agent-alias:android-18",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "alias-registry"
+    },
+    {
+      "id": "agent-alias:hit",
+      "type": "agent",
+      "canonical": "review-agent",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command:/review",
+      "type": "command",
+      "canonical": "/review",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "canonical-agent:review-agent",
+      "type": "agent",
+      "canonical": "review-agent",
+      "source": "/.agent/agents/review-agent.md"
+    },
+    {
+      "id": "canonical-agent:ux-agent",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "/.agent/agents/ux-agent.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  }
+}

@@ -1,0 +1,19 @@
+id: skill-github-deep-research
+name: github-deep-research
+kind: skill
+shape: skill
+role: supportive
+phases: [discover, operate-learn]
+stages: [repo-research, architecture-research]
+triggers: [github research, repo research, architecture extraction]
+anti_triggers: [simple-status-update]
+primary_agents: [research-agent, capability-agent]
+primary_workflows: [research, absorb-repo]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Use when external repository evidence is required.
+review_pack: docs/open-modules/github-deep-research-integration-guide.md
+source_path: /.agent/skills/github-deep-research/SKILL.md
+story_refs: [story-1.7]
+tags: [github, research]

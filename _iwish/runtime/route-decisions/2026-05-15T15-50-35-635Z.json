@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-05-15T15:50:35.635Z",
+  "request": "implement story-1.6 with graph updates",
+  "normalizedRequest": "implement story-1.6 with graph updates",
+  "canonicalCommand": "/code",
+  "legacyAliasMatched": null,
+  "targetAgent": "dev-agent",
+  "routeReason": "Source-of-truth match detected for story-1.6",
+  "graphStatus": "degraded",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [
+      "story-1.6"
+    ],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "skill-ux-pro-max",
+      "type": "skill",
+      "canonical": "skill-ux-pro-max",
+      "source": "/.agent/skills/ux-pro-max/SKILL.md"
+    },
+    {
+      "id": "command:/code",
+      "type": "command",
+      "canonical": "/code",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "skill-stitch-design-taste",
+      "type": "skill",
+      "canonical": "skill-stitch-design-taste",
+      "source": "/.agent/skills/stitch-design-taste/SKILL.md"
+    },
+    {
+      "id": "fragment-anti-sycophancy",
+      "type": "skill",
+      "canonical": "fragment-anti-sycophancy",
+      "source": "/.agent/fragments/anti-sycophancy.md"
+    },
+    {
+      "id": "fragment-learning-context-loop",
+      "type": "skill",
+      "canonical": "fragment-learning-context-loop",
+      "source": "/.agent/fragments/learning-context-loop.md"
+    },
+    {
+      "id": "fragment-iron-law-debug",
+      "type": "skill",
+      "canonical": "fragment-iron-law-debug",
+      "source": "/.agent/fragments/iron-law-debug.md"
+    },
+    {
+      "id": "skill-design-consultation",
+      "type": "skill",
+      "canonical": "skill-design-consultation",
+      "source": "/.agent/skills/design-consultation/SKILL.md"
+    },
+    {
+      "id": "skill-canary",
+      "type": "skill",
+      "canonical": "skill-canary",
+      "source": "/.agent/skills/canary/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": true,
+    "recommendedQueueType": "code-change"
+  }
+}

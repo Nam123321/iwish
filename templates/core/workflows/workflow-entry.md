@@ -79,7 +79,7 @@ Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
 
 ### UI/UX SKILL Integration
 
-If `{project-root}/.agent/skills/ui-ux-pro-max/SKILL.md` exists:
+If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
 - Load the SKILL instructions for design system intelligence
 - Use `--design-system` command for portal-specific style recommendations
 - Cross-reference with existing UX spec design tokens

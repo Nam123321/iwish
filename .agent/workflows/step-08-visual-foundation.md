@@ -1,4 +1,4 @@
-# Step 8: Visual Foundation
+d# Step 8: Visual Foundation
 
 ## MANDATORY EXECUTION RULES (READ FIRST):
 
@@ -41,6 +41,8 @@ This step will generate content and present choices:
 - Design system choice from step 6 provides component foundation
 - Emotional response goals from step 4 inform visual decisions
 - Focus on colors, typography, spacing, and layout foundation
+- `ux-pro-max` may be invoked here only as a seed-direction advisor
+- Approved brand guidelines, later Design System Gate decisions, and approved Stitch artifacts remain higher authority than any specialist advice
 
 ## YOUR TASK:
 
@@ -55,6 +57,43 @@ Check for existing brand requirements:
 
 If yes, I'll extract and document your brand colors and create semantic color mappings.
 If no, I'll generate theme options based on your project's personality and emotional goals from our earlier discussion."
+
+### 1.5 UI/UX Pro Max Seed-Direction Gate
+
+Before invoking `ux-pro-max`, verify that all of the following are already known:
+- product type
+- target users
+- desired emotional response
+
+If any of the above is missing:
+- DO NOT invoke the specialist yet
+- continue gathering the missing context first
+- DO NOT fabricate visual direction from incomplete inputs
+
+If all of the above are known, invoke `ux-pro-max` for a **seed-direction recommendation** before any Stitch-specific generation work begins.
+
+The specialist response MUST use the standard output contract:
+- `Product Type`
+- `Recommended Direction`
+- `Alternatives`
+- `Color/Tone`
+- `Typography`
+- `Interaction Notes`
+- `Anti-Patterns`
+- `Implementation Checklist`
+- `Conflict Status`
+- `Winning Authority`
+- `BMAD Conflict Check`
+- `Next Workflow Use`
+
+Brand-guideline guard:
+- If approved brand guidelines already exist and the specialist recommends conflicting brand choices, brand guidelines win.
+- In that case, keep the specialist output constrained to implementation advice, anti-patterns, or optional review notes.
+
+Authority guard:
+- The specialist output produced here is **seed direction only**.
+- It MUST NOT be treated as final source of truth before Design System Gate approval.
+- It MUST NOT override any approved Design System or approved Stitch artifact.
 
 ### 2. Generate Color Theme Options (If no brand guidelines)
 
@@ -103,6 +142,13 @@ Define the structural foundation:
 Synthesize all visual decisions:
 "**Visual Foundation Strategy:**
 
+**UI/UX Pro Max Seed Direction (Advisory Only):**
+
+- [Summarize specialist recommendation using the standard output contract]
+- Label clearly as `seed direction`
+- Note any `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check`
+- If brand guidelines constrained the recommendation, state that explicitly
+
 **Color System:**
 
 - [Color strategy based on brand guidelines or generated themes]
@@ -133,6 +179,23 @@ When saving to document, append these Level 2 and Level 3 sections:
 
 ```markdown
 ## Visual Design Foundation
+
+### UI/UX Pro Max Seed Direction
+
+Product Type: [from specialist output]
+Recommended Direction: [from specialist output]
+Alternatives: [from specialist output]
+Color/Tone: [from specialist output]
+Typography: [from specialist output]
+Interaction Notes: [from specialist output]
+Anti-Patterns: [from specialist output]
+Implementation Checklist: [from specialist output]
+Conflict Status: [from specialist output]
+Winning Authority: [from specialist output]
+BMAD Conflict Check: [from specialist output]
+Next Workflow Use: [from specialist output]
+
+Advisory Status: Seed direction only - not final source of truth before Design System Gate and approved Stitch artifacts.
 
 ### Color System
 
@@ -196,6 +259,9 @@ When user selects 'C', append the content directly to the document using the str
 ## SUCCESS METRICS:
 
 ✅ Brand guidelines assessed and incorporated if available
+✅ Specialist invoked only when product type, target users, and emotional response are known
+✅ Specialist output captured with the standard BMAD contract
+✅ Seed direction clearly labeled as advisory only
 ✅ Color system established with accessibility consideration
 ✅ Typography system defined with appropriate hierarchy
 ✅ Spacing and layout foundation created
@@ -206,6 +272,9 @@ When user selects 'C', append the content directly to the document using the str
 ## FAILURE MODES:
 
 ❌ Not checking for existing brand guidelines first
+❌ Invoking the specialist before product type, target users, and emotional response are known
+❌ Treating specialist output as source of truth before Design System Gate approval
+❌ Allowing specialist output to override approved brand guidelines
 ❌ Color palette not aligned with emotional goals
 ❌ Typography not suitable for content type or readability needs
 ❌ Spacing system not appropriate for content density

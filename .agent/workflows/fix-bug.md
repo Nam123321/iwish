@@ -1,5 +1,5 @@
 ---
-description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered workflow for fixing bugs with RCA, impact analysis, edge-case + data-integrity checks, regression testing, scoring/tracking, and process governance.'
+description: 'Use when a bug is reported to perform root cause analysis, impact analysis, and regression testing before fixing.'
 ---
 
 # /fix-bug — Structured Bug Resolution Process (SBRP) v2.0
@@ -7,6 +7,8 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
 > **Quy tắc vàng:** Fix đúng 1 lần > Fix nhanh 3 lần.
 > Workflow này tích hợp Edge Case Guardian, Data Integrity Guardian, API Contract Guardian, **Songoku AI Guardian** (cho bugs liên quan AI/LLM), và **GitNexus Code Intelligence** (cho dependency/impact analysis).
 > **v2.1:** Tiered approach, bug-reports cross-reference, recurrence classification, story spec decision flow, CGC-powered RCA & Impact.
+> ⚠️ **CRITICAL — TERMINAL SAFETY:** Trước khi chạy bất kỳ command nào trong terminal để debug, BẮT BUỘC load `@{project-root}/.agent/fragments/terminal-safety.md` và tuân thủ 5 rules phòng vệ.
+> **GRAPH BACKEND POLICY:** Before graph-backed RCA, impact, FeatureGraph, or refresh steps, load `.agent/fragments/graph-backend-selection-policy.md`. If CodebaseGraph or FeatureGraph is unavailable, stale, partial, or unsupported, log the affected surface and treat graph evidence as unavailable, not proof of no dependency/no impact.
 
 ---
 
@@ -260,14 +262,29 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
 
 ---
 
+> [!IMPORTANT]
+> **IRON LAW OF DEBUGGING (MANDATORY):**
+> Before executing this fix phase, you MUST use `view_file` to load `/.agent/fragments/iron-law-debug.md`. You must enforce the 3-Strike Rule, Scope Lock, and never apply band-aid fixes.
+
 ## Phase 5: FIX (Sửa lỗi)
+
+> **SOCRATIC REVIEW DRIFT GATE (CONDITIONAL)**
+> Before finalizing the implementation plan for the fix, check the scope of the changes. The Socratic Drift Review (`socratic-review` mode: `drift`) MUST ONLY be invoked if the fix introduces changes to data models, external APIs, or architectural constraints (as defined in FeatureGraph). For trivial or mechanical fixes (e.g., typos, CSS tweaks, simple UI logic), skip this gate to prevent developer fatigue.
+> If triggered, use the Progressive Socratic Loop to clarify if the PRD/Story needs a backward sync.
+> **Two-Stage Scoring Engine & Pause & Spawn (Option D):** When calculating Drift, use Stage 1 (FeatureGraph Gate) and Stage 2 (Point-Matrix), present the score and you MUST explicitly STOP execution (e.g., using `request_feedback` flag) to allow User Override. If the final Score > 7, you MUST update `task.md` with `[PAUSED - WAITING FOR DRIFT SYNC]`, run `git stash -u`, PAUSE the fix workflow, and instruct the User to open a NEW CHAT SESSION to sync the documentation.
+> **Context Refresh (Resume):** Upon returning, first read `task.md` to recover your SBRP phase state. Then run `git stash pop`, resolve conflicts, and CRITICALLY use `git diff --name-only stash@{0}^!` or `git status` to deterministically identify and `view_file` the updated files, ensuring the LLM Context Window is synchronized before proceeding.
 
 15. **Fix theo spec, không shortcut:**
     - Code fix PHẢI tuân thủ Story AC
     - Code fix PHẢI tuân thủ DIG rules
     - **CRITICAL ANTI-HALLUCINATION**: Không đoán mò import paths. Bắt buộc dùng CodeGraphContext (find_symbol) hoặc FeatureGraph để xác minh đường dẫn trước khi import.
+    - **ZOOM-OUT CHECKPOINT**: Nếu agent đang sửa cùng 1 file liên tục ≥3 lần mà lỗi vẫn chưa resolved, PHẢI kích hoạt Zoom-Out Heuristic (`@{project-root}/.agent/skills/pivot-guardian/SKILL.md` §4) để map module neighborhood (callers + dependencies) trước khi tiếp tục. Đây là tín hiệu tunnel vision — có thể root cause nằm ở module khác.
     - Code fix PHẢI handle edge cases từ Phase 4.11
     - Fix tại ROOT CAUSE (not surface symptom)
+    - **FIX SCOPE CLASSIFICATION (Surgical vs Clean Up)**:
+      - 🔴 **SBRP-Full (RPN ≥ 60) HOẶC Blast Radius lớn (Callers > 5):** Bắt buộc **Surgical Changes**. Thay đổi phải ở mức tối thiểu, tuyệt đối không refactor hoặc dọn dẹp các dòng code không liên quan để tránh Regression.
+      - 🟢/🟡 **SBRP-Lite / Standard:** Ưu tiên **Clean Up** (Boy Scout Rule). Khuyến khích dọn dẹp code thối, thêm type safety xung quanh khu vực fix.
+      - **Simplicity First**: Luôn chọn giải pháp đơn giản nhất, không over-engineering.
 
 16. **Fix checklist:**
     ```
@@ -277,6 +294,8 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
     □ Fix sử dụng Decimal cho money (DIG §4)?
     □ Fix không hardcode values?
     □ Fix không break existing tests?
+    □ Fix Scope: Được phân loại đúng (Surgical cho rủi ro cao, Clean up cho rủi ro thấp)?
+    □ Fix follows SIMPLICITY FIRST (không over-engineering)?
     ```
 
 16c. **DATA-SPEC SYNC CHECK via FeatureGraph (ADR-002):**
@@ -333,6 +352,12 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
     - Browser visual verification (nếu UI bug):
       - Load SKILL: `@{project-root}/.agent/skills/browser-visual-verification/SKILL.md`
 
+18b. **INVERSE DELETION TEST GATE (🔴 SBRP-Full Only):**
+     - Dành cho bug High-Priority (RPN ≥ 60). Bắt buộc chạy Inverse Deletion Test để chứng minh fix hợp lệ.
+     - Dùng `bash .agent/scripts/bmad-deletion-test.sh <target-fix>` hoặc comment out đoạn code vừa fix.
+     - Chạy regression test suite. Test BẮT BUỘC phải FAIL (chứng tỏ test suite bắt được lỗi và fix có tác dụng).
+     - Restore fix, test suite phải PASS.
+
 19. **Code review & QA Simulator Guardian Audit (Fat-Guardian Adversarial):**
     - Load SKILL: `@{project-root}/.agent/skills/qa-simulator-guardian.md`
     - Tien-Shinhan (hoặc Auditor Agent) phải kích hoạt Simulator để phân loại Code Fix (1 trong 13 Types) và chấm điểm.
@@ -354,18 +379,31 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
 - Header bắt buộc: Date, Tier, Session scope, Bug count summary
 - Naming convention: `YYYY-MM-sbrp-round{N}.md`
 
-### 7b. Update Documents
+### 7b. Lesson Extraction & Auto-Immune Knowledge
 
-20. **Update Edge Case Knowledge Graph:**
+20. **Tự động phân tích Lesson từ RCA:**
+    - Tổng hợp RCA (Five Whys) và Code Graph context từ các phase trước.
+    - Tạo `lesson_learned` summary cho bug. Trả lời: "Agent / Human cần làm gì khác đi để KHÔNG xảy ra lỗi này?".
+    
+21. **Cập nhật Hệ miễn dịch (Auto-Immune Update):**
+    - **MANDATORY HOTSPOT CHECK**: Bắt buộc chạy `node scripts/hotspot-calculator.js '<file_path>'` cho các file quan trọng vừa được sửa.
+    - Nếu `hotspot_score >= 30` hoặc `bug_count >= 3`, HOẶC bug là **Type A (Lặp lại)** hoặc **RPN ≥ 60**, BẮT BUỘC:
+      - Thêm lesson vào `project-context.md` (vùng `### Watchouts / Immune System`) hoặc tạo một Knowledge Item mới.
+      - **Auto-Immune Trigger**: Kích hoạt tự động quá trình tạo Draft Skill (Lesson Extraction) chứa các directive giúp tránh lỗi tương tự.
+      - **Whis Capability Trigger**: Đưa Draft Skill này vào workflow `/enhance-skill` để thực hiện Dual-Run (Inhouse vs Darwinian) đánh giá trước khi promote thành Official Skill.
+
+### 7c. Update Documents
+
+22. **Update Edge Case Knowledge Graph:**
     - Thêm node mới vào `_bmad-output/edge-case-knowledge/pillars/p[N]-*.md`
     - Format theo ECG SKILL §5 Node Format
     - Update `index.md`
 
-21. **Update bug tracker:**
+23. **Update bug tracker:**
     - Cập nhật `_bmad-output/bug-tracker.yaml` (xem template bên dưới)
-    - Ghi: epic, story, bug ID, RPN, fix attempt count, status
+    - Ghi: epic, story, bug ID, RPN, fix attempt count, status, lessonsLearned
 
-22. **Update story spec (Decision Flow):**
+24. **Update story spec (Decision Flow):**
 
     Quyết định dựa trên phân loại:
 
@@ -383,12 +421,12 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
     spec_file: "[path nếu có update]"
     ```
 
-23. **Recurring bug cross-linking (nếu Type A recurrence):**
+25. **Recurring bug cross-linking (nếu Type A recurrence):**
     - Thêm banner vào SBRP report cũ: `> ⚠️ Bug này đã lặp lại — xem SBRP Round {N}`
     - Cập nhật `fixAttempts` array trong `bug-tracker.yaml`
     - Cập nhật `isRecurring: true` nếu chưa set
 
-23b. **🔍 Intelligence Graph Refresh (MANDATORY INTELLIGENCE CHECK):**
+25b. **🔍 Intelligence Graph Refresh (MANDATORY INTELLIGENCE CHECK):**
      - Bắt buộc kiểm tra toolset. Nếu có `add_feature_relationship`:
        - Thêm relationship nếu phát hiện dependency ngầm chưa được ghi nhận.
      - Nếu có `add_code_to_graph` (CodeGraph):
@@ -403,7 +441,7 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
 
 ## Phase 8: SCORING & MEASUREMENT (Đo lường)
 
-24. **Cập nhật Bug Scorecard** trong `_bmad-output/bug-tracker.yaml`:
+26. **Cập nhật Bug Scorecard** trong `_bmad-output/bug-tracker.yaml`:
 
     ```yaml
     # Mỗi bug entry:
@@ -435,7 +473,7 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
       specUpdateReason: ""                   # [MỚI] v2.0
     ```
 
-25. **Dashboard Metrics (aggregate từ bug-tracker.yaml):**
+27. **Dashboard Metrics (aggregate từ bug-tracker.yaml):**
 
     | Metric | Đo gì | Trigger action |
     |--------|--------|----------------|
@@ -447,7 +485,7 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
     | **Hot Epic Score** | Sum of Hot Story Scores | Highest → schedule arch review |
     | **Tier Distribution** | % Lite / Standard / Full | >50% Full → process/design issue |
 
-26. **Restructuring Trigger Rules:**
+28. **Restructuring Trigger Rules:**
     ```
     IF bug_count_per_story >= 3 THEN
       → Flag story for REFACTORING SESSION
@@ -462,10 +500,14 @@ description: 'Structured Bug Resolution Process (SBRP) v2.0 — 8-phase tiered w
       → ESCALATE to Master Agent for design review
     ```
 
-27. **Monthly Report generation:**
+29. **Monthly Report generation:**
     - Run `/fix-bug --report` to generate summary from `bug-tracker.yaml`
     - Output: `_bmad-output/bug-reports/[YYYY-MM]-bug-report.md`
     - Include: heat map per epic, hot stories, tier distribution, restructuring recommendations
+
+30. **Generate Operation Report & Health Dashboard (HSEA-4.6):**
+    - Execute `node scripts/operation-report-gen.js` to aggregate the latest sprint, codebase, and defect metrics.
+    - **AGENT INSTRUCTION**: After running the report generator, explicitly notify the user in the chat that the Operation Report has been updated, and provide the absolute file URI to `_bmad-output/operation-report/index.html`.
 
 ---
 

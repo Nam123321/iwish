@@ -52,6 +52,18 @@ Discover technical preferences and evaluate starter template options, leveraging
 
 ### 0. Check Technical Preferences & Context
 
+**Graph Intelligence Profile (HSEA-4.5):**
+
+Before finalizing technical preferences, load `{project-root}/.agent/fragments/graph-backend-selection-policy.md` and ask for a project-scoped graph profile when the project expects graph-backed code intelligence, FeatureGraph validation, MemoryGraph learning, multi-agent delivery, or self-evolution.
+
+Offer these choices:
+
+- `falkordb-full` — recommended for full BMAD, HSEA, multi-agent, FeatureGraph, or MemoryGraph projects.
+- `lite-static` — recommended for small, offline, or low-setup projects.
+- `custom-adapter` — allowed only when the user provides backend details and accepts adapter evaluation.
+
+Record the selected `graph_profile` and per-surface `graph_surfaces` decision in project configuration or project context. Do not store it only as a user preference.
+
 **Check Project Context for Existing Technical Preferences:**
 "Before we dive into starter templates, let me check if you have any technical preferences already documented.
 

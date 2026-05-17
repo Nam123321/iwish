@@ -1,0 +1,21 @@
+name: fix-bug-dual-run-trial
+version: 1.0.0
+trial_id: trl-fix-bug-hsea-2.4-001
+target_workflow: /fix-bug
+
+baseline:
+  file_path: .agent/evolution-lab/fixtures/fix-bug/baseline.md
+  version: v2.0
+candidate:
+  file_path: .agent/evolution-lab/fixtures/fix-bug/fix-bug-beta.md
+  version: v2.1-beta
+
+evaluator_prompt: .agent/evolution-lab/fixtures/fix-bug/eval-prompt.md
+evaluation_schema: .agent/evolution-lab/fixtures/evaluation-schema.json
+
+metadata:
+  purpose: "Demonstrate HSEA Dual-Run A/B testing safely without requiring full Darwinian Engine installation."
+  mutations:
+    - "Condensed repetitive text into concise checklists to reduce agent cognitive load."
+    - "Highlighted ALL 5 fatal degradation checkpoints with visual alerts (!CAUTION, !IMPORTANT) to ensure zero context loss."
+    - "Streamlined phase transitions for faster token processing."

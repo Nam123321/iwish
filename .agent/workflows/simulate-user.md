@@ -72,7 +72,11 @@ For EACH selected persona × scenario combination:
 1. **Generate User Simulation Report** (format from SKILL §5)
 
 2. **Run Feature Validation Gate:**
-   - Load `{project-root}/.agent/skills/user-simulation-guardian/checklists/feature-validation.md`
+   > [!IMPORTANT]
+   > **DOUBLE-LOCK CONTEXT INJECTION:**
+   > You MUST use the `view_file` tool to load:
+   > - `/.agent/fragments/feature-validation.md`
+
    - Run ALL 7 check steps
    - Determine: ✅ PASS or ❌ FAIL
 

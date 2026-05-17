@@ -1,5 +1,5 @@
 ---
-name: 'data-strategist'
+name: 'data-strategist-wrapper'
 description: 'Data Strategist (Shinji) agent'
 disable-model-invocation: true
 ---

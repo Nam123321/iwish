@@ -223,6 +223,7 @@ Append to {outputFile}:
 **CRITICAL: Validate that ALL Tier 1 tags from Step 3 have corresponding nodes in FeatureGraph.**
 
 > PREREQUISITE: Check if FeatureGraph MCP tools are available.
+> → First load `.agent/fragments/graph-backend-selection-policy.md` and read the project `graph_profile`.
 > → If NOT available → log "⚠️ FeatureGraph unavailable — skipping Section 6c" and continue to Section 7.
 > → If available → proceed:
 

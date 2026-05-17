@@ -1,56 +1,108 @@
-# BMAD-DragonBall
+# I-Wish
 
-A Global, Agentic SDLC Framework packed with Dragon Ball character-themed specialized AI personas, workflows, and tools.
+I-Wish is an AI-assisted product delivery system with:
 
-## What is BMAD-DragonBall?
+- a canonical CLI
+- installable runtime scaffolding
+- Orch-first routing
+- reusable workflows, agents, and skills
+- shim-first compatibility for legacy BMAD surfaces
 
-BMAD-DragonBall transforms standard software development processes into an epic, multi-agent automated pipeline. Instead of relying on one generic AI, your project is managed by a team of highly specialized Agent Personas:
+It is designed to help teams move from idea to delivery through a structured but open orchestration model.
 
-- **Grand-Priest (Master)**: Orchestrates the entire flow
-- **King-Kai (PM)**: Project Manager, scope and sprint planning
-- **Bulma (Analyst)**: Breaks down requirements and business logic
-- **Piccolo (Architect)**: System design and structural integrity
-- **Vegeta (Dev)**: Hardcore code generation and implementation
-- **Tien-Shinhan (QA)**: Three-eyed bug squashing and automated testing
-- **Trunks (Scrum Master)**: Timeline and process adherence
-- **Songoku (AI Engineer)**: (Optional Module) Master of LLMs, RAG, and AI Ops
+## Install
 
-## Installation
-
-As this is a global CLI tool, install it globally via npm:
+Global install:
 
 ```bash
-npm install -g bmad-db
+npm install -g iwish
 ```
 
-Or run via npx:
+One-off usage with `npx`:
+
+```bash
+npx iwish install
+```
+
+Legacy compatibility remains available:
+
 ```bash
 npx bmad-db init
 ```
 
-## Usage
+## Core CLI
 
-### 1. Initialize the Core Team
-In your new or existing project directory, summon the core team (Bulma, Vegeta, Piccolo, etc.) and basic workflows.
 ```bash
-npx bmad-db init --platform <cursor|antigravity|claude|codex>
-```
-*Note: Depending on the platform chosen, the CLI will output `.cursor/rules/*.mdc`, `.agent/workflows/*.md`, or `.claude/*.md`.*
-
-### 2. Add Extension Packs (Library)
-Not every project needs marketing bots or advanced docker optimizers. Add what you need:
-```bash
-npx bmad-db add ai-pack             # Summons Songoku for AI-embedded apps
-npx bmad-db add frontend-pack       # Summons Android-18 for advanced UI & Stitch integrations
-npx bmad-db add backend-pack        # Summons Shenron for Data Architecture & Integrity protocols
-npx bmad-db add devops-pack         # Docker slimming and CI/CD tools
+iwish install
+iwish update
+iwish status
+iwish doctor
+iwish route "research trên github các giải pháp cho bài toán này"
+iwish register-module <source>
+iwish select-tool graph falkordb-full
 ```
 
-## The BMAD Process
+When `--platform` is omitted, the CLI will ask which install target(s) you want to use. The prompt accepts target names or numeric choices separated by commas.
 
-1. **Ideation**: Run `/creative-intelligence` (Gotenks)
-2. **Analysis**: Run `/create-prd` (Bulma)
-3. **Architecture**: Run `/create-architecture` (Piccolo)
-4. **Module Research**: Run `/research-project-modules` (Grand-Priest) -> Evaluates if your project needs `ai-pack`, `frontend-pack`, etc., and instructs you to install them via `npx bmad-db add`.
-5. **Execution**: Run `/sprint-planning`, `/create-story`, `/dev-story` (Vegeta, King-Kai)
-6. **Code Review & QA**: Run `/code-review`, `/fix-bug` (Tien-Shinhan, Trunks)
+Use `iwish list-install-targets` to inspect the current support matrix and planned adapter stories.
+
+## Current Install Target Support
+
+Officially supported today:
+
+- `claude-code`
+- `codex`
+- `cursor`
+- `windsurf`
+- `opencode`
+- `google antigravity`
+
+Planned adapter expansion:
+- additional platform adapters can be added through follow-up install-target stories
+
+## Main Workflows
+
+Canonical user-facing workflows include:
+
+- `/idea-challenge`
+- `/plan`
+- `/make-story`
+- `/make-ui-spec`
+- `/code`
+- `/review`
+- `/research`
+- `/pivot-project`
+- `/bootstrap-existing-project`
+- `/research-solution-sources`
+
+## Packaging Model
+
+The published package includes:
+
+- `dist/` CLI runtime
+- `templates/` runtime and module templates
+- `.agent/` canonical workflows, agents, and skills
+- `docs/` core I-Wish documentation
+
+This is intentional: the CLI depends on local workflow/template assets at runtime.
+
+## Recommended Reading
+
+- [I-Wish Introduction Guide](./docs/iwish-introduction.md)
+- [I-Wish Runtime Substrate](./docs/iwish-runtime-substrate.md)
+- [I-Wish Capability System Framework](./docs/iwish-capability-system-framework.md)
+- [I-Wish Routing Profile Standard](./docs/iwish-routing-profile-standard.md)
+- [I-Wish Routing and Reconciliation](./docs/iwish-routing-reconciliation.md)
+- [I-Wish Brownfield Bootstrap](./docs/iwish-brownfield-bootstrap.md)
+
+## Current Status
+
+I-Wish is already usable as a local CLI/runtime, but public packaging and GitHub launch should still follow an explicit release checklist.
+
+See:
+
+- [GitHub Launch Plan](./docs/iwish-github-launch-plan.md)
+
+## License
+
+ISC

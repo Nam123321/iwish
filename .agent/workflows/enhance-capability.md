@@ -1,17 +1,10 @@
 ---
-description: 'Analyze accumulated instincts and evolve existing Skills/Workflows/Agents using Whis'
+name: 'enhance-capability'
+description: 'Compatibility alias for enhance-skill'
 ---
 
-# /enhance-capability — Capability Evolution Pipeline
+# /enhance-capability — Compatibility Alias
 
-> **Agent:** Whis (Capability Management Master)
+Canonical workflow name is `/enhance-skill`.
 
-## Overview
-Analyze learned instincts from Machine Memory and evolve existing BMAD capabilities.
-
-## Steps
-
-1. **Reflection** — Read and execute: `step-e-01-reflection.md`
-2. **Clustering** — Read and execute: `step-e-02-clustering.md`
-3. **Upgrade** — Read and execute: `step-e-03-upgrade.md`
-4. **Commit** — Read and execute: `step-e-04-commit.md`
+Read and execute: `enhance-skill.md`

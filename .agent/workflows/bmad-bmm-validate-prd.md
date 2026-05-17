@@ -1,5 +1,5 @@
 ---
-name: 'validate-prd'
+name: 'validate-prd-wrapper'
 description: 'Validate an existing PRD against BMAD standards - comprehensive review for completeness, clarity, and quality'
 disable-model-invocation: true
 ---

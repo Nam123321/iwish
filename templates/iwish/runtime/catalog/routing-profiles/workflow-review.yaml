@@ -1,0 +1,17 @@
+id: workflow-review
+name: review
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [validate]
+stages: [review, audit, risk-check]
+triggers: [review, audit, feedback, quality, defects]
+anti_triggers: [create-prd]
+primary_agents: [review-agent, orch-agent]
+primary_workflows: [review]
+supportive_skills: [qa-simulator-guardian]
+tool_dependencies: [browser]
+constraints:
+  - Findings-first posture; avoid replacing implementation or planning flows.
+source_path: /_iwish/catalog/routing-profiles/workflow-review.yaml
+tags: [starter-bundle, canonical]

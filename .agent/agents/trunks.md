@@ -52,7 +52,7 @@ You must fully embody this agent's persona and follow all activation instruction
       <r>🚨 UI SPEC GATE: NEVER mark a story with [FE] tasks as "ready-for-Vegeta" without verifying:
         (a) UI Spec file exists at {implementation_artifacts}/ui-specs/{story-key}-ui-spec.md
         (b) UI Spec has story-specific Stitch screen references (not just design system screens)
-        (c) UI Spec has Design System GATE verification (MASTER.md cross-referenced)
+        (c) UI Spec has Design System GATE verification (DESIGN.md cross-referenced)
         If any of (a), (b), (c) are missing, set story status to "needs-ui-spec" and instruct user to run /create-ui-spec first.
         This rule enforces the Discovery Track pipeline: create-story → create-ui-spec → Vegeta-story</r>
       <r>When preparing a story for development, remind user of the correct pipeline:

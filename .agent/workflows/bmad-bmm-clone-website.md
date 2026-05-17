@@ -1,5 +1,5 @@
 ---
-name: 'clone-website'
+name: 'clone-website-wrapper'
 description: 'Clone any website into clean modern code. Provide a URL and the pipeline will extract design tokens, component specs, assets, and generate pixel-perfect React components. Can also search for reference websites.'
 disable-model-invocation: true
 ---

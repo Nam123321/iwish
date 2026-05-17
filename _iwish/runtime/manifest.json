@@ -1,0 +1,97 @@
+{
+  "product": "I-Wish",
+  "namespace": "iwish",
+  "version": "1.0.0",
+  "canonicalHome": "/Users/hatrang20061988/.iwish",
+  "projectRoot": "/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall",
+  "runtimeRoot": "/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/_iwish",
+  "legacyRuntimeDetected": true,
+  "installTargets": [
+    {
+      "id": "codex",
+      "path": "/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/.codex",
+      "status": "declared"
+    }
+  ],
+  "modules": [
+    {
+      "code": "core",
+      "name": "I-Wish Core",
+      "source": "templates/iwish/modules/core.yaml",
+      "class": "core"
+    },
+    {
+      "code": "delivery",
+      "name": "I-Wish Delivery",
+      "source": "templates/iwish/modules/delivery.yaml",
+      "class": "delivery"
+    },
+    {
+      "code": "integrations",
+      "name": "I-Wish Integrations",
+      "source": "templates/iwish/modules/integrations.yaml",
+      "class": "integrations"
+    },
+    {
+      "code": "library",
+      "name": "I-Wish Library",
+      "source": "templates/iwish/modules/library.yaml",
+      "class": "library"
+    }
+  ],
+  "aliases": {
+    "agentAliases": {
+      "grand-priest": "orch-agent",
+      "whis": "capability-agent",
+      "vegeta": "dev-agent",
+      "piccolo": "architect-agent",
+      "android-18": "ux-agent",
+      "tien-shinhan": "qa-agent",
+      "hit": "review-agent",
+      "king-kai": "pm-agent",
+      "trunks": "delivery-manager-agent",
+      "bulma": "analyst-agent",
+      "shenron": "data-architect-agent",
+      "gotenks": "creative-agent",
+      "master-roshi": "research-agent"
+    },
+    "commandAliases": {
+      "/dev-story": "/code",
+      "/create-story": "/make-story",
+      "/create-ui-spec": "/make-ui-spec",
+      "/code-review": "/review",
+      "/create-capability": "/create-skill",
+      "/enhance-capability": "/enhance-skill",
+      "/market-research": "/research",
+      "/domain-research": "/research",
+      "/technical-research": "/research",
+      "/retrospective": "/retro",
+      "/bmad-help": "/status"
+    }
+  },
+  "externalModules": [
+    {
+      "name": "html-anything",
+      "source": "https://github.com/nexu-io/html-anything",
+      "registeredAt": "2026-05-16T06:51:52.469Z",
+      "status": "registered",
+      "moduleClass": "compound-external",
+      "registrationMode": "absorb",
+      "triggers": [
+        "html",
+        "export",
+        "docs",
+        "deck",
+        "prototype",
+        "design",
+        "social",
+        "report"
+      ],
+      "toolDependencies": [
+        "playwright",
+        "stitch"
+      ]
+    }
+  ],
+  "updatedAt": "2026-05-16T06:51:52.470Z"
+}

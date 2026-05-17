@@ -14,21 +14,21 @@ Qua audit toàn diện, chúng tôi phát hiện **3 nhóm vấn đề cốt lõ
 
 | # | Vấn đề | Phát hiện từ | Mức nghiêm trọng |
 |---|--------|-------------|-------------------|
-| **P1** | 2 hệ thống KB **tách biệt hoàn toàn** (Cognee KG vs NotebookLM) | [kb-touchpoint-analysis — Gap G1](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/kb-touchpoint-analysis.md) | 🔴 Critical |
-| **P2** | 5 AI consumer modules **không kết nối KB** (chat-to-order, social-content, recommendations, pdp-companion, zalo-message) | [kb-touchpoint-analysis — Gap G2](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/kb-touchpoint-analysis.md) | 🔴 Critical |
-| **P3** | Product catalog + CTKM **chưa bao giờ được index** vào KB (Gap G3, G7) | [kb-touchpoint-analysis — Gap G3](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/kb-touchpoint-analysis.md) | 🔴 Critical |
+| **P1** | 2 hệ thống KB **tách biệt hoàn toàn** (Cognee KG vs NotebookLM) | kb-touchpoint-analysis — Gap G1 (`kb-touchpoint-analysis.md`) | 🔴 Critical |
+| **P2** | 5 AI consumer modules **không kết nối KB** (chat-to-order, social-content, recommendations, pdp-companion, zalo-message) | kb-touchpoint-analysis — Gap G2 (`kb-touchpoint-analysis.md`) | 🔴 Critical |
+| **P3** | Product catalog + CTKM **chưa bao giờ được index** vào KB (Gap G3, G7) | kb-touchpoint-analysis — Gap G3 (`kb-touchpoint-analysis.md`) | 🔴 Critical |
 | **P4** | Schema có **6 bugs** cấu trúc (thiếu FK, thiếu onDelete, dùng raw String thay enum) | Schema audit 2026-03-20 | ⚠️ High |
-| **P5** | Không có **pgvector semantic search** → AI chỉ match text thuần, không hiểu ngữ nghĩa | [data-agent-toolkit-research — Pillar 5](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/data-agent-toolkit-research.md) | ⚠️ High |
+| **P5** | Không có **pgvector semantic search** → AI chỉ match text thuần, không hiểu ngữ nghĩa | data-agent-toolkit-research — Pillar 5 (`data-agent-toolkit-research.md`) | ⚠️ High |
 | **P6** | **Dữ liệu khách hàng** (debt, order history, wallet, payment) **không được AI truy cập** — no cache, thiếu composite indexes | Schema audit 2026-03-20 | ⚠️ High |
 
 ### 1.2 Nguồn Research Dẫn Đến Quyết Định
 
 | Research | Nội dung chính | Kết luận → Hành động |
 |----------|---------------|---------------------|
-| [KB Touchpoint Analysis](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/kb-touchpoint-analysis.md) | Phân tích 8 lỗ hổng (G1-G8) trong kiến trúc KB | → Cần KnowledgeOrchestrator, Product-to-KB sync, PromptAssembly global |
-| [Data Agent Toolkit Research](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/data-agent-toolkit-research.md) | 7 domains (Data Strategy, Governance, Quality, BI, CQRS, Mesh, MLOps) → 5 Pillars | → 27 assets mới cho Data toolkit (workflows + SKILLs) |
-| [BMAD Council Assessment](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/bmad-council-data-strategy-assessment.md) | Cross-team đánh giá gaps giữa hiện tại vs cần thiết | → Upgrade plan 4 waves |
-| [Data Strategy Upgrade Plan](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/data-strategy-upgrade-plan.md) | Roadmap triển khai 27 assets (workflows + SKILLs) | → Đã deploy 27/27 assets |
+| KB Touchpoint Analysis (`kb-touchpoint-analysis.md`) | Phân tích 8 lỗ hổng (G1-G8) trong kiến trúc KB | → Cần KnowledgeOrchestrator, Product-to-KB sync, PromptAssembly global |
+| Data Agent Toolkit Research (`data-agent-toolkit-research.md`) | 7 domains (Data Strategy, Governance, Quality, BI, CQRS, Mesh, MLOps) → 5 Pillars | → 27 assets mới cho Data toolkit (workflows + SKILLs) |
+| BMAD Council Assessment (`bmad-council-data-strategy-assessment.md`) | Cross-team đánh giá gaps giữa hiện tại vs cần thiết | → Upgrade plan 4 waves |
+| Data Strategy Upgrade Plan (`data-strategy-upgrade-plan.md`) | Roadmap triển khai 27 assets (workflows + SKILLs) | → Đã deploy 27/27 assets |
 | Epic 6 & 7 Stories scan | Phân tích 17 stories, status, và schema requirements | → Phát hiện schema đã complete hơn expected |
 
 ---
@@ -264,12 +264,12 @@ CREATE INDEX idx_visits_customer_date ON sales_visits (customer_id, visited_at D
 
 | Document | Location | Content |
 |----------|----------|---------|
-| KB Touchpoint Analysis | [kb-touchpoint-analysis.md](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/kb-touchpoint-analysis.md) | 8 gaps (G1-G8), KB sync status matrix |
-| Data Agent Toolkit Research | [data-agent-toolkit-research.md](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/data-agent-toolkit-research.md) | 5 Pillars, 27 assets roadmap |
-| Unified KB Sync Strategy | [7-5-unified-kb-sync-strategy.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/data-specs/7-5-unified-kb-sync-strategy.md) | Sync pipeline design |
-| Chat-to-Order AI Context | [7-4-chat-to-order-ai-context-pipeline.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/data-specs/7-4-chat-to-order-ai-context-pipeline.md) | Context assembly budget |
-| Chat-to-Order Cache Strategy | [7-4-chat-to-order-cache-strategy.md](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/_bmad-output/data-specs/7-4-chat-to-order-cache-strategy.md) | Redis L2 cache design |
-| Full Prisma Schema | [schema.prisma](file:///Users/hatrang20061988/Desktop/AI%20Project/AI-Embedded%20Light%20DMS/distro/prisma/schema.prisma) | Source of truth |
+| KB Touchpoint Analysis | kb-touchpoint-analysis.md (`kb-touchpoint-analysis.md`) | 8 gaps (G1-G8), KB sync status matrix |
+| Data Agent Toolkit Research | data-agent-toolkit-research.md (`data-agent-toolkit-research.md`) | 5 Pillars, 27 assets roadmap |
+| Unified KB Sync Strategy | 7-5-unified-kb-sync-strategy.md (`7-5-unified-kb-sync-strategy.md`) | Sync pipeline design |
+| Chat-to-Order AI Context | 7-4-chat-to-order-ai-context-pipeline.md (`7-4-chat-to-order-ai-context-pipeline.md`) | Context assembly budget |
+| Chat-to-Order Cache Strategy | 7-4-chat-to-order-cache-strategy.md (`7-4-chat-to-order-cache-strategy.md`) | Redis L2 cache design |
+| Full Prisma Schema | schema.prisma (`schema.prisma`) | Source of truth |
 
 ---
 

@@ -7,7 +7,7 @@ You are the **MKT Ops Executor** agent. Your workflow publishes approved marketi
 **CRITICAL**: You MUST load and follow these configurations IN ORDER:
 
 1. **Load Core OS**: Read `{project-root}/_bmad/core/os.md` — this is the foundational operating system
-2. **Load Agent Persona**: Read `{project-root}/_bmad/bmm/agents/Majin-Buu.md`
+2. **Load Agent Persona**: Read `{project-root}/.agent/agents/majin-buu.md`
 3. **Load Workflow Config**: Read `{project-root}/_bmad/bmm/workflows/4-implementation/mkt-execute/workflow.yaml`
 
 Execute the 7-step workflow defined in the agent persona:

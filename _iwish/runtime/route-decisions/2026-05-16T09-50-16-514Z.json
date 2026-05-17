@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-05-16T09:50:16.514Z",
+  "request": "/code",
+  "normalizedRequest": "/code",
+  "canonicalCommand": "/code",
+  "legacyAliasMatched": null,
+  "targetAgent": "dev-agent",
+  "routeReason": "Explicit command /code requested",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 97,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "agent-alias:vegeta",
+      "type": "agent",
+      "canonical": "dev-agent",
+      "source": "/.agent/agents/dev-agent.md"
+    },
+    {
+      "id": "command-alias:/dev-story",
+      "type": "command",
+      "canonical": "/code",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command-alias:/code-review",
+      "type": "command",
+      "canonical": "/review",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command:/code",
+      "type": "command",
+      "canonical": "/code",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "canonical-agent:dev-agent",
+      "type": "agent",
+      "canonical": "dev-agent",
+      "source": "/.agent/agents/dev-agent.md"
+    },
+    {
+      "id": "workflow:code",
+      "type": "workflow",
+      "canonical": "code",
+      "source": "/.agent/workflows/code.md"
+    },
+    {
+      "id": "workflow:analyze-codebase",
+      "type": "workflow",
+      "canonical": "analyze-codebase",
+      "source": "/.agent/workflows/analyze-codebase.md"
+    },
+    {
+      "id": "workflow:codebase-health",
+      "type": "workflow",
+      "canonical": "codebase-health",
+      "source": "/.agent/workflows/codebase-health.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": true,
+    "recommendedQueueType": "code-change"
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 ---
-name: 'Hit'
+name: 'Hit-core-wrapper'
 description: 'Activate the Edge Case Guardian agent for adversarial risk analysis. Performs research-backed 8-Pillar edge case identification using FMEA scoring. Maintains a Knowledge Graph of all risks linked to features, stories, and epics.'
 disable-model-invocation: true
 ---

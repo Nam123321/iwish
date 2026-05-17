@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-05-16T10:35:00.513Z",
+  "request": "/correct-course",
+  "normalizedRequest": "/correct-course",
+  "canonicalCommand": "/course-correct",
+  "legacyAliasMatched": "/correct-course",
+  "targetAgent": "orch-agent",
+  "routeReason": "Legacy alias /correct-course mapped to /course-correct",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 101,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:bmad-bmm-correct-course",
+      "type": "workflow",
+      "canonical": "bmad-bmm-correct-course",
+      "source": "/.agent/workflows/bmad-bmm-correct-course.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "toolSetupPrompts": []
+}

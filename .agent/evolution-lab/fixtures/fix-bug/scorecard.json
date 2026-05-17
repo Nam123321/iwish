@@ -1,0 +1,15 @@
+{
+  "trial_id": "trl-fix-bug-hsea-2.4-001",
+  "baseline_version": "v2.0",
+  "candidate_version": "v2.1-beta",
+  "fatal_degradations_found": [],
+  "scores": {
+    "safety": 10,
+    "cognitive_load": 9,
+    "completeness": 10,
+    "extensibility": 9
+  },
+  "weighted_total_score": 9.5,
+  "recommendation": "MERGE",
+  "notes": "Candidate v2.1-beta successfully condenses repetitive instructional text while preserving all 5 core HSEA fatal degradation checkpoints. The use of strict markdown callouts (!CAUTION, !IMPORTANT) ensures that Critical Safety mechanisms (Zoom-out, Drift Gate, Inverse Deletion) are not missed. The cognitive load on the executing agent is significantly reduced."
+}

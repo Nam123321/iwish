@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-15T16:48:00.334Z",
+  "request": "/review",
+  "normalizedRequest": "/review",
+  "canonicalCommand": "/review",
+  "legacyAliasMatched": null,
+  "targetAgent": "review-agent",
+  "routeReason": "Explicit command /review requested",
+  "graphStatus": "degraded",
+  "contextScope": {
+    "storyCount": 89,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "agent-alias:hit",
+      "type": "agent",
+      "canonical": "review-agent",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command-alias:/code-review",
+      "type": "command",
+      "canonical": "/review",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command:/review",
+      "type": "command",
+      "canonical": "/review",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "fragment-anti-sycophancy",
+      "type": "skill",
+      "canonical": "fragment-anti-sycophancy",
+      "source": "/.agent/fragments/anti-sycophancy.md"
+    },
+    {
+      "id": "fragment-fix-first-review",
+      "type": "skill",
+      "canonical": "fragment-fix-first-review",
+      "source": "/.agent/fragments/fix-first-review.md"
+    },
+    {
+      "id": "skill-qa-simulator-guardian",
+      "type": "skill",
+      "canonical": "skill-qa-simulator-guardian",
+      "source": "/.agent/skills/qa-simulator-guardian/SKILL.md"
+    },
+    {
+      "id": "skill-design-consultation",
+      "type": "skill",
+      "canonical": "skill-design-consultation",
+      "source": "/.agent/skills/design-consultation/SKILL.md"
+    },
+    {
+      "id": "skill-ux-pro-max",
+      "type": "skill",
+      "canonical": "skill-ux-pro-max",
+      "source": "/.agent/skills/ux-pro-max/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  }
+}

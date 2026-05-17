@@ -1,0 +1,46 @@
+groups:
+  - name: browser
+    recommended: playwright
+    adapters:
+      - id: playwright
+        description: Full browser automation for testing and extraction workflows.
+        usage_pack_status: default-pack
+      - id: chrome-devtools-mcp
+        description: Chrome DevTools or MCP-backed browser inspection and debugging.
+        usage_pack_status: default-skeleton
+      - id: browser-use
+        description: In-app browser automation and validation.
+        usage_pack_status: default-skeleton
+  - name: design
+    recommended: stitch
+    adapters:
+      - id: figma
+        description: Figma-based design inspection and implementation handoff. Requires a usage pack such as figma-first-dev / figma-to-code for full orchestration.
+        usage_pack_status: default-skeleton
+      - id: stitch
+        description: Stitch-first design generation and synchronization. Backed by stitch-first-dev / stitch-to-code usage workflows.
+        usage_pack_status: default-pack
+      - id: claude-design
+        description: Design-oriented generation and handoff. Requires a usage pack such as claude-design-first-dev / claude-design-to-code for full orchestration.
+        usage_pack_status: default-skeleton
+      - id: canva
+        description: Canva-based design authoring and handoff. Requires a usage pack such as canva-first-dev / canva-to-code for full orchestration.
+        usage_pack_status: default-skeleton
+  - name: graph
+    recommended: falkordb-full
+    adapters:
+      - id: falkordb-full
+        description: Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.
+        usage_pack_status: default-pack
+      - id: lite-static
+        description: Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.
+        usage_pack_status: default-pack
+      - id: neo4j
+        description: Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.
+        usage_pack_status: default-skeleton
+      - id: memgraph
+        description: High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.
+        usage_pack_status: default-skeleton
+      - id: custom-adapter
+        description: Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.
+        usage_pack_status: adapter-only

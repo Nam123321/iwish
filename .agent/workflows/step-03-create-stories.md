@@ -27,6 +27,14 @@ To generate all epics with their stories based on the approved epics_list, follo
 
 ## MANDATORY EXECUTION RULES (READ FIRST):
 
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> Before proceeding to step 4, you MUST use the `view_file` tool to load and read the following fragments:
+> - `/.agent/fragments/research-prompt-library.md`
+> - `/.agent/fragments/taxonomy-8-pillars.md`
+> - `/.agent/fragments/risk-matrix-template.md`
+> Failure to do so violates the BMAD architecture.
+
 ### Universal Rules:
 
 - 🛑 NEVER generate content without user input
@@ -187,6 +195,48 @@ When story is approved:
 - Use correct numbering (Epic N, Story M)
 - Maintain proper markdown formatting
 
+### 3.5. 📐 Plan Tune Heuristic Check (MANDATORY)
+
+After generating ALL stories for an epic AND before running the Edge Case Guardian:
+
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> You MUST use `view_file` to load `/.agent/fragments/plan-tune-heuristic.md` before proceeding.
+
+#### A. Calculate Complexity Score (CS) for Each Story
+
+For each story in the current epic, evaluate the 6 dimensions from the Plan Tune Heuristic fragment:
+
+1. **AC Volume** — Count all ACs (including edge-case tagged). If > 8 → +2.
+2. **Data Model Spread** — Count DB models touched (CREATE/ALTER). If > 3 → +3.
+3. **UI Surface** — Count new UI components to build. If > 4 → +2.
+4. **Cross-Domain** — Does story cross > 1 bounded context? If yes → +3.
+5. **Flow Complexity** — Has async events, webhooks, state machines? If yes → +2.
+6. **Test Burden** — Count `[E2E-TEST]` or `[MANUAL-TEST]` tagged ACs. If > 3 → +1.
+
+#### B. Apply Verdict
+
+- **CS ≤ 3**: ✅ Proceed normally.
+- **CS 4–6**: ⚠️ Display `[PLAN-TUNE WARNING]` with breakdown. Ask User if they want to split.
+- **CS ≥ 7**: 🛑 Display `[PLAN-TUNE HALT]`. Present split proposal using the 6 Split Criteria from the fragment. **HALT** until User approves.
+
+#### C. Apply Merge Check
+
+Scan ALL stories in this epic for Merge signals (Tiny Story, Tight Coupling, Same Model Lock, No User Value, Sequential Dependency). Propose merges if detected.
+
+#### D. Present Tuning Summary
+
+```
+📐 Plan Tune Report — Epic N:
+| Story | CS | Verdict | Action |
+|-------|-----|---------|--------|
+| N.1   | 3   | ✅ OK   | —      |
+| N.2   | 8   | 🛑 HALT | Split into N.2a + N.2b |
+| N.3   | 1   | ✅ OK   | Merge into N.2a (Tiny Story) |
+```
+
+Ask User: "Plan Tune hoàn tất. Xác nhận phương án tách/gộp trước khi tiếp tục Edge Case Guardian?"
+
 ### 4. 🛡️ Edge Case Guardian Analysis (MANDATORY)
 
 After all stories for an epic are written AND before getting user confirmation:
@@ -194,12 +244,12 @@ After all stories for an epic are written AND before getting user confirmation:
 **CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/_bmad/core/agents/Hit.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
 
 #### A. Research Phase
-- Use the Research Prompt Library (`{project-root}/.agent/skills/Hit/resources/research-prompt-library.md`) to search for known edge cases related to this epic's features
+- Use the Research Prompt Library (`{project-root}/.agent/fragments/research-prompt-library.md`) to search for known edge cases related to this epic's features
 - Check the Knowledge Graph at `{output_folder}/edge-case-knowledge/index.md` for related nodes
 
 #### B. 8-Pillar Scan
 - Walk through ALL 8 pillars from the SKILL's taxonomy for this epic's stories
-- For each story, identify edge cases using the taxonomy reference at `{project-root}/.agent/skills/Hit/resources/taxonomy-8-pillars.md`
+- For each story, identify edge cases using the taxonomy reference at `{project-root}/.agent/fragments/taxonomy-8-pillars.md`
 - Score each edge case using the FMEA rubric (Severity × Probability × Detectability)
 
 #### C. AC Injection
@@ -210,7 +260,7 @@ After all stories for an epic are written AND before getting user confirmation:
 #### D. Knowledge Graph Update
 - Add new edge case nodes to the appropriate pillar files in `{output_folder}/edge-case-knowledge/pillars/`
 - Update the index at `{output_folder}/edge-case-knowledge/index.md`
-- Generate or update the epic risk matrix using template from `{project-root}/.agent/skills/Hit/templates/risk-matrix-template.md`
+- Generate or update the epic risk matrix using template from `{project-root}/.agent/fragments/risk-matrix-template.md`
 
 ### 5. Epic Completion
 
@@ -229,7 +279,7 @@ After all stories, edge case analysis, AI analysis, AND Tri-Agent Lite Scan for 
 
 After edge case analysis, if the epic or any of its stories involve AI features (LLM calls, prompts, RAG pipeline, Cognee integration, embeddings, AI-assisted UI):
 
-**CRITICAL: Invoke the Songoku AI Engineer agent (`{project-root}/_bmad/bmm/agents/songoku.md`) to analyze AI requirements for the epic.**
+**CRITICAL: Invoke the Songoku AI Engineer agent (`{project-root}/.agent/agents/songoku.md`) to analyze AI requirements for the epic.**
 
 #### A. AI Feature Detection
 - Scan all stories in the epic for AI keywords: "AI", "LLM", "prompt", "GPT", "embedding", "RAG", "Cognee", "knowledge graph", "model", "token"

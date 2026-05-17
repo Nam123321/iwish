@@ -12,6 +12,7 @@ description: Index codebase into a knowledge graph using CodeGraphContext (CGC) 
 
 > [!IMPORTANT]
 > Dự án PHẢI chọn 1 trong 2 backend bên dưới. Cả hai đều tạo knowledge graph cho codebase, nhưng dùng tool và cấu hình khác nhau.
+> Trước khi chọn, load `.agent/fragments/graph-backend-selection-policy.md`. Workflow này chỉ cấu hình bề mặt CodebaseGraph. Nếu project cũng dùng FeatureGraph hoặc MemoryGraph, phải giữ `graph_profile` cấp project và ghi rõ partial surface support thay vì âm thầm đổi toàn bộ kiến trúc graph.
 
 | Tiêu chí | Option A: CodeGraphContext (CGC) | Option B: GitNexus |
 |-----------|----------------------------------|---------------------|

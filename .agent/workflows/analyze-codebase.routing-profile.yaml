@@ -1,0 +1,18 @@
+id: workflow-analyze-codebase
+name: analyze-codebase
+kind: workflow
+shape: workflow
+role: supportive
+phases: [discover, solution]
+stages: [codebase-indexing, dependency-analysis, architecture-understanding]
+triggers: [analyze codebase, code graph, index codebase, cgc, gitnexus]
+anti_triggers: [simple-doc-edit]
+primary_agents: [orch-agent, architect-agent]
+primary_workflows: [analyze-codebase]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Requires explicit graph backend awareness and must report partial surface support if only CodebaseGraph is configured.
+source_path: /.agent/workflows/analyze-codebase.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, graph, codebase]

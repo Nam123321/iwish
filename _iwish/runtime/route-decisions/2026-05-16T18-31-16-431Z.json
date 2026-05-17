@@ -1,0 +1,137 @@
+{
+  "timestamp": "2026-05-16T18:31:16.431Z",
+  "request": "tìm giải pháp trên github và so sánh các repo phù hợp trước khi absorb",
+  "normalizedRequest": "tìm giải pháp trên github và so sánh các repo phù hợp trước khi absorb",
+  "canonicalCommand": "/research-solution-sources",
+  "legacyAliasMatched": null,
+  "targetAgent": "capability-agent",
+  "routeReason": "Capability/repo solution-source research intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 112,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:research-solution-sources",
+      "type": "workflow",
+      "canonical": "research-solution-sources",
+      "source": "/.agent/workflows/research-solution-sources.md"
+    },
+    {
+      "id": "workflow:absorb-repo",
+      "type": "workflow",
+      "canonical": "absorb-repo",
+      "source": "/.agent/workflows/absorb-repo.md"
+    },
+    {
+      "id": "skill-package:repo-absorption",
+      "type": "skill",
+      "canonical": "repo-absorption",
+      "source": "/.agent/skills/repo-absorption/SKILL.md"
+    },
+    {
+      "id": "external-module:html-anything",
+      "type": "module",
+      "canonical": "html-anything",
+      "source": "https://github.com/nexu-io/html-anything"
+    },
+    {
+      "id": "agent-alias:whis",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "command:/absorb-repo",
+      "type": "command",
+      "canonical": "/absorb-repo",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "canonical-agent:capability-agent",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "skill-repo-absorption",
+      "type": "skill",
+      "canonical": "skill-repo-absorption",
+      "source": "/.agent/skills/repo-absorption/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "scoring": {
+    "threadContinuityScore": 0,
+    "artifactFocusScore": 0,
+    "sourceOfTruthMatchScore": 0,
+    "artifactReadinessScore": 0,
+    "routingProfileFitScore": 12,
+    "currentTurnKeywordScore": 10,
+    "ambiguityPenalty": 0,
+    "totalScore": 22,
+    "confidencePercent": 22,
+    "confidenceBand": "clarify",
+    "evidence": [
+      "Routing profile exists for selected canonical workflow."
+    ]
+  },
+  "recommendations": {
+    "workflowChain": [
+      "/research-solution-sources"
+    ],
+    "supportiveSkills": [
+      "github-deep-research",
+      "repo-absorption"
+    ],
+    "artifactChain": [
+      "solution source comparison",
+      "recommendation: enhance-skill | create-skill | register-skill-pack | absorb-repo"
+    ]
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

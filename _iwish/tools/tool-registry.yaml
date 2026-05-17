@@ -1,0 +1,25 @@
+groups:
+  - name: browser
+    adapters:
+      - id: playwright
+        description: Full browser automation for testing and extraction workflows.
+      - id: chrome-devtools-mcp
+        description: Chrome DevTools or MCP-backed browser inspection and debugging.
+      - id: browser-use
+        description: In-app browser automation and validation.
+  - name: design
+    adapters:
+      - id: figma
+        description: Figma-based design inspection and implementation handoff.
+      - id: stitch
+        description: Stitch-first design generation and synchronization.
+      - id: claude-design
+        description: Design-oriented skill workflows and mockup generation.
+  - name: graph
+    adapters:
+      - id: falkordb-full
+        description: Full graph-backed codebase, feature, and knowledge surfaces.
+      - id: lite-static
+        description: Low-setup fallback that treats graph evidence as advisory.
+      - id: custom-adapter
+        description: Project-supplied graph backend that must pass adapter checks.

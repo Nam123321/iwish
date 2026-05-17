@@ -1,6 +1,6 @@
 # Data Agent Toolkit — Implementation Plan
 
-**Ref:** [data-agent-toolkit-research.md](file:///Users/hatrang20061988/.gemini/antigravity/brain/6514b090-0b74-43e2-a9dd-bb965af095e3/data-agent-toolkit-research.md)
+**Ref:** data-agent-toolkit-research.md (`data-agent-toolkit-research.md`)
 **Goal:** Build 17 missing SKILLs/Workflows across 5 priority waves, verified end-to-end.
 
 ---

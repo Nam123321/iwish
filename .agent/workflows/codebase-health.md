@@ -6,6 +6,7 @@ description: 'Run comprehensive codebase health evaluation using CodeGraphContex
 
 > **Prerequisite:** CodeGraphContext đã được index (`cgc index`) và FalkorDB Docker đang chạy.
 > **Persona:** Piccolo (Architect) + QA Guardian
+> **Graph Profile Gate:** Load `.agent/fragments/graph-backend-selection-policy.md` before running. This workflow is fully trusted only when the CodebaseGraph surface is backed by `falkordb-full` or a custom adapter with `pass` for CodebaseGraph. In `lite-static` or unsupported custom modes, produce an advisory static-health report and label graph evidence unavailable.
 
 ---
 
@@ -30,6 +31,38 @@ docker exec distro-falkordb redis-cli GRAPH.QUERY codegraph "MATCH ()-[r]->() RE
 ```
 
 Ghi kết quả vào report header.
+
+---
+
+## Step 2.5: Shell-Native Metrics (Supplements Graph DB)
+
+Chạy các lệnh shell cơ bản để thu thập metric tĩnh bổ trợ cho Graph queries:
+
+```bash
+# Total file count by extension
+echo "=== File Count by Extension ==="
+find . -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/node_modules/*' ! -path '*/.next/*' ! -path '*/dist/*' | sed 's/.*\.//' | sort | uniq -c | sort -rn
+
+# Top 15 largest source files (likely god files / complexity hotspots)
+echo "=== Top 15 Largest Files (by line count) ==="
+find . -type f \( -name '*.ts' -o -name '*.tsx' \) ! -path '*/node_modules/*' ! -path '*/.next/*' ! -path '*/dist/*' -exec wc -l {} + | sort -rn | head -15
+
+# Average lines per file
+echo "=== Average Lines per File ==="
+find . -type f \( -name '*.ts' -o -name '*.tsx' \) ! -path '*/node_modules/*' ! -path '*/.next/*' ! -path '*/dist/*' -exec wc -l {} + | awk 'END {if (NR>1) print "Total lines:", $1, "| Files:", NR-1, "| Avg:", int($1/(NR-1)); else print "No files found."}'
+```
+
+**Optional (if `cloc` is available):**
+```bash
+which cloc && cloc --json --exclude-dir=node_modules,.next,dist . | head -50
+```
+
+**Interpretation Guidelines:**
+- Files > 500 lines → Flag as potential god files (cross-reference with Step 5 Graph hotspots).
+- Average > 200 lines/file → Codebase may be under-modularized.
+- Agent should use LLM estimation for cyclomatic complexity on top-5 flagged files (read the file and count branching paths mentally).
+
+Ghi kết quả vào report dưới mục "Static Metrics".
 
 ---
 
@@ -113,44 +146,23 @@ docker exec distro-falkordb redis-cli GRAPH.QUERY codegraph "MATCH (n) WHERE n.n
 
 ---
 
-## Step 8: Generate Report
+## Step 8: Neo4j Enrichment & Automated Reporting (Day 2 Operations)
 
-Tạo file report tại: `_bmad-output/codebase-health-report.md`
+Run the Day 2 Operations analytics scripts to parse AST complexity, Git history (churn & coupling), enrich the `CodebaseGraph`, and automatically generate a markdown snapshot.
 
-**Template:**
-```markdown
-# Codebase Health Report — [Date]
+```bash
+# 1. AST Complexity & Structural Heuristics
+node .agent/scripts/day2-ops/ast-health.js
 
-## Summary
-| Metric | Value | Status |
-|--------|-------|--------|
-| Total Nodes | X | — |
-| Total Files | X | — |
-| Dead Functions | X | 🟢/🟡/🔴 |
-| Orphan Files | X | 🟢/🟡/🔴 |
-| Circular Deps | X | 🟢/🟡/🔴 |
-| Hotspot Files (>50 connections) | X | 🟢/🟡/🔴 |
-| God Files (>15 functions) | X | 🟢/🟡/🔴 |
-| Duplicate Symbols (>3 occurrences) | X | 🟢/🟡/🔴 |
+# 2. GitTree Analytics (Churn & Implicit Coupling)
+node .agent/scripts/day2-ops/git-tree.js
 
-## Details
-### Dead Code (Top 20)
-[list]
+# 3. Generate Markdown Snapshot
+node .agent/scripts/day2-ops/generate-snapshot.js
+```
 
-### Orphan Files
-[list]
-
-### Hotspots
-[list]
-
-### Circular Dependencies
-[list]
-
-### Duplicate Symbols
-[list]
-
-## Recommendations
-[based on findings]
+Report will be saved to: `_bmad-output/health-reports/YYYY-MM-DD/health-report.md`
+Review the output report to identify high-risk files.
 ```
 
 ---

@@ -6,6 +6,9 @@ disable-model-invocation: true
 
 IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the current agent persona you may have loaded:
 
+> [!NOTE]
+> **BMAD RUNTIME FALLBACK:** First run `./.agent/scripts/check-bmad-runtime.sh --mode project` or verify `_bmad/core/tasks/workflow.xml` and `_bmad/bmm/workflows/4-implementation/code-review/workflow.yaml` exist. If they are missing in source/template mode, load `.agent/workflows/workflow-engine.xml` as the source-mode engine and use this wrapper as the workflow-specific contract. If they are missing in project runtime mode, stop and run `./.agent/scripts/materialize-bmad-runtime.sh --apply` before continuing. Do not silently fallback in project runtime mode.
+
 <steps CRITICAL="TRUE">
 1. Always LOAD the FULL @{project-root}/_bmad/core/tasks/workflow.xml
 2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow-config @{project-root}/_bmad/bmm/workflows/4-implementation/code-review/workflow.yaml

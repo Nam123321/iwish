@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>I-Wish Introduction Guide</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f3efe7;
+        --paper: rgba(255, 255, 255, 0.92);
+        --ink: #1f1c19;
+        --muted: #635c55;
+        --line: #ddd2c7;
+        --accent: #b35d2f;
+        --accent-soft: #f8dac7;
+        --accent-deep: #7c3f1e;
+        --green: #285f4a;
+        --green-soft: #dbeee6;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(179, 93, 47, 0.12), transparent 28%),
+          radial-gradient(circle at right 20%, rgba(40, 95, 74, 0.08), transparent 22%),
+          linear-gradient(180deg, #fbf8f4 0%, var(--bg) 100%);
+      }
+      .wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 28px 20px 60px;
+      }
+      .hero {
+        display: grid;
+        gap: 18px;
+        padding: 28px;
+        border-radius: 28px;
+        background:
+          linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,248,242,0.84)),
+          linear-gradient(90deg, rgba(179,93,47,0.08), rgba(40,95,74,0.06));
+        border: 1px solid var(--line);
+        box-shadow: 0 24px 60px rgba(66, 45, 30, 0.08);
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(2.6rem, 6vw, 4.8rem);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+      }
+      .lede {
+        max-width: 82ch;
+        color: var(--muted);
+        line-height: 1.75;
+        font-size: 1.04rem;
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        background: var(--accent-soft);
+        border-radius: 999px;
+        padding: 9px 14px;
+        font-size: 0.92rem;
+      }
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      .section {
+        margin-top: 20px;
+      }
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: 0 16px 42px rgba(58, 40, 28, 0.06);
+      }
+      h2 {
+        margin: 0 0 12px;
+        font-size: 1.45rem;
+      }
+      h3 {
+        margin: 0 0 8px;
+        font-size: 1.04rem;
+      }
+      p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--ink);
+      }
+      li {
+        margin: 7px 0;
+        line-height: 1.55;
+      }
+      code {
+        background: #f1ebe4;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-family: "IBM Plex Mono", monospace;
+      }
+      .spine {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .phase {
+        background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(243,239,231,0.8));
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+      }
+      .phase strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--accent-deep);
+      }
+      .callout {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: var(--green-soft);
+        border: 1px solid rgba(40,95,74,0.16);
+      }
+      .callout p {
+        color: #274737;
+        margin: 0;
+      }
+      .table-like {
+        display: grid;
+        gap: 12px;
+      }
+      .table-row {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 12px;
+        padding: 12px 0;
+        border-top: 1px solid var(--line);
+      }
+      .table-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+      .table-key {
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .footer {
+        margin-top: 24px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      @media (max-width: 720px) {
+        .table-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <div class="eyebrow">I-Wish Platform Guide</div>
+        <h1>I-Wish</h1>
+        <p class="lede">
+          I-Wish là một hệ thống điều phối phát triển sản phẩm với AI theo hướng
+          <strong>Orch-first</strong>, <strong>open module</strong>, <strong>open tool</strong>,
+          và <strong>source-of-truth aware</strong>. Nó không chỉ là một bộ command, mà là một
+          khung vận hành để đi từ idea đến delivery với agent, workflow, skill, tool, module và
+          capability governance phối hợp với nhau.
+        </p>
+        <div class="chip-row">
+          <span class="chip">Orch-first</span>
+          <span class="chip">Open platform</span>
+          <span class="chip">Open module</span>
+          <span class="chip">Skill-native</span>
+          <span class="chip">Source-of-truth aware</span>
+          <span class="chip">Reviewable HTML artifacts</span>
+        </div>
+      </section>
+
+      <section class="section grid grid-3">
+        <article class="panel">
+          <h2>Snapshot</h2>
+          <div class="table-like">
+            <div class="table-row"><div class="table-key">Canonical agents</div><div>16</div></div>
+            <div class="table-row"><div class="table-key">Canonical workflows</div><div>11</div></div>
+            <div class="table-row"><div class="table-key">Root skills</div><div>18</div></div>
+            <div class="table-row"><div class="table-key">Routing profiles</div><div>27</div></div>
+            <div class="table-row"><div class="table-key">Install targets</div><div><code>codex</code>, <code>claude-code</code>, <code>cursor</code></div></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>Core Idea</h2>
+          <p>
+            User nên thấy I-Wish như một delivery system có xương sống chính, còn skill, workflow,
+            agent, module và tool là các capability được lắp vào đúng phase, stage và task.
+          </p>
+        </article>
+
+        <article class="panel">
+          <h2>Best Entry</h2>
+          <p>
+            Điểm bắt đầu tốt nhất là nói chuyện với <code>orch-agent</code> theo nhu cầu thật,
+            rồi để hệ thống đề xuất workflow, supportive skill và agent chuyên trách phù hợp.
+          </p>
+        </article>
+      </section>
+
+      <section class="section panel">
+        <h2>Main Delivery Framework</h2>
+        <div class="spine">
+          <div class="phase"><strong>Idea</strong><span>Khởi phát nhu cầu, problem framing, hypothesis.</span></div>
+          <div class="phase"><strong>Discover</strong><span>Research, domain learning, project context.</span></div>
+          <div class="phase"><strong>Plan</strong><span>PRD, product brief, roadmap, prioritization.</span></div>
+          <div class="phase"><strong>Solution</strong><span>Architecture, stories, UX/UI specification.</span></div>
+          <div class="phase"><strong>Implement</strong><span>Code, fix bug, review, course correction.</span></div>
+          <div class="phase"><strong>Validate</strong><span>QA, audit, design alignment, status confidence.</span></div>
+          <div class="phase"><strong>Deliver</strong><span>Handoff, release readiness, communication.</span></div>
+          <div class="phase"><strong>Operate/Learn</strong><span>Absorb repo, evolve capability, add module, improve routing.</span></div>
+        </div>
+      </section>
+
+      <section class="section grid grid-2">
+        <article class="panel">
+          <h2>Feature Highlights</h2>
+          <ul>
+            <li><strong>Orch-first coordination:</strong> user có thể chat tự nhiên với <code>orch-agent</code> thay vì ghi nhớ hàng loạt command.</li>
+            <li><strong>Function-first agents:</strong> surface canonical theo chức năng như <code>dev-agent</code>, <code>pm-agent</code>, <code>ux-agent</code>, <code>review-agent</code>.</li>
+            <li><strong>Open module ecosystem:</strong> có thể add repo, skill pack, workflow pack, local capability, external module.</li>
+            <li><strong>Open tool abstraction:</strong> browser, design, graph tools được chọn theo project/runtime.</li>
+            <li><strong>Review pack standard:</strong> mọi capability quan trọng có thể có cả <code>.md</code> và <code>.html</code> để user đọc, share, review.</li>
+            <li><strong>Routing profile standard:</strong> Orch có lớp machine-readable để research tiết kiệm token hơn.</li>
+            <li><strong>Source-of-truth awareness:</strong> story, epic, sprint, reconciliation được dùng để route chính xác hơn.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>System Layers</h2>
+          <ul>
+            <li><strong>Main delivery framework:</strong> xương sống đi từ idea đến delivery.</li>
+            <li><strong>Process-primary capabilities:</strong> các flow trực tiếp làm stage/task như <code>plan</code>, <code>make-story</code>, <code>code</code>, <code>review</code>.</li>
+            <li><strong>Supportive capabilities:</strong> các flow hỗ trợ như <code>absorb-repo</code>, <code>register-skill-pack</code>, <code>create-skill</code>, <code>enhance-skill</code>.</li>
+            <li><strong>Foundational injections:</strong> guardrails, fragments, standards, governance, validation heuristics.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section grid grid-2">
+        <article class="panel">
+          <h2>Canonical Workflows</h2>
+          <ul>
+            <li><code>research</code></li>
+            <li><code>plan</code></li>
+            <li><code>make-story</code></li>
+            <li><code>make-ui-spec</code></li>
+            <li><code>code</code></li>
+            <li><code>review</code></li>
+            <li><code>status</code></li>
+            <li><code>retro</code></li>
+            <li><code>register-skill-pack</code></li>
+            <li><code>create-skill</code></li>
+            <li><code>enhance-skill</code></li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>Canonical Agents</h2>
+          <ul>
+            <li><code>orch-agent</code></li>
+            <li><code>dev-agent</code></li>
+            <li><code>pm-agent</code></li>
+            <li><code>ux-agent</code></li>
+            <li><code>review-agent</code></li>
+            <li><code>research-agent</code></li>
+            <li><code>delivery-manager-agent</code></li>
+            <li><code>capability-agent</code></li>
+            <li>và các role khác như <code>qa-agent</code>, <code>architect-agent</code>, <code>product-agent</code>, <code>devops-agent</code>, <code>analyst-agent</code>, <code>ai-agent</code></li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section grid grid-2">
+        <article class="panel">
+          <h2>Representative Skills</h2>
+          <ul>
+            <li><code>repo-absorption</code></li>
+            <li><code>security-guardian</code></li>
+            <li><code>design-consultation</code></li>
+            <li><code>ux-guardian</code></li>
+            <li><code>stitch-design-taste</code></li>
+            <li><code>pivot-guardian</code></li>
+            <li><code>qa-simulator-guardian</code></li>
+            <li><code>github-deep-research</code></li>
+          </ul>
+          <p>
+            Các skill này không phải lúc nào cũng là entrypoint. Nhiều skill là tactical hoặc foundational,
+            được Orch đề xuất theo context thay vì user phải gọi thẳng.
+          </p>
+        </article>
+
+        <article class="panel">
+          <h2>Open Concepts</h2>
+          <ul>
+            <li><strong>Open 1:</strong> open installation trên nhiều harness.</li>
+            <li><strong>Open 2:</strong> open skill/module integration từ repo, pack, local capability.</li>
+            <li><strong>Open 3:</strong> open tool integration cho browser, design, graph.</li>
+            <li><strong>Open 4:</strong> open interaction qua <code>orch-agent</code> thay vì chỉ dựa vào slash command.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section panel">
+        <h2>How To Work With I-Wish</h2>
+        <div class="grid grid-3">
+          <article>
+            <h3>1. Chat naturally with Orch</h3>
+            <p>Ví dụ: “Tôi cần plan PRD cho một sản phẩm mới”, “UX của story-1.6 đang lệch master design”, “Hấp thụ repo này vào I-Wish”.</p>
+          </article>
+          <article>
+            <h3>2. Use canonical workflows when you know the intent</h3>
+            <p>Dùng <code>/plan</code>, <code>/make-story</code>, <code>/make-ui-spec</code>, <code>/code</code>, <code>/review</code>, <code>/research</code>.</p>
+          </article>
+          <article>
+            <h3>3. Add and evolve capabilities when needed</h3>
+            <p>Dùng <code>register-skill-pack</code>, <code>absorb-repo</code>, <code>create-skill</code>, <code>enhance-skill</code> để mở rộng hệ thống.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section grid grid-2">
+        <article class="panel">
+          <h2>Typical Use Cases</h2>
+          <ul>
+            <li><strong>Idea to product:</strong> <code>research</code> → <code>plan</code> → <code>make-story</code> → <code>make-ui-spec</code> → <code>code</code> → <code>review</code>.</li>
+            <li><strong>Brownfield onboarding:</strong> <code>analyze-codebase</code> → <code>research-project-modules</code> → <code>make-story</code> → <code>code</code>.</li>
+            <li><strong>UX/master design drift:</strong> <code>review</code> → <code>make-ui-spec</code> → supportive skills như <code>design-consultation</code>, <code>ux-guardian</code>, <code>stitch-design-taste</code>.</li>
+            <li><strong>Open module intake:</strong> <code>register-skill-pack</code> hoặc <code>absorb-repo</code> → review pack → routing-profile → future reuse.</li>
+            <li><strong>Day 2 / ops / release:</strong> dùng các skill/workflow day-2 cho canary, release, deploy, maintenance, quality confidence.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>How Orch Researches Efficiently</h2>
+          <div class="callout">
+            <p><strong>Retrieval order:</strong> source-of-truth context → routing-profile.yaml → integration guide → execution body.</p>
+          </div>
+          <ul style="margin-top: 14px;">
+            <li>Source-of-truth cho Orch biết story, epic, sprint, reconciliation context.</li>
+            <li><code>routing-profile.yaml</code> cho biết phase, stage, triggers, anti-triggers, owner agent/workflow, constraints.</li>
+            <li><code>integration-guide.md/.html</code> cho deeper judgment, examples, review questions.</li>
+            <li><code>SKILL.md</code> hoặc workflow body chỉ được mở khi path đã shortlist xong.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section grid grid-2">
+        <article class="panel">
+          <h2>What Makes I-Wish Different</h2>
+          <ul>
+            <li>Không chỉ là prompt collection.</li>
+            <li>Không chỉ là command launcher.</li>
+            <li>Không đóng trong một marketplace khép kín.</li>
+            <li>Phân rõ process-primary, supportive, foundational.</li>
+            <li>Quan tâm source-of-truth và reverse-sync thay vì để ad-hoc changes drift mãi.</li>
+            <li>Dùng HTML review pack và routing profile để vừa human-friendly vừa Orch-friendly.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>Good Next Reads</h2>
+          <ul>
+            <li><code>docs/iwish-capability-system-framework.md</code></li>
+            <li><code>docs/iwish-routing-profile-standard.md</code></li>
+            <li><code>docs/iwish-adoption-review-pack-standard.md</code></li>
+            <li><code>docs/iwish-bmad-comparison-report.md</code></li>
+            <li><code>docs/iwish-skill-graph-routing-analysis.md</code></li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section panel">
+        <h2>Bottom Line</h2>
+        <p>
+          I-Wish nên được hiểu là một <strong>AI-assisted product delivery system</strong> với
+          luồng phát triển chính rõ ràng, Orch điều phối, capability mở rộng theo ngữ cảnh,
+          hệ open module/tool, và source-of-truth phục vụ review lâu dài.
+        </p>
+        <p>
+          Nếu chỉ nhớ một điều, hãy nhớ điều này:
+          <strong>I-Wish không phải là một list command. I-Wish là một hệ thống để đi từ ý tưởng đến delivery.</strong>
+        </p>
+      </section>
+
+      <div class="footer">
+        I-Wish Introduction Guide · Generated 2026-05-16
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-05-16T10:28:31.156Z",
+  "request": "review cho thấy scope drift, cần pivot giữa sprint",
+  "normalizedRequest": "review cho thấy scope drift, cần pivot giữa sprint",
+  "canonicalCommand": "/course-correct",
+  "legacyAliasMatched": null,
+  "targetAgent": "orch-agent",
+  "routeReason": "Mid-flight pivot or change-navigation intent detected",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 101,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "workflow:course-correct",
+      "type": "workflow",
+      "canonical": "course-correct",
+      "source": "/.agent/workflows/course-correct.md"
+    },
+    {
+      "id": "agent-alias:whis",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "agent-alias:trunks",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "canonical-agent:capability-agent",
+      "type": "agent",
+      "canonical": "capability-agent",
+      "source": "/.agent/agents/capability-agent.md"
+    },
+    {
+      "id": "canonical-agent:delivery-manager-agent",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "workflow:absorb-repo",
+      "type": "workflow",
+      "canonical": "absorb-repo",
+      "source": "/.agent/workflows/absorb-repo.md"
+    },
+    {
+      "id": "skill-package:repo-absorption",
+      "type": "skill",
+      "canonical": "repo-absorption",
+      "source": "/.agent/skills/repo-absorption/SKILL.md"
+    },
+    {
+      "id": "skill-github-deep-research",
+      "type": "skill",
+      "canonical": "skill-github-deep-research",
+      "source": "/.agent/skills/github-deep-research/SKILL.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

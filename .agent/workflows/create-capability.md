@@ -1,17 +1,10 @@
 ---
-description: 'Build a new Skill, Workflow, or Agent from external knowledge sources using Whis'
+name: 'create-capability'
+description: 'Compatibility alias for create-skill'
 ---
 
-# /create-capability — Capability Creation Pipeline
+# /create-capability — Compatibility Alias
 
-> **Agent:** Whis (Capability Management Master)
+Canonical workflow name is `/create-skill`.
 
-## Overview
-Guided workflow to create new AI capabilities (Skills, Workflows, or Agents) from external knowledge sources.
-
-## Steps
-
-1. **Triage** — Read and execute: `step-w-01-triage.md`
-2. **Spec** — Read and execute: `step-w-02-spec.md`
-3. **Forge** — Read and execute: `step-w-03-forge.md`
-4. **Validate** — Read and execute: `step-w-04-validate.md`
+Read and execute: `create-skill.md`

@@ -1,0 +1,137 @@
+{
+  "timestamp": "2026-05-16T18:14:36.557Z",
+  "request": "tiến hành story 1.16",
+  "normalizedRequest": "tiến hành story 1.16",
+  "canonicalCommand": "/status",
+  "legacyAliasMatched": null,
+  "targetAgent": "orch-agent",
+  "routeReason": "Source-of-truth match detected for story-1.16",
+  "graphStatus": "available",
+  "contextScope": {
+    "storyCount": 112,
+    "epicCount": 26,
+    "bugTrackerPresent": true,
+    "legacyRuntimeDetected": true,
+    "matchedStories": [
+      "story-1.16"
+    ],
+    "matchedEpics": [],
+    "reconciliationScopes": []
+  },
+  "candidateCatalogEntries": [
+    {
+      "id": "agent-alias:android-18",
+      "type": "agent",
+      "canonical": "ux-agent",
+      "source": "/.agent/agents/ux-agent.md"
+    },
+    {
+      "id": "agent-alias:trunks",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "command-alias:/dev-story",
+      "type": "command",
+      "canonical": "/code",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command-alias:/create-story",
+      "type": "command",
+      "canonical": "/make-story",
+      "source": "alias-registry"
+    },
+    {
+      "id": "command:/make-story",
+      "type": "command",
+      "canonical": "/make-story",
+      "source": "canonical-command-registry"
+    },
+    {
+      "id": "canonical-agent:delivery-manager-agent",
+      "type": "agent",
+      "canonical": "delivery-manager-agent",
+      "source": "/.agent/agents/delivery-manager-agent.md"
+    },
+    {
+      "id": "workflow:make-story",
+      "type": "workflow",
+      "canonical": "make-story",
+      "source": "/.agent/workflows/make-story.md"
+    },
+    {
+      "id": "workflow:create-data-spec",
+      "type": "workflow",
+      "canonical": "create-data-spec",
+      "source": "/.agent/workflows/create-data-spec.md"
+    }
+  ],
+  "followUp": {
+    "requiresReconciliation": false,
+    "recommendedQueueType": "none"
+  },
+  "scoring": {
+    "threadContinuityScore": 0,
+    "artifactFocusScore": 18,
+    "sourceOfTruthMatchScore": 22,
+    "artifactReadinessScore": 24,
+    "routingProfileFitScore": 12,
+    "currentTurnKeywordScore": 10,
+    "ambiguityPenalty": 0,
+    "totalScore": 86,
+    "confidencePercent": 86,
+    "confidenceBand": "options",
+    "evidence": [
+      "Routing profile exists for selected canonical workflow.",
+      "Source-of-truth matched: story-1.16.",
+      "Active artifact focus detected on story-1.16.",
+      "Story story-1.16 has high readiness (COMPLETED).",
+      "Story story-1.16 is completed, strengthening orchestration/status guidance over planning."
+    ]
+  },
+  "recommendations": {
+    "workflowChain": [
+      "/status"
+    ],
+    "supportiveSkills": [],
+    "artifactChain": []
+  },
+  "toolSetupPrompts": [
+    {
+      "group": "graph",
+      "reason": "This flow requires a 'graph' tool selection before execution.",
+      "recommended": "falkordb-full",
+      "currentSelection": null,
+      "options": [
+        {
+          "id": "falkordb-full",
+          "description": "Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "lite-static",
+          "description": "Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.",
+          "usagePackStatus": "default-pack"
+        },
+        {
+          "id": "neo4j",
+          "description": "Multi-database property graph option with native vector indexes. Suitable when you want one graph platform for codegraph plus feature/knowledge/skill surfaces.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "memgraph",
+          "description": "High-performance graph option with native vector search and multi-tenant graph capability. Suitable for hybrid graph plus vector retrieval with operational caveats.",
+          "usagePackStatus": "default-skeleton"
+        },
+        {
+          "id": "custom-adapter",
+          "description": "Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.",
+          "usagePackStatus": "adapter-only"
+        }
+      ],
+      "allowsOther": true
+    }
+  ]
+}

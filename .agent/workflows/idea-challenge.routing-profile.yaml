@@ -1,0 +1,39 @@
+id: workflow-idea-challenge
+name: idea-challenge
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discover]
+stages: [idea-forging, working-backwards, concept-validation]
+triggers:
+  - prfaq
+  - working backwards
+  - press release first
+  - customer faq
+  - internal faq
+  - idea challenge
+  - stress test idea
+  - validate idea
+  - product concept
+  - business advantage
+  - unique advantage
+  - phản biện ý tưởng
+  - challenge assumptions
+  - lợi thế cạnh tranh
+  - lợi thế kinh doanh
+  - mô hình tính phí
+anti_triggers:
+  - simple bugfix
+  - implementation patch
+  - trivial code review
+primary_agents: [pm-agent, orch-agent]
+primary_workflows: [idea-challenge]
+supportive_skills: [socratic-review, unique-advantage-evaluator]
+tool_dependencies: [graph]
+constraints:
+  - Use research grounding when market, competitor, or feasibility claims are uncertain.
+  - Distill output into planning-ready artifacts rather than jumping straight into delivery.
+review_pack: docs/open-modules/idea-challenge-integration-guide.md
+source_path: /.agent/workflows/idea-challenge.md
+story_refs: [story-1.13, story-1.14]
+tags: [canonical, discover, strategy, idea]

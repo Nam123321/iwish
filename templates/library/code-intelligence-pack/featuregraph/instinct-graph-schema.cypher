@@ -9,7 +9,7 @@
 -- ===================== INSTINCT NODES ========================
 -- Source: .agent/memory/instincts.jsonl
 -- Created by: Any agent after fix-bug, code-review, ad-hoc chat
--- Consumed by: Whis during /enhance-capability evolution cycles
+-- Consumed by: Whis during /enhance-skill evolution cycles
 
 CREATE (:Instinct {
   id: "inst_001",
