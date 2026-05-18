@@ -1,7 +1,7 @@
 import * as os from 'os';
 import * as path from 'path';
 
-export type RuntimeNamespace = 'iwish' | 'legacy-bmad';
+export type RuntimeNamespace = 'iwish' | 'legacy-iwish';
 export type InstallTargetStatus = 'supported' | 'planned';
 export type InstallTargetDefinition = {
   id: string;
@@ -26,24 +26,38 @@ export const INSTALL_TARGET_CATALOG: InstallTargetDefinition[] = [
     adapterStory: null,
   },
   {
-    id: 'codex',
+    id: 'local-terminal',
     status: 'supported',
-    installPath: '.codex',
-    summary: 'First-party runtime materialization for Codex projects.',
+    installPath: '.iwish',
+    summary: 'First-party runtime materialization for local terminal-based agent projects.',
     adapterStory: null,
   },
   {
     id: 'cursor',
     status: 'supported',
-    installPath: '.cursor/rules',
+    installPath: '.cursorrules',
     summary: 'First-party runtime materialization for Cursor rules and prompts.',
     adapterStory: null,
   },
   {
     id: 'windsurf',
     status: 'supported',
-    installPath: '.windsurf/rules',
+    installPath: '.windsurfrules',
     summary: 'First-party runtime materialization for Windsurf rules and workspace prompts.',
+    adapterStory: null,
+  },
+  {
+    id: 'cline',
+    status: 'supported',
+    installPath: '.clinerules',
+    summary: 'First-party runtime materialization for VSCode Cline and Roo Code extensions.',
+    adapterStory: null,
+  },
+  {
+    id: 'github-copilot',
+    status: 'supported',
+    installPath: '.github/copilot-instructions.md',
+    summary: 'First-party runtime materialization for GitHub Copilot Workspace and Chat.',
     adapterStory: null,
   },
   {
@@ -54,10 +68,17 @@ export const INSTALL_TARGET_CATALOG: InstallTargetDefinition[] = [
     adapterStory: null,
   },
   {
-    id: 'google antigravity',
+    id: 'google-antigravity',
     status: 'supported',
     installPath: '.gemini',
     summary: 'First-party runtime materialization for Google Antigravity and Gemini-aligned workspace instructions.',
+    adapterStory: null,
+  },
+  {
+    id: 'openai-codex',
+    status: 'supported',
+    installPath: 'AGENTS.md',
+    summary: 'First-party runtime materialization for OpenAI Codex workspace rules.',
     adapterStory: null,
   },
 ] as const;
@@ -80,7 +101,8 @@ export const LEGACY_AGENT_ALIASES: Record<string, string> = {
   bulma: 'analyst-agent',
   shenron: 'data-architect-agent',
   gotenks: 'creative-agent',
-  'master-roshi': 'research-agent',
+  'master-roshi': 'tech-writer-agent',
+  cell: 'website-clone-agent',
 };
 
 export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
@@ -98,15 +120,15 @@ export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
   '/domain-research': '/research',
   '/technical-research': '/research',
   '/retrospective': '/retro',
-  '/bmad-help': '/status',
+  '/iwish-help': '/status',
 };
 
 export function getCanonicalHome(): string {
-  return process.env.IWISH_HOME || process.env.BMAD_HOME || path.join(os.homedir(), '.iwish');
+  return process.env.IWISH_HOME || process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');
 }
 
 export function getRuntimeRoot(projectRoot: string, namespace: RuntimeNamespace): string {
-  return path.join(projectRoot, namespace === 'iwish' ? '_iwish' : '_bmad');
+  return path.join(projectRoot, namespace === 'iwish' ? '_iwish' : '_iwish');
 }
 
 export function getInstallTargetDir(projectRoot: string, platform: string): string {
