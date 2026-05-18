@@ -5,7 +5,7 @@ description: "Core ideation policies: mandatory 2-3 approaches with trade-offs, 
 
 # Idea Hardening
 
-Bộ kỹ năng này thắt chặt kỷ luật thiết kế trong BMAD, đảm bảo mọi ý tưởng đều được thử thách qua các góc nhìn đối lập và bảo vệ MVP khỏi sự phình to không cần thiết (scope creep).
+Bộ kỹ năng này thắt chặt kỷ luật thiết kế trong I-Wish, đảm bảo mọi ý tưởng đều được thử thách qua các góc nhìn đối lập và bảo vệ MVP khỏi sự phình to không cần thiết (scope creep).
 
 ## 1. Quy tắc 2-3 Approaches (Mandatory)
 

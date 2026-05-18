@@ -10,8 +10,8 @@ FALKORDB_HOST="${FALKORDB_HOST:-localhost}"
 FALKORDB_PORT="${FALKORDB_PORT:-6379}"
 GRAPH_NAME="featuregraph"
 PROJECT_ROOT="${1:-.}"
-PLANNING_DIR="${PROJECT_ROOT}/_bmad-output/planning-artifacts"
-REVIEW_QUEUE="${PROJECT_ROOT}/_bmad-output/featuregraph-review-queue.yaml"
+PLANNING_DIR="${PROJECT_ROOT}/_iwish-output/planning-artifacts"
+REVIEW_QUEUE="${PROJECT_ROOT}/_iwish-output/featuregraph-review-queue.yaml"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

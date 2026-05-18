@@ -1,7 +1,7 @@
 # Evaluator Prompt: /fix-bug Workflow
 
 ## Objective
-Evaluate the "Candidate B" (Darwinian Mutated) version of the `/fix-bug` workflow against the baseline version (`baseline.md`). The goal is to determine if Candidate B offers architectural and operational improvements while strictly adhering to BMAD safety protocols.
+Evaluate the "Candidate B" (Darwinian Mutated) version of the `/fix-bug` workflow against the baseline version (`baseline.md`). The goal is to determine if Candidate B offers architectural and operational improvements while strictly adhering to I-Wish safety protocols.
 
 ## Fatal Degradations
 If the candidate version exhibits ANY of the following degradations, the trial **FAILS** immediately (Score: 0):

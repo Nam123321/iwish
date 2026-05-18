@@ -109,7 +109,7 @@ function buildHtml() {
     const references = Array.isArray(epic.data.refs) ? epic.data.refs : [];
 
     const techResearch = researchFiles.find((item) => item.fileName === 'tech-stack.md');
-    const marketResearch = researchFiles.find((item) => item.fileName === 'bmad_research_report.md');
+    const marketResearch = researchFiles.find((item) => item.fileName === 'iwish_research_report.md');
 
     const keyCompetitors = marketResearch
         ? (marketResearch.markdown.match(/### Key Competitors & Patterns([\s\S]*?)## 2\./i)?.[1] || '')

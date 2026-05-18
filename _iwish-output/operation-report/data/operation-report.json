@@ -1,0 +1,153 @@
+{
+  "generatedAt": "2026-05-18T07:13:43.492Z",
+  "meta": {
+    "source": "I-Wish Operation Report Generator",
+    "formatVersion": 2,
+    "absorbedPatterns": [
+      "html-anything/data-report",
+      "html-anything/flowai-team-dashboard"
+    ]
+  },
+  "sprint": {
+    "totalEpics": 17,
+    "completedEpics": 6,
+    "totalStories": 82,
+    "completedStories": 61,
+    "progressPct": 74,
+    "sprintGoal": "Kích hoạt mô hình Day 0, Day 1, Day 2 và uỷ quyền hệ thống cho Dual-Agents (Krillin & 17).",
+    "status": "planning",
+    "backlogStories": 20,
+    "inFlightStories": 1,
+    "completedEpicsList": [
+      "Xây dựng Universal QA Simulator Skill (Monolithic)",
+      "Gstack Absorption - The I-Wish Governance Framework",
+      "Gstack Absorption - Waves 1, 2, 3",
+      "Governed UI/UX Pro Max Specialist",
+      "Controlled Retrieval and Interaction-System Absorption"
+    ]
+  },
+  "codebase": {
+    "insertions": 696431,
+    "deletions": 1646,
+    "net": 694785,
+    "commitCount": 2,
+    "lastCommit": "2026-05-17 · feat(bmad): update process upgrades, workflows, and core agents",
+    "loc": {
+      "total": 634105
+    }
+  },
+  "defects": {
+    "totalBugs": 4,
+    "defectDensityByModule": [
+      {
+        "module": "apps/api/src",
+        "count": 2
+      },
+      {
+        "module": "apps/admin/src",
+        "count": 2
+      }
+    ],
+    "defectDensityByStory": [],
+    "bugDetails": [
+      {
+        "id": "BUG-001",
+        "title": "Incorrect calculation in ctkm-evaluation.service.ts",
+        "module": "apps/api/src",
+        "files": [
+          "apps/api/src/modules/ctkm/ctkm-evaluation.service.ts"
+        ],
+        "mappedStory": null,
+        "lessonLearned": "Always use BigInt for monetary calculations in CTKM",
+        "rca": "Integer overflow in promotion logic"
+      },
+      {
+        "id": "BUG-002",
+        "title": "Import error in ProductDrawer.tsx",
+        "module": "apps/admin/src",
+        "files": [
+          "apps/admin/src/app/(dashboard)/products/components/ProductDrawer.tsx"
+        ],
+        "mappedStory": null,
+        "lessonLearned": "Avoid barrels in components directory",
+        "rca": "Circular dependency caused by re-export"
+      },
+      {
+        "id": "BUG-003",
+        "title": "Validation failure in ctkm-evaluation.service.ts",
+        "module": "apps/api/src",
+        "files": [
+          "apps/api/src/modules/ctkm/ctkm-evaluation.service.ts"
+        ],
+        "mappedStory": null,
+        "lessonLearned": "Add strict null checks for all input DTOs",
+        "rca": "Missing null check for voucher code"
+      },
+      {
+        "id": "BUG-004",
+        "title": "State leak in ProductDrawer.tsx",
+        "module": "apps/admin/src",
+        "files": [
+          "apps/admin/src/app/(dashboard)/products/components/ProductDrawer.tsx"
+        ],
+        "mappedStory": null,
+        "lessonLearned": "Enforce eslint-plugin-react-hooks in all UI components",
+        "rca": "useEffect missing dependency array"
+      }
+    ]
+  },
+  "evolution": {
+    "skills": 20,
+    "workflows": 269,
+    "knowledge": 1,
+    "totalCapabilities": 290,
+    "newestKnowledgeItems": [
+      "_iwish-output/knowledge/codegraph-integration-key-learnings.md"
+    ]
+  },
+  "health": {
+    "metrics": [
+      {
+        "label": "Sprint Progress",
+        "value": 74,
+        "suffix": "%",
+        "tone": "mint"
+      },
+      {
+        "label": "Net Lines Changed",
+        "value": 694785,
+        "suffix": "",
+        "tone": "indigo"
+      },
+      {
+        "label": "Open Bug Events",
+        "value": 4,
+        "suffix": "",
+        "tone": "orange"
+      },
+      {
+        "label": "Capability Surface",
+        "value": 290,
+        "suffix": "",
+        "tone": "mint"
+      }
+    ]
+  },
+  "insights": [
+    {
+      "title": "Sprint Momentum",
+      "icon": "🚀",
+      "body": "61/82 stories are complete, with 1 currently in flight."
+    },
+    {
+      "title": "Primary Hotspot",
+      "icon": "🔥",
+      "body": "apps/api/src currently carries the highest defect concentration with 2 recorded bug events."
+    },
+    {
+      "title": "HTML-First Reporting Direction",
+      "icon": "🧩",
+      "body": "Report contract now supports KPI cards, hotspot tables, and insight blocks so the output can evolve toward html-anything-style narrative dashboards."
+    }
+  ]
+}

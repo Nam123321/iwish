@@ -1,0 +1,25 @@
+bugs:
+  - id: BUG-001
+    title: "Incorrect calculation in ctkm-evaluation.service.ts"
+    filesChanged:
+      - "apps/api/src/modules/ctkm/ctkm-evaluation.service.ts"
+    rca: "Integer overflow in promotion logic"
+    lessonLearned: "Always use BigInt for monetary calculations in CTKM"
+  - id: BUG-002
+    title: "Import error in ProductDrawer.tsx"
+    filesChanged:
+      - "apps/admin/src/app/(dashboard)/products/components/ProductDrawer.tsx"
+    rca: "Circular dependency caused by re-export"
+    lessonLearned: "Avoid barrels in components directory"
+  - id: BUG-003
+    title: "Validation failure in ctkm-evaluation.service.ts"
+    filesChanged:
+      - "apps/api/src/modules/ctkm/ctkm-evaluation.service.ts"
+    rca: "Missing null check for voucher code"
+    lessonLearned: "Add strict null checks for all input DTOs"
+  - id: BUG-004
+    title: "State leak in ProductDrawer.tsx"
+    filesChanged:
+      - "apps/admin/src/app/(dashboard)/products/components/ProductDrawer.tsx"
+    rca: "useEffect missing dependency array"
+    lessonLearned: "Enforce eslint-plugin-react-hooks in all UI components"

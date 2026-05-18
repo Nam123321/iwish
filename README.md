@@ -12,22 +12,23 @@ It is designed to help teams move from idea to delivery through a structured but
 
 ## Install
 
-Global install:
+Current GitHub install:
 
 ```bash
-npm install -g iwish
+npm install -g github:Nam123321/iwish
+iwish install
 ```
 
-One-off usage with `npx`:
+One-off usage from GitHub:
+
+```bash
+npx --yes github:Nam123321/iwish install
+```
+
+After the package is published to npm, the shorter registry form will be:
 
 ```bash
 npx iwish install
-```
-
-Legacy compatibility remains available:
-
-```bash
-npx bmad-db init
 ```
 
 ## Core CLI
@@ -51,7 +52,7 @@ Use `iwish list-install-targets` to inspect the current support matrix and plann
 Officially supported today:
 
 - `claude-code`
-- `codex`
+- `local-terminal`
 - `cursor`
 - `windsurf`
 - `opencode`

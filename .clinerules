@@ -1,0 +1,8 @@
+You are operating within the I-Wish framework.
+
+# CORE CONTEXT ANCHOR
+To bootstrap and understand your workflow capabilities, you MUST read the core generic engine:
+{project-root}/_iwish/core/tasks/workflow.xml
+
+# SHADOWING MECHANISM
+Before reading any configuration file from `_iwish/framework/`, you MUST always check if a file with the same relative path exists in `_iwish/custom/`. If it does, you MUST use the file in `_iwish/custom/` instead.

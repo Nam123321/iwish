@@ -94,7 +94,7 @@ if (engines.length === 0) {
     process.exit(1);
 }
 
-// Sort engines by score descending. If tie, prefer darwinian over bmad-native.
+// Sort engines by score descending. If tie, prefer darwinian over iwish-native.
 engines.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.name === 'darwinian') return 1;
@@ -137,10 +137,10 @@ if (!isPathInside(path.resolve(actualCandidatePath), path.resolve(TRIALS_DIR))) 
 const possibleCanonicalPaths = [
     path.join(AGENT_DIR, 'skills', fixtureName, 'SKILL.md'),
     path.join(AGENT_DIR, 'workflows', `${fixtureName}.md`),
-    path.join(AGENT_DIR, 'workflows', `bmad-${fixtureName}.md`),
-    path.join(AGENT_DIR, 'workflows', `bmad-agent-bmm-${fixtureName}.md`),
+    path.join(AGENT_DIR, 'workflows', `iwish-${fixtureName}.md`),
+    path.join(AGENT_DIR, 'workflows', `iwish-agent-bmm-${fixtureName}.md`),
     path.join(AGENT_DIR, 'agents', `${fixtureName}.md`),
-    path.join(AGENT_DIR, 'agents', `bmad-agent-bmm-${fixtureName}.md`),
+    path.join(AGENT_DIR, 'agents', `iwish-agent-bmm-${fixtureName}.md`),
     path.join(AGENT_DIR, 'fragments', `${fixtureName}.md`)
 ];
 

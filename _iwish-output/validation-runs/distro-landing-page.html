@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distro - Hệ Thống Quản Lý Phân Phối Tinh Gọn (AI-embedded Light DMS)</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600;700;900&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-mint': '#00DF9A',
+                        'deep-navy': '#0A1128',
+                        'action-orange': '#FF6B35',
+                        'soft-cloud': '#F8FAFC',
+                    },
+                    fontFamily: {
+                        'lexend': ['"Lexend Deca"', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'mint': '0 0 15px rgba(0, 223, 154, 0.4)',
+                        'mint-strong': '0 0 25px rgba(0, 223, 154, 0.6)',
+                        'glass': '0 8px 32px 0 rgba(10, 17, 40, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.soft-cloud');
+            color: theme('colors.deep-navy');
+        }
+        
+        .lexend { font-family: 'Lexend Deca', sans-serif; }
+        
+        /* Logo System */
+        .logo-text {
+            font-family: 'Lexend Deca', sans-serif;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: baseline;
+            line-height: 1;
+        }
+        .dotless-i-container {
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .ai-dot {
+            background-color: theme('colors.neon-mint');
+            box-shadow: 0 0 15px theme('colors.neon-mint'), 0 0 5px theme('colors.neon-mint');
+            border-radius: 9999px;
+            display: inline-block;
+        }
+        .i-dot-fixed {
+            position: absolute;
+            top: -0.18em;
+            width: 0.24em;
+            height: 0.24em;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .dark-glass-panel {
+            background: rgba(10, 17, 40, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Smooth Entrance Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer">
+                    <div class="logo-text text-3xl text-deep-navy">
+                        d<span class="dotless-i-container"><span class="ai-dot i-dot-fixed animate-pulse"></span>ı</span>stro
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <!-- Touch target optimized: min-h 44px -->
+                    <a href="#features" class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-neon-mint transition-colors duration-150 h-11">Tính năng</a>
+                    <a href="#audiences" class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-neon-mint transition-colors duration-150 h-11">Khách hàng</a>
+                    <a href="#pricing" class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-neon-mint transition-colors duration-150 h-11">Bảng giá</a>
+                </div>
+                
+                <!-- CTA -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" class="inline-flex items-center justify-center px-4 h-11 text-sm font-bold text-deep-navy bg-neon-mint rounded-xl hover:bg-emerald-400 hover:shadow-mint transition-all duration-150">
+                        Sử dụng ngay
+                    </a>
+                    <a href="#" class="inline-flex items-center justify-center px-4 h-11 text-sm font-bold text-white bg-action-orange rounded-xl hover:bg-orange-600 hover:shadow-lg transition-all duration-150">
+                        Liên hệ Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-white to-soft-cloud -z-10"></div>
+        <div class="absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 w-[800px] h-[800px] bg-emerald-100 rounded-full blur-[120px] opacity-50 -z-10"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                <!-- Copy -->
+                <div class="max-w-2xl animate-fade-up">
+                    <div class="inline-flex items-center px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-600 font-semibold text-xs tracking-wide uppercase mb-6 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-neon-mint mr-2 animate-pulse"></span>
+                        AI-Embedded Light DMS
+                    </div>
+                    <h1 class="lexend text-5xl sm:text-6xl font-black tracking-tight text-deep-navy leading-[1.1] mb-6">
+                        Đơn hàng về,<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-mint to-emerald-500">Distro lo.</span>
+                    </h1>
+                    <p class="text-lg text-slate-500 mb-8 leading-relaxed max-w-xl">
+                        Số hóa kênh phân phối truyền thống cho SME Việt. Tích hợp sức mạnh AI vào nền tảng siêu nhẹ, giúp quản lý kho, giao nhận, và đơn hàng Zalo trở nên dễ dàng như nhắn tin.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#" class="inline-flex items-center justify-center px-8 h-14 text-base font-bold text-deep-navy bg-neon-mint rounded-2xl hover:-translate-y-1 hover:shadow-mint-strong transition-all duration-150">
+                            Miễn phí trải nghiệm AI 30 ngày
+                        </a>
+                        <a href="#" class="inline-flex items-center justify-center px-8 h-14 text-base font-bold text-slate-700 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-150">
+                            <i class="fa-solid fa-play mr-2 text-action-orange"></i> Xem Video
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Hero Visual (AI Widget Mockup) -->
+                <div class="relative animate-fade-up delay-200">
+                    <div class="relative z-10 glass-panel p-6 rounded-3xl shadow-glass">
+                        <!-- AI Widget Header -->
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-neon-mint">
+                                    <i class="fa-solid fa-bolt text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-deep-navy">AI Smart-Input</h3>
+                                    <p class="text-xs text-slate-400">Đang lắng nghe...</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-emerald-400 text-white px-2 py-1 rounded-full font-bold tracking-wider">LIVE</span>
+                        </div>
+                        
+                        <!-- Chat Input Mock -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-dashed border-slate-300 mb-4 group hover:border-neon-mint transition-colors duration-150">
+                            <p class="text-sm text-slate-600 font-medium">"Chốt cho em 10 thùng bia qua chợ Bà Chiểu sáng mai nhé."</p>
+                        </div>
+                        
+                        <!-- AI Processing Result -->
+                        <div class="bg-white border border-emerald-100 rounded-2xl p-4 shadow-sm mb-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wide"><i class="fa-solid fa-check-circle mr-1"></i> Đã bóc tách đơn</span>
+                                <span class="text-xs text-slate-400">1 giây trước</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-500">Khách hàng:</span>
+                                    <span class="font-bold text-deep-navy">Đại lý Bà Chiểu</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-500">Sản phẩm:</span>
+                                    <span class="font-bold text-deep-navy">Bia Tiger (Thùng 24) x10</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-500">Giao hàng:</span>
+                                    <span class="font-bold text-action-orange">Sáng mai (Trước 10:00)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-3">
+                            <button class="px-4 h-11 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors duration-150">Chỉnh sửa</button>
+                            <button class="px-6 h-11 text-sm font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-xl hover:bg-emerald-100 hover:shadow-sm transition-all duration-150">
+                                Xác nhận đơn <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -left-6 dark-glass-panel p-4 rounded-2xl flex items-center space-x-3 shadow-xl z-20 animate-bounce" style="animation-duration: 3s;">
+                        <i class="fa-solid fa-shield-check text-neon-mint text-xl"></i>
+                        <span class="text-xs font-bold text-white uppercase tracking-wider">Đồng bộ Tồn Kho ngay lập tức</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 animate-fade-up">
+                <h2 class="lexend text-3xl md:text-4xl font-bold text-deep-navy mb-4">Giao diện nhẹ nhàng.<br>Sức mạnh chuyên sâu.</h2>
+                <p class="text-slate-500 text-lg">Hệ thống phân phối phức tạp nay được tối giản hóa nhờ công nghệ AI lõi.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-soft-cloud p-8 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white transition-all duration-300 border border-transparent hover:border-slate-100 group">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-neon-mint text-2xl group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-warehouse"></i>
+                    </div>
+                    <h3 class="lexend text-xl font-bold text-deep-navy mb-3">Quản Lý Kho Thông Minh</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Cảnh báo tồn kho theo thời gian thực. Tự động đề xuất nhập hàng dựa trên lịch sử bán hàng.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-soft-cloud p-8 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white transition-all duration-300 border border-transparent hover:border-slate-100 group">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-neon-mint text-2xl group-hover:scale-110 transition-transform duration-300 relative">
+                        <i class="fa-solid fa-robot"></i>
+                        <span class="absolute -top-1 -right-1 w-3 h-3 ai-dot"></span>
+                    </div>
+                    <h3 class="lexend text-xl font-bold text-deep-navy mb-3">AI Xử Lý Đơn Zalo/FB</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Tự động đọc tin nhắn chat, nhận diện sản phẩm, khách hàng và chốt đơn ngay lập tức không cần gõ.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-soft-cloud p-8 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white transition-all duration-300 border border-transparent hover:border-slate-100 group">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-neon-mint text-2xl group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-barcode"></i>
+                    </div>
+                    <h3 class="lexend text-xl font-bold text-deep-navy mb-3">Quét Mã Vạch Đỉnh Cao</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Sử dụng ngay camera điện thoại để kiểm kho, xuất nhập hàng với độ trễ gần như bằng không.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-soft-cloud p-8 rounded-[2rem] hover:-translate-y-2 hover:shadow-xl hover:bg-white transition-all duration-300 border border-transparent hover:border-slate-100 group">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 text-action-orange text-2xl group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <h3 class="lexend text-xl font-bold text-deep-navy mb-3">Công Nợ & Ví Nội Bộ</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Kiểm soát dòng tiền đại lý tự động. Đối soát COD 3PL và quản lý điểm thưởng (CTKM) liền mạch.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience Section -->
+    <section id="audiences" class="py-24 bg-deep-navy text-white relative overflow-hidden">
+        <div class="absolute right-0 bottom-0 w-[600px] h-[600px] bg-neon-mint opacity-10 blur-[100px] rounded-full"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <h2 class="lexend text-3xl md:text-4xl font-bold mb-16 border-l-4 border-neon-mint pl-4">Sinh ra dành cho<br>Thương Mại Truyền Thống</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="dark-glass-panel p-8 rounded-3xl hover:border-neon-mint/50 transition-colors duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-6 text-xl">
+                        🏪
+                    </div>
+                    <h3 class="lexend text-xl font-bold mb-2">Nhà phân phối & Cửa hàng sỉ</h3>
+                    <p class="text-slate-400 text-sm mb-4">Các ngành FMCG, thực phẩm, vật liệu xây dựng, dược phẩm.</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li class="flex items-center"><span class="text-neon-mint mr-2">✓</span> Quản lý ngàn mã SKU</li>
+                        <li class="flex items-center"><span class="text-neon-mint mr-2">✓</span> Báo giá sỉ theo cấp bậc</li>
+                    </ul>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="dark-glass-panel p-8 rounded-3xl border-neon-mint/30 shadow-mint relative hover:border-neon-mint/80 transition-colors duration-300">
+                    <div class="absolute -top-3 right-6 bg-action-orange text-xs font-bold px-3 py-1 rounded-full">Phổ biến nhất</div>
+                    <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-6 text-xl">
+                        📱
+                    </div>
+                    <h3 class="lexend text-xl font-bold mb-2">Kinh doanh Online / Tại nhà</h3>
+                    <p class="text-slate-400 text-sm mb-4">Các "mẹ bỉm sữa", shop thời trang bán qua Zalo, Facebook.</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li class="flex items-center"><span class="text-neon-mint mr-2">✓</span> Chốt đơn AI từ chat</li>
+                        <li class="flex items-center"><span class="text-neon-mint mr-2">✓</span> Lên đơn qua điện thoại 100%</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="dark-glass-panel p-8 rounded-3xl hover:border-neon-mint/50 transition-colors duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-6 text-xl">
+                        🏭
+                    </div>
+                    <h3 class="lexend text-xl font-bold mb-2">Nhà sản xuất & Nhãn hàng</h3>
+                    <p class="text-slate-400 text-sm mb-4">Cần số hóa chuỗi cung ứng nhưng không muốn đầu tư ERP nặng nề.</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li class="flex items-center"><span class="text-neon-mint mr-2">✓</span> Giám sát Sale Agents</li>
+                        <li class="flex items-center"><span class="text-neon-mint mr-2">✓</span> Thống kê độ phủ thị trường</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <footer class="bg-white pt-24 pb-12 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="logo-text text-5xl opacity-20 mb-8 text-deep-navy">
+                d<span class="dotless-i-container"><span class="ai-dot i-dot-fixed"></span>ı</span>stro
+            </div>
+            <h2 class="lexend text-4xl font-black text-deep-navy mb-8">
+                Tối ưu ngay dòng chảy bán hàng của bạn.
+            </h2>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-20">
+                <a href="#" class="inline-flex items-center justify-center px-8 h-14 text-base font-bold text-deep-navy bg-neon-mint rounded-2xl hover:scale-105 hover:shadow-mint transition-all duration-150">
+                    Sử dụng Distro Miễn Phí
+                </a>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center border-t border-slate-100 pt-8 text-sm text-slate-500">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <div class="logo-text text-lg text-deep-navy">d<span class="dotless-i-container"><span class="ai-dot i-dot-fixed" style="width:4px;height:4px;top:-2px;"></span>ı</span>stro</div>
+                    <span>&copy; 2026 Distro VN. All rights reserved.</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-neon-mint transition-colors duration-150">Hỗ trợ Zalo</a>
+                    <a href="#" class="hover:text-neon-mint transition-colors duration-150">Chính sách bảo mật</a>
+                    <a href="#" class="hover:text-neon-mint transition-colors duration-150">Điều khoản</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        document.querySelectorAll('.animate-fade-up').forEach((el) => {
+            el.classList.remove('animate-fade-up');
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

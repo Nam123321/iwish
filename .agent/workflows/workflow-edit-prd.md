@@ -1,7 +1,7 @@
 ---
 name: edit-prd
 description: Edit and improve an existing PRD - enhance clarity, completeness, and quality
-main_config: '{project-root}/_bmad/bmm/config.yaml'
+main_config: '{project-root}/_iwish/bmm/config.yaml'
 editWorkflow: './steps-e/step-e-01-discovery.md'
 ---
 

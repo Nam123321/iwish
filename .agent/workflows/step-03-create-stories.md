@@ -3,7 +3,7 @@ name: 'step-03-create-stories'
 description: 'Generate all epics with their stories following the template structure'
 
 # Path Definitions
-workflow_path: '{project-root}/_bmad/bmm/workflows/3-solutioning/create-epics-and-stories'
+workflow_path: '{project-root}/_iwish/bmm/workflows/3-solutioning/create-epics-and-stories'
 
 # File References
 thisStepFile: './step-03-create-stories.md'
@@ -12,8 +12,8 @@ workflowFile: '{workflow_path}/workflow.md'
 outputFile: '{planning_artifacts}/epics.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 
 # Template References
 epicsTemplate: '{workflow_path}/templates/epics-template.md'
@@ -33,7 +33,7 @@ To generate all epics with their stories based on the approved epics_list, follo
 > - `/.agent/fragments/research-prompt-library.md`
 > - `/.agent/fragments/taxonomy-8-pillars.md`
 > - `/.agent/fragments/risk-matrix-template.md`
-> Failure to do so violates the BMAD architecture.
+> Failure to do so violates the I-Wish architecture.
 
 ### Universal Rules:
 
@@ -241,7 +241,7 @@ Ask User: "Plan Tune hoàn tất. Xác nhận phương án tách/gộp trước 
 
 After all stories for an epic are written AND before getting user confirmation:
 
-**CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/_bmad/core/agents/Hit.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
+**CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/_iwish/core/agents/Hit.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
 
 #### A. Research Phase
 - Use the Research Prompt Library (`{project-root}/.agent/fragments/research-prompt-library.md`) to search for known edge cases related to this epic's features

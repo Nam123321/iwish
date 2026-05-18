@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMAD Idea Navigator | Celestial Journey</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lexend+Deca:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="navigator.css">
+</head>
+<body class="celestial-theme">
+    <div id="starfield"></div>
+    
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <span class="symbol">✧</span>
+                <span class="text">NAVIGATOR</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#origin" class="active">Origin</a></li>
+                <li><a href="#spark">Spark</a></li>
+                <li><a href="#deep-dive">Deep Dive</a></li>
+                <li><a href="#forge">Forge</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1 id="project-title">Project Vision</h1>
+            <p id="project-tagline" class="subtitle">From stardust to reality. The architectural lineage of your idea.</p>
+            <div class="status-badge" id="project-status">Phase 1: Discovery</div>
+        </div>
+    </header>
+
+    <main class="journey">
+        <div class="lineage-svg-container">
+            <svg id="lineage-svg" width="100%" height="100%">
+                <!-- Dynamic connections will be drawn here -->
+            </svg>
+        </div>
+
+        <section id="origin" class="journey-section">
+            <div class="section-marker">01</div>
+            <div class="content-card glass">
+                <div class="card-header">
+                    <i data-lucide="compass"></i>
+                    <h2>The Origin</h2>
+                </div>
+                <div class="card-body markdown-content" id="origin-content">
+                    <p class="placeholder">Analyzing the core problem and user pain points...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="spark" class="journey-section">
+            <div class="section-marker">02</div>
+            <div class="content-card glass">
+                <div class="card-header">
+                    <i data-lucide="zap"></i>
+                    <h2>The Spark</h2>
+                </div>
+                <div class="card-body markdown-content" id="spark-content">
+                    <p class="placeholder">Brainstorming potential solutions and radical ideas...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="journey-section">
+            <div class="section-marker">03</div>
+            <div class="content-card glass">
+                <div class="card-header">
+                    <i data-lucide="microscope"></i>
+                    <h2>Deep Dive</h2>
+                </div>
+                <div class="card-body markdown-content" id="deep-dive-content">
+                    <p class="placeholder">Market research, technical feasibility, and domain deep-dives...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="forge" class="journey-section">
+            <div class="section-marker">04</div>
+            <div class="content-card glass">
+                <div class="card-header">
+                    <i data-lucide="hammer"></i>
+                    <h2>The Forge</h2>
+                </div>
+                <div class="card-body markdown-content" id="forge-content">
+                    <p class="placeholder">Finalizing the product brief and implementation strategy...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="footer-content">
+            <p>BMAD-Dragonball Narrative Engine &copy; 2026</p>
+            <div class="actions">
+                <button class="btn btn-secondary" onclick="window.print()">
+                    <i data-lucide="share-2"></i> Share Journey
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Data Bridge -->
+    <script src="navigator-data.js"></script>
+    <script src="navigator.js"></script>
+</body>
+</html>

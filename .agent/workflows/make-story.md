@@ -7,4 +7,4 @@ description: 'Canonical short workflow for story creation'
 
 Canonical workflow name for story creation.
 
-Read and execute: `bmad-bmm-create-story.md`
+Read and execute: `iwish-bmm-create-story.md`

@@ -12,7 +12,7 @@ Guided workflow to create new AI capabilities (Skills, Workflows, or Agents) fro
 
 ## Runtime & Promotion Policy
 
-Use `IWISH_HOME=${IWISH_HOME:-${BMAD_HOME:-~/.iwish}}` for all generated drafts. This workflow MUST create draft artifacts under `${IWISH_HOME}` first, then promote them into canonical repo paths only after explicit approval. `BMAD_HOME` remains a legacy input alias only; new runtime outputs are canonicalized to I-Wish packaging.
+Use `IWISH_HOME=${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}` for all generated drafts. This workflow MUST create draft artifacts under `${IWISH_HOME}` first, then promote them into canonical repo paths only after explicit approval. `IWISH_HOME` remains a legacy input alias only; new runtime outputs are canonicalized to I-Wish packaging.
 
 Before Step 0 and again during Step 1 triage, load `.agent/fragments/capability-authoring-curator-rules.md`, `.agent/fragments/capability-provenance-lineage.md`, and `.agent/fragments/draft-skill-creation-governance.md`. Apply authoring, trigger-quality, duplicate-risk, context-budget, non-destructive curator, provenance, lineage, and draft-skill creation rules. If the source learning is capability-shaped, follow the Classification Funnel and this workflow instead of saving the procedure as loose memory. If the source mostly patches or overlaps an existing capability, route to `enhance-skill` instead of creating a near-duplicate draft. If the source is skill-shaped, create `${IWISH_HOME}/generated-skills/<name>/` only after the draft creation gates pass.
 

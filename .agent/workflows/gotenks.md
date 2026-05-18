@@ -23,4 +23,4 @@ description: Run the Creative Intelligence Piccolo (CIA) — ideate, validate, a
 3. **Route Output:** Based on the strategy above, choose the most efficient format.
 4. **Validate:** Cross-check with MKT materials for alignment.
 
-IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_bmad/core/workflows/gotenks/workflow.md, READ its entire contents and follow its directions exactly!
+IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_iwish/core/workflows/gotenks/workflow.md, READ its entire contents and follow its directions exactly!

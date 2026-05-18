@@ -85,8 +85,8 @@ graph TD
 
 ---
 
-## 10. Reusable Patterns for BMAD
-- **Can Adopt:** [Code/ideas that can be copy-pasted into BMAD]
+## 10. Reusable Patterns for I-Wish
+- **Can Adopt:** [Code/ideas that can be copy-pasted into I-Wish]
 - **Need Adaptation:** [Code that needs refactoring to fit our architecture]
 - **Inspiration Only:** [Ideas that are good but implementation is incompatible]
 

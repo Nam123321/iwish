@@ -1,0 +1,272 @@
+:root {
+    /* Brand Colors - v1.1 */
+    --neon-mint: #00DF9A;
+    --deep-navy: #0A1128;
+    --action-orange: #FF6B35;
+    --soft-cloud: #F8FAFC;
+    
+    /* Semantic Colors */
+    --white: #FFFFFF;
+    --text-primary: #0A1128;
+    --text-secondary: #64748B;
+    --text-navy: #0A1128;
+    --bg-navy: #0A1128;
+    
+    /* Gradients */
+    --grad-mint: linear-gradient(135deg, #00DF9A 0%, #00F2A9 100%);
+    --grad-navy: linear-gradient(135deg, #0A1128 0%, #152045 100%);
+    --grad-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    
+    /* Shadows & Effects */
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --glow-mint: 0 0 20px rgba(0, 223, 154, 0.3);
+    
+    /* Transitions */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--soft-cloud);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4, .lexend {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+p {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    opacity: 0.9;
+}
+
+/* Layout Utilities */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section-padding {
+    padding: clamp(4rem, 10vw, 10rem) 0;
+}
+
+/* Glassmorphism System */
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    box-shadow: var(--shadow-lg);
+}
+
+.glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Brand Elements */
+.ai-dot {
+    width: 0.25em;
+    height: 0.25em;
+    background: var(--neon-mint);
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 15px var(--neon-mint), 0 0 5px var(--neon-mint);
+    position: relative;
+}
+
+.ai-dot.pulse {
+    animation: ai-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes ai-pulse {
+    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(0, 223, 154, 0.7); }
+    70% { transform: scale(1.5); opacity: 0.5; box-shadow: 0 0 0 15px rgba(0, 223, 154, 0); }
+    100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(0, 223, 154, 0); }
+}
+
+/* Buttons */
+.btn {
+    padding: 1rem 2.5rem;
+    border-radius: 16px;
+    font-weight: 800;
+    font-family: 'Lexend Deca', sans-serif;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: var(--transition);
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background: var(--neon-mint);
+    color: var(--deep-navy);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px -5px rgba(0, 223, 154, 0.5);
+}
+
+.btn-accent {
+    background: var(--action-orange);
+    color: var(--white);
+}
+
+.btn-accent:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px -5px rgba(255, 107, 53, 0.5);
+}
+
+/* Animations & Transitions */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Specific Component Styles */
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1.5rem 0;
+    transition: var(--transition);
+}
+
+#navbar.scrolled {
+    background: rgba(10, 17, 40, 0.85);
+    backdrop-filter: blur(15px);
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--white);
+    display: flex;
+    align-items: baseline;
+    cursor: pointer;
+}
+
+.dotless-i {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* AI Demo Widget Enhancement */
+.demo-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.demo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--grad-mint);
+}
+
+/* Float Animation */
+.float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Responsive Grid */
+.industry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.industry-card {
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 32px;
+    border: 1px solid #E2E8F0;
+    transition: var(--transition);
+}
+
+.industry-card:hover {
+    border-color: var(--neon-mint);
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+/* Cursor Animation */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    background-color: var(--neon-mint);
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { background-color: transparent }
+    50% { background-color: var(--neon-mint) }
+}

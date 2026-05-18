@@ -60,10 +60,10 @@
       "source": "/.agent/workflows/prd-purpose.md"
     },
     {
-      "id": "workflow:bmad-bmm-create-prd",
+      "id": "workflow:iwish-bmm-create-prd",
       "type": "workflow",
-      "canonical": "bmad-bmm-create-prd",
-      "source": "/.agent/workflows/bmad-bmm-create-prd.md"
+      "canonical": "iwish-bmm-create-prd",
+      "source": "/.agent/workflows/iwish-bmm-create-prd.md"
     }
   ],
   "followUp": {

@@ -7,4 +7,4 @@ description: 'Canonical short workflow for runtime help, status, and navigation'
 
 Canonical workflow name for help and status routing.
 
-Read and execute: `bmad-help.md`
+Read and execute: `iwish-help.md`

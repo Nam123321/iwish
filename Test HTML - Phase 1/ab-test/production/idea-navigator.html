@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Celestial Idea Navigator for BMAD artifacts and brainstorm visualization.">
+    <title>Celestial Idea Navigator</title>
+    <!-- Link to our separated CSS theme -->
+    <link rel="stylesheet" href="css/navigator-theme.css">
+</head>
+<body>
+    <!-- Animated Nebula Background Layer -->
+    <div class="nebula-bg" aria-hidden="true"></div>
+
+    <!-- Main App Container -->
+    <main class="canvas">
+        
+        <!-- Header Section -->
+        <header class="celestial-header">
+            <h1 class="brand-title">Idea Navigator</h1>
+            <input type="text" class="search-bar" placeholder="Search constellations (epics, nodes)..." aria-label="Search project artifacts">
+        </header>
+
+        <!-- Narrative Stages -->
+        <div class="narrative-journey">
+            <!-- Stage 1: Ideation (Origin & Brainstorm) -->
+            <section class="narrative-stage" aria-labelledby="stage-ideation-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-ideation-title" class="stage-title">Ideation</h2>
+                        <p class="stage-description">The genesis of ideas, design philosophy, and core epics.</p>
+                    </div>
+                </header>
+                <div id="stage-ideation-grid" class="idea-grid"></div>
+            </section>
+
+            <!-- Stage 2: Research & Technical Feasibility -->
+            <section class="narrative-stage" aria-labelledby="stage-research-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-research-title" class="stage-title">Research</h2>
+                        <p class="stage-description">Market analysis, domain exploration, and technical research.</p>
+                    </div>
+                </header>
+                <div id="stage-research-grid" class="idea-grid"></div>
+            </section>
+
+            <!-- Stage 3: Specification (Brief & PRD) -->
+            <section class="narrative-stage" aria-labelledby="stage-specification-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-specification-title" class="stage-title">Specification</h2>
+                        <p class="stage-description">Defining the product brief and functional requirements.</p>
+                    </div>
+                </header>
+                <div id="stage-specification-grid" class="idea-grid"></div>
+            </section>
+
+            <!-- Stage 4: Execution (Architecture & Forge) -->
+            <section class="narrative-stage" aria-labelledby="stage-execution-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-execution-title" class="stage-title">Execution</h2>
+                        <p class="stage-description">Active development stories, architecture, and forge output.</p>
+                    </div>
+                </header>
+                <div id="stage-execution-grid" class="idea-grid"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Progressive Disclosure Modal -->
+    <dialog id="artifact-modal" class="glass-modal">
+        <div class="modal-content-wrapper">
+            <header class="modal-header">
+                <span id="modal-tag" class="card-tag"></span>
+                <button id="modal-close" class="close-btn" aria-label="Close modal">&times;</button>
+            </header>
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-content" class="modal-body"></div>
+        </div>
+    </dialog>
+
+    <!-- External Libraries for Markdown Parsing and Sanitization -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <!-- Data Bridge and Engine -->
+    <script src="js/navigator-data.js"></script>
+    <script src="js/navigator-engine.js"></script>
+</body>
+</html>

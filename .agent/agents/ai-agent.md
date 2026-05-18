@@ -1,10 +1,10 @@
 ---
 name: ai-agent
-role: Canonical AI evaluation and model-quality agent for I-Wish
-legacy_aliases:
-  - Songoku
+description: "AI Engineer \u2014 LLM Operations, Prompt Engineering, RAG, Token Optimization,\
+  \ AI Security"
+role: AI Engineer
 ---
 
 # ai-agent
 
-Canonical agent name for AI-specific review, evaluation, cost audit, and model behavior workflows.
+Canonical agent for AI-specific review, evaluation, cost audit, and model behavior workflows. Responsible for ensuring model configurations, token budgets, and prompts meet I-Wish standards.

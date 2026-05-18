@@ -11,7 +11,8 @@ agents:
   bulma: analyst-agent
   shenron: data-architect-agent
   gotenks: creative-agent
-  master-roshi: research-agent
+  master-roshi: tech-writer-agent
+  cell: website-clone-agent
 commands:
   /dev-story: /code
   /create-story: /make-story
@@ -23,4 +24,4 @@ commands:
   /market-research: /research
   /domain-research: /research
   /technical-research: /research
-  /bmad-help: /status
+  /iwish-help: /status

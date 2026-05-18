@@ -14,9 +14,9 @@ FALKORDB_HOST="${FALKORDB_HOST:-localhost}"
 FALKORDB_PORT="${FALKORDB_PORT:-6379}"
 GRAPH_NAME="featuregraph"
 PROJECT_ROOT="${1:-.}"
-PLANNING_DIR="${PROJECT_ROOT}/_bmad-output/planning-artifacts"
-STORIES_DIR="${PROJECT_ROOT}/_bmad-output/stories"
-OUTPUT_LOG="${PROJECT_ROOT}/_bmad-output/featuregraph-index.log"
+PLANNING_DIR="${PROJECT_ROOT}/_iwish-output/planning-artifacts"
+STORIES_DIR="${PROJECT_ROOT}/_iwish-output/stories"
+OUTPUT_LOG="${PROJECT_ROOT}/_iwish-output/featuregraph-index.log"
 
 # --- Garbage Filter Lists (IGNORE patterns) ---
 IGNORE_DIRS="archive|templates|drafts|meeting-notes|backups"

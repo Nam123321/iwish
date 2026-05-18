@@ -649,9 +649,9 @@ export async function routeRequest(projectRoot: string, request: string): Promis
     source: entry.source,
   }));
 
-  const storyCount = sourceOfTruth.storyIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'stories'));
-  const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics'));
-  const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml'));
+  const storyCount = sourceOfTruth.storyIds.length || countFiles(path.join(projectRoot, '_iwish-output', 'stories'));
+  const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_iwish-output', 'epics'));
+  const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml'));
   const routeProfile = routingProfiles.find((profile) => profile.kind === 'workflow' && profile.name === route.canonicalCommand.replace(/^\//, ''));
   const toolSetupPrompts = buildToolSetupPrompts(routeProfile?.tool_dependencies || [], status.selectedTools);
   const scoring = computeScoring(

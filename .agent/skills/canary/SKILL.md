@@ -5,7 +5,7 @@ description: "Canary Deployment skill for validating safe rollouts to staging/pr
 
 # Canary Deployment Skill
 
-The **Canary** skill provides a structured CI/CD safety protocol for validating releases before full production deployment. Adapted from Gstack's `canary` playbook for the BMAD agent ecosystem.
+The **Canary** skill provides a structured CI/CD safety protocol for validating releases before full production deployment. Adapted from Gstack's `canary` playbook for the I-Wish agent ecosystem.
 
 ## Purpose
 

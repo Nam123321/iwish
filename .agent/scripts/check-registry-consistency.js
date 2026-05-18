@@ -6,7 +6,7 @@ const directoriesToScan = [
   path.join(process.cwd(), '.agent', 'agents'),
   path.join(process.cwd(), '.agent', 'workflows'),
   path.join(process.cwd(), '.agent', 'skills'),
-  path.join(process.cwd(), '_bmad')
+  path.join(process.cwd(), '_iwish')
 ];
 
 let hasErrors = false;
@@ -37,7 +37,7 @@ const textFiles = allFiles.filter(f => f.endsWith('.md') || f.endsWith('.yaml'))
 
 const commandRegistry = new Map(); // name -> filePath
 
-console.log('--- BMAD Registry Consistency Check ---');
+console.log('--- I-Wish Registry Consistency Check ---');
 
 // Phase 1: Collect registered commands
 textFiles.forEach(file => {

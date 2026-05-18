@@ -5,7 +5,7 @@ const SRC_DIR = path.join(__dirname, '../../');
 const DEST_DIR = path.join(__dirname, '../templates');
 
 const NAME_MAP = [
-  { old: 'bmad-master', new: 'Grand-Priest' },
+  { old: 'iwish-master', new: 'Grand-Priest' },
   { old: 'pm', new: 'King-Kai' },
   { old: 'analyst', new: 'Bulma' },
   { old: 'architect', new: 'Piccolo' },
@@ -102,11 +102,11 @@ async function scanAndCopy(relPath: string) {
 async function main() {
   await fs.ensureDir(DEST_DIR);
   console.log('Migrating agents...');
-  await scanAndCopy('_bmad/bmm/agents');
-  await scanAndCopy('_bmad/core/agents');
+  await scanAndCopy('_iwish/bmm/agents');
+  await scanAndCopy('_iwish/core/agents');
   
   console.log('Migrating workflows...');
-  await scanAndCopy('_bmad/bmm/workflows');
+  await scanAndCopy('_iwish/bmm/workflows');
   await scanAndCopy('.agent/workflows');
   
   console.log('Migrating skills...');

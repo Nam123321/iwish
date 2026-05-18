@@ -421,7 +421,7 @@
   ],
   "installTargets": [
     "claude-code",
-    "codex",
+    "local-terminal",
     "cursor"
   ]
 }

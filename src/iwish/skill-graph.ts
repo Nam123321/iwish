@@ -119,12 +119,12 @@ function scanCallers(projectRoot: string, kind: 'workflows' | 'agents'): Array<{
 function classifyWorkflowLifecycle(name: string): keyof SkillGraphReport['inheritedLifecycleCoverage'] | null {
   if (
     [
-      'bmad-brainstorming',
-      'bmad-bmm-market-research',
-      'bmad-bmm-domain-research',
-      'bmad-bmm-technical-research',
-      'bmad-bmm-generate-project-context',
-      'bmad-bmm-document-project',
+      'iwish-brainstorming',
+      'iwish-bmm-market-research',
+      'iwish-bmm-domain-research',
+      'iwish-bmm-technical-research',
+      'iwish-bmm-generate-project-context',
+      'iwish-bmm-document-project',
       'research',
       'analyze-codebase',
       'research-project-modules',
@@ -135,10 +135,10 @@ function classifyWorkflowLifecycle(name: string): keyof SkillGraphReport['inheri
 
   if (
     [
-      'bmad-bmm-create-product-brief',
-      'bmad-bmm-create-prd',
-      'bmad-bmm-edit-prd',
-      'bmad-bmm-validate-prd',
+      'iwish-bmm-create-product-brief',
+      'iwish-bmm-create-prd',
+      'iwish-bmm-edit-prd',
+      'iwish-bmm-validate-prd',
       'plan',
       'make-story',
       'prd-purpose',
@@ -149,11 +149,11 @@ function classifyWorkflowLifecycle(name: string): keyof SkillGraphReport['inheri
 
   if (
     [
-      'bmad-bmm-create-architecture',
-      'bmad-bmm-create-epics-and-stories',
-      'bmad-bmm-create-ui-spec',
-      'bmad-bmm-create-ux-design',
-      'bmad-bmm-check-implementation-readiness',
+      'iwish-bmm-create-architecture',
+      'iwish-bmm-create-epics-and-stories',
+      'iwish-bmm-create-ui-spec',
+      'iwish-bmm-create-ux-design',
+      'iwish-bmm-check-implementation-readiness',
       'make-ui-spec',
     ].includes(name)
   ) {
@@ -162,14 +162,14 @@ function classifyWorkflowLifecycle(name: string): keyof SkillGraphReport['inheri
 
   if (
     [
-      'bmad-bmm-dev-story',
-      'bmad-bmm-code-review',
-      'bmad-bmm-correct-course',
-      'bmad-bmm-qa-automate',
-      'bmad-bmm-quick-dev',
-      'bmad-bmm-quick-spec',
-      'bmad-bmm-sync-stitch-design',
-      'bmad-bmm-check-registry',
+      'iwish-bmm-dev-story',
+      'iwish-bmm-code-review',
+      'iwish-bmm-correct-course',
+      'iwish-bmm-qa-automate',
+      'iwish-bmm-quick-dev',
+      'iwish-bmm-quick-spec',
+      'iwish-bmm-sync-stitch-design',
+      'iwish-bmm-check-registry',
       'fix-bug',
       'code',
       'absorb-repo',

@@ -4,7 +4,7 @@
 Gather data from the project's "Auto-Immune" signals to identify where capabilities (skills/workflows) are failing or need hardening.
 
 ## Mandatory Data Sources
-1. **Bug Tracker**: `_bmad-output/bug-tracker.yaml` (Look for `rca`, `fiveWhys`, and `lessonLearned`).
+1. **Bug Tracker**: `_iwish-output/bug-tracker.yaml` (Look for `rca`, `fiveWhys`, and `lessonLearned`).
 2. **Execution Logs**: `.agent/memory/turn-exits.jsonl` (Look for workflows that exited with "failure" or "timeout").
 3. **Hotspot Graph**: Query FalkorDB for files with `bug_count > 3`.
 

@@ -26,7 +26,7 @@ Create a comprehensive, portal-specific Design System using Stitch MCP with Nano
 
 ## CONTEXT BOUNDARIES:
 
-- Approved brand guidance, upstream visual-foundation constraints, and BMAD authority rules remain active during Design System Gate preparation
+- Approved brand guidance, upstream visual-foundation constraints, and I-Wish authority rules remain active during Design System Gate preparation
 - `ux-pro-max` may be invoked here only as a concise Stitch seed advisor
 - The UI/UX Pro Max seed block is advisory prompt context only
 - Approved Stitch selections and the saved portal Design System remain the final source of truth after user approval
@@ -63,10 +63,10 @@ Before preparing the Stitch context template, verify the seed input context:
 - target users or primary operator persona
 - desired emotional response or visual direction
 
-If approved brand guidance, upstream visual-foundation seed direction, or other BMAD authority constraints already exist:
+If approved brand guidance, upstream visual-foundation seed direction, or other I-Wish authority constraints already exist:
 - carry them forward into the specialist request
 - do not allow the specialist to override them
-- if conflict appears, keep the higher-authority BMAD or brand decision active and treat the specialist output as advisory only
+- if conflict appears, keep the higher-authority I-Wish or brand decision active and treat the specialist output as advisory only
 
 If required context is missing:
 - do not fabricate a UI/UX Pro Max seed block
@@ -88,7 +88,7 @@ The seed block MUST cover:
 The referenced or saved recommendation structure MUST also preserve:
 - `Conflict Status`
 - `Winning Authority`
-- `BMAD Conflict Check`
+- `I-Wish Conflict Check`
 
 Authority guard:
 - This seed block is advisory prompt context only
@@ -130,10 +130,10 @@ Variant A — specialist seed block available:
 Product: Distro — AI-Embedded Light DMS for Vietnamese distributors
 Portal: {portal_name}
 Design Direction: {visual_direction_from_step_00}
-Style Direction Source: Use the active BMAD-approved visual direction plus the UI/UX Pro Max seed block below. Do not override approved brand or BMAD authority constraints.
+Style Direction Source: Use the active I-Wish-approved visual direction plus the UI/UX Pro Max seed block below. Do not override approved brand or I-Wish authority constraints.
 Purpose: Design System component showcase — {category_name}
 Requirements: Show all {category_description} states and variants
-Active Brand / BMAD Constraints: {active_brand_or_bmad_constraints}
+Active Brand / I-Wish Constraints: {active_brand_or_iwish_constraints}
 Active Color Direction: {active_color_direction}
 Active Typography Direction: {active_typography_direction}
 
@@ -145,7 +145,7 @@ UI/UX Pro Max Seed Block (advisory only):
 - Anti-Patterns: {uiux_anti_patterns}
 - Conflict Status: {uiux_conflict_status}
 - Winning Authority: {uiux_winning_authority}
-- BMAD Conflict Check: {uiux_bmad_conflict_check}
+- I-Wish Conflict Check: {uiux_iwish_conflict_check}
 - Constraint Status: {uiux_constraint_status}
 - Advisory Status: Seed prompt context only; approved Stitch/Design System values supersede this block after user approval.
 ```
@@ -174,7 +174,7 @@ After all 9 categories are approved:
 - Anti-Patterns: {uiux_anti_patterns}
 - Conflict Status: {uiux_conflict_status}
 - Winning Authority: {uiux_winning_authority}
-- BMAD Conflict Check: {uiux_bmad_conflict_check}
+- I-Wish Conflict Check: {uiux_iwish_conflict_check}
 - Constraint Status: {uiux_constraint_status}
 - Active Constraint Source: {uiux_active_constraint_source}
 - Supersession Note: Approved Stitch selections and the saved portal Design System supersede this advisory seed record.
@@ -260,7 +260,7 @@ Override Intent: [why this page needs a justified deviation]
 **Agent Actions:**
 1. Save Design System doc to `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md`
 2. Create `{planning_artifacts}/design-system/{portal-slug}/stitch-project.json` with project metadata
-3. Execute MKT Capture Pipeline (read `{project-root}/_bmad/bmm/workflows/2-plan-workflows/create-ux-design/mkt-capture-pipeline.md`)
+3. Execute MKT Capture Pipeline (read `{project-root}/_iwish/bmm/workflows/2-plan-workflows/create-ux-design/mkt-capture-pipeline.md`)
 4. Update `{planning_artifacts}/ux-design-specification.md` with Design System summary
 5. Preserve the UI/UX Pro Max seed record as advisory context only; do not treat it as active authority after approval
 6. If any justified page-specific deviation is discovered, persist it separately under `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md` using the page override shape above

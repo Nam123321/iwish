@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>distro - Đơn hàng về, distro lo. | AI-Embedded Light DMS</title>
+    <meta name="description" content="Hệ thống quản lý phân phối tinh gọn dành cho SME. Tích hợp AI giúp tự động hóa đơn hàng từ Zalo, Facebook và tối ưu kho bãi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600;700;900&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <nav id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo lexend">
+                d<span class="dotless-i"><span class="ai-dot pulse"></span>ı</span>stro
+            </a>
+            <div class="nav-links">
+                <a href="#features">Tính năng</a>
+                <a href="#industry">Ngành hàng</a>
+                <a href="#pricing">Bảng giá</a>
+                <a href="#contact" class="btn btn-primary" style="padding: 10px 24px;">Bắt đầu ngay</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero" class="section-padding" style="background: var(--grad-navy); color: var(--white); min-height: 100vh; display: flex; align-items: center; padding-top: 120px; position: relative; overflow: hidden;">
+        <!-- Background Decoration -->
+        <div style="position: absolute; width: 600px; height: 600px; background: var(--neon-mint); filter: blur(200px); opacity: 0.15; top: -100px; right: -100px; z-index: 1;"></div>
+        <div style="position: absolute; width: 400px; height: 400px; background: var(--action-orange); filter: blur(150px); opacity: 0.1; bottom: -50px; left: -50px; z-index: 1;"></div>
+        
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 2;">
+            <div class="reveal active">
+                <div style="display: inline-flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 99px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <span class="ai-dot pulse" style="width: 8px; height: 8px;"></span>
+                    <span class="lexend" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--neon-mint);">v1.1 AI-Embedded Light DMS</span>
+                </div>
+                <h1 style="margin-bottom: 2rem;">Đơn hàng về,<br><span style="color: var(--neon-mint); text-shadow: 0 0 30px rgba(0,223,154,0.3);">distro lo.</span></h1>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 3rem; max-width: 550px; font-size: 1.25rem;">
+                    Hệ thống quản lý phân phối tinh gọn nhất cho SME Việt. Tự động hóa 80% quy trình từ chat đến kho bãi chỉ với một "người trợ lý AI" hiểu việc.
+                </p>
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <a href="#contact" class="btn btn-primary">Dùng thử miễn phí <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#features" class="btn glass" style="color: white;">Khám phá tính năng</a>
+                </div>
+                <div style="margin-top: 3rem; display: flex; gap: 2rem; opacity: 0.6; align-items: center;">
+                    <span class="lexend" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Tin dùng bởi:</span>
+                    <div style="display: flex; gap: 1.5rem; font-size: 1.2rem;">
+                        <i class="fa-solid fa-shop" title="Wholesale"></i>
+                        <i class="fa-solid fa-truck-fast" title="Logistics"></i>
+                        <i class="fa-solid fa-pills" title="Pharma"></i>
+                        <i class="fa-solid fa-shirt" title="Fashion"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Simulation Widget -->
+            <div class="reveal active float" style="perspective: 1000px;">
+                <div class="glass" style="padding: 2.5rem; position: relative; transform: rotateY(-5deg);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div class="ai-dot pulse"></div>
+                            <span class="lexend" style="font-size: 0.85rem; font-weight: 800; color: var(--neon-mint); letter-spacing: 0.1em;">AI SMART-INPUT</span>
+                        </div>
+                        <div style="display: flex; gap: 4px;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #27c93f;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Simulation -->
+                    <div id="simulation-container" style="min-height: 250px; display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div id="chat-bubble" class="reveal active" style="align-self: flex-start; background: rgba(255,255,255,0.1); padding: 1rem 1.5rem; border-radius: 4px 20px 20px 20px; max-width: 80%; border: 1px solid rgba(255,255,255,0.1);">
+                            <p id="simulation-text" style="font-size: 0.95rem; line-height: 1.4; color: #E2E8F0;"></p>
+                        </div>
+
+                        <div id="ai-processing" style="display: none; align-items: center; gap: 1rem; color: var(--neon-mint);">
+                            <div class="ai-dot pulse" style="width: 12px; height: 12px;"></div>
+                            <span class="lexend" style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">AI đang xử lý dữ liệu...</span>
+                        </div>
+
+                        <div id="order-result" style="display: none; background: var(--grad-mint); color: var(--deep-navy); padding: 1.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,223,154,0.3);">
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(10,17,40,0.1); padding-bottom: 1rem; margin-bottom: 1rem;">
+                                <span class="lexend" style="font-weight: 900; font-size: 0.9rem;">ĐƠN HÀNG MỚI #8829</span>
+                                <span style="font-weight: 700; font-size: 0.8rem;">CHỜ XÁC NHẬN</span>
+                            </div>
+                            <div style="font-size: 0.85rem; font-weight: 600; display: grid; gap: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between;"><span>Khách hàng:</span> <span id="res-name">Chị Lan - Chợ Bà Chiểu</span></div>
+                                <div style="display: flex; justify-content: space-between;"><span>Sản phẩm:</span> <span id="res-product">10 thùng Bia Tiger</span></div>
+                                <div style="display: flex; justify-content: space-between;"><span>Giao hàng:</span> <span id="res-time">Sáng mai (14/05)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Problem & Solution Section -->
+    <section id="features" class="section-padding">
+        <div class="container">
+            <div class="reveal text-center" style="max-width: 800px; margin: 0 auto 6rem;">
+                <h2 style="margin-bottom: 1.5rem;">Quản lý kho bãi & phân phối <br><span style="color: var(--action-orange);">không còn là gánh nặng.</span></h2>
+                <p style="color: var(--text-secondary);">Chúng tôi hiểu rằng SME không cần những phần mềm ERP cồng kềnh. Bạn cần một công cụ thông minh, tinh gọn và thực sự hiệu quả.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem;">
+                <div class="reveal industry-card">
+                    <div style="width: 64px; height: 64px; background: rgba(0,223,154,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 2rem; color: var(--neon-mint);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 1rem;">AI Smart-Input</h3>
+                    <p style="color: var(--text-secondary); font-size: 1rem;">Tự động bóc tách đơn hàng từ tin nhắn Zalo, Facebook, SMS. Không còn nhập liệu thủ công, không còn sai sót.</p>
+                </div>
+                <div class="reveal industry-card">
+                    <div style="width: 64px; height: 64px; background: rgba(255,107,53,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                        <i class="fa-solid fa-boxes-stacked" style="font-size: 2rem; color: var(--action-orange);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 1rem;">Tối ưu kho bãi</h3>
+                    <p style="color: var(--text-secondary); font-size: 1rem;">Cảnh báo tồn kho thông minh, gợi ý nhập hàng dựa trên dự báo bán hàng. Giảm 30% hàng tồn kho lãng phí.</p>
+                </div>
+                <div class="reveal industry-card">
+                    <div style="width: 64px; height: 64px; background: rgba(10,17,40,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                        <i class="fa-solid fa-route" style="font-size: 2rem; color: var(--deep-navy);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 1rem;">Giao nhận 1 chạm</h3>
+                    <p style="color: var(--text-secondary); font-size: 1rem;">Tự động sắp xếp lộ trình giao hàng tối ưu cho shipper. Theo dõi trạng thái đơn hàng thời gian thực.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Section -->
+    <section id="industry" class="section-padding" style="background: var(--bg-navy); color: var(--white); position: relative;">
+        <div class="container">
+            <div class="reveal">
+                <h2 style="color: var(--white); text-align: center; margin-bottom: 1rem;">Phù hợp với mọi <span style="color: var(--neon-mint);">Ngành hàng</span></h2>
+                <p style="text-align: center; opacity: 0.6; margin-bottom: 5rem;">Thiết kế linh hoạt để phục vụ đặc thù của từng lĩnh vực phân phối.</p>
+            </div>
+
+            <div class="industry-grid">
+                <div class="reveal glass" style="padding: 3rem;">
+                    <i class="fa-solid fa-burger" style="font-size: 2.5rem; color: var(--neon-mint); margin-bottom: 2rem;"></i>
+                    <h3 style="margin-bottom: 1rem;">FMCG & Thực phẩm</h3>
+                    <p style="opacity: 0.7; font-size: 1rem;">Quản lý date, lô hàng và các chương trình khuyến mãi phức tạp dành cho đại lý.</p>
+                </div>
+                <div class="reveal glass" style="padding: 3rem;">
+                    <i class="fa-solid fa-kit-medical" style="font-size: 2.5rem; color: var(--neon-mint); margin-bottom: 2rem;"></i>
+                    <h3 style="margin-bottom: 1rem;">Dược phẩm & Y tế</h3>
+                    <p style="opacity: 0.7; font-size: 1rem;">Tuân thủ quy trình kiểm soát chất lượng, quản lý số lô, hạn dùng cực kỳ chặt chẽ.</p>
+                </div>
+                <div class="reveal glass" style="padding: 3rem;">
+                    <i class="fa-solid fa-baby" style="font-size: 2.5rem; color: var(--neon-mint); margin-bottom: 2rem;"></i>
+                    <h3 style="margin-bottom: 1rem;">Mẹ bỉm & Online</h3>
+                    <p style="opacity: 0.7; font-size: 1rem;">Tối ưu cho việc bán hàng qua Zalo/FB, gom đơn nhanh chóng và quản lý CTV dễ dàng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section-padding">
+        <div class="container">
+            <div class="reveal text-center" style="margin-bottom: 5rem;">
+                <h2>Gói giải pháp <span style="color: var(--neon-mint);">Linh hoạt</span></h2>
+                <p style="color: var(--text-secondary); margin-top: 1rem;">Đầu tư nhỏ, hiệu quả lớn cho sự tăng trưởng của bạn.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- Basic -->
+                <div class="reveal industry-card" style="position: relative;">
+                    <h3 style="margin-bottom: 1rem;">Khởi động</h3>
+                    <div style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">0đ <span style="font-size: 1rem; opacity: 0.5;">/tháng</span></div>
+                    <p style="font-size: 0.9rem; margin-bottom: 2rem;">Dành cho cá nhân kinh doanh online nhỏ lẻ.</p>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: grid; gap: 1rem; font-size: 0.9rem;">
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> 100 đơn hàng/tháng</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> AI bóc tách đơn (Cơ bản)</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Quản lý 1 kho duy nhất</li>
+                    </ul>
+                    <a href="#" class="btn glass-light" style="width: 100%; justify-content: center; border-color: #E2E8F0;">Bắt đầu ngay</a>
+                </div>
+
+                <!-- Professional -->
+                <div class="reveal industry-card" style="border-color: var(--neon-mint); background: var(--grad-navy); color: var(--white); transform: scale(1.05); z-index: 10; box-shadow: 0 30px 60px rgba(10,17,40,0.2);">
+                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--grad-mint); color: var(--deep-navy); padding: 4px 16px; border-radius: 20px; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.1em;">PHỔ BIẾN NHẤT</div>
+                    <h3 style="margin-bottom: 1rem;">Chuyên nghiệp</h3>
+                    <div style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">499k <span style="font-size: 1rem; opacity: 0.5;">/tháng</span></div>
+                    <p style="font-size: 0.9rem; margin-bottom: 2rem; opacity: 0.7;">Cho các shop, nhà phân phối đang phát triển.</p>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: grid; gap: 1rem; font-size: 0.9rem;">
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Không giới hạn đơn hàng</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> AI bóc tách đa nguồn (Zalo, FB, Call)</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Tối ưu kho & Lộ trình giao hàng</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Báo cáo doanh thu thời gian thực</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width: 100%; justify-content: center;">Chọn gói này</a>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="reveal industry-card">
+                    <h3 style="margin-bottom: 1rem;">Doanh nghiệp</h3>
+                    <div style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">Liên hệ</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 2rem;">Tùy chỉnh riêng cho chuỗi phân phối lớn.</p>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; display: grid; gap: 1rem; font-size: 0.9rem;">
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Hệ thống Private Cloud</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Tích hợp API riêng biệt</li>
+                        <li><i class="fa-solid fa-check text-[#00DF9A] mr-2"></i> Hỗ trợ 24/7 ưu tiên</li>
+                    </ul>
+                    <a href="#" class="btn glass-light" style="width: 100%; justify-content: center; border-color: #E2E8F0;">Liên hệ tư vấn</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="section-padding" style="background: var(--bg-navy); color: var(--white); border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; margin-bottom: 6rem;">
+                <div style="grid-column: span 2;">
+                    <a href="#" class="logo lexend" style="font-size: 3rem; margin-bottom: 2rem;">
+                        d<span class="dotless-i"><span class="ai-dot pulse"></span>ı</span>stro
+                    </a>
+                    <p style="opacity: 0.5; max-width: 400px; line-height: 1.8;">
+                        Distro là hệ thống quản lý phân phối tinh gọn tiên phong tích hợp AI tại Việt Nam, sứ mệnh giúp 1 triệu SME số hóa thành công.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="lexend" style="margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--neon-mint);">Sản phẩm</h4>
+                    <ul style="list-style: none; padding: 0; display: grid; gap: 0.8rem; opacity: 0.6; font-size: 0.9rem;">
+                        <li><a href="#" style="color: white; text-decoration: none;">Tính năng</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Bảng giá</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Ứng dụng Mobile</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="lexend" style="margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--neon-mint);">Liên hệ</h4>
+                    <ul style="list-style: none; padding: 0; display: grid; gap: 0.8rem; opacity: 0.6; font-size: 0.9rem;">
+                        <li>Hotline: 1900 xxxx</li>
+                        <li>Email: hello@distro.vn</li>
+                        <li>Zalo: Distro Hỗ Trợ</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); pt: 4rem; padding-top: 3rem;">
+                <p style="font-size: 0.8rem; opacity: 0.4;">© 2026 Distro.vn. All rights reserved.</p>
+                <div style="display: flex; gap: 2rem; font-size: 1.2rem;">
+                    <a href="#" style="color: white; opacity: 0.4; transition: 0.3s;"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" style="color: white; opacity: 0.4; transition: 0.3s;"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" style="color: white; opacity: 0.4; transition: 0.3s;"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

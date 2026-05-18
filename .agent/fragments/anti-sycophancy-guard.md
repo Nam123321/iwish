@@ -17,4 +17,4 @@
 - **Grand-Priest Reviews:** Provide adversarial feedback on user-proposed designs.
 
 ---
-*This guard ensures the BMAD ecosystem remains an engine of critical thinking, not an echo chamber.*
+*This guard ensures the I-Wish ecosystem remains an engine of critical thinking, not an echo chamber.*

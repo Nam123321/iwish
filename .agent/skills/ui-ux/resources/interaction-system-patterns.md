@@ -2,7 +2,7 @@
 
 This resource file curates the highly reusable interaction rules and UX patterns extracted from the UI/UX Pro Max dataset. It serves as "evidence" and "raw material" for the UI/UX Pro Max Specialist to provide richer guidance during component design and review.
 
-> **CRITICAL RULE (Retrieval-Sandwich):** All patterns in this file are *recommendations*, not authority. They MUST NOT override BMAD's `UX Guardian`, `Design Consultation`, or `Stitch Visual Contract` rules.
+> **CRITICAL RULE (Retrieval-Sandwich):** All patterns in this file are *recommendations*, not authority. They MUST NOT override I-Wish's `UX Guardian`, `Design Consultation`, or `Stitch Visual Contract` rules.
 
 ## 1. Core Interaction System Rules
 
@@ -38,4 +38,4 @@ This resource file curates the highly reusable interaction rules and UX patterns
 When evaluating a UI spec or recommending a design system:
 1. Identify if the current task matches any UX patterns (e.g., table design, batch action, mobile input).
 2. Propose the relevant pattern from this file as a recommendation.
-3. **MANDATORY:** Check the recommendation against existing `UX_GUARDIAN` rules (especially concerning Friction and Consistency). If a pattern conflicts with a firm BMAD directive, the BMAD directive wins and the pattern is discarded (logged in `Rejected Archetypes`).
+3. **MANDATORY:** Check the recommendation against existing `UX_GUARDIAN` rules (especially concerning Friction and Consistency). If a pattern conflicts with a firm I-Wish directive, the I-Wish directive wins and the pattern is discarded (logged in `Rejected Archetypes`).

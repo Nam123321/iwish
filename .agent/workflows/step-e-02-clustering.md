@@ -1,7 +1,7 @@
 # Step E-02: Clustering (Pattern Recognition)
 
 ## Goal
-Transform raw evidence into actionable "Pattern Failures" and map them to specific BMAD capabilities.
+Transform raw evidence into actionable "Pattern Failures" and map them to specific I-Wish capabilities.
 
 ## Execution Instructions
 1. **Thematic Clustering**:

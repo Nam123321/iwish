@@ -117,8 +117,8 @@ graph TD
 
 ---
 
-## 10. Reusable Patterns for BMAD
-- **Can Adopt:** The `RULES.md` and `SOUL.md` approach for strictly defining boundaries for sub-agents. The `skill-learner` pattern aligns perfectly with our BMAD Skill architecture.
+## 10. Reusable Patterns for I-Wish
+- **Can Adopt:** The `RULES.md` and `SOUL.md` approach for strictly defining boundaries for sub-agents. The `skill-learner` pattern aligns perfectly with our I-Wish Skill architecture.
 - **Need Adaptation:** Sandbox context. We already use E2B but could integrate the `gitmachine` layer for faster cloning and environment bootstrapping.
 - **Inspiration Only:** Realtime Voice capabilities. Could be interesting for a future persona.
 

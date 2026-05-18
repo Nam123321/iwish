@@ -1,0 +1,84 @@
+# I-Wish-SKILL Building - Sprint Status Tracking
+# This file tracks the system skills and capabilities being built for I-Wish Core.
+# It is completely separated from user-space projects to prevent artifact pollution.
+
+current_sprint: "Sprint 1 - Skill Core Framework"
+sprint_goal: "Establish foundation for Dual-Track Skill Lifecycle and Proactive Routing"
+status: "active"
+start_date: "2026-05-14"
+end_date: "2026-05-28"
+
+epics:
+  - id: epic-rap
+    name: "Repo Absorption Protocol V2"
+    status: COMPLETED
+    stories:
+      - id: story-1.6
+        name: "Dual-Track Skill Lifecycle & SkillGraph"
+        status: COMPLETED
+        assignee: Vegeta
+      - id: story-1.7
+        name: "Machine-Readable Routing Profiles for Orch Research Efficiency"
+        status: COMPLETED
+        assignee: Vegeta
+      - id: story-1.8
+        name: "Open Tool Usage Pack and Design Platform Generalization"
+        status: COMPLETED
+        assignee: Vegeta
+      - id: story-1.9
+        name: "Tool Setup Onboarding and Early Graph Backend Selection"
+        status: COMPLETED
+        assignee: orch-agent
+      - id: story-1.10
+        name: "Cross-Family Open Tool Coverage for Graph and Browser Usage Packs"
+        status: COMPLETED
+        assignee: orch-agent
+      - id: story-1.11
+        name: "Brownfield Bootstrap Flow and Starter Routing Bundle"
+        status: COMPLETED
+        assignee: orch-agent
+      - id: story-1.12
+        name: "Absorb, Pivot, and Course-Correction Orchestration"
+        status: COMPLETED
+        assignee: orch-agent
+      - id: story-1.13
+        name: "Idea Challenge and Unique Advantage Evaluation Layer"
+        status: COMPLETED
+        assignee: pm-agent
+      - id: story-1.14
+        name: "Full Idea Challenge Working Backwards Workflow"
+        status: COMPLETED
+        assignee: pm-agent
+      - id: story-1.15
+        name: "Idea Challenge Orch Chain and Navigator Lineage"
+        status: COMPLETED
+        assignee: orch-agent
+      - id: story-1.16
+        name: "Solution Source Research Before Create or Enhance"
+        status: in-progress
+        assignee: capability-agent
+      - id: story-1.17
+        name: "Context-First Semantic Routing for Orch Agent"
+        status: review
+        assignee: orch-agent
+      - id: story-1.18
+        name: "Neutral Install UX and Multi-Platform Adapter Expansion"
+        status: review
+        assignee: orch-agent
+      - id: story-1.18a
+        name: "Windsurf Install Adapter"
+        status: review
+        assignee: orch-agent
+      - id: story-1.18b
+        name: "OpenCode Install Adapter"
+        status: review
+        assignee: orch-agent
+      - id: story-1.18c
+        name: "Google Antigravity Install Adapter"
+        status: review
+        assignee: orch-agent
+
+backlog_skills:
+  - name: "SkillGraph Discovery Algorithm"
+    status: TODO
+    priority: HIGH

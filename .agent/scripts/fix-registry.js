@@ -6,7 +6,7 @@ const directoriesToScan = [
   path.join(process.cwd(), '.agent', 'agents'),
   path.join(process.cwd(), '.agent', 'workflows'),
   path.join(process.cwd(), '.agent', 'skills'),
-  path.join(process.cwd(), '_bmad')
+  path.join(process.cwd(), '_iwish')
 ];
 
 function getAllFiles(dirPath, arrayOfFiles) {
@@ -54,8 +54,8 @@ textFiles.forEach(file => {
             const existingPath = commandRegistry.get(cmdName);
             // Decide which one to rename
             let fileToRename = file;
-            if (relativePath.includes('bmad-agent-bmm') || relativePath.includes('bmad-bmm') || relativePath.endsWith('workflow.yaml') || relativePath.endsWith('hit.md') || relativePath.endsWith('prototype.yaml')) {
-              // Usually the one in .agent/workflows with bmad- is the wrapper, or if it's hit.md in workflows, it's a wrapper.
+            if (relativePath.includes('iwish-agent-bmm') || relativePath.includes('iwish-bmm') || relativePath.endsWith('workflow.yaml') || relativePath.endsWith('hit.md') || relativePath.endsWith('prototype.yaml')) {
+              // Usually the one in .agent/workflows with iwish- is the wrapper, or if it's hit.md in workflows, it's a wrapper.
               fileToRename = file;
             } else {
               fileToRename = path.join(process.cwd(), existingPath);

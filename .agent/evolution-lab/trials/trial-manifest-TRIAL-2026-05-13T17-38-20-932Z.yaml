@@ -5,7 +5,7 @@ is_code_eval: true
 decision: "PENDING"
 candidates:
   - path: "candidates/TRIAL-2026-05-13T17-38-20-932Z-native.js"
-    source_engine: "bmad-native"
+    source_engine: "iwish-native"
     engine_version: "internal"
   - path: "candidates/TRIAL-2026-05-13T17-38-20-932Z-darwinian.js"
     source_engine: "darwinian"

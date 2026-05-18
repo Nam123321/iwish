@@ -3,7 +3,7 @@ timestamp: "2026-05-12T17:05:58.862Z"
 fixture: "land-and-deploy"
 candidates:
   - path: "candidates/TRIAL-2026-05-12T17-05-58-861Z-native.md"
-    source_engine: "bmad-native"
+    source_engine: "iwish-native"
     engine_version: "internal"
   - path: "candidates/TRIAL-2026-05-12T17-05-58-861Z-darwinian.md"
     source_engine: "darwinian"

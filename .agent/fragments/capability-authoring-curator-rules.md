@@ -1,8 +1,8 @@
 # Capability Authoring and Curator Rules
 
-> **Purpose:** Define how BMAD skills, workflows, agents, and generated capability drafts should be authored, reviewed, curated, and constrained before promotion.
+> **Purpose:** Define how I-Wish skills, workflows, agents, and generated capability drafts should be authored, reviewed, curated, and constrained before promotion.
 
-Use this fragment when creating, enhancing, reviewing, or evolving BMAD capabilities. It is governance-only: it does not authorize background mutation, automatic deletion, automatic archival, or direct canonical `.agent/` overwrites.
+Use this fragment when creating, enhancing, reviewing, or evolving I-Wish capabilities. It is governance-only: it does not authorize background mutation, automatic deletion, automatic archival, or direct canonical `.agent/` overwrites.
 
 ## Authoring Checklist
 
@@ -13,7 +13,7 @@ Every new or updated capability MUST have enough structure for another agent to 
 | Identity | Clear `name`, short `description`, capability type, owner/origin, and draft/canonical status. |
 | Trigger | Specific trigger wording that explains when to load the capability and when not to load it. |
 | Scope | A narrow problem boundary, explicit out-of-scope cases, and no hidden expansion into unrelated workflows. |
-| Dependencies | Related skills, workflows, fragments, scripts, source artifacts, and required tools are named with repo-relative paths or `${BMAD_HOME}` paths. |
+| Dependencies | Related skills, workflows, fragments, scripts, source artifacts, and required tools are named with repo-relative paths or `${IWISH_HOME}` paths. |
 | Related assets | Existing overlapping or upstream capabilities are listed so duplicates can be merged or avoided. |
 | Context budget | Large references are summarized; heavy files are loaded on demand; repeated rules are centralized in fragments. |
 | Verification | Validation commands, manual review criteria, expected outputs, and failure signals are documented. |
@@ -50,7 +50,7 @@ Any curator or evolution-lab recommendation MUST produce this machine-readable s
 
 ```yaml
 recommendation_id: "<stable-id>"
-target_path: "<repo-relative path or ${BMAD_HOME}/generated-* path>"
+target_path: "<repo-relative path or ${IWISH_HOME}/generated-* path>"
 target_type: "skill|workflow|agent|fragment|compound|unknown"
 disposition: "keep|pin|patch|merge|split|archive|rewrite"
 evidence_signals:
@@ -60,7 +60,7 @@ risk_level: "low|medium|high"
 approval_required: true
 proposed_action: "<human-readable next action>"
 related_assets:
-  - "<repo-relative path or ${BMAD_HOME} path>"
+  - "<repo-relative path or ${IWISH_HOME} path>"
 recoverability_plan: "<required for merge|archive|rewrite; otherwise 'not_required'>"
 provenance_refs:
   - "<story id, memorygraph/KG node, source artifact, or evolution trial id>"
@@ -96,7 +96,7 @@ An LLM review may synthesize a recommendation after those signals are available,
 
 - Do not auto-delete canonical `.agent/` assets.
 - Do not auto-archive, auto-merge, or auto-rewrite canonical `.agent/` assets.
-- Do not promote `${BMAD_HOME}/generated-*` drafts into `.agent/` without explicit approval.
+- Do not promote `${IWISH_HOME}/generated-*` drafts into `.agent/` without explicit approval.
 - Archive recommendations must include the recoverable target path and restore note.
 - Merge recommendations must list rules that would be kept, moved, or discarded.
 - Rewrite recommendations must keep the old capability available until the replacement is approved.
@@ -108,7 +108,7 @@ Load `.agent/fragments/memory-admission-protocol.md` before turning session lear
 
 Capability-shaped learnings MUST route through the Classification Funnel and one of these paths:
 
-- new skill/workflow/agent draft under `${BMAD_HOME}/generated-*` via `create-skill`;
+- new skill/workflow/agent draft under `${IWISH_HOME}/generated-*` via `create-skill`;
 - patch or replacement proposal via `enhance-skill`;
 - compact memory pointer only, if useful, after the capability route has been selected.
 
@@ -119,9 +119,9 @@ A high memory admission score is not permission to store implementation methodol
 Generated capabilities MUST begin outside canonical `.agent/` paths:
 
 ```text
-${BMAD_HOME}/generated-skills/<name>/
-${BMAD_HOME}/generated-workflows/<name>/
-${BMAD_HOME}/generated-agents/<name>/
+${IWISH_HOME}/generated-skills/<name>/
+${IWISH_HOME}/generated-workflows/<name>/
+${IWISH_HOME}/generated-agents/<name>/
 ```
 
 Every generated draft MUST include:
@@ -152,4 +152,4 @@ Novelty must not outrank correctness. A candidate with a clever structure but we
 
 Adopt the behavior pattern from Hermes curator and Darwinian-style evolution loops: usage-aware review, stale/duplicate detection, recoverable recommendations, candidate populations, scoring, novelty, and human promotion.
 
-Do not copy Hermes or Darwinian Evolver runtime/source code into BMAD canonical assets as part of this fragment. Treat them as external pattern references unless a later story approves an adapter after legal/product review.
+Do not copy Hermes or Darwinian Evolver runtime/source code into I-Wish canonical assets as part of this fragment. Treat them as external pattern references unless a later story approves an adapter after legal/product review.

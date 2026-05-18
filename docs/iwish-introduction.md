@@ -113,9 +113,12 @@ Surface canonical hiện tại dùng tên theo chức năng:
 
 I-Wish hướng đến việc cài đặt và chạy trên nhiều môi trường:
 
-- `codex`
+- `local-terminal`
 - `claude-code`
 - `cursor`
+- `windsurf`
+- `opencode`
+- `google antigravity`
 
 Canonical runtime hiện dùng:
 

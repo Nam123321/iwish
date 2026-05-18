@@ -161,7 +161,7 @@ node .agent/scripts/day2-ops/git-tree.js
 node .agent/scripts/day2-ops/generate-snapshot.js
 ```
 
-Report will be saved to: `_bmad-output/health-reports/YYYY-MM-DD/health-report.md`
+Report will be saved to: `_iwish-output/health-reports/YYYY-MM-DD/health-report.md`
 Review the output report to identify high-risk files.
 ```
 

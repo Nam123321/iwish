@@ -101,7 +101,7 @@ If the project needs:
 - Comprehensive coverage analysis
 - Advanced testing patterns and utilities
 
-→ **Install Test Piccolo (TEA) module**: <https://bmad-code-org.github.io/bmad-method-test-architecture-enterprise/>
+→ **Install Test Piccolo (TEA) module**: <https://iwish-code-org.github.io/iwish-method-test-architecture-enterprise/>
 
 ## Output
 

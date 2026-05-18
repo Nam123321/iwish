@@ -1,6 +1,6 @@
 # Background Review and Learning Log Governance
 
-> **Purpose:** Define how BMAD records session lessons and background-review findings as auditable evidence without allowing hidden automation to mutate canonical assets.
+> **Purpose:** Define how I-Wish records session lessons and background-review findings as auditable evidence without allowing hidden automation to mutate canonical assets.
 
 Use this fragment when a session, story, implementation pass, bug fix, code review, QA run, curator signal, user correction, or evolution trial produces a durable learning candidate.
 
@@ -22,12 +22,12 @@ id: "learning-log-<stable-id>"
 ts: "YYYY-MM-DD"
 source:
   type: "session|story|implementation|fix-bug|code-review|qa|curator|background-review|evolution-trial|user-correction"
-  ref: "<story id, bug id, review id, repo-relative path, or ${BMAD_HOME} artifact>"
+  ref: "<story id, bug id, review id, repo-relative path, or ${IWISH_HOME} artifact>"
 story_id: "<story-id-or-null>"
 workflow: "<workflow-or-agent-name>"
 target:
   type: "project-memory|user-memory|workflow-memory|instinct|kg-learning|skill|workflow|agent|fragment|compound|unknown"
-  path: "<repo-relative path, ${BMAD_HOME} path, or null>"
+  path: "<repo-relative path, ${IWISH_HOME} path, or null>"
 evidence:
   failure_case: "<compact description>"
   attempted_change: "<compact description or null>"
@@ -51,7 +51,7 @@ status: "active|resolved|promoted|stale|superseded|sensitive|archived"
 Required rules:
 
 - Store compact lessons and source references, not raw logs, transcripts, graph dumps, review dumps, or source files.
-- Use repo-relative paths, story IDs, bug IDs, graph IDs, approved URLs, or `${BMAD_HOME}` artifacts for source refs.
+- Use repo-relative paths, story IDs, bug IDs, graph IDs, approved URLs, or `${IWISH_HOME}` artifacts for source refs.
 - Keep `severity` on a `1-5` scale. Severity raises review priority but cannot bypass admission, classification, validation, sensitivity, or approval gates.
 - Keep `confidence` on a `1-10` scale. Values below `7` are reviewer-visible only and cannot drive automated branching.
 - Use append-only events or status changes for material updates. Do not silently rewrite historical decisions.
@@ -78,7 +78,7 @@ Every learning-log entry MUST use exactly one disposition:
 | `workflow_memory_candidate` | Workflow-specific tuning, failure, or guardrail. | Route to workflow memory or future `.agent/memory/workflows/*.md`. |
 | `instinct_candidate` | Compact operational bad/good pattern. | Candidate for `.agent/memory/instincts.jsonl` after admission and source checks. |
 | `kg_learning_candidate` | Durable lesson needs retrieval/search relationships. | Candidate for `.agent/learnings/*.md` plus KG registration after admission. |
-| `draft_capability_candidate` | Learning is skill/workflow/agent/fragment/compound-shaped. | Route through classification and generated `${BMAD_HOME}/generated-*` rules. |
+| `draft_capability_candidate` | Learning is skill/workflow/agent/fragment/compound-shaped. | Route through classification and generated `${IWISH_HOME}/generated-*` rules. |
 | `curator_recommendation` | Existing capability may need keep/pin/patch/merge/split/archive/rewrite. | Emit HSEA-1.2 Curator Recommendation Contract. |
 | `evolution_fixture_candidate` | Evidence may become a training/evaluation case. | Defer to Evolution Lab stories; no promotion by itself. |
 | `holdout_candidate` | Evidence should be preserved as a regression/holdout case. | Defer to Evolution Lab holdout policy; no promotion by itself. |
@@ -98,7 +98,7 @@ Background review may not directly:
 - write to `PROJECT.md` or `USER.md`;
 - append to `.agent/memory/instincts.jsonl`;
 - create `.agent/learnings/*.md` or KG/MemoryGraph nodes;
-- create `${BMAD_HOME}/generated-*` drafts;
+- create `${IWISH_HOME}/generated-*` drafts;
 - update canonical `.agent/skills`, `.agent/workflows`, `.agent/agents`, or `.agent/fragments`;
 - update `templates/`;
 - promote, merge, archive, rewrite, or delete canonical assets.

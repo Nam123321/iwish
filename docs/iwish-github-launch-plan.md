@@ -11,15 +11,15 @@ As of the current packaging pass:
 - public repo direction is locked to **Option A**
 - CLI/package name is `iwish`
 - compatibility alias `bmad-db` is still present for migration safety
-- install no longer silently defaults to `codex`
+- install no longer silently defaults to a named terminal host
 - current supported install targets are:
   - `claude-code`
-  - `codex`
+  - `local-terminal`
   - `cursor`
   - `windsurf`
   - `opencode`
   - `google antigravity`
-- `npm pack --dry-run` still needs explicit review before publish because the package is asset-heavy
+- latest allowlist slimming pass reduced the publish surface materially, but the package still needs explicit review before publish
 
 ## Recommended Launch Shape
 
@@ -86,7 +86,7 @@ Risks:
   - `/bootstrap-existing-project`
   - `/pivot-project`
 - smoke test install targets:
-  - `codex`
+  - `local-terminal`
   - `cursor`
   - `windsurf`
   - `opencode`
@@ -152,6 +152,13 @@ Suggested topics:
   - `npx iwish`
   - legacy `bmad-db` alias still resolves
 
+Until Phase 4 is complete, installation docs should point to the GitHub package spec:
+
+```bash
+npm install -g github:Nam123321/iwish
+npx --yes github:Nam123321/iwish install
+```
+
 ## Known Risks
 
 ### 1. Package size
@@ -164,17 +171,17 @@ Because I-Wish currently ships runtime assets from:
 
 the npm package may be larger than a normal CLI.
 
-Current dry-run snapshot before final trim:
+Current dry-run snapshot after allowlist slimming:
 
-- tarball size: about `1.1 MB`
-- unpacked size: about `4.6 MB`
-- total files: about `906`
+- tarball size: about `800 kB`
+- unpacked size: about `2.7 MB`
+- total files: about `566`
 
 Observation:
 
-- the latest `.npmignore` trim pass did **not** materially reduce the tarball
-- current publish size is still dominated by `.agent/`, `templates/`, and compatibility-heavy assets
-- before public launch, optimization will likely require a stricter allowlist strategy rather than incremental ignore rules alone
+- the earlier `.npmignore`-only trim pass did **not** materially reduce the tarball
+- switching to a curated `files` allowlist reduced package size and file count substantially
+- the package is still asset-heavy because runtime behavior depends on `.agent/`, `templates/library`, `templates/iwish`, and compatibility-backed workflow assets
 
 Short-term stance:
 

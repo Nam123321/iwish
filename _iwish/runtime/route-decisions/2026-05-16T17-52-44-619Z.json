@@ -30,10 +30,10 @@
       "source": "/.agent/workflows/create-data-spec.md"
     },
     {
-      "id": "workflow:bmad-bmm-create-story",
+      "id": "workflow:iwish-bmm-create-story",
       "type": "workflow",
-      "canonical": "bmad-bmm-create-story",
-      "source": "/.agent/workflows/bmad-bmm-create-story.md"
+      "canonical": "iwish-bmm-create-story",
+      "source": "/.agent/workflows/iwish-bmm-create-story.md"
     },
     {
       "id": "agent-alias:whis",

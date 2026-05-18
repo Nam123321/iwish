@@ -4,7 +4,7 @@ fixture: "land-and-deploy"
 decision: "APPROVED"
 candidates:
   - path: "candidates/TRIAL-2026-05-13T05-13-07-848Z-native.md"
-    source_engine: "bmad-native"
+    source_engine: "iwish-native"
     engine_version: "internal"
   - path: "candidates/TRIAL-2026-05-13T05-13-07-848Z-darwinian.md"
     source_engine: "darwinian"

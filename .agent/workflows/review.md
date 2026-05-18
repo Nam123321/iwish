@@ -7,4 +7,4 @@ description: 'Canonical short workflow for review and audit'
 
 Canonical workflow name for review and audit.
 
-Read and execute: `bmad-bmm-code-review.md`
+Read and execute: `iwish-bmm-code-review.md`

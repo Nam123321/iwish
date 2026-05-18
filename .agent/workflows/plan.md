@@ -7,7 +7,7 @@ description: 'Canonical short workflow for sprint and execution planning'
 
 Canonical workflow name for planning and sprint orchestration.
 
-Read and execute: `bmad-bmm-sprint-planning.md`
+Read and execute: `iwish-bmm-sprint-planning.md`
 
 If `/plan` follows `idea-challenge`, treat these as upstream planning inputs:
 

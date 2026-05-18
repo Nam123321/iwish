@@ -1,7 +1,7 @@
 {
   "name": "darwinian",
   "version": "1.0.0",
-  "description": "Mock Darwinian Evolver CLI for BMAD Evolution Lab",
+  "description": "Mock Darwinian Evolver CLI for I-Wish Evolution Lab",
   "bin": {
     "darwinian": "./index.js"
   }

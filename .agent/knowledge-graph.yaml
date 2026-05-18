@@ -99,9 +99,9 @@ nodes:
   - guardian
   - testing
   depends_on: []
-- id: context-bmad-architecture
+- id: context-iwish-architecture
   type: context
-  path: /.agent/BMAD-ARCHITECTURE.md
+  path: /.agent/I-Wish-ARCHITECTURE.md
   description: Central Governance & Sharing Registry. Defines the Classification Matrix,
     Iron Rule, and Double-Lock strategy.
   tags:
@@ -123,7 +123,7 @@ nodes:
 - id: fragment-quality-criteria
   type: fragment
   path: /.agent/fragments/quality-criteria.md
-  description: Passive quality gate criteria for BMAD epic and story creation.
+  description: Passive quality gate criteria for I-Wish epic and story creation.
   tags:
   - quality
   - criteria
@@ -151,7 +151,7 @@ nodes:
 - id: fragment-taxonomy-8-pillars
   type: fragment
   path: /.agent/fragments/taxonomy-8-pillars.md
-  description: Quick-reference taxonomy card detailing the 8 pillars of BMAD architecture.
+  description: Quick-reference taxonomy card detailing the 8 pillars of I-Wish architecture.
   tags:
   - taxonomy
   - pillars
@@ -342,7 +342,7 @@ nodes:
   type: skill
   path: /.agent/skills/ux-pro-max/SKILL.md
   description: Specialist wrapper for invoking UI/UX Pro Max design intelligence inside
-    BMAD without replacing BMAD UX governance. Use for design-system seeding,
+    I-Wish without replacing I-Wish UX governance. Use for design-system seeding,
     typography, color palette, interaction tone, accessibility, motion, and
     Stitch-adjacent UI review guidance.
   tags:
@@ -422,7 +422,7 @@ nodes:
   depends_on: []
 - id: story-psa-2.2
   type: story
-  path: /_bmad-output/stories/epic-pocock-skills-absorption/story-psa-2.2-local-devex-ops-integration.md
+  path: /_iwish-output/stories/epic-pocock-skills-absorption/story-psa-2.2-local-devex-ops-integration.md
   description: Local DevEx Ops Integration (Husky, Lint, Guardrails).
   tags:
   - psa
@@ -441,7 +441,7 @@ nodes:
 - id: entry-cli
   type: source
   path: /src/index.ts
-  description: Entry point for the BMAD-DragonBall CLI.
+  description: Entry point for the I-Wish-DragonBall CLI.
   tags:
   - cli
   - core
@@ -539,14 +539,14 @@ nodes:
   type: doc
   path: /.agent/scripts/add-to-kg.sh
   description: "Core architectural document: add-to-kg.sh"
-- id: .agent-scripts-bmad-runtime-lib-sh
+- id: .agent-scripts-iwish-runtime-lib-sh
   type: doc
-  path: /.agent/scripts/bmad-runtime-lib.sh
-  description: "Core architectural document: bmad-runtime-lib.sh"
-- id: .agent-scripts-check-bmad-runtime-sh
+  path: /.agent/scripts/iwish-runtime-lib.sh
+  description: "Core architectural document: iwish-runtime-lib.sh"
+- id: .agent-scripts-check-iwish-runtime-sh
   type: doc
-  path: /.agent/scripts/check-bmad-runtime.sh
-  description: "Core architectural document: check-bmad-runtime.sh"
+  path: /.agent/scripts/check-iwish-runtime.sh
+  description: "Core architectural document: check-iwish-runtime.sh"
 - id: .agent-scripts-check-registry-js
   type: doc
   path: /.agent/scripts/check-registry.js
@@ -567,10 +567,10 @@ nodes:
   type: doc
   path: /.agent/scripts/magic-hunter.js
   description: "Core architectural document: magic-hunter.js"
-- id: .agent-scripts-materialize-bmad-runtime-sh
+- id: .agent-scripts-materialize-iwish-runtime-sh
   type: doc
-  path: /.agent/scripts/materialize-bmad-runtime.sh
-  description: "Core architectural document: materialize-bmad-runtime.sh"
+  path: /.agent/scripts/materialize-iwish-runtime.sh
+  description: "Core architectural document: materialize-iwish-runtime.sh"
 - id: .agent-scripts-validate-kg-py
   type: doc
   path: /.agent/scripts/validate-kg.py

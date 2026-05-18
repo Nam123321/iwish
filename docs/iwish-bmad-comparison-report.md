@@ -18,7 +18,7 @@ Generated: 2026-05-15
 
 | Pattern | BMAD Method original | BMAD-DragonBall before | I-Wish current |
 |---|---|---|---|
-| Pattern 1: Config-driven module installation | Declarative install via `module.yaml`, installer CLI, channels, marketplace/community/custom source support | Mostly repo-local runtime materialization and template/wrapper based setup under `_bmad` | `iwish install/update/status/doctor/register-module`, `_iwish` substrate, declarative runtime templates, install targets `claude-code/codex/cursor` |
+| Pattern 1: Config-driven module installation | Declarative install via `module.yaml`, installer CLI, channels, marketplace/community/custom source support | Mostly repo-local runtime materialization and template/wrapper based setup under `_bmad` | `iwish install/update/status/doctor/register-module`, `_iwish` substrate, declarative runtime templates, install targets `claude-code/local-terminal/cursor` |
 | Pattern 2: Native skill architecture | Native `SKILL.md` is the universal runtime unit across core and BMM modules | Mixed model: skills + workflow wrappers + agent markdown + templates + persona layers | Canonical package contract is `SKILL.md + DESIGN.md + customize.toml + metadata + lineage`; old wrappers kept as compatibility aliases |
 | Pattern 3: Layered customization overlays | Strong TOML overlay model and custom module/config layering | Customization existed but was more repo/template centric and less declaratively isolated | Runtime keeps open-module metadata, custom roots, tool profiles, and prepares for non-fork overlays in `_iwish/custom` |
 | Pattern 4: Lifecycle/domain workflow taxonomy | Clean split between `core-skills` and `bmm-skills`, phase-oriented lifecycle | Extremely rich workflow catalog with many specialized wrappers, packs, QA, UX, repo absorption, and day-2/ops flows | Keeps DragonBall’s wide workflow coverage but routes it through Orch-first and truth-aware command surfaces |
@@ -219,7 +219,7 @@ Generated: 2026-05-15
 
 ### Install Targets (3)
 - claude-code
-- codex
+- local-terminal
 - cursor
 
 ## BMAD Method Original Inventory Snapshot

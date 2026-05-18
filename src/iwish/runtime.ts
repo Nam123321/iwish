@@ -23,6 +23,8 @@ import { generateRoutingProfile } from './routing-profile';
 import { buildToolSetupPrompts, ToolSetupPrompt } from './tooling';
 
 type InstallMode = 'install' | 'update';
+type MaterializeStatus = 'created' | 'kept' | 'updated';
+type MaterializeResult = { file: string; status: MaterializeStatus };
 
 type ExternalModuleRecord = {
   name: string;
@@ -173,8 +175,37 @@ function hasFrontmatterKey(content: string, key: string): boolean {
   return new RegExp(`^${key}:`, 'm').test(content);
 }
 
+function readFrontmatterValue(content: string, key: string): string | null {
+  const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!frontmatter) {
+    return null;
+  }
+
+  const value = frontmatter[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+  return value ? value[1].trim() : null;
+}
+
+function repairMissingAgentDescription(destinationContent: string, sourceContent: string): string | null {
+  if (!destinationContent.startsWith('---\n') || readFrontmatterValue(destinationContent, 'description')) {
+    return null;
+  }
+
+  const description = readFrontmatterValue(sourceContent, 'description');
+  if (!description) {
+    return null;
+  }
+
+  const nameLine = destinationContent.match(/^name:\s*.+$/m);
+  if (!nameLine || nameLine.index === undefined) {
+    return null;
+  }
+
+  const insertAt = nameLine.index + nameLine[0].length;
+  return `${destinationContent.slice(0, insertAt)}\ndescription: ${description}${destinationContent.slice(insertAt)}`;
+}
+
 function getPlanningArtifactsRoot(projectRoot: string): string {
-  return path.join(projectRoot, '_bmad-output', 'planning');
+  return path.join(projectRoot, '_iwish-output', 'planning');
 }
 
 function getIdeaChallengeArtifactRoot(projectRoot: string, projectName: string): string {
@@ -183,6 +214,21 @@ function getIdeaChallengeArtifactRoot(projectRoot: string, projectName: string):
 
 function getSolutionResearchArtifactRoot(projectRoot: string, researchName: string): string {
   return path.join(getPlanningArtifactsRoot(projectRoot), 'solution-research', slugify(researchName));
+}
+
+function resolveIwishPath(projectRoot: string, targetPath: string): string {
+  const runtimeRoot = getRuntimeRoot(projectRoot, 'iwish');
+  const customRoot = path.join(runtimeRoot, 'custom');
+  
+  // If path is within _iwish but not already in _iwish/custom
+  if (targetPath.startsWith(runtimeRoot) && !targetPath.startsWith(customRoot)) {
+    const relativePath = path.relative(runtimeRoot, targetPath);
+    const customPath = path.join(customRoot, relativePath);
+    if (fs.existsSync(customPath) && fs.statSync(customPath).isFile()) {
+      return customPath;
+    }
+  }
+  return targetPath;
 }
 
 function readYamlFile(filePath: string): Record<string, unknown> {
@@ -214,7 +260,7 @@ function getModuleDescriptors() {
 }
 
 function loadExistingManifest(projectRoot: string): RuntimeManifest | null {
-  const manifestPath = getManifestPath(projectRoot);
+  const manifestPath = resolveIwishPath(projectRoot, getManifestPath(projectRoot));
   if (!fs.existsSync(manifestPath)) {
     return null;
   }
@@ -247,9 +293,62 @@ async function materializeRuntimeTemplates(projectRoot: string, overwrite = fals
   return results;
 }
 
+function getAgentAssetFiles(): string[] {
+  const agentRoot = path.join(REPO_ROOT, '.agent');
+  if (!fs.existsSync(agentRoot)) {
+    return [];
+  }
+
+  const files: string[] = [];
+  const visit = (directory: string) => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const entryPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        visit(entryPath);
+      } else if (entry.isFile()) {
+        files.push(entryPath);
+      }
+    }
+  };
+  visit(agentRoot);
+
+  return files.filter((filePath) => {
+    const relative = path.relative(agentRoot, filePath);
+    return !relative.includes('__pycache__') && !relative.endsWith('.pyc') && path.basename(relative) !== '.DS_Store';
+  });
+}
+
+async function materializeAgentAssets(projectRoot: string, overwrite = false): Promise<MaterializeResult[]> {
+  const agentRoot = path.join(REPO_ROOT, '.agent');
+  const destinationRoot = path.join(projectRoot, '.agent');
+  const results: MaterializeResult[] = [];
+
+  for (const sourceFile of getAgentAssetFiles()) {
+    const relative = path.relative(agentRoot, sourceFile);
+    const destination = path.join(destinationRoot, relative);
+    const content = await fs.readFile(sourceFile);
+    let status: MaterializeStatus = fs.existsSync(destination) && !overwrite ? 'kept' : 'created';
+    if (status === 'created') {
+      await fs.ensureDir(path.dirname(destination));
+      await fs.writeFile(destination, content);
+    } else if (relative.startsWith('agents/') && relative.endsWith('.md')) {
+      const destinationContent = await fs.readFile(destination, 'utf8');
+      const sourceContent = content.toString('utf8');
+      const repairedContent = repairMissingAgentDescription(destinationContent, sourceContent);
+      if (repairedContent) {
+        await fs.writeFile(destination, repairedContent, 'utf8');
+        status = 'updated';
+      }
+    }
+    results.push({ file: destination, status });
+  }
+
+  return results;
+}
+
 function buildManifest(projectRoot: string, installTargets: string[], existing: RuntimeManifest | null): RuntimeManifest {
   const runtimeRoot = getRuntimeRoot(projectRoot, 'iwish');
-  const legacyRuntimeDetected = fs.existsSync(getRuntimeRoot(projectRoot, 'legacy-bmad'));
+  const legacyRuntimeDetected = fs.existsSync(getRuntimeRoot(projectRoot, 'legacy-iwish'));
   const externalModuleDir = getExternalModuleDir(projectRoot);
   const externalModules = fs.existsSync(externalModuleDir)
     ? fs
@@ -322,6 +421,7 @@ async function materializeInstallTargetDirs(projectRoot: string, installTargets:
 export async function installRuntime(projectRoot: string, installTargets: string[], mode: InstallMode): Promise<void> {
   const existing = loadExistingManifest(projectRoot);
   const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'install' ? false : false);
+  const agentAssetResults = await materializeAgentAssets(projectRoot, mode === 'install' ? false : false);
   await materializeInstallTargetDirs(projectRoot, installTargets);
   await writeInstallTargetMarkers(projectRoot, installTargets);
 
@@ -333,19 +433,19 @@ export async function installRuntime(projectRoot: string, installTargets: string
   const created = templateResults.filter((entry) => entry.status === 'created').length;
   const kept = templateResults.filter((entry) => entry.status === 'kept').length;
   console.log(chalk.blue(`Runtime scaffold: ${created} created, ${kept} preserved`));
+  const createdAgentAssets = agentAssetResults.filter((entry) => entry.status === 'created').length;
+  const keptAgentAssets = agentAssetResults.filter((entry) => entry.status === 'kept').length;
+  const updatedAgentAssets = agentAssetResults.filter((entry) => entry.status === 'updated').length;
+  console.log(chalk.blue(`Agent assets: ${createdAgentAssets} created, ${updatedAgentAssets} updated, ${keptAgentAssets} preserved`));
   if (manifest.legacyRuntimeDetected) {
-    console.log(chalk.yellow('Legacy _bmad runtime detected. Compatibility shim is active.'));
+    console.log(chalk.yellow('Legacy _iwish runtime detected. Compatibility shim is active.'));
   }
-  console.log(chalk.yellow('Graph setup is required for Orch brain surfaces.'));
-  console.log('Recommended default: falkordb-full');
-  console.log('Other researched options: neo4j, memgraph, lite-static, custom-adapter');
-  console.log(`Choose with: iwish select-tool graph <adapter>`);
 }
 
 export function getStatus(projectRoot: string) {
   const manifest = loadExistingManifest(projectRoot);
   const runtimeRoot = getRuntimeRoot(projectRoot, 'iwish');
-  const legacyRoot = getRuntimeRoot(projectRoot, 'legacy-bmad');
+  const legacyRoot = getRuntimeRoot(projectRoot, 'legacy-iwish');
   const customRoot = path.join(runtimeRoot, 'custom');
   const catalogRoot = path.join(runtimeRoot, 'catalog');
   const graphProfile = path.join(runtimeRoot, 'graphs', 'graph-profile.yaml');
@@ -379,7 +479,7 @@ export function printStatus(projectRoot: string): void {
 
   console.log(chalk.blue(`I-Wish runtime root: ${status.runtimeRoot}`));
   console.log(`manifest: ${status.manifestExists ? 'present' : 'missing'}`);
-  console.log(`legacy _bmad: ${status.legacyDetected ? 'detected' : 'not found'}`);
+  console.log(`legacy _iwish: ${status.legacyDetected ? 'detected' : 'not found'}`);
   console.log(`custom/: ${status.customExists ? 'present' : 'missing'}`);
   console.log(`catalog/: ${status.catalogExists ? 'present' : 'missing'}`);
   console.log(`graph-profile: ${status.graphProfileExists ? 'present' : 'missing'}`);
@@ -411,7 +511,7 @@ export function printDoctor(projectRoot: string): void {
   }
 
   if (status.legacyDetected) {
-    console.log(chalk.yellow('Legacy `_bmad` runtime was detected. Keep compatibility shims enabled until migration is complete.'));
+    console.log(chalk.yellow('Legacy `_iwish` runtime was detected. Keep compatibility shims enabled until migration is complete.'));
   }
 }
 
@@ -736,7 +836,7 @@ created: "${timestamp}"
 }
 
 export function readToolProfile(projectRoot: string): ToolProfile | null {
-  const profilePath = getToolProfilePath(projectRoot);
+  const profilePath = resolveIwishPath(projectRoot, getToolProfilePath(projectRoot));
   if (!fs.existsSync(profilePath)) {
     return null;
   }
@@ -1054,8 +1154,9 @@ export async function advanceSolutionResearchStage(
 }
 
 export async function writeGraphProfileSelection(projectRoot: string, adapter: string): Promise<void> {
-  const existing = fs.existsSync(getGraphProfilePath(projectRoot))
-    ? (readYamlFile(getGraphProfilePath(projectRoot)) as GraphProfile)
+  const readPath = resolveIwishPath(projectRoot, getGraphProfilePath(projectRoot));
+  const existing = fs.existsSync(readPath)
+    ? (readYamlFile(readPath) as GraphProfile)
     : {};
   const updated: GraphProfile = {
     ...existing,

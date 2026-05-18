@@ -45,5 +45,5 @@ Each step file should make the following clear:
 
 ## Compatibility Notes
 
-- Legacy BMAD step-files remain valid if they preserve one-step-at-a-time execution and explicit handoffs.
+- Legacy I-Wish step-files remain valid if they preserve one-step-at-a-time execution and explicit handoffs.
 - New I-Wish capability packages should prefer this standard for workflow-shaped or compound capabilities.

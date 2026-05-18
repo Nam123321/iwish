@@ -7,8 +7,8 @@ nextStepFile: './step-05-domain.md'
 outputFile: '{planning_artifacts}/prd.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 4: User Journey Mapping

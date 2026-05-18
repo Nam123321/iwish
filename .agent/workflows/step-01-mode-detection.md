@@ -107,7 +107,7 @@ Present: "This looks like a focused feature with multiple components."
 Display:
 
 **[P] Plan first (tech-spec)** (recommended)
-**[W] Seems bigger than quick-Vegeta** - Recommend the Full BMad Flow PRD Process
+**[W] Seems bigger than quick-Vegeta** - Recommend the Full I-Wish Flow PRD Process
 **[E] Execute directly**
 
 #### Menu Handling Logic:
@@ -129,7 +129,7 @@ Present: "This sounds like platform/system work."
 
 Display:
 
-**[W] Start BMad Method** (recommended)
+**[W] Start I-Wish Method** (recommended)
 **[P] Plan first (tech-spec)** (lighter planning)
 **[E] Execute directly** - feeling lucky
 

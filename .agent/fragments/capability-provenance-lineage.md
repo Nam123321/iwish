@@ -1,6 +1,6 @@
 # Capability Provenance and Lineage
 
-> **Purpose:** Preserve why a generated BMAD capability exists, what evidence produced it, and how it evolves over time without bloating the capability body.
+> **Purpose:** Preserve why a generated I-Wish capability exists, what evidence produced it, and how it evolves over time without bloating the capability body.
 
 Use this fragment for generated skills, workflows, agents, fragments, and compound capability drafts created or updated from memorygraph/KG evidence, instincts, learning logs, bug fixes, review findings, user corrections, curator recommendations, absorbed repos, or evolution trials.
 
@@ -17,23 +17,23 @@ This fragment is contract-only. It does not authorize FeatureGraph/FalkorDB writ
 
 ## Draft File Layout
 
-Generated drafts MUST start under `${BMAD_HOME}/generated-*`:
+Generated drafts MUST start under `${IWISH_HOME}/generated-*`:
 
 ```text
-${BMAD_HOME}/generated-skills/<name>/SKILL.md
-${BMAD_HOME}/generated-skills/<name>/metadata.yaml
-${BMAD_HOME}/generated-skills/<name>/lineage.jsonl
-${BMAD_HOME}/generated-skills/<name>/promotion-plan.md
+${IWISH_HOME}/generated-skills/<name>/SKILL.md
+${IWISH_HOME}/generated-skills/<name>/metadata.yaml
+${IWISH_HOME}/generated-skills/<name>/lineage.jsonl
+${IWISH_HOME}/generated-skills/<name>/promotion-plan.md
 
-${BMAD_HOME}/generated-workflows/<name>/<name>.md
-${BMAD_HOME}/generated-workflows/<name>/metadata.yaml
-${BMAD_HOME}/generated-workflows/<name>/lineage.jsonl
-${BMAD_HOME}/generated-workflows/<name>/promotion-plan.md
+${IWISH_HOME}/generated-workflows/<name>/<name>.md
+${IWISH_HOME}/generated-workflows/<name>/metadata.yaml
+${IWISH_HOME}/generated-workflows/<name>/lineage.jsonl
+${IWISH_HOME}/generated-workflows/<name>/promotion-plan.md
 
-${BMAD_HOME}/generated-agents/<name>/<name>.md
-${BMAD_HOME}/generated-agents/<name>/metadata.yaml
-${BMAD_HOME}/generated-agents/<name>/lineage.jsonl
-${BMAD_HOME}/generated-agents/<name>/promotion-plan.md
+${IWISH_HOME}/generated-agents/<name>/<name>.md
+${IWISH_HOME}/generated-agents/<name>/metadata.yaml
+${IWISH_HOME}/generated-agents/<name>/lineage.jsonl
+${IWISH_HOME}/generated-agents/<name>/promotion-plan.md
 ```
 
 Canonical promoted assets may keep `metadata.yaml` and `lineage.jsonl` beside the asset only when the promotion plan explicitly approves it. Otherwise, the canonical asset should point back to the runtime provenance store.
@@ -57,14 +57,14 @@ provenance:
       type: "Instinct|Learning|Bug|ReviewFinding|UserCorrection|CuratorRecommendation|EvolutionCase|ExternalSource"
       confidence: 1-10
       sensitivity: "public|project|private|security-sensitive"
-      ref: "<repo-relative path, story id, bug id, graph id, or ${BMAD_HOME} artifact>"
+      ref: "<repo-relative path, story id, bug id, graph id, or ${IWISH_HOME} artifact>"
       status: "active|stale|superseded|low-confidence|sensitive"
   source_clusters:
     - ctx: "<tag>"
       count: 1
       max_severity: 1-5
   source_artifacts:
-    - "<repo-relative path or ${BMAD_HOME} artifact>"
+    - "<repo-relative path or ${IWISH_HOME} artifact>"
 evolution_lineage:
   parent_id: null
   generation: 1
@@ -87,7 +87,7 @@ Source fields use these contracts:
 | `source_nodes[].confidence` | MUST be `1-10`; values below `7` require reviewer-visible caution. |
 | `source_nodes[].sensitivity` | MUST be `public`, `project`, `private`, or `security-sensitive`. |
 | `source_nodes[].status` | MUST be `active`, `stale`, `superseded`, `low-confidence`, or `sensitive`. |
-| `source_artifacts[]` | MUST use repo-relative paths, story/bug/review IDs, graph IDs, URLs approved by source artifacts, or `${BMAD_HOME}` paths. |
+| `source_artifacts[]` | MUST use repo-relative paths, story/bug/review IDs, graph IDs, URLs approved by source artifacts, or `${IWISH_HOME}` paths. |
 
 If a source status is `stale`, `superseded`, `low-confidence`, or `sensitive`, or if source sensitivity is `private` or `security-sensitive`, produce a curator/evolution review recommendation using `.agent/fragments/capability-authoring-curator-rules.md`.
 
@@ -153,6 +153,6 @@ Future evolution-lab workflows may use provenance and lineage to retrieve failur
 
 ## FeatureGraph/FalkorDB Boundary
 
-BMAD FeatureGraph is FalkorDB-backed. This fragment defines file contracts and references only.
+I-Wish FeatureGraph is FalkorDB-backed. This fragment defines file contracts and references only.
 
 Do not create FeatureGraph/FalkorDB nodes from this fragment unless the active story explicitly introduces DataEntity, Event, SeedData, or graph-indexing behavior. If a later story adds that behavior, follow ADR-002 and use the relevant FeatureGraph tools or `GRAPH.QUERY featuregraph` path approved by that workflow.

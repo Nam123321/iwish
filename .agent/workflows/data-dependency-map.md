@@ -12,5 +12,5 @@ This workflow maps all cross-story data dependencies and generates execution ord
 ## Activation
 
 1. Load the Piccolo agent persona from `{project-root}/.agent/agents/piccolo.md` and apply Kira Data Piccolo behavior from this workflow.
-2. Load config from `{project-root}/_bmad/bmm/config.yaml`
-3. Execute the workflow: `{project-root}/_bmad/bmm/workflows/3-solutioning/data-dependency-map/workflow.md`
+2. Load config from `{project-root}/_iwish/bmm/config.yaml`
+3. Execute the workflow: `{project-root}/_iwish/bmm/workflows/3-solutioning/data-dependency-map/workflow.md`

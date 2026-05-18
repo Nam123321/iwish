@@ -41,7 +41,7 @@ var path = require("path");
 var SRC_DIR = path.join(__dirname, '../../');
 var DEST_DIR = path.join(__dirname, '../templates');
 var NAME_MAP = [
-    { old: 'bmad-master', new: 'Grand-Priest' },
+    { old: 'iwish-master', new: 'Grand-Priest' },
     { old: 'pm', new: 'King-Kai' },
     { old: 'analyst', new: 'Bulma' },
     { old: 'architect', new: 'Piccolo' },
@@ -161,14 +161,14 @@ function main() {
                 case 1:
                     _a.sent();
                     console.log('Migrating agents...');
-                    return [4 /*yield*/, scanAndCopy('_bmad/bmm/agents')];
+                    return [4 /*yield*/, scanAndCopy('_iwish/bmm/agents')];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, scanAndCopy('_bmad/core/agents')];
+                    return [4 /*yield*/, scanAndCopy('_iwish/core/agents')];
                 case 3:
                     _a.sent();
                     console.log('Migrating workflows...');
-                    return [4 /*yield*/, scanAndCopy('_bmad/bmm/workflows')];
+                    return [4 /*yield*/, scanAndCopy('_iwish/bmm/workflows')];
                 case 4:
                     _a.sent();
                     return [4 /*yield*/, scanAndCopy('.agent/workflows')];

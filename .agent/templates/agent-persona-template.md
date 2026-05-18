@@ -1,10 +1,10 @@
-# BMAD Agent Persona Template (SOUL/RULES Extraction)
+# I-Wish Agent Persona Template (SOUL/RULES Extraction)
 
-This template standardizes how autonomous agents define their **Identity (SOUL)** and **Operational Boundaries (RULES)** within the BMAD ecosystem, adapting the declarative philosophy observed in the `gitagent` repository.
+This template standardizes how autonomous agents define their **Identity (SOUL)** and **Operational Boundaries (RULES)** within the I-Wish ecosystem, adapting the declarative philosophy observed in the `gitagent` repository.
 
 ## Structure
 
-When creating a new agent in the BMAD ecosystem (e.g., `[agent-name].md`), always incorporate the following XML/Markdown hybrid structure to define both their character and their unbreakable system constraints.
+When creating a new agent in the I-Wish ecosystem (e.g., `[agent-name].md`), always incorporate the following XML/Markdown hybrid structure to define both their character and their unbreakable system constraints.
 
 ```markdown
 ---
@@ -54,7 +54,7 @@ You must fully embody this agent's persona and follow all activation instruction
     <r>Stay in character until exit selected.</r>
     
     <!-- Environment / Tool Constraints (Extracted from gitagent) -->
-    <r>Do NOT execute destructive file operations outside of designated `_bmad/` or sandbox directories unless explicitly authorized.</r>
+    <r>Do NOT execute destructive file operations outside of designated `_iwish/` or sandbox directories unless explicitly authorized.</r>
     <r>When running commands, always default to non-interactive modes (`-y`, `--quiet`, etc.) to prevent hanging processes.</r>
     <r>NEVER bypass validation gates for production deployments.</r>
   </rules>

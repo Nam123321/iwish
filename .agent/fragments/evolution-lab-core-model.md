@@ -1,6 +1,6 @@
 # Evolution Lab Core Model
 
-> **Purpose:** Define the BMAD-native model for evolving skills, workflows, checklists, story templates, and governance fragments through measured candidate experiments.
+> **Purpose:** Define the I-Wish-native model for evolving skills, workflows, checklists, story templates, and governance fragments through measured candidate experiments.
 
 This fragment is contract-only. It does not implement a mutator, scoring formula, external engine adapter, production source-code evolution, or automatic promotion.
 
@@ -16,10 +16,10 @@ This fragment is contract-only. It does not implement a mutator, scoring formula
 
 ## Core Vocabulary
 
-| Concept | BMAD Meaning | Artifact / Responsibility |
+| Concept | I-Wish Meaning | Artifact / Responsibility |
 |---|---|---|
-| `target_asset` | Canonical or generated BMAD asset being considered for improvement. | Repo-relative path such as `.agent/skills/...`, `.agent/workflows/...`, `.agent/fragments/...`, or story template path. |
-| `organism` | A versioned candidate artifact package that can be evaluated and compared. | Candidate directory under `${BMAD_HOME}/evolution-lab/<experiment-id>/candidates/<candidate-id>/`. |
+| `target_asset` | Canonical or generated I-Wish asset being considered for improvement. | Repo-relative path such as `.agent/skills/...`, `.agent/workflows/...`, `.agent/fragments/...`, or story template path. |
+| `organism` | A versioned candidate artifact package that can be evaluated and compared. | Candidate directory under `${IWISH_HOME}/evolution-lab/<experiment-id>/candidates/<candidate-id>/`. |
 | `candidate` | A proposed child version of the target asset. | Candidate body plus `metadata.yaml`, `lineage.jsonl`, and evaluation outputs. |
 | `baseline` | The parent/current target version used for comparison. | Baseline snapshot under the experiment directory. |
 | `failure_case` | Concrete evidence of a missed edge case, bad guidance, user correction, review finding, failed scenario, bug, or regression. | Referenced by ID/path from memory, issue/story/review artifacts, or trial fixtures. |
@@ -39,7 +39,7 @@ This fragment is contract-only. It does not implement a mutator, scoring formula
 Evolution Lab artifacts live outside canonical runtime paths:
 
 ```text
-${BMAD_HOME}/evolution-lab/
+${IWISH_HOME}/evolution-lab/
   <experiment-id>/
     experiment.yaml
     baseline/
@@ -62,7 +62,7 @@ ${BMAD_HOME}/evolution-lab/
     population-summary.md
 ```
 
-Generated capability drafts may also use the `${BMAD_HOME}/generated-*` layout from `.agent/fragments/capability-provenance-lineage.md`. In both layouts, canonical `.agent/` files are read-only until a later promotion gate approves a controlled write.
+Generated capability drafts may also use the `${IWISH_HOME}/generated-*` layout from `.agent/fragments/capability-provenance-lineage.md`. In both layouts, canonical `.agent/` files are read-only until a later promotion gate approves a controlled write.
 
 ## Experiment Manifest
 
@@ -130,7 +130,7 @@ Candidate packages must preserve enough target shape to make later promotion mec
 | Target Type | Candidate Body Rule | Preservation Rule |
 |---|---|---|
 | `SKILL` | Store as `body/SKILL.md` unless the source skill used another filename. | Preserve YAML frontmatter, trigger/description fields, and original section ordering unless mutation rationale explicitly changes them. |
-| `WORKFLOW` | Store as `body/<original-workflow-filename>.md`. | Preserve workflow frontmatter, command metadata, wrapper/runtime notes, and BMAD authority blocks. |
+| `WORKFLOW` | Store as `body/<original-workflow-filename>.md`. | Preserve workflow frontmatter, command metadata, wrapper/runtime notes, and I-Wish authority blocks. |
 | `CHECKLIST` | Store as `body/<original-checklist-filename>.md`. | Preserve checklist identifiers, scoring rows, required fields, and source-of-truth references. |
 | `STORY_TEMPLATE` | Store as `body/<original-template-filename>.md`. | Preserve placeholders, frontmatter, required sections, and output contract fields. |
 | `FRAGMENT` | Store as `body/<original-fragment-filename>.md`. | Preserve heading anchors, machine-readable enums, and referenced paths. |
@@ -198,7 +198,7 @@ Before evaluation, every candidate MUST pass these checks:
 - Candidate files live outside canonical `.agent/` runtime paths.
 - Required metadata and lineage files exist.
 - Candidate body contains operational rules only, not raw transcripts, graph dumps, or long source artifacts.
-- Source refs use repo-relative paths, story IDs, bug IDs, graph IDs, URLs approved by source artifacts, or `${BMAD_HOME}` paths.
+- Source refs use repo-relative paths, story IDs, bug IDs, graph IDs, URLs approved by source artifacts, or `${IWISH_HOME}` paths.
 - Private/security-sensitive evidence is not embedded in distributable bodies.
 - Holdout cases are not visible to the mutator or candidate body.
 - Scope remains markdown/governance only unless a later story explicitly expands scope.
@@ -235,7 +235,7 @@ Allowed in the first lab scope:
 - `.agent/fragments/**/*.md`
 - quality checklists
 - story templates and governance docs
-- generated capability drafts under `${BMAD_HOME}/generated-*`
+- generated capability drafts under `${IWISH_HOME}/generated-*`
 
 Deferred:
 

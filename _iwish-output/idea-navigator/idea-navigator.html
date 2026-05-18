@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Celestial Idea Navigator for I-Wish artifacts and brainstorm visualization.">
+    <title>Celestial Idea Navigator</title>
+    <!-- Link to our separated CSS theme -->
+    <link rel="stylesheet" href="css/navigator-theme.css">
+</head>
+<body>
+    <!-- Animated Nebula Background Layer -->
+    <div class="nebula-bg" aria-hidden="true"></div>
+
+    <!-- Main App Container -->
+    <main class="canvas">
+        
+        <!-- Header Section -->
+        <header class="celestial-header">
+            <h1 class="brand-title">Idea Navigator</h1>
+            <input type="text" class="search-bar" placeholder="Search constellations (epics, nodes)..." aria-label="Search project artifacts">
+        </header>
+
+        <!-- Narrative Stages -->
+        <div class="narrative-journey">
+            <!-- Stage 1: Origin -->
+            <section class="narrative-stage" aria-labelledby="stage-origin-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-origin-title" class="stage-title">Origin</h2>
+                        <p class="stage-description">The foundational epics and genesis of ideas.</p>
+                    </div>
+                </header>
+                <div id="stage-origin-grid" class="idea-grid"></div>
+            </section>
+
+            <!-- Stage 2: Spark -->
+            <section class="narrative-stage" aria-labelledby="stage-spark-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-spark-title" class="stage-title">Spark</h2>
+                        <p class="stage-description">Actionable stories and immediate next steps.</p>
+                    </div>
+                </header>
+                <div id="stage-spark-grid" class="idea-grid"></div>
+            </section>
+
+            <!-- Stage 3: Deep Dive -->
+            <section class="narrative-stage" aria-labelledby="stage-deep_dive-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-deep_dive-title" class="stage-title">Deep Dive</h2>
+                        <p class="stage-description">Technical specs, architecture, and complex knowledge nodes.</p>
+                    </div>
+                </header>
+                <div id="stage-deep_dive-grid" class="idea-grid"></div>
+            </section>
+
+            <!-- Stage 4: Forge -->
+            <section class="narrative-stage" aria-labelledby="stage-forge-title">
+                <header class="stage-header">
+                    <div class="stage-indicator"></div>
+                    <div>
+                        <h2 id="stage-forge-title" class="stage-title">Forge</h2>
+                        <p class="stage-description">Work-in-progress, PRs, and active implementation artifacts.</p>
+                    </div>
+                </header>
+                <div id="stage-forge-grid" class="idea-grid"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Progressive Disclosure Modal -->
+    <dialog id="artifact-modal" class="glass-modal">
+        <div class="modal-content-wrapper">
+            <header class="modal-header">
+                <div id="modal-header-actions" class="modal-header-actions">
+                    <span id="modal-tag" class="card-tag"></span>
+                </div>
+                <button id="modal-close" class="close-btn" aria-label="Close modal">&times;</button>
+            </header>
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-content" class="modal-body"></div>
+        </div>
+    </dialog>
+
+    <!-- External Libraries for Markdown Parsing and Sanitization -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <!-- Data Bridge and Engine -->
+    <script src="js/navigator-data.js"></script>
+    <script src="js/navigator-engine.js"></script>
+</body>
+</html>

@@ -3,13 +3,13 @@
   "namespace": "iwish",
   "version": "1.0.0",
   "canonicalHome": "/Users/hatrang20061988/.iwish",
-  "projectRoot": "/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall",
-  "runtimeRoot": "/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/_iwish",
+  "projectRoot": "/Users/hatrang20061988/Desktop/AI Project/I-Wish-DragonBall",
+  "runtimeRoot": "/Users/hatrang20061988/Desktop/AI Project/I-Wish-DragonBall/_iwish",
   "legacyRuntimeDetected": true,
   "installTargets": [
     {
-      "id": "codex",
-      "path": "/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/.codex",
+      "id": "local-terminal",
+      "path": "/Users/hatrang20061988/Desktop/AI Project/I-Wish-DragonBall/.iwish",
       "status": "declared"
     }
   ],
@@ -66,7 +66,7 @@
       "/domain-research": "/research",
       "/technical-research": "/research",
       "/retrospective": "/retro",
-      "/bmad-help": "/status"
+      "/iwish-help": "/status"
     }
   },
   "externalModules": [

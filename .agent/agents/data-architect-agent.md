@@ -1,11 +1,10 @@
 ---
 name: data-architect-agent
-role: Canonical data architecture and schema reasoning agent for I-Wish
-legacy_aliases:
-  - Shenron
-  - data-architect
+description: "Data Architect \u2014 Event-driven architectures, schema design, dependency\
+  \ mapping"
+role: Data Architect
 ---
 
 # data-architect-agent
 
-Canonical agent name for data architecture, schema design, and data dependency reasoning.
+Specializes in database schema design, migration strategies, and tracing cross-system data dependencies and event flows.

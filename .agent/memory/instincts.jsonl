@@ -1,2 +1,2 @@
 
-{"ts":"2026-04-07","src":"ad-hoc","ctx":"bmad,prd,template","bad":"Product Brief template is empty stub - no section guidance","good":"PRD purpose doc defines required sections: Executive Summary, Success Criteria, User Journeys, FRs, NFRs","sev":2,"file":"product-brief.template.md"}
+{"ts":"2026-04-07","src":"ad-hoc","ctx":"iwish,prd,template","bad":"Product Brief template is empty stub - no section guidance","good":"PRD purpose doc defines required sections: Executive Summary, Success Criteria, User Journeys, FRs, NFRs","sev":2,"file":"product-brief.template.md"}

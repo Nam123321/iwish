@@ -70,7 +70,7 @@ function isLegacyPersonaAgent(name: string): boolean {
 
 function isLegacyWorkflowEntrypoint(name: string): boolean {
   return (
-    name.startsWith('bmad-') ||
+    name.startsWith('iwish-') ||
     name === 'create-capability' ||
     name === 'enhance-capability' ||
     name === 'course-correct' ||

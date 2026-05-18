@@ -40,12 +40,12 @@ const CONTENT_FIXES = [
 
 // Filename renames needed
 const FILENAME_FIXES = [
-  { from: 'bmad-bmm-create-piccoloure.md', to: 'bmad-bmm-create-architecture.md' },
-  { from: 'bmad-bmm-quick-vegeta.md', to: 'bmad-bmm-quick-dev.md' },
-  { from: 'bmad-bmm-tien-shinhan-automate.md', to: 'bmad-bmm-qa-automate.md' },
-  { from: 'bmad-bmm-vegeta-story.md', to: 'bmad-bmm-dev-story.md' },
-  { from: 'bmad-agent-bmm-bulma.md', to: 'bmad-agent-bmm-bulma.md' },  // this one is fine
-  { from: 'bmad-agent-bmm-data-piccolo.md', to: 'bmad-agent-bmm-shenron.md' },
+  { from: 'iwish-bmm-create-piccoloure.md', to: 'iwish-bmm-create-architecture.md' },
+  { from: 'iwish-bmm-quick-vegeta.md', to: 'iwish-bmm-quick-dev.md' },
+  { from: 'iwish-bmm-tien-shinhan-automate.md', to: 'iwish-bmm-qa-automate.md' },
+  { from: 'iwish-bmm-vegeta-story.md', to: 'iwish-bmm-dev-story.md' },
+  { from: 'iwish-agent-bmm-bulma.md', to: 'iwish-agent-bmm-bulma.md' },  // this one is fine
+  { from: 'iwish-agent-bmm-data-piccolo.md', to: 'iwish-agent-bmm-shenron.md' },
   { from: 'piccoloure-decision-template.md', to: 'architecture-decision-template.md' },
   { from: 'step-04-piccoloural-patterns.md', to: 'step-04-architectural-patterns.md' },
   { from: 'step-06-final-assestrunksent.md', to: 'step-06-final-assessment.md' },

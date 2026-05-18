@@ -8,8 +8,8 @@ outputFile: '{planning_artifacts}/prd.md'
 purposeFile: '../data/prd-purpose.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 11: Document Polish
@@ -55,7 +55,7 @@ Optimize the complete PRD document for flow, coherence, and professional present
 
 **CRITICAL:** Load the PRD purpose document first:
 
-- Read `{purposeFile}` to understand what makes a great BMAD PRD
+- Read `{purposeFile}` to understand what makes a great I-Wish PRD
 - Internalize the philosophy: information density, traceability, measurable requirements
 - Keep the dual-audience nature (humans + LLMs) in mind
 

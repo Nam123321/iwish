@@ -8,7 +8,7 @@ const yaml = require('yaml');
  * Shared engine for both Pivot Guardian (HSEA-1.4) and Operation Report (HSEA-4.6)
  */
 function calculateHotspots(workspaceRoot = process.cwd()) {
-    const bugTrackerPath = path.join(workspaceRoot, '_bmad-output', 'bug-tracker.yaml');
+    const bugTrackerPath = path.join(workspaceRoot, '_iwish-output', 'bug-tracker.yaml');
     
     if (!fs.existsSync(bugTrackerPath)) {
         return {};

@@ -1,5 +1,5 @@
 ---
-description: Research and determine which BMAD Library modules to install for this project
+description: Research and determine which I-Wish Library modules to install for this project
 ---
 
 # `research-project-modules` Workflow
@@ -7,7 +7,7 @@ description: Research and determine which BMAD Library modules to install for th
 **Persona:** Grand-Priest (Master Orchestrator)
 
 ## 1. Goal
-After defining the Product Requirements and Architecture (Tech Stack), the next vital step before implementation is deciding whether the project needs specialized AI workflows or skills from the **BMAD-DragonBall Library**.
+After defining the Product Requirements and Architecture (Tech Stack), the next vital step before implementation is deciding whether the project needs specialized AI workflows or skills from the **I-Wish-DragonBall Library**.
 
 If the question is broader than project-pack selection and includes finding external repos, third-party skills, or comparing internal-vs-external capability options, hand off to `research-solution-sources.md`.
 
@@ -22,6 +22,6 @@ If the question is broader than project-pack selection and includes finding exte
    - **Performance/Scaling**: Requires `devops-pack`.
 3. **Execution**: If a Library pack is needed, instruct the AI or User to run the global CLI tool:
    ```bash
-   npx bmad-db add <pack-name>
+   npx iwish-db add <pack-name>
    ```
 4. **Update Context**: Update `task.md` or context to reflect that new modules (like `Songoku` or `Shenron`) are now available in the workspace.

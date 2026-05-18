@@ -5,7 +5,7 @@ description: 'Use when validating UI component implementations against design pr
 
 # Design Consultation Skill
 
-The **Design Consultation** skill provides a structured, adversarial UX/UI review capability. It is adapted from Gstack's `design-consultation` and `design-review` (Design Army) patterns and tailored for the BMAD ecosystem.
+The **Design Consultation** skill provides a structured, adversarial UX/UI review capability. It is adapted from Gstack's `design-consultation` and `design-review` (Design Army) patterns and tailored for the I-Wish ecosystem.
 
 ## Purpose
 
@@ -31,7 +31,7 @@ The agent MUST cycle through the following 5 specialist lenses when reviewing an
 - Are margins and padding on a consistent spacing scale (4px/8px base)?
 - Is the grid system respected? No arbitrary widths or breakpoints.
 - Does the layout degrade gracefully across viewports (mobile, tablet, desktop)?
-- Are DOM-driven layout principles followed per BMAD UX Principles?
+- Are DOM-driven layout principles followed per I-Wish UX Principles?
 
 ### 4. Interaction & Motion Specialist
 - Are all interactive elements clearly afforded? (Buttons look clickable, links look tappable)
@@ -89,7 +89,7 @@ Usage rules:
 - Specialist evidence is optional supporting context, not a second final reviewer.
 - Design Consultation remains the final owner of severity, disposition, and overall review judgment.
 - If specialist evidence conflicts with Design Consultation findings, Design Consultation wins and the specialist evidence is recorded only as supporting context or downgraded recommendation.
-- If specialist evidence conflicts with approved Design System tokens, approved Stitch screens, extracted CSS/HTML visual contract, User Simulation Guardian, or UX Guardian, the stronger BMAD authority wins.
+- If specialist evidence conflicts with approved Design System tokens, approved Stitch screens, extracted CSS/HTML visual contract, User Simulation Guardian, or UX Guardian, the stronger I-Wish authority wins.
 - Any cited specialist evidence must remain grounded in the actual UI spec, mockup, screenshot, DOM structure, or approved visual artifact under review.
 
 If specialist evidence is cited, append this subsection to the review output:
@@ -101,7 +101,7 @@ If specialist evidence is cited, append this subsection to the review output:
 - Evidence Disposition: [ACCEPTED | CONSTRAINED | REJECTED | DOWNGRADED_TO_RECOMMENDATION]
 - Conflict Status: [NO_CONFLICT or exact governed conflict enum]
 - Winning Authority: [exact governed authority enum]
-- BMAD Conflict Check: [why the evidence was accepted, constrained, or downgraded]
+- I-Wish Conflict Check: [why the evidence was accepted, constrained, or downgraded]
 - Severity Owner: Design Consultation
 ```
 
@@ -111,7 +111,7 @@ If specialist evidence is cited, append this subsection to the review output:
 - During `/Vegeta-story` — when implementing or refactoring UI components.
 - On demand — when any agent needs a structured design opinion.
 
-## Integration with BMAD Ecosystem
+## Integration with I-Wish Ecosystem
 
 This skill complements (does not replace):
 - **UX Guardian** — enforces behavioral token consistency.

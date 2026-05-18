@@ -27,8 +27,8 @@
 
 ## PROTOCOL INTEGRATION:
 
-- When 'A' selected: Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml
-- When 'P' selected: Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md
+- When 'A' selected: Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml
+- When 'P' selected: Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md
 - PROTOCOLS always return to this step's A/P/C menu
 - User accepts/rejects protocol changes before proceeding
 
@@ -145,7 +145,7 @@ Show the generated visual research content and present choices:
 
 #### If 'A' (Advanced Elicitation):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml
+- Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml
 - Process the enhanced insights that come back
 - Ask user: "Accept these improvements? (y/n)"
 - If yes: Update content, return to A/P/C menu
@@ -153,7 +153,7 @@ Show the generated visual research content and present choices:
 
 #### If 'P' (Party Mode):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md
+- Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md
 - Process the collaborative insights that come back
 - Ask user: "Accept these changes? (y/n)"
 - If yes: Update content, return to A/P/C menu

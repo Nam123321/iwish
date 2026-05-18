@@ -24,19 +24,19 @@
       "source": "https://github.com/nexu-io/html-anything"
     },
     {
-      "id": "workflow:bmad-bmm-sprint-planning",
+      "id": "workflow:iwish-bmm-sprint-planning",
       "type": "workflow",
-      "canonical": "bmad-bmm-sprint-planning",
-      "source": "/.agent/workflows/bmad-bmm-sprint-planning.md"
+      "canonical": "iwish-bmm-sprint-planning",
+      "source": "/.agent/workflows/iwish-bmm-sprint-planning.md"
     },
     {
-      "id": "workflow:bmad-bmm-sprint-status",
+      "id": "workflow:iwish-bmm-sprint-status",
       "type": "workflow",
-      "canonical": "bmad-bmm-sprint-status",
-      "source": "/.agent/workflows/bmad-bmm-sprint-status.md"
+      "canonical": "iwish-bmm-sprint-status",
+      "source": "/.agent/workflows/iwish-bmm-sprint-status.md"
     },
     {
-      "id": "command-alias:/bmad-help",
+      "id": "command-alias:/iwish-help",
       "type": "command",
       "canonical": "/status",
       "source": "alias-registry"

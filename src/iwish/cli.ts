@@ -79,13 +79,62 @@ async function resolveInstallTargets(rawTargets?: string[]): Promise<string[]> {
   }
 }
 
+async function promptGraphToolSelection(projectRoot: string): Promise<void> {
+  const prompts = getToolSetupStatus(projectRoot);
+  const graphPrompt = prompts.find((prompt) => prompt.group === 'graph');
+  if (!graphPrompt) {
+    return;
+  }
+
+  const rl = createInterface({ input, output });
+  try {
+    console.log('');
+    console.log(chalk.yellow('Graph setup is required for Orch brain surfaces.'));
+    console.log(chalk.blue('Choose a graph solution now, or press Enter to configure it later.'));
+    graphPrompt.options.forEach((option: { id: string; description: string }, index: number) => {
+      const recommended = option.id === graphPrompt.recommended ? ' (recommended)' : '';
+      console.log(`${index + 1}. ${option.id}${recommended}`);
+      if (option.description) {
+        console.log(`   ${option.description}`);
+      }
+      console.log(`   Command: iwish select-tool graph ${option.id}`);
+    });
+    console.log(`${graphPrompt.options.length + 1}. other / custom`);
+    console.log('   Command: iwish select-tool graph custom-adapter');
+    console.log('   Note: if you choose another graph tool, create or register its usage pack before relying on it in workflows.');
+
+    const answer = (await rl.question('Graph adapter to use now: ')).trim();
+    if (!answer) {
+      console.log(chalk.yellow('Skipped graph setup for now.'));
+      console.log(`Run later: iwish select-tool graph ${graphPrompt.recommended || '<adapter>'}`);
+      return;
+    }
+
+    const numeric = Number(answer);
+    const selected =
+      Number.isInteger(numeric) && numeric >= 1 && numeric <= graphPrompt.options.length
+        ? graphPrompt.options[numeric - 1].id
+        : Number.isInteger(numeric) && numeric === graphPrompt.options.length + 1
+          ? 'custom-adapter'
+          : answer;
+
+    await selectToolProfile(projectRoot, 'graph', selected);
+    console.log(chalk.green(`Selected ${selected} for tool group graph`));
+    if (selected === 'custom-adapter') {
+      console.log('Next: define the custom graph adapter contract and usage pack before using graph-backed workflows.');
+    }
+  } finally {
+    rl.close();
+  }
+}
+
 export async function runCli(): Promise<void> {
   const invocation = getInvocationName();
   const program = new Command();
 
   program
-    .name(invocation === 'bmad-db' ? 'bmad-db' : 'iwish')
-    .description('I-Wish open platform CLI with shim-first compatibility for legacy BMAD runtimes')
+    .name(invocation === 'iwish-db' ? 'iwish-db' : 'iwish')
+    .description('I-Wish open platform CLI with shim-first compatibility for legacy I-Wish runtimes')
     .version('1.0.0');
 
   addSharedDirectoryOption(
@@ -93,11 +142,18 @@ export async function runCli(): Promise<void> {
       .command('install')
       .description('Scaffold the canonical I-Wish runtime substrate in a project')
       .option('-p, --platform <target...>', 'Install target(s). If omitted, the CLI will ask you to choose.')
-      .action(async (options: { directory: string; platform: string[] }) => {
+      .option('--skip-tool-setup', 'Skip interactive baseline tool setup prompts after install')
+      .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'install');
         await ensureCapabilityPackageTemplates(projectRoot);
+        if (!options.skipToolSetup) {
+          await promptGraphToolSelection(projectRoot);
+        } else {
+          console.log(chalk.yellow('Skipped baseline tool setup.'));
+          console.log('Run later: iwish tool-setup-status');
+        }
       }),
   );
 
@@ -106,11 +162,18 @@ export async function runCli(): Promise<void> {
       .command('update')
       .description('Refresh the I-Wish runtime manifest without overwriting customizations')
       .option('-p, --platform <target...>', 'Install target(s). If omitted, the CLI will ask you to choose.')
-      .action(async (options: { directory: string; platform: string[] }) => {
+      .option('--skip-tool-setup', 'Skip interactive baseline tool setup prompts after update')
+      .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'update');
         await ensureCapabilityPackageTemplates(projectRoot);
+        if (!options.skipToolSetup) {
+          await promptGraphToolSelection(projectRoot);
+        } else {
+          console.log(chalk.yellow('Skipped baseline tool setup.'));
+          console.log('Run later: iwish tool-setup-status');
+        }
       }),
   );
 
@@ -645,7 +708,7 @@ export async function runCli(): Promise<void> {
   addSharedDirectoryOption(
     program
       .command('inventory')
-      .description('List the current I-Wish/BMAD-DragonBall skills, agents, workflows, packs, and tool adapters')
+      .description('List the current I-Wish/I-Wish-DragonBall skills, agents, workflows, packs, and tool adapters')
       .option('--format <type>', 'json or markdown', 'json')
       .action((options: { directory: string; format: 'json' | 'markdown' }) => {
         const inventory = buildPlatformInventory(getProjectRoot(options.directory));

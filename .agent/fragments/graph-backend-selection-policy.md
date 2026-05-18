@@ -2,19 +2,19 @@
 
 ## Purpose
 
-BMAD uses graph intelligence across three surfaces:
+I-Wish uses graph intelligence across three surfaces:
 
 - `CodebaseGraph`: code symbols, imports, call chains, dead-code and blast-radius analysis.
 - `FeatureGraph`: features, data entities, events, seed data, cross-feature impact, and workflow validation.
 - `MemoryGraph`: project memory, learning provenance, capability lineage, and evolution context selection.
 
-Every BMAD project must treat graph backend selection as a project architecture decision, not a hidden user preference.
+Every I-Wish project must treat graph backend selection as a project architecture decision, not a hidden user preference.
 
 ## Graph Profiles
 
 | Profile | Recommendation | Required Runtime | Best Fit | Trade-Off | Legal / Data Handling |
 |---|---|---|---|---|---|
-| `falkordb-full` | Recommended full BMAD mode | FalkorDB plus CodeGraphContext/FeatureGraph tooling | Long-lived projects, multi-agent execution, self-evolution, cross-feature data validation | Requires Docker/service health, backups, and freshness checks | Keep graph data project-local by default; review retention, backup, and private-source policy before team sharing |
+| `falkordb-full` | Recommended full I-Wish mode | FalkorDB plus CodeGraphContext/FeatureGraph tooling | Long-lived projects, multi-agent execution, self-evolution, cross-feature data validation | Requires Docker/service health, backups, and freshness checks | Keep graph data project-local by default; review retention, backup, and private-source policy before team sharing |
 | `lite-static` | Recommended low-setup mode | Markdown/static indexes and shell search | Small repos, offline work, early discovery, demos | Lower recall, weaker graph queries, advisory-only graph evidence | Lowest extra data movement; still avoid committing private memory/provenance snapshots unless approved |
 | `custom-adapter` | Advanced/experimental | User-provided backend adapter | Teams with existing graph infra | Must pass adapter contract before trusted use | Requires license, hosting, access-control, retention, export, and deletion review before trusted use |
 
@@ -44,7 +44,7 @@ graph_backend_status:
 If the project also persists a runtime-side mirror outside canonical repo config, use:
 
 ```text
-${BMAD_HOME}/profiles/<profile-id>/projects/<project-slug>/runtime-config/graph-profile.yaml
+${IWISH_HOME}/profiles/<profile-id>/projects/<project-slug>/runtime-config/graph-profile.yaml
 ```
 
 `USER.md` may remember that a user prefers low-setup tools, but it must not override a project's selected graph architecture.
@@ -118,16 +118,16 @@ When graph tooling is offline, stale, missing, or unsupported:
 
 ## Init/Readiness Prompt
 
-During project init or readiness check, BMAD should ask once:
+During project init or readiness check, I-Wish should ask once:
 
 ```text
 Select graph intelligence profile:
-1. falkordb-full (recommended for long-lived BMAD, multi-agent, self-evolution, FeatureGraph validation)
+1. falkordb-full (recommended for long-lived I-Wish, multi-agent, self-evolution, FeatureGraph validation)
 2. lite-static (recommended for small/offline/low-setup projects)
-3. custom-adapter (provide backend details; BMAD will evaluate before trusting it)
+3. custom-adapter (provide backend details; I-Wish will evaluate before trusting it)
 ```
 
 If the user presses Enter:
 
-- Default to `falkordb-full` when BMAD full mode, FeatureGraph, MemoryGraph, or HSEA is enabled.
+- Default to `falkordb-full` when I-Wish full mode, FeatureGraph, MemoryGraph, or HSEA is enabled.
 - Default to `lite-static` for source/template, small, or offline-only mode.

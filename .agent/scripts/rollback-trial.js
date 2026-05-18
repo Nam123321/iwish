@@ -48,10 +48,10 @@ if (typeof fixtureName !== 'string' || fixtureName.includes('/') || fixtureName.
 const possibleCanonicalPaths = [
     path.join(AGENT_DIR, 'skills', fixtureName, 'SKILL.md'),
     path.join(AGENT_DIR, 'workflows', `${fixtureName}.md`),
-    path.join(AGENT_DIR, 'workflows', `bmad-${fixtureName}.md`),
-    path.join(AGENT_DIR, 'workflows', `bmad-agent-bmm-${fixtureName}.md`),
+    path.join(AGENT_DIR, 'workflows', `iwish-${fixtureName}.md`),
+    path.join(AGENT_DIR, 'workflows', `iwish-agent-bmm-${fixtureName}.md`),
     path.join(AGENT_DIR, 'agents', `${fixtureName}.md`),
-    path.join(AGENT_DIR, 'agents', `bmad-agent-bmm-${fixtureName}.md`),
+    path.join(AGENT_DIR, 'agents', `iwish-agent-bmm-${fixtureName}.md`),
     path.join(AGENT_DIR, 'fragments', `${fixtureName}.md`)
 ];
 

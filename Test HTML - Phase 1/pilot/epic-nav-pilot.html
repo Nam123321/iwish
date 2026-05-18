@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic Nav Pilot Test</title>
+    <style>
+        :root {
+            --bg: #08111f;
+            --panel: rgba(12, 22, 41, 0.84);
+            --panel-soft: rgba(17, 29, 53, 0.7);
+            --line: rgba(255,255,255,0.1);
+            --text: #eef4ff;
+            --muted: #9fb3d9;
+            --mint: #69f0d0;
+            --orange: #ffb36b;
+            --blue: #8fb6ff;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(105,240,208,0.14), transparent 32%),
+                radial-gradient(circle at top right, rgba(143,182,255,0.16), transparent 28%),
+                linear-gradient(180deg, #050b15, var(--bg));
+            color: var(--text);
+        }
+
+        .shell {
+            width: min(1220px, calc(100vw - 32px));
+            margin: 0 auto;
+            padding: 32px 0 72px;
+        }
+
+        .hero, .panel, .research-card, .signal-card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+            backdrop-filter: blur(18px);
+        }
+
+        .hero {
+            padding: 28px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.8fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow, .chip, .ref-chip, .ac-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .eyebrow, .chip, .ref-chip {
+            padding: 6px 10px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 16px 0 12px;
+            font-size: clamp(2rem, 4vw, 3.8rem);
+            line-height: 0.98;
+        }
+
+        .lead, .panel-copy, .research-desc, .markdown-body {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 14px;
+        }
+
+        .hero-side .panel-soft {
+            background: var(--panel-soft);
+            border-radius: 22px;
+            padding: 18px;
+            border: 1px solid var(--line);
+        }
+
+        .signal-grid, .research-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .signal-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-bottom: 20px;
+        }
+
+        .signal-card {
+            padding: 18px;
+        }
+
+        .signal-label {
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.74rem;
+        }
+
+        .signal-value {
+            margin: 12px 0 8px;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--mint);
+        }
+
+        .two-up {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            padding: 22px;
+        }
+
+        .panel h2 {
+            margin: 12px 0 10px;
+            font-size: 1.3rem;
+        }
+
+        .ac-list, .competitor-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .ac-list li, .competitor-list li {
+            display: grid;
+            gap: 10px;
+            align-items: start;
+            grid-template-columns: auto 1fr;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .ac-index {
+            min-width: 58px;
+            padding: 6px 10px;
+            font-size: 0.76rem;
+            color: var(--blue);
+        }
+
+        .pivot {
+            border-left: 4px solid var(--orange);
+            padding: 18px 18px 18px 20px;
+            border-radius: 18px;
+            background: rgba(255,179,107,0.08);
+            color: #ffd8b0;
+        }
+
+        .refs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .research-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .research-card {
+            padding: 20px;
+        }
+
+        .research-card h3 {
+            margin: 14px 0 8px;
+            font-size: 1.2rem;
+        }
+
+        details {
+            margin-top: 12px;
+        }
+
+        summary {
+            cursor: pointer;
+            color: var(--mint);
+            font-weight: 600;
+        }
+
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+            font-size: 1rem;
+            margin-top: 1.2rem;
+            color: var(--text);
+        }
+
+        .markdown-body p, .markdown-body li {
+            font-size: 0.95rem;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 980px) {
+            .hero, .two-up, .research-grid, .signal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div>
+                <div class="eyebrow">Pilot Test · Epic Nav</div>
+                <h1>Core Infrastructure</h1>
+                <p class="lead">Establish the foundational infrastructure for the CRM.</p>
+                <div class="refs"><span class="ref-chip">prd.md</span><span class="ref-chip">tech-stack.md</span></div>
+            </div>
+            <div class="hero-side">
+                <div class="panel-soft">
+                    <div class="eyebrow">Status</div>
+                    <h2 style="margin:14px 0 8px">In Progress</h2>
+                    <p class="panel-copy">Assignee: Platform Team</p>
+                    <p class="panel-copy">Phase: origin</p>
+                </div>
+                <div class="panel-soft">
+                    <div class="eyebrow">Pilot Focus</div>
+                    <p class="panel-copy">Render the epic and its research pack as a publishable HTML artifact, with fast scanability for pivot, evidence, and next-step feasibility.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="signal-grid">
+            
+        <div class="signal-card">
+            <div class="signal-label">Technology</div>
+            <div class="signal-value">**Python (FastAPI)**</div>
+            <div class="signal-copy">For lightweight local API routing.</div>
+        </div>
+    
+        <div class="signal-card">
+            <div class="signal-label">Technology</div>
+            <div class="signal-value">**Obsidian**</div>
+            <div class="signal-copy">Local markdown editor with built-in graph visualization.</div>
+        </div>
+    
+        <div class="signal-card">
+            <div class="signal-label">Technology</div>
+            <div class="signal-value">**React + Tailwind**</div>
+            <div class="signal-copy">Frontend UI.</div>
+        </div>
+    
+        </section>
+
+        <section class="two-up">
+            <article class="panel">
+                <div class="eyebrow">Acceptance Criteria</div>
+                <h2>Epic Readiness Snapshot</h2>
+                <p class="panel-copy">This section turns the raw markdown epic into a checklist-like surface that is easier to scan in review sessions.</p>
+                <ul class="ac-list">
+        <li>
+            <span class="ac-index">AC-1</span>
+            <span>FastAPI backend is initialized.</span>
+        </li>
+    
+        <li>
+            <span class="ac-index">AC-2</span>
+            <span>Obsidian vault folder structure is mapped.</span>
+        </li>
+    
+        <li>
+            <span class="ac-index">AC-3</span>
+            <span>Automated GitHub Actions for daily scraping are drafted.</span>
+        </li>
+    </ul>
+            </article>
+
+            <article class="panel">
+                <div class="eyebrow">Pivot Signal</div>
+                <h2>Why This Epic Matters</h2>
+                <p class="pivot">Initially, we planned to use Supabase, but we pivoted to a local markdown flat-file system (`wiki/`) to integrate directly with Obsidian for graph viewing and data ownership.</p>
+                <h2 style="margin-top:18px">Competitive Reference Points</h2>
+                <ul class="competitor-list">
+                    <li>**Teal:** The market leader in AI Resume Building and tracking. It acts as an &quot;operating system&quot; for job seekers. Its primary hook is the **Job Match Score** (rating a resume against an ATS parser) and a Chrome extension to save jobs.</li><li>**Huntr:** The visual pioneer. It uses a Kanban board as its core UI to clip jobs from anywhere and track applications. It recently integrated AI tools for tailoring.</li><li>**Prentus:** Focuses heavily on the interview phase, pairing job tracking with AI mock interviews.</li><li>**AIApply / Simplify:** Focuses on the &quot;Auto-Apply&quot; and form-filling automation aspect, aiming to maximize application volume.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="research-grid">
+            
+        <article class="research-card" id="bmad-research-report-md">
+            <div class="chip">deep_dive</div>
+            <h3>Research Report: Comprehensive Multi-Dimensional Analysis</h3>
+            <p class="research-desc">Primary evidence source for the epic pilot.</p>
+            <details>
+                <summary>Open research source</summary>
+                <div class="markdown-body"><h1>Research Report: Comprehensive Multi-Dimensional Analysis</h1>
+<p><strong>Date:</strong> 2026-04-14
+<strong>Author:</strong> Master-Roshi (AI Facilitator)
+<strong>Research Type:</strong> Comprehensive (Market, Domain, Technical)</p>
+<hr>
+<h2>1. Market Research: AI Job Seeker CRMs &amp; Platforms</h2>
+<p>The landscape for Job Seeker CRMs is rapidly evolving from basic spreadsheet replacements to fully AI-augmented virtual coaches.</p>
+<h3>Key Competitors &amp; Patterns</h3>
+<ol>
+<li><strong>Teal:</strong> The market leader in AI Resume Building and tracking. It acts as an &quot;operating system&quot; for job seekers. Its primary hook is the <strong>Job Match Score</strong> (rating a resume against an ATS parser) and a Chrome extension to save jobs.</li>
+<li><strong>Huntr:</strong> The visual pioneer. It uses a Kanban board as its core UI to clip jobs from anywhere and track applications. It recently integrated AI tools for tailoring.</li>
+<li><strong>Prentus:</strong> Focuses heavily on the interview phase, pairing job tracking with AI mock interviews.</li>
+<li><strong>AIApply / Simplify:</strong> Focuses on the &quot;Auto-Apply&quot; and form-filling automation aspect, aiming to maximize application volume.</li>
+</ol>
+<p><strong>Our Unfair Advantage (The &quot;White Space&quot;):</strong> 
+Most existing tools are cloud-based SaaS products that lock user data behind subscriptions. None of them utilize an <strong>Obsidian-backed Local Knowledge Graph</strong> to map recruiters and company history. Our product merges the Kanban style of Huntr, the ATS parsing of Teal, and the deep Network Intelligence of a private OSINT agency.</p>
+<hr>
+<h2>2. Technical Research: AI OSINT &amp; Autonomous Web Scraping</h2>
+<p>To populate the Obsidian Second Brain automatically, we need modern Agentic Web Scraping tools that bypass the brittleness of traditional DOM-based scrapers (like simple BeautifulSoup).</p>
+<h3>Leading Solutions &amp; Architecture</h3>
+<ol>
+<li><strong>ScrapeGraphAI (Python):</strong> The most promising open-source solution for our FastAPI backend. It utilizes LLMs to generate scraping pipelines dynamically. If a site changes its layout, the LLM self-heals the selector, ensuring extreme reliability.</li>
+<li><strong>Bright Data / Forage AI:</strong> Enterprise-grade extraction agents. Overkill for a local CRM, but their architecture (Agentic loops: think, act, observe) is the gold standard.</li>
+<li><strong>Browserbase / Vercel Agent:</strong> Headless browser automation that LLMs can drive.</li>
+</ol>
+<p><strong>Implementation Recommendation:</strong> 
+Adopt <strong>ScrapeGraphAI</strong> in the FastAPI backend for the scheduled 8am/1pm/6pm runs. For the &quot;ZAP Injection&quot; Chrome Extension, simply pass the raw HTML text to a local FastAPI endpoint which then uses a local/API LLM to parse entities (Company, JD, Salary) and write directly to Obsidian Markdown.</p>
+<hr>
+<h2>3. Domain Research: Evaluating Data Reliability &amp; Scoring</h2>
+<p>Since the system will scrape job descriptions and company news from the wild (LinkedIn, public reviews), evaluating the <em>credibility</em> of that data is paramount for the <strong>Red-Flag Shield</strong>.</p>
+<h3>The OSINT Admiralty Code (ICD 203 Standard)</h3>
+<p>The intelligence community uses a standard matrix to score data, which we can programmatically adapt:</p>
+<ul>
+<li><strong>Source Reliability (A-F):</strong> Is the origin credible? (e.g., A = Official Company Site, C = Third-party Job Board, F = Unverified Reddit comment).</li>
+<li><strong>Information Credibility (1-6):</strong> Is the data corroborated? (e.g., 1 = Confirmed by multiple sources, 3 = Plausible, 6 = Cannot be judged).</li>
+</ul>
+<h3>Application to the Kanban Red-Flag Shield</h3>
+<ul>
+<li><strong>Scoring Algorithm:</strong> The backend LLM will assign an Admiralty Score (e.g., &quot;A1&quot; or &quot;C4&quot;) to parsed job info. </li>
+<li><strong>Red Flags:</strong> Information flagged as &quot;Toxic Culture&quot; sourced from a &quot;C&quot; (Fairly Reliable - Glassdoor) with a Credibility of &quot;1&quot; (Confirmed by many reviews) will trigger an absolute <strong>RED FLAG</strong> on the Kanban board, physically warning the user.</li>
+</ul>
+<hr>
+<h2>Conclusion</h2>
+<p>The combination of local, self-healing <strong>ScrapeGraphAI</strong>, the visual tracking of a <strong>Huntr-style Kanban</strong>, and rigorous <strong>Admiralty Code data scoring</strong> places this architecture far ahead of standard consumer tools. The project is fully validated technically and market-wise.</p>
+</div>
+            </details>
+        </article>
+    
+        <article class="research-card" id="tech-stack-md">
+            <div class="chip">deep_dive</div>
+            <h3>Technical Stack Research</h3>
+            <p class="research-desc">Analysis of the technical stack for Career CRM.</p>
+            <details>
+                <summary>Open research source</summary>
+                <div class="markdown-body"><h1>Technical Stack Research</h1>
+<p><strong>I want</strong> to determine the optimal technologies to achieve local processing and native graph visualization.</p>
+<h2>Technologies</h2>
+<ul>
+<li><strong>Python (FastAPI)</strong>: For lightweight local API routing.</li>
+<li><strong>Obsidian</strong>: Local markdown editor with built-in graph visualization.</li>
+<li><strong>React + Tailwind</strong>: Frontend UI.</li>
+</ul>
+<p>PIVOT
+Initially considered Next.js for the frontend, but pivoted to a simple static Vite build because we only need a lightweight local SPA without SSR.</p>
+</div>
+            </details>
+        </article>
+    
+        </section>
+
+        <p class="footer-note">Generated from <code>Test HTML - Phase 1/epics</code> and <code>Test HTML - Phase 1/research</code> for pilot evaluation. PDF export path is prewired through the <code>export-pdf</code> skill.</p>
+    </main>
+</body>
+</html>

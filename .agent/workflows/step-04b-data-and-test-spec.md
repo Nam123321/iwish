@@ -3,7 +3,7 @@ name: 'step-04b-data-and-test-spec'
 description: 'Generate full data specs, dependency maps, and test strategy from Tier 1 tags — output to FeatureGraph (ADR-002)'
 
 # Path Definitions
-workflow_path: '{project-root}/_bmad/bmm/workflows/3-solutioning/create-epics-and-stories'
+workflow_path: '{project-root}/_iwish/bmm/workflows/3-solutioning/create-epics-and-stories'
 
 # File References
 thisStepFile: './step-04b-data-and-test-spec.md'
@@ -15,8 +15,8 @@ kiraAgent: '{project-root}/.agent/agents/data-architect.md'
 shinjiAgent: '{project-root}/.agent/agents/data-strategist.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 4b: Data & Test Spec Generation (Tier 2)

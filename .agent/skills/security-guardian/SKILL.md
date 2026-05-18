@@ -6,14 +6,14 @@ description: The obligatory Phase 0 security checkpoint for the Repo Absorption 
 # 🛡️ Security Guardian (Phase 0)
 
 ## 📌 OVERVIEW & AGENT INSTRUCTIONS
-This skill acts as the mandatory 4-layer security gate before any external open-source repository can be fully integrated or analyzed by the BMAD ecosystem. You are the **Security Guardian**. Your job is to strictly enforce these checks and generate a comprehensive security report.
+This skill acts as the mandatory 4-layer security gate before any external open-source repository can be fully integrated or analyzed by the I-Wish ecosystem. You are the **Security Guardian**. Your job is to strictly enforce these checks and generate a comprehensive security report.
 
 You MUST execute the 4 layers in order. If any layer triggers a `BLOCK` or `WARNING`, you MUST halt and request explicit User approval before proceeding to the next layer or completing the phase.
 
 ### Target Sandbox
-Always clone the target repository to: `${BMAD_HOME}/sandbox/{repo-name}`
-Use `BMAD_HOME=${BMAD_HOME:-~/.bmad-dragonball}` when the environment variable is not already set.
-*(If the directory does not exist, create it. This isolates the repo from the main BMAD project).*
+Always clone the target repository to: `${IWISH_HOME}/sandbox/{repo-name}`
+Use `IWISH_HOME=${IWISH_HOME:-~/.iwish-dragonball}` when the environment variable is not already set.
+*(If the directory does not exist, create it. This isolates the repo from the main I-Wish project).*
 
 ---
 
@@ -42,7 +42,7 @@ Execute this AFTER cloning the repository to the sandbox.
 1. Check if `gitleaks` is installed (`which gitleaks`). If not, instruct the user to run `brew install gitleaks` (or equivalent) and wait.
 2. Run the Gitleaks scan:
    ```bash
-   gitleaks detect --source ${BMAD_HOME}/sandbox/{repo-name} --report-format json --report-path ${BMAD_HOME}/absorbed-repos/{repo-name}/gitleaks.json
+   gitleaks detect --source ${IWISH_HOME}/sandbox/{repo-name} --report-format json --report-path ${IWISH_HOME}/absorbed-repos/{repo-name}/gitleaks.json
    ```
 3. Parse the output JSON to extract: `rule`, `secret` (MUST MASK IT before displaying), `file`, and `line number`.
 4. **Gate:** If ANY secrets are found -> **BLOCK**. Display a detailed findings table and WAIT for User acknowledgement to proceed.
@@ -75,7 +75,7 @@ Use grep or AST scanning tools to detect suspicious code patterns.
 ## 📝 OUTPUT: SECURITY REPORT
 Upon completion of all 4 layers (or if forced to stop), generate a structured markdown report.
 
-**File Path:** `${BMAD_HOME}/absorbed-repos/{repo-name}/security-report.md`
+**File Path:** `${IWISH_HOME}/absorbed-repos/{repo-name}/security-report.md`
 
 **Format:**
 ```markdown

@@ -1,0 +1,15 @@
+node_modules/
+distro/
+tmp/
+_bmad-output/
+dragonball_distribution/
+
+# BMAD Deletion Test sandbox artifacts (orphan safety net)
+*.__bmad_deleted
+**/*.__bmad_deleted
+
+# OS metadata
+.DS_Store
+
+# BMAD Agent memory
+.agent/memory/

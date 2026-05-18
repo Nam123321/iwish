@@ -4,7 +4,7 @@ fixture: "fix-bug"
 decision: "PENDING"
 candidates:
   - path: "candidates/TRIAL-2026-05-13T17-33-50-080Z-native.md"
-    source_engine: "bmad-native"
+    source_engine: "iwish-native"
     engine_version: "internal"
   - path: "candidates/TRIAL-2026-05-13T17-33-50-080Z-darwinian.md"
     source_engine: "darwinian"

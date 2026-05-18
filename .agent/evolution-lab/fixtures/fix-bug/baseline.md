@@ -41,7 +41,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 
 2. **Classification:**
    - Bug thuộc **Epic** nào? → ghi epic ID
-   - Bug thuộc **Story** nào? → ghi story ID (tra cứu trong `_bmad-output/stories/`)
+   - Bug thuộc **Story** nào? → ghi story ID (tra cứu trong `_iwish-output/stories/`)
    - Bug thuộc loại: `UI` | `Logic` | `Data` | `API` | `State` | `Integration` | `Performance` | `Security`
 
 3. **FMEA Score:**
@@ -51,8 +51,8 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
    - **RPN = S × P × D** → 🔴 ≥60 CRITICAL | 🟡 25-59 IMPORTANT | 🟢 <25 LOW
 
 4. **Recurrence check (Type A/B classification):**
-   - Kiểm tra `_bmad-output/bug-tracker.yaml` — bug này đã từng xuất hiện chưa?
-   - Kiểm tra `_bmad-output/bug-reports/` — tìm SBRP report chứa bug trước đó
+   - Kiểm tra `_iwish-output/bug-tracker.yaml` — bug này đã từng xuất hiện chưa?
+   - Kiểm tra `_iwish-output/bug-reports/` — tìm SBRP report chứa bug trước đó
    - **Nếu lặp — phân loại:**
      - **Type A** (cùng root cause, fix trước không đủ sâu):
        → Thêm `fixAttempt` entry vào `bug-tracker.yaml` cho bug cũ
@@ -71,7 +71,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 // turbo-all
 
 5. **Đọc Story requirement:**
-   - Mở story file: `_bmad-output/stories/[epic]/[story].md`
+   - Mở story file: `_iwish-output/stories/[epic]/[story].md`
    - Đọc Acceptance Criteria liên quan đến bug
    - Xác nhận: bug vi phạm AC nào?
 
@@ -87,12 +87,12 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 8. **Cross-reference (bao gồm bug history):**
    - Liệt kê các story/feature liên quan (cùng dùng component/service bị bug)
    - Check Knowledge Items cho bug tương tự
-   - Check `_bmad-output/edge-case-knowledge/` cho edge case đã biết
-   - **Check `_bmad-output/bug-reports/`** — đọc SBRP reports liên quan:
+   - Check `_iwish-output/edge-case-knowledge/` cho edge case đã biết
+   - **Check `_iwish-output/bug-reports/`** — đọc SBRP reports liên quan:
      → Tìm bug cùng file/component/feature
      → Đọc RCA và lessons learned từ bugs trước
      → Xác nhận fix trước đó còn hiệu lực không
-   - **Check `_bmad-output/bug-tracker.yaml`** — lịch sử fixAttempts:
+   - **Check `_iwish-output/bug-tracker.yaml`** — lịch sử fixAttempts:
      → Bug trước có `linkedBugs` nào liên quan không?
      → `lessonsLearned` từ bugs cũ áp dụng được không?
 
@@ -126,7 +126,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
     - Story có AI features không? (prompt templates, LLM calls, RAG pipeline, Cognee, embeddings)
     - Nếu CÓ → load AI context bổ sung:
       - Đọc prompt template version hiện tại: `src/modules/ai/prompts/{feature}/system.v*.md`
-      - Đọc AI spec: `_bmad-output/ai-specs/{story-id}-ai-spec.md` (nếu có)
+      - Đọc AI spec: `_iwish-output/ai-specs/{story-id}-ai-spec.md` (nếu có)
       - Check model tier assignment trong code
       - Check token budget vs actual usage (nếu có monitoring)
       - Ghi nhận: `ai_related: true` vào SBRP report
@@ -354,7 +354,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 
 18b. **INVERSE DELETION TEST GATE (🔴 SBRP-Full Only):**
      - Dành cho bug High-Priority (RPN ≥ 60). Bắt buộc chạy Inverse Deletion Test để chứng minh fix hợp lệ.
-     - Dùng `bash .agent/scripts/bmad-deletion-test.sh <target-fix>` hoặc comment out đoạn code vừa fix.
+     - Dùng `bash .agent/scripts/iwish-deletion-test.sh <target-fix>` hoặc comment out đoạn code vừa fix.
      - Chạy regression test suite. Test BẮT BUỘC phải FAIL (chứng tỏ test suite bắt được lỗi và fix có tác dụng).
      - Restore fix, test suite phải PASS.
 
@@ -362,7 +362,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
     - Load SKILL: `@{project-root}/.agent/skills/qa-simulator-guardian.md`
     - Tien-Shinhan (hoặc Auditor Agent) phải kích hoạt Simulator để phân loại Code Fix (1 trong 13 Types) và chấm điểm.
     - Bắt buộc phải có **TOTAL AVERAGE Score ≥ 8.5/10** (trên 6 Core Axes + UX Empathy).
-    - **Delta Lock Loop Protection:** Check `fixAttempts` trong `_bmad-output/bug-tracker.yaml`.
+    - **Delta Lock Loop Protection:** Check `fixAttempts` trong `_iwish-output/bug-tracker.yaml`.
       - Nếu trả về `[FIXABLE]` và Delta Score cải thiện `>= 0.5`, bẻ khóa workflow trở lại Phase 5 bắt Vegeta fix tiếp.
       - Nếu số vòng lặp `fixAttempts` đã vượt quá 3, HOẶC Delta tăng không đủ `< 0.5` → **HALT workflow**, không được gán cờ `RESOLVED`, báo cáo thất bại cho User!
 
@@ -372,7 +372,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 
 ### 7a. SBRP Report File Rules
 
-- Tìm file SBRP report hiện tại của session: `_bmad-output/bug-reports/YYYY-MM-sbrp-round{N}.md`
+- Tìm file SBRP report hiện tại của session: `_iwish-output/bug-reports/YYYY-MM-sbrp-round{N}.md`
 - **Nếu chưa có file cho session này** → tạo file mới, N = max(existing rounds) + 1
 - **Nếu đã có file cho session này** → append bug mới vào file hiện tại
 - **Nếu session fix > 10 bugs** → tách file mới với round N+1
@@ -395,12 +395,12 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 ### 7c. Update Documents
 
 22. **Update Edge Case Knowledge Graph:**
-    - Thêm node mới vào `_bmad-output/edge-case-knowledge/pillars/p[N]-*.md`
+    - Thêm node mới vào `_iwish-output/edge-case-knowledge/pillars/p[N]-*.md`
     - Format theo ECG SKILL §5 Node Format
     - Update `index.md`
 
 23. **Update bug tracker:**
-    - Cập nhật `_bmad-output/bug-tracker.yaml` (xem template bên dưới)
+    - Cập nhật `_iwish-output/bug-tracker.yaml` (xem template bên dưới)
     - Ghi: epic, story, bug ID, RPN, fix attempt count, status, lessonsLearned
 
 24. **Update story spec (Decision Flow):**
@@ -441,7 +441,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 
 ## Phase 8: SCORING & MEASUREMENT (Đo lường)
 
-26. **Cập nhật Bug Scorecard** trong `_bmad-output/bug-tracker.yaml`:
+26. **Cập nhật Bug Scorecard** trong `_iwish-output/bug-tracker.yaml`:
 
     ```yaml
     # Mỗi bug entry:
@@ -502,12 +502,12 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 
 29. **Monthly Report generation:**
     - Run `/fix-bug --report` to generate summary từ `bug-tracker.yaml`
-    - Output: `_bmad-output/bug-reports/[YYYY-MM]-bug-report.md`
+    - Output: `_iwish-output/bug-reports/[YYYY-MM]-bug-report.md`
     - Include: heat map per epic, hot stories, tier distribution, restructuring recommendations
 
 30. **Generate Operation Report & Health Dashboard (HSEA-4.6):**
     - Execute `node scripts/operation-report-gen.js` to aggregate the latest sprint, codebase, and defect metrics.
-    - **AGENT INSTRUCTION**: After running the report generator, explicitly notify the user in the chat that the Operation Report has been updated, and provide the absolute file URI to `_bmad-output/operation-report/index.html`.
+    - **AGENT INSTRUCTION**: After running the report generator, explicitly notify the user in the chat that the Operation Report has been updated, and provide the absolute file URI to `_iwish-output/operation-report/index.html`.
 
 ---
 

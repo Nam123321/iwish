@@ -1,6 +1,6 @@
 ---
 name: 'Plan Tune Heuristic'
-description: 'Story complexity scoring, split/merge protocol, and AC-to-Task traceability matrix. Scavenged from Gstack Plan Tune skill and adapted for BMAD story generation.'
+description: 'Story complexity scoring, split/merge protocol, and AC-to-Task traceability matrix. Scavenged from Gstack Plan Tune skill and adapted for I-Wish story generation.'
 ---
 
 # Plan Tune Heuristic — Story Complexity Governance

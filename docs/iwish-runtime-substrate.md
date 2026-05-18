@@ -61,7 +61,7 @@ Compatibility aliases:
 Officially supported:
 
 - `claude-code`
-- `codex`
+- `local-terminal`
 - `cursor`
 - `windsurf`
 - `opencode`

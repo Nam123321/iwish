@@ -1,6 +1,6 @@
 # Draft Skill Creation Governance
 
-> **Purpose:** Decide when BMAD may create a generated draft skill from session feedback or review evidence, and define the safety gates before that draft can affect canonical `.agent/` behavior.
+> **Purpose:** Decide when I-Wish may create a generated draft skill from session feedback or review evidence, and define the safety gates before that draft can affect canonical `.agent/` behavior.
 
 Use this fragment when session feedback, user corrections, bug fixes, code review findings, learning logs, curator recommendations, or memorygraph/KG clusters appear to justify a new reusable skill. This fragment is governance-only: it does not authorize background schedulers, automatic promotion, template mutation, canonical graph registration, or direct writes into `.agent/skills`.
 
@@ -34,13 +34,13 @@ If any gate fails, do not create a draft skill. Route the candidate using the fa
 | Concrete defect pattern or workflow lesson | `.agent/memory/instincts.jsonl`, bug report, learning log, or workflow memory candidate. |
 | Small rule or wording patch to an existing skill | `enhance-skill` with `patch` recommendation. |
 | Strong overlap with existing skill | `enhance-skill` with `merge`, `split`, or `rewrite` recommendation. |
-| Workflow, agent, fragment, or compound-shaped learning | Route to the matching generated capability path, not `${BMAD_HOME}/generated-skills`. |
+| Workflow, agent, fragment, or compound-shaped learning | Route to the matching generated capability path, not `${IWISH_HOME}/generated-skills`. |
 | Speculative, stale, private, security-sensitive, or weak evidence | Reviewer-visible recommendation only; do not create a draft body unless the user approves handling. |
 | Raw logs, transcripts, memorygraph dumps, or source code blobs | Link from source artifacts; do not embed in draft skill bodies. |
 
 ## Classification and Duplicate-Risk Rules
 
-Before creating `${BMAD_HOME}/generated-skills/<name>/`, run classification and related-asset checks:
+Before creating `${IWISH_HOME}/generated-skills/<name>/`, run classification and related-asset checks:
 
 1. Classify the candidate as `skill`, `workflow`, `agent`, `fragment`, or `compound`.
 2. Search existing `.agent/skills`, `.agent/workflows`, `.agent/agents`, `.agent/fragments`, and relevant templates for overlapping names, triggers, and domain terms.
@@ -55,16 +55,16 @@ A draft skill must never be used as a workaround for unclear classification.
 Generated skill drafts MUST start under:
 
 ```text
-${BMAD_HOME}/generated-skills/<name>/
+${IWISH_HOME}/generated-skills/<name>/
 ```
 
 Required files:
 
 ```text
-${BMAD_HOME}/generated-skills/<name>/SKILL.md
-${BMAD_HOME}/generated-skills/<name>/metadata.yaml
-${BMAD_HOME}/generated-skills/<name>/lineage.jsonl
-${BMAD_HOME}/generated-skills/<name>/promotion-plan.md
+${IWISH_HOME}/generated-skills/<name>/SKILL.md
+${IWISH_HOME}/generated-skills/<name>/metadata.yaml
+${IWISH_HOME}/generated-skills/<name>/lineage.jsonl
+${IWISH_HOME}/generated-skills/<name>/promotion-plan.md
 ```
 
 `SKILL.md` must contain operational trigger rules, procedure, anti-patterns, and validation notes. It must not contain raw transcripts, full bug reports, memorygraph dumps, or copied source artifacts.
@@ -94,7 +94,7 @@ Before a generated draft skill is considered ready for review, validate:
 | Scope boundary | Skill solves one coherent operational job and names out-of-scope cases. |
 | Frontmatter | `name` and `description` are present and concise. |
 | Anti-patterns | Draft states what not to do, including duplicate creation and raw evidence embedding. |
-| Best practices | Procedure reuses existing BMAD fragments/workflows instead of creating parallel rules. |
+| Best practices | Procedure reuses existing I-Wish fragments/workflows instead of creating parallel rules. |
 | Verification | Validation commands or reviewer checks are concrete and runnable when applicable. |
 | Provenance | Source refs are compact, confidence is recorded, and sensitive/stale sources are flagged. |
 | Lineage | `lineage.jsonl` exists and follows the append-only event contract. |
@@ -116,7 +116,7 @@ Background review may emit:
 
 - a curator recommendation;
 - a candidate spec;
-- a generated draft under `${BMAD_HOME}/generated-skills` if the user or active workflow authorizes draft writing;
+- a generated draft under `${IWISH_HOME}/generated-skills` if the user or active workflow authorizes draft writing;
 - a learning-log or memory pointer.
 
 Background review may not:

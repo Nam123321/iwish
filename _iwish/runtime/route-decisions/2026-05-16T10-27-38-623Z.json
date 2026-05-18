@@ -18,10 +18,10 @@
   },
   "candidateCatalogEntries": [
     {
-      "id": "workflow:bmad-bmm-correct-course",
+      "id": "workflow:iwish-bmm-correct-course",
       "type": "workflow",
-      "canonical": "bmad-bmm-correct-course",
-      "source": "/.agent/workflows/bmad-bmm-correct-course.md"
+      "canonical": "iwish-bmm-correct-course",
+      "source": "/.agent/workflows/iwish-bmm-correct-course.md"
     }
   ],
   "followUp": {

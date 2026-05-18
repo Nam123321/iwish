@@ -22,7 +22,7 @@ function parseOutput(output) {
 
 function run() {
     const today = new Date().toISOString().split('T')[0];
-    const reportDir = path.resolve(process.cwd(), `_bmad-output/health-reports/${today}`);
+    const reportDir = path.resolve(process.cwd(), `_iwish-output/health-reports/${today}`);
     
     if (!fs.existsSync(reportDir)) {
         fs.mkdirSync(reportDir, { recursive: true });

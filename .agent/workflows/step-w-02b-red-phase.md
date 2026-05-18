@@ -33,7 +33,7 @@ Create the following sections to inject into the `SKILL.md` template in Step W-0
 - If you find yourself thinking "[Lazy LLM Excuse]", STOP. This is a Silent Bypass rationalization.
 
 ## Common Rationalizations
-| Excuse (Lazy LLM) | Reality (BMAD Standard) |
+| Excuse (Lazy LLM) | Reality (I-Wish Standard) |
 |---|---|
 | "The user already approved..." | The user's approval does not override the mandatory QA gate. |
 ```

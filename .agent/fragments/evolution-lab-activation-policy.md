@@ -1,7 +1,7 @@
 # Evolution Lab Activation Policy
 
 ## 1. Objective
-This document defines the project-scoped activation mechanisms for the BMAD Evolution Lab. It establishes the configuration schemas required to opt a project into "dual-run" capabilities, the strict rules for degraded modes (fallback to native only), and the specification for tracking candidate provenance via a centralized trial manifest.
+This document defines the project-scoped activation mechanisms for the I-Wish Evolution Lab. It establishes the configuration schemas required to opt a project into "dual-run" capabilities, the strict rules for degraded modes (fallback to native only), and the specification for tracking candidate provenance via a centralized trial manifest.
 
 ## 2. Project-Scoped Activation Configuration
 
@@ -34,8 +34,8 @@ This manifest is written atomically only after all engines complete their execut
 trial_id: "TRIAL-<ID>"
 timestamp: "YYYY-MM-DDTHH:MM:SSZ"
 candidates:
-  - path: "candidates/bmad/skill-v2.md"
-    source_engine: "bmad-native"
+  - path: "candidates/iwish/skill-v2.md"
+    source_engine: "iwish-native"
     engine_version: "internal"
   - path: "candidates/darwinian/skill-v2.md"
     source_engine: "darwinian"
@@ -54,8 +54,8 @@ The trial runner must implement a state machine that respects the UX rules defin
 
 *   **`STATE: DEGRADED_NATIVE_ONLY`**
     *   **Condition:** Config `dual_run_enabled: false` OR missing, OR Darwinian dependency is missing and the user Opts-Out (Clean Bypass), OR Darwinian subprocess fails (non-zero exit code).
-    *   **Behavior:** Trial proceeds strictly with internal BMAD skills. If triggered by an Opt-Out, the final scorecard MUST NOT display a "Darwinian failed" warning. If triggered by a runtime error, a prominent warning MUST be displayed on the scorecard.
+    *   **Behavior:** Trial proceeds strictly with internal I-Wish skills. If triggered by an Opt-Out, the final scorecard MUST NOT display a "Darwinian failed" warning. If triggered by a runtime error, a prominent warning MUST be displayed on the scorecard.
 
 *   **`STATE: FATAL_FAILURE`**
-    *   **Condition:** The native BMAD engine encounters an unrecoverable error (regardless of Darwinian engine success or failure).
+    *   **Condition:** The native I-Wish engine encounters an unrecoverable error (regardless of Darwinian engine success or failure).
     *   **Behavior:** The trial halts entirely. No candidates are promoted, and an escalation report must be generated.

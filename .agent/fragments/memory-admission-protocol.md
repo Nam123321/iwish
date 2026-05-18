@@ -17,7 +17,7 @@ Admission scoring is different from retrieval filtering:
 | Fix-bug / SBRP | After Phase 3 RCA and again after Phase 5 fix validation / Phase 7 tracker update | Yes | Candidate for `instincts.jsonl`, bug tracker lesson, workflow memory, or capability-enhancement follow-up. |
 | Code review | After findings are calibrated and before review conclusion | Yes | Candidate for `instincts.jsonl`, workflow memory, or governance follow-up. |
 | Grand-Priest SAVE phase | After Classification Funnel determines type | Yes | Route to memory only if the learning is not a capability candidate. |
-| Whis create-skill Step W-01/W-02 | After capability type triage and spec approval | Routing validation only | Capability knowledge goes to `${BMAD_HOME}/generated-*`, not loose memory. |
+| Whis create-skill Step W-01/W-02 | After capability type triage and spec approval | Routing validation only | Capability knowledge goes to `${IWISH_HOME}/generated-*`, not loose memory. |
 | Whis create-skill Step W-04 | After user approves promotion | Meta-learning only | Append promotion meta-instinct after approval, matching existing policy. |
 | Whis enhance-skill Step E-01/E-02 | During reflection and clustering | Yes | Cluster/rank instincts; route to `UPDATE_SKILL`, `CREATE_SKILL`, or `UPDATE_WORKFLOW`. |
 | Retrospective / incident / QA finding | After evidence is available | Yes | Candidate for `instincts.jsonl`, KG learning, or workflow memory. |
@@ -64,13 +64,13 @@ Thresholds:
 | Concrete operational defect pattern | `.agent/memory/instincts.jsonl` | Dense JSONL with `bad`, `good`, `sev`, `ctx`, and `ref`. |
 | Bug root-cause pattern or recurrence lesson | `.agent/memory/instincts.jsonl` + bug tracker/report reference | Save after RCA/fix validation, not before. Use `src: fix-bug`. |
 | Durable lesson requiring search/reuse | `.agent/learnings/*.md` + KG node | Follow `learning-context-loop.md`; max 3 loaded per session. |
-| New skill/workflow/persona/compound methodology | `${BMAD_HOME}/generated-*` via create-skill or enhance-skill | Do not bury as memory. |
+| New skill/workflow/persona/compound methodology | `${IWISH_HOME}/generated-*` via create-skill or enhance-skill | Do not bury as memory. |
 | External repo behavior/pattern | RAP DNA/gap-analysis/research artifact | Promote only through approved integration story. |
 | Raw evidence/log/code dump | Skip; link to source artifact | Memory stores the lesson, not the dump. |
 
 ## Classification Non-Bypass Rule
 
-Admission scoring must never replace BMAD's Classification Funnel. If a candidate is skill-shaped, workflow-shaped, agent-shaped, or compound-shaped, it must route to `create-skill`, `enhance-skill`, or a generated runtime draft under `${BMAD_HOME}`. Memory may store a compact pointer to the candidate, but it must not become the implementation carrier.
+Admission scoring must never replace I-Wish's Classification Funnel. If a candidate is skill-shaped, workflow-shaped, agent-shaped, or compound-shaped, it must route to `create-skill`, `enhance-skill`, or a generated runtime draft under `${IWISH_HOME}`. Memory may store a compact pointer to the candidate, but it must not become the implementation carrier.
 
 ## Future Patch Surface Handoff
 
@@ -78,9 +78,9 @@ Later implementation stories should patch these exact surfaces when turning this
 
 | Surface | Expected Patch |
 |---|---|
-| `.agent/workflows/bmad-bmm-create-story.md` | Run admission scoring after story context/Dev Notes identify durable project or workflow lessons. |
+| `.agent/workflows/iwish-bmm-create-story.md` | Run admission scoring after story context/Dev Notes identify durable project or workflow lessons. |
 | `.agent/agents/vegeta.md` | Run admission scoring after task/test completion and before Agent Record finalization. |
-| `.agent/workflows/bmad-bmm-code-review.md` | Run admission scoring after findings are calibrated and before final review output. |
+| `.agent/workflows/iwish-bmm-code-review.md` | Run admission scoring after findings are calibrated and before final review output. |
 | `.agent/workflows/fix-bug.md` | Run admission scoring after RCA and after fix validation/tracker update, not during triage. |
 | `.agent/agents/grand-priest.md` | In SAVE phase, classify learning first, then route memory-shaped candidates through this protocol. |
 | `.agent/agents/whis.md` | Apply this protocol before writing instincts and before creating/enhancing capabilities from memory clusters. |
@@ -90,4 +90,4 @@ Later implementation stories should patch these exact surfaces when turning this
 
 Adopt Hermes' useful heuristics: save preferences, durable environment/project facts, conventions, corrections, explicit remember requests, and completed-work lessons; skip trivial facts, rediscoverable knowledge, raw dumps, session-only details, and content already present in context files.
 
-BMAD adds stricter governance: numeric admission scoring, project-first routing, capability classification, graph/source references, no hidden canonical writes, human promotion gates, and memorygraph-backed retrieval for scale.
+I-Wish adds stricter governance: numeric admission scoring, project-first routing, capability classification, graph/source references, no hidden canonical writes, human promotion gates, and memorygraph-backed retrieval for scale.

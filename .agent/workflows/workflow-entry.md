@@ -118,7 +118,7 @@ IF FAIL → Fix non-linear paths BEFORE generating UI spec options
    - Persona + device context
    - Design System summary from {design_system_path}
    - Page override summary from `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md` when it exists for the active page/story context
-   - Any approved brand, portal, or BMAD authority constraints relevant to this story
+   - Any approved brand, portal, or I-Wish authority constraints relevant to this story
 3. Invoke `ui-ux` only for story-level guidance
 4. Do NOT use it to re-run portal-wide design discovery or to override approved Stitch / Design System authority
 5. If the specialist conflicts with approved Stitch screens or extracted visual contract:
@@ -126,13 +126,13 @@ IF FAIL → Fix non-linear paths BEFORE generating UI spec options
    - downgrade it to a checklist / advisory note
    - keep the Stitch visual contract authoritative
 6. After the user approves the final story-level Stitch screen(s):
-   - re-check `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check` against the approved Stitch visual contract
+   - re-check `Conflict Status`, `Winning Authority`, and `I-Wish Conflict Check` against the approved Stitch visual contract
    - update the `UI-UX Orchestrator Notes` section so it reflects the final approved story-level visual authority
    - do not leave pre-approval conflict fields stale in the final UI spec or handoff
 ```
 
 **The agent MUST include the specialist output in the final UI spec** under section `UI-UX Orchestrator Notes`.
-That section MUST use this exact governed BMAD contract template:
+That section MUST use this exact governed I-Wish contract template:
 ```markdown
 ### UI-UX Orchestrator Notes
 
@@ -146,7 +146,7 @@ Anti-Patterns: [from specialist output]
 Implementation Checklist: [from specialist output]
 Conflict Status: [from final reconciled specialist output]
 Winning Authority: [from final reconciled specialist output]
-BMAD Conflict Check: [from final reconciled specialist output]
+I-Wish Conflict Check: [from final reconciled specialist output]
 Next Workflow Use: [from specialist output, updated if the final approved Stitch result changes downstream usage]
 ```
 
@@ -161,14 +161,14 @@ The section MUST preserve these exact fields:
 - `Implementation Checklist`
 - `Conflict Status`
 - `Winning Authority`
-- `BMAD Conflict Check`
+- `I-Wish Conflict Check`
 - `Next Workflow Use`
 
 ## INITIALIZATION
 
 ### Configuration Loading
 
-Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
+Load config from `{project-root}/_iwish/bmm/config.yaml` and resolve:
 
 - `project_name`, `output_folder`, `planning_artifacts`, `implementation_artifacts`, `user_name`
 - `communication_language`, `document_output_language`, `user_skill_level`
@@ -176,7 +176,7 @@ Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
 
 ### Paths
 
-- `installed_path` = `{project-root}/_bmad/bmm/workflows/4-implementation/create-ui-spec`
+- `installed_path` = `{project-root}/_iwish/bmm/workflows/4-implementation/create-ui-spec`
 - `template_path` = `{installed_path}/template.md`
 - `output_folder` = `{implementation_artifacts}/ui-specs`
 - `default_output_file` = `{output_folder}/{story_key}-ui-spec.md`
@@ -192,7 +192,7 @@ If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
 - Cross-reference with existing UX spec design tokens
 
 If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
-- Load the SKILL instructions for governed BMAD story-level recommendation behavior
+- Load the SKILL instructions for governed I-Wish story-level recommendation behavior
 - Use it only after Design System Gate and User Simulation Gate pass
 - Treat approved Design System, approved Stitch screens, extracted visual contract, User Simulation Guardian, Design Consultation, and UX Guardian as higher authority
 
@@ -244,10 +244,10 @@ The final story UI spec MUST include these sections in addition to the existing 
 - Key recovery or edge-case findings
 
 ### UI-UX Orchestrator Notes
-- Record the specialist output using the exact governed BMAD contract template above
+- Record the specialist output using the exact governed I-Wish contract template above
 - Keep the notes story-specific and bounded by the approved portal Design System
 - If a recommendation conflicts with approved Stitch screens or extracted visual contract, record it as rejected or downgraded advisory guidance
-- Preserve `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check`
+- Preserve `Conflict Status`, `Winning Authority`, and `I-Wish Conflict Check`
 - Reconcile the section again after final story-level Stitch approval so the conflict fields reflect the final approved visual contract, not a pre-approval draft
 
 ### Stitch Visual Contract Protection
@@ -274,7 +274,7 @@ The final story UI spec MUST include these sections in addition to the existing 
 ## MKT MATERIAL CAPTURE
 
 After user approves a design option:
-- Execute MKT Capture Pipeline: `{project-root}/_bmad/bmm/workflows/2-plan-workflows/create-ux-design/mkt-capture-pipeline.md`
+- Execute MKT Capture Pipeline: `{project-root}/_iwish/bmm/workflows/2-plan-workflows/create-ux-design/mkt-capture-pipeline.md`
 - Capture approved screen screenshot, design rationale, and MKT story
 - Update knowledge base with design decision
 
@@ -410,7 +410,7 @@ After Stitch screens are approved by user, **APPEND** this section to the UI Spe
 **Authority reminder for the handoff:**
 - `UI-UX Orchestrator Notes` enrich story context but do not override the approved portal Design System or approved Stitch visual contract
 - If any specialist recommendation was downgraded, the handoff must carry only the accepted checklist or advisory note, not the rejected source-of-truth change
-- The handoff must use the post-approval reconciled version of `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check`
+- The handoff must use the post-approval reconciled version of `Conflict Status`, `Winning Authority`, and `I-Wish Conflict Check`
 
 ## EXECUTION
 

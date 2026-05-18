@@ -8,13 +8,13 @@ description: 'Analyze accumulated instincts and evolve existing Skills/Workflows
 > **Agent:** Whis (Capability Management Master)
 
 ## Overview
-Analyze learned instincts from Machine Memory and evolve existing I-Wish capabilities while preserving legacy BMAD compatibility.
+Analyze learned instincts from Machine Memory and evolve existing I-Wish capabilities while preserving legacy I-Wish compatibility.
 
 Before proposing an update, merge, split, archive, or rewrite, load `.agent/fragments/capability-authoring-curator-rules.md`, `.agent/fragments/capability-provenance-lineage.md`, and `.agent/fragments/draft-skill-creation-governance.md`. Apply curator lifecycle, trigger-quality, duplicate-risk, context-budget, provenance, lineage, draft-versus-patch routing, and non-destructive approval rules. This workflow may recommend changes or create drafts, but it must not auto-delete, auto-archive, auto-merge, or overwrite canonical `.agent/` assets without explicit approval.
 
 If the overlap target is ambiguous, or if the user is effectively asking “what existing capability or repo should we use for this problem?”, run `research-solution-sources.md` first. Enhancement should start from the best target, not from the first skill that looks vaguely related.
 
-If an instinct cluster or review finding looks skill-shaped but overlaps an existing skill, prefer `patch`, `merge`, `split`, or `rewrite` over creating a new `${IWISH_HOME:-${BMAD_HOME:-~/.iwish}}/generated-skills` draft. Create a new draft skill only when the draft-skill creation gates pass and the related-asset review shows no better existing target.
+If an instinct cluster or review finding looks skill-shaped but overlaps an existing skill, prefer `patch`, `merge`, `split`, or `rewrite` over creating a new `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}/generated-skills` draft. Create a new draft skill only when the draft-skill creation gates pass and the related-asset review shows no better existing target.
 
 When evolving an existing capability, preserve existing provenance and append a new `lineage.jsonl` event for candidate creation, evaluation, rejection, promotion, rollback, merge, split, archive, rewrite, supersession, stale source, or sensitive source handling. Do not rewrite old lineage events. If the evolved capability lacks provenance, create a reviewer-visible provenance gap recommendation before promotion.
 

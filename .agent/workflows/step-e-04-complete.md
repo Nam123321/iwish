@@ -72,7 +72,7 @@ From step e-03 change execution, compile:
 - Priority addressed: {Critical/High/Medium/Low}
 
 **PRD Status:**
-- Format: {BMAD Standard / BMAD Variant / Legacy (converted)}
+- Format: {I-Wish Standard / I-Wish Variant / Legacy (converted)}
 - Completeness: {assessment}
 - Ready for: {downstream use cases}
 

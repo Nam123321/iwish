@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distro Outcome - Original UI/UX Pro Max V2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend+Deca:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mint: #00DF9A;
+      --navy: #0A1128;
+      --orange: #FF6B35;
+      --cloud: #F8FAFC;
+      --surface: #FFFFFF;
+      --text: #132238;
+      --muted: #607089;
+      --line: #DCE5EF;
+      --soft-mint: rgba(0,223,154,.10);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(0,223,154,.12), transparent 24%),
+        linear-gradient(180deg, #ffffff, #f8fafc);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+    }
+    .wrap { width: min(1180px, calc(100vw - 36px)); margin: 0 auto; }
+    .nav {
+      display: flex; justify-content: space-between; align-items: center; gap: 24px;
+      min-height: 76px; padding: 12px 0;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: "Lexend Deca", sans-serif; font-size: 26px; font-weight: 700; color: var(--navy);
+    }
+    .brand .dot {
+      width: 10px; height: 10px; border-radius: 999px; background: var(--mint);
+      box-shadow: 0 0 15px rgba(0,223,154,.5);
+      margin-left: -6px; margin-top: -12px;
+    }
+    .links { display: flex; gap: 18px; color: var(--muted); font-size: 14px; }
+    .btn, .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+      padding: 0 16px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 14px;
+    }
+    .btn { background: var(--orange); color: white; box-shadow: 0 14px 30px rgba(255,107,53,.22); }
+    .btn-ghost { background: white; border: 1px solid var(--line); color: var(--navy); }
+    .hero {
+      padding: 42px 0 26px;
+      display: grid; grid-template-columns: 1.05fr .95fr; gap: 30px; align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--soft-mint); color: #0b7e5b; padding: 8px 12px; border-radius: 999px; font-size: 12px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+    .eyebrow .mini, .ai-chip .mini {
+      width: 8px; height: 8px; border-radius: 999px; background: var(--mint);
+    }
+    h1, h2, h3, p { margin: 0; letter-spacing: 0; }
+    h1 {
+      margin-top: 16px; font-family: "Lexend Deca", sans-serif;
+      font-size: clamp(38px, 6vw, 62px); line-height: 1.03; color: var(--navy);
+      max-width: 11ch;
+    }
+    .hero p {
+      margin-top: 18px; color: var(--muted); font-size: 18px; line-height: 1.68; max-width: 60ch;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+    .hero-copy, .hero-panel, .metric, .feature, .compare, .foot {
+      background: var(--surface);
+      border: 1px solid rgba(10,17,40,.08);
+      border-radius: 22px;
+      box-shadow: 0 18px 42px rgba(10,17,40,.06);
+    }
+    .hero-copy { padding: 28px; }
+    .hero-panel { padding: 22px; }
+    .hero-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px;
+    }
+    .ai-chip {
+      display: inline-flex; align-items: center; gap: 7px; color: #0b7e5b; font-size: 12px; font-weight: 800;
+    }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab {
+      background: rgba(10,17,40,.05); border-radius: 999px; padding: 8px 10px; font-size: 12px; color: var(--navy); font-weight: 700;
+    }
+    .demo {
+      margin-top: 8px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(10,17,40,.08);
+    }
+    .demo-header {
+      background: var(--navy); color: white; padding: 14px 16px;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .demo-header strong { font-size: 14px; }
+    .demo-body {
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      padding: 16px;
+      display: grid; grid-template-columns: 1.25fr .95fr; gap: 14px;
+    }
+    .demo-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+    }
+    .metric {
+      padding: 16px;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+    }
+    .metric em {
+      font-style: normal; color: #0b7e5b; font-size: 12px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .metric strong {
+      display: block; margin-top: 10px; font-size: 28px; color: var(--navy);
+    }
+    .metric span {
+      display: block; margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.55;
+    }
+    .side-col {
+      display: grid; gap: 12px;
+    }
+    .mini-card {
+      border: 1px solid rgba(10,17,40,.08);
+      border-radius: 16px; padding: 14px; background: white;
+    }
+    .mini-card h3 { font-size: 15px; color: var(--navy); }
+    .mini-card p { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    section { padding: 18px 0; }
+    .section-head {
+      display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 16px;
+    }
+    .kicker {
+      font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: #0b7e5b; font-weight: 800;
+    }
+    .section-head h2 {
+      margin-top: 8px; font-family: "Lexend Deca", sans-serif; font-size: clamp(28px, 3.4vw, 40px); color: var(--navy);
+    }
+    .section-head p {
+      max-width: 56ch; color: var(--muted); line-height: 1.65;
+    }
+    .grid-3, .grid-2 { display: grid; gap: 16px; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .feature, .compare, .foot { padding: 20px; }
+    .feature h3, .compare h3, .foot h3 { font-size: 18px; color: var(--navy); }
+    .feature p, .compare p, .foot p { margin-top: 10px; color: var(--muted); line-height: 1.65; }
+    .feature ul, .compare ul {
+      list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; color: var(--muted); font-size: 14px;
+    }
+    .feature li::before, .compare li::before {
+      content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: var(--mint); margin-right: 10px;
+    }
+    .compare {
+      background:
+        linear-gradient(180deg, rgba(0,223,154,.08), rgba(255,255,255,1));
+    }
+    .band {
+      margin: 28px 0 34px;
+      padding: 26px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(0,223,154,.12), rgba(255,107,53,.12));
+      border: 1px solid rgba(10,17,40,.08);
+      display: flex; justify-content: space-between; gap: 18px; align-items: center; flex-wrap: wrap;
+    }
+    .band h2 {
+      font-family: "Lexend Deca", sans-serif; font-size: clamp(28px, 3.5vw, 40px); color: var(--navy);
+    }
+    .band p { margin-top: 10px; color: var(--muted); max-width: 60ch; }
+    footer { padding-bottom: 46px; }
+    @media (max-width: 980px) {
+      .hero, .demo-body, .section-head, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .links { display: none; }
+      .section-head { align-items: start; }
+      .wrap { width: min(1180px, calc(100vw - 24px)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap nav">
+    <div class="brand">d<span class="dot"></span>istro</div>
+    <div class="links">
+      <span>Platform</span>
+      <span>Flows</span>
+      <span>Proof</span>
+      <span>Demo</span>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <a class="btn-ghost" href="#">Xem demo</a>
+      <a class="btn" href="#">Bắt đầu dùng thử</a>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <article class="hero-copy">
+        <div class="eyebrow"><span class="mini"></span>Original repo - Version 2</div>
+        <h1>Điều phối đơn, kho và công nợ nhẹ hơn cho đội bán hàng SME.</h1>
+        <p>
+          Version 2 này vẫn đi từ UI/UX Pro Max gốc, nhưng prompt được siết mạnh hơn theo Brand ID Distro và mình tận dụng thêm
+          retrieval từ `product` + `style` để kéo output về đúng vùng `Inventory / Operations / Swiss / Flat / Light SaaS`.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#">Đặt lịch product tour</a>
+          <a class="btn-ghost" href="#">Xem hành trình xử lý đơn</a>
+        </div>
+      </article>
+
+      <article class="hero-panel">
+        <div class="hero-top">
+          <div class="tabs">
+            <span class="tab">Real-time monitoring</span>
+            <span class="tab">Inventory</span>
+            <span class="tab">Order flow</span>
+          </div>
+          <div class="ai-chip"><span class="mini"></span>AI-processed signals</div>
+        </div>
+        <div class="demo">
+          <div class="demo-header">
+            <strong>Distro Operations View</strong>
+            <span style="font-size:12px; opacity:.8;">12-column SaaS grid / public product proof</span>
+          </div>
+          <div class="demo-body">
+            <div class="demo-grid">
+              <div class="metric">
+                <em><span class="mini"></span>Forecasted risk</em>
+                <strong>06</strong>
+                <span>Mặt hàng có nguy cơ hụt tồn trong 72 giờ tới theo tốc độ ra hàng hiện tại.</span>
+              </div>
+              <div class="metric">
+                <em><span class="mini"></span>AI suggestion</em>
+                <strong>41</strong>
+                <span>Đơn có thể xác nhận nhanh dựa trên tuyến giao và lịch sử nhập lại.</span>
+              </div>
+              <div class="metric">
+                <em><span class="mini"></span>Debt monitor</em>
+                <strong>12</strong>
+                <span>Đại lý cần nhắc nợ trước khi mở thêm hạn mức giao hàng trong tuần.</span>
+              </div>
+              <div class="metric">
+                <em><span class="mini"></span>Warehouse pulse</em>
+                <strong>Ổn định</strong>
+                <span>Operational website framing thiên về tin cậy và khả năng nhìn nhanh.</span>
+              </div>
+            </div>
+            <div class="side-col">
+              <div class="mini-card">
+                <h3>Pattern gốc đang dùng</h3>
+                <p>Real-Time / Operations Landing với trust signals, metrics, và CTA sau phần bằng chứng sản phẩm.</p>
+              </div>
+              <div class="mini-card">
+                <h3>Style gốc được “nắn lại”</h3>
+                <p>Swiss / Minimal / Flat từ data gốc thay cho nhánh Neumorphism tím bị lệch ở raw output.</p>
+              </div>
+              <div class="mini-card">
+                <h3>Giới hạn vẫn còn</h3>
+                <p>V2 đã hợp brand hơn, nhưng vẫn có cảm giác pattern-driven hơn absorb I-Wish và ít “quiet” hơn một nhịp.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="kicker">What improved in V2</div>
+          <h2>Prompt rõ hơn kéo repo gốc lên thấy rõ.</h2>
+        </div>
+        <p>
+          So với bản gốc V1, version 2 đã bớt trôi khỏi Distro: không còn crypto/web3 mood, không còn Space Grotesk,
+          và bắt đầu thể hiện website như một public surface của hệ điều hành phân phối thật.
+        </p>
+      </div>
+      <div class="grid-3">
+        <article class="feature">
+          <h3>Brand fit tốt hơn</h3>
+          <p>Lexend + Inter trở lại, nền sáng quay lại, mint/navy/orange được phục hồi về đúng logic thương hiệu.</p>
+          <ul>
+            <li>Light UI by default</li>
+            <li>Navy cho neo lớn</li>
+            <li>AI cue cạnh dữ liệu AI-processed</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3>Product fit tốt hơn</h3>
+          <p>Ngữ cảnh `warehouse / order / debt / SME seller / operator` được cụ thể hóa, nên website bớt generic hơn.</p>
+          <ul>
+            <li>Có metric và workflow proof rõ hơn</li>
+            <li>Ngôn ngữ vận hành thực tế hơn</li>
+            <li>Trust block bớt trình diễn hơn</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3>Repo gốc vẫn lộ tính cách</h3>
+          <p>Dù đã tốt hơn, V2 vẫn cho thấy repo gốc thích đi theo pattern landing có cấu trúc mạnh và conversion-first.</p>
+          <ul>
+            <li>Hero + metrics + proof + CTA rất rõ</li>
+            <li>Form page logic mạnh</li>
+            <li>Ít tinh chỉnh tâm lý operator hơn absorb</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="kicker">Honest read</div>
+          <h2>Version 2 tốt hơn bản gốc V1, nhưng chưa thắng absorb.</h2>
+        </div>
+        <p>
+          Đây là điểm hay của test này: prompt engineering có cải thiện đáng kể outcome của repo gốc, nhưng nó chưa đủ để triệt tiêu
+          hoàn toàn xu hướng corpus-driven drift của engine gốc.
+        </p>
+      </div>
+      <div class="grid-2">
+        <article class="compare">
+          <h3>Điểm repo gốc V2 làm tốt</h3>
+          <p>Pattern sắc hơn, cấu trúc landing rõ hơn, và vẫn tạo được cảm giác “product-ready” rất nhanh.</p>
+          <ul>
+            <li>Tạo section flow rõ và logic</li>
+            <li>Giỏi hero/demo/proof sequencing</li>
+            <li>Thích hợp khi cần kickstart public product site nhanh</li>
+          </ul>
+        </article>
+        <article class="compare">
+          <h3>Điểm absorb vẫn nhỉnh hơn</h3>
+          <p>Absorb I-Wish vẫn hiểu “quiet operational trust” của Distro hơn và chống drift tốt hơn ngay từ đầu.</p>
+          <ul>
+            <li>Ít marketing theater hơn</li>
+            <li>Giữ đúng áp lực/ngữ cảnh SME operator hơn</li>
+            <li>Bám Brand ID tự nhiên hơn, ít cần prompt rescue</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="band">
+      <div>
+        <div class="kicker">Version 2 verdict</div>
+        <h2>Prompt engineering cứu được khá nhiều, nhưng governance vẫn quan trọng hơn.</h2>
+        <p>
+          Nếu dùng repo gốc cho Distro, prompt cụ thể hơn chắc chắn giúp outcome tốt lên. Nhưng để đầu ra ổn định và đúng brand/product
+          ngay từ đầu, I-Wish absorb hiện tại vẫn là lớp điều hướng đáng tin hơn.
+        </p>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="btn-ghost" href="#">Original V1</a>
+        <a class="btn" href="#">Original V2</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="grid-3">
+        <article class="foot">
+          <h3>Base source</h3>
+          <p>Original repo outputs: `Real-Time / Operations Landing`, `Inventory & Stock Management`, `Swiss / Minimal / Flat` supporting retrieval.</p>
+        </article>
+        <article class="foot">
+          <h3>Biggest improvement</h3>
+          <p>Không còn lệch sang Neumorphism tím / Space Grotesk / web3-dark mood như raw design-system output.</p>
+        </article>
+        <article class="foot">
+          <h3>Biggest remaining gap</h3>
+          <p>Vẫn cần lớp governance để đi từ “good landing pattern engine” sang “brand-safe DMS website intelligence”.</p>
+        </article>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

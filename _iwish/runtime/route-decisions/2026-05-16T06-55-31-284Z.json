@@ -18,10 +18,10 @@
   },
   "candidateCatalogEntries": [
     {
-      "id": "workflow:bmad-bmm-create-product-brief",
+      "id": "workflow:iwish-bmm-create-product-brief",
       "type": "workflow",
-      "canonical": "bmad-bmm-create-product-brief",
-      "source": "/.agent/workflows/bmad-bmm-create-product-brief.md"
+      "canonical": "iwish-bmm-create-product-brief",
+      "source": "/.agent/workflows/iwish-bmm-create-product-brief.md"
     },
     {
       "id": "skill-stitch-design-taste",

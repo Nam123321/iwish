@@ -1,4 +1,4 @@
-# BMAD Machine Memory Schema
+# I-Wish Machine Memory Schema
 
 > **⚠️ This file is for HUMAN reference only. Agents MUST read `instincts.jsonl` directly.**
 >
@@ -6,18 +6,18 @@
 
 ## Memory Layers
 
-BMAD uses project-centered memory. Hermes-style user memory is useful, but BMAD's unit of work is a product/project, so project constraints must dominate general user preferences.
+I-Wish uses project-centered memory. Hermes-style user memory is useful, but I-Wish's unit of work is a product/project, so project constraints must dominate general user preferences.
 
 | Layer | Suggested File | Scope | Owner | Use |
 |---|---|---|---|---|
 | User preference memory | `.agent/memory/USER.md` | Cross-project | Human/user | Stable preferences such as language, tone, collaboration style, review strictness, and risk tolerance. |
-| Project memory | `.agent/memory/PROJECT.md` | Current project/product | Project owner + BMAD maintainers | Product context, architecture decisions, terminology, constraints, stakeholders, active goals, and recurring project-specific lessons. |
+| Project memory | `.agent/memory/PROJECT.md` | Current project/product | Project owner + I-Wish maintainers | Product context, architecture decisions, terminology, constraints, stakeholders, active goals, and recurring project-specific lessons. |
 | Workflow memory | Workflow-local notes or future `.agent/memory/workflows/*.md` | One workflow/capability | Workflow owner | Repeated workflow failures, scoring adjustments, known edge cases, and promotion/rollback notes. |
 | Session / learning log | `.agent/memory/learning-log.jsonl` plus `.agent/memory/instincts.jsonl` for dense operational patterns | One run or observed pattern | Executing/reviewing agent | Concrete correction, failure, fix, source, severity, status, reviewer decision, and reference. |
 
 ## Storage Strategy
 
-BMAD should use a hybrid memory model instead of copying Hermes' flat 2.2K-character memory limit directly:
+I-Wish should use a hybrid memory model instead of copying Hermes' flat 2.2K-character memory limit directly:
 
 | Store | Role | Size Policy |
 |---|---|---|
@@ -29,7 +29,7 @@ BMAD should use a hybrid memory model instead of copying Hermes' flat 2.2K-chara
 
 Recommended default: keep prompt memory small and curated, but use graph-backed memory for scale. The graph should not replace `PROJECT.md`; it should help retrieve the right project/workflow/instinct entries just in time.
 
-Repo-local approved memory remains distinct from `${BMAD_HOME}` runtime state. Use `.agent/memory/*` for canonical project memory and `${BMAD_HOME}/profiles/<profile-id>/projects/<project-slug>/` only for runtime-only mirrors, exports, generated drafts, and other non-canonical HSEA artifacts.
+Repo-local approved memory remains distinct from `${IWISH_HOME}` runtime state. Use `.agent/memory/*` for canonical project memory and `${IWISH_HOME}/profiles/<profile-id>/projects/<project-slug>/` only for runtime-only mirrors, exports, generated drafts, and other non-canonical HSEA artifacts.
 
 ## Memory Precedence
 
@@ -59,11 +59,11 @@ Agent-facing admission/routing rules live in `.agent/fragments/memory-admission-
 
 ## Background Review and Learning Logs
 
-Learning-log and background-review governance lives in `.agent/fragments/background-review-learning-log-governance.md`. Use that fragment when a session, story, implementation pass, bug fix, code review, QA run, curator signal, user correction, or evolution trial produces a durable learning candidate. Authorized foreground workflows persist learning-log entries as append-only JSONL rows in `.agent/memory/learning-log.jsonl`; material changes append new rows with the same `id` rather than rewriting prior decisions. Background review is recommendation-only and must not mutate `PROJECT.md`, `USER.md`, canonical `.agent/` assets, `templates/`, KG/MemoryGraph nodes, `${BMAD_HOME}/generated-*` drafts, or `.agent/memory/learning-log.jsonl` unless an active workflow explicitly authorizes that action.
+Learning-log and background-review governance lives in `.agent/fragments/background-review-learning-log-governance.md`. Use that fragment when a session, story, implementation pass, bug fix, code review, QA run, curator signal, user correction, or evolution trial produces a durable learning candidate. Authorized foreground workflows persist learning-log entries as append-only JSONL rows in `.agent/memory/learning-log.jsonl`; material changes append new rows with the same `id` rather than rewriting prior decisions. Background review is recommendation-only and must not mutate `PROJECT.md`, `USER.md`, canonical `.agent/` assets, `templates/`, KG/MemoryGraph nodes, `${IWISH_HOME}/generated-*` drafts, or `.agent/memory/learning-log.jsonl` unless an active workflow explicitly authorizes that action.
 
 ## Hermes Adaptation Note
 
-Hermes is assistant-user oriented, so its memory design centers persistent assistant behavior around the human. BMAD-DragonBall is project/process oriented, so it adapts the same idea into project-scoped memory. This prevents one user's broad preferences or unrelated session history from contaminating a specific project's delivery constraints.
+Hermes is assistant-user oriented, so its memory design centers persistent assistant behavior around the human. I-Wish-DragonBall is project/process oriented, so it adapts the same idea into project-scoped memory. This prevents one user's broad preferences or unrelated session history from contaminating a specific project's delivery constraints.
 
 ---
 

@@ -13,7 +13,7 @@ Skill này được ưu tiên KÍCH HOẠT TỰ ĐỘNG ngay lập tức khi Age
 Và áp dụng mặc định trong các workflows: `/vegeta-dev`, `/fix-bug`, `/quick-Vegeta`, `/step-03-execute`.
 
 ## 📌 Khái quát (Overview)
-Pivot Guardian is a core BMAD skill with two complementary modes:
+Pivot Guardian is a core I-Wish skill with two complementary modes:
 1. **PIV Loop** — Prevents agents from "doubling down" on a failing approach by enforcing Plan → Implement → Validate → Pivot.
 2. **Zoom-Out Heuristic** — Prevents "tunnel vision" by forcing agents to step back to a higher abstraction layer and map the surrounding architecture before continuing.
 
@@ -61,7 +61,7 @@ The payload MUST include:
 
 ## 🔭 §4. Zoom-Out Heuristic (Perspective Escalation)
 
-> **Origin:** Merged from `mattpocock/skills` `zoom-out` pattern. Enhanced for BMAD multi-agent context.
+> **Origin:** Merged from `mattpocock/skills` `zoom-out` pattern. Enhanced for I-Wish multi-agent context.
 
 ### When to Activate
 The Zoom-Out heuristic is triggered in three situations:

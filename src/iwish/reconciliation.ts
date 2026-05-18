@@ -35,7 +35,7 @@ function getWorkItemDir(projectRoot: string): string {
 }
 
 function getSourceOfTruthDir(projectRoot: string): string {
-  return path.join(projectRoot, '_bmad-output', 'reconciliation');
+  return path.join(projectRoot, '_iwish-output', 'reconciliation');
 }
 
 function buildWorkItemMarkdown(record: ReconciliationRecord): string {

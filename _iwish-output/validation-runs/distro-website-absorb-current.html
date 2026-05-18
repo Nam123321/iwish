@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distro Outcome - I-Wish Absorb Current</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend+Deca:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mint: #00DF9A;
+      --navy: #0A1128;
+      --orange: #FF6B35;
+      --cloud: #F8FAFC;
+      --line: #D9E2EC;
+      --text: #142033;
+      --muted: #5B6B82;
+      --card: #FFFFFF;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+    .wrap { width: min(1180px, calc(100vw - 48px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(248,250,252,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(10,17,40,.08);
+    }
+    .nav {
+      min-height: 74px;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: "Lexend Deca", sans-serif; font-weight: 700; font-size: 26px; color: var(--navy);
+      letter-spacing: 0;
+    }
+    .brand .dot {
+      width: 10px; height: 10px; border-radius: 999px; background: var(--mint);
+      box-shadow: 0 0 16px rgba(0,223,154,.55);
+      margin-left: -6px; margin-top: -12px;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 14px;
+    }
+    .cta-row { display: flex; align-items: center; gap: 12px; }
+    .btn, .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 42px; padding: 0 16px; border-radius: 12px; text-decoration: none;
+      font-weight: 700; font-size: 14px;
+    }
+    .btn { background: var(--orange); color: white; box-shadow: 0 14px 30px rgba(255,107,53,.22); }
+    .btn-ghost { border: 1px solid var(--line); color: var(--navy); background: white; }
+
+    .hero {
+      padding: 72px 0 28px;
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 44px; align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(0,223,154,.12); color: #087b58; font-weight: 700; font-size: 12px;
+    }
+    .eyebrow .mini-dot, .ai-tag .mini-dot {
+      width: 8px; height: 8px; border-radius: 999px; background: var(--mint);
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: 0; }
+    h1 {
+      margin-top: 18px;
+      font-family: "Lexend Deca", sans-serif;
+      font-size: clamp(38px, 6vw, 66px);
+      line-height: 1.02;
+      color: var(--navy);
+    }
+    .hero p {
+      margin: 18px 0 0; max-width: 60ch;
+      color: var(--muted); font-size: 18px; line-height: 1.65;
+    }
+    .hero-actions {
+      margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px;
+    }
+    .proof {
+      margin-top: 26px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+    }
+    .proof-card, .panel, .metric-card, .feature, .quote, .footer-card {
+      background: var(--card);
+      border: 1px solid rgba(10,17,40,.08);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(10,17,40,.06);
+    }
+    .proof-card {
+      padding: 16px 18px;
+    }
+    .proof-card strong {
+      display: block; font-size: 22px; color: var(--navy);
+    }
+    .proof-card span { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; }
+    .panel {
+      padding: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.98)),
+        radial-gradient(circle at top right, rgba(0,223,154,.13), transparent 35%);
+    }
+    .mock-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-bottom: 18px;
+    }
+    .mock-nav {
+      display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px;
+    }
+    .pill {
+      padding: 7px 10px; border-radius: 999px; background: rgba(10,17,40,.06); color: var(--navy); font-size: 12px; font-weight: 700;
+    }
+    .layout {
+      display: grid; grid-template-columns: 1.3fr .9fr; gap: 16px;
+    }
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+    }
+    .metric-card { padding: 16px; }
+    .metric-card em, .ai-tag {
+      font-style: normal; color: #087b58; font-size: 12px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .metric-card strong {
+      display: block; margin-top: 12px; font-size: 30px; color: var(--navy);
+    }
+    .metric-card span { display: block; margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .side-stack { display: grid; gap: 12px; }
+    .side-block {
+      border: 1px solid rgba(10,17,40,.08); border-radius: 16px; background: white; padding: 16px;
+    }
+    .side-block h3 { font-size: 15px; color: var(--navy); }
+    .side-block p { margin: 8px 0 0; font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    section { padding: 28px 0; }
+    .section-head {
+      display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 18px;
+    }
+    .section-head h2 {
+      font-family: "Lexend Deca", sans-serif;
+      font-size: clamp(26px, 3vw, 38px);
+      color: var(--navy);
+    }
+    .section-head p {
+      max-width: 54ch; color: var(--muted); margin: 0; line-height: 1.65;
+    }
+    .three-col, .trust-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .feature, .quote, .footer-card { padding: 20px; }
+    .feature h3, .quote h3, .footer-card h3 { font-size: 18px; color: var(--navy); }
+    .feature p, .quote p, .footer-card p { margin: 10px 0 0; color: var(--muted); line-height: 1.65; }
+    .feature ul {
+      margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--muted); font-size: 14px;
+    }
+    .feature li::before {
+      content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: var(--mint); margin-right: 10px;
+    }
+    .trust {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 16px;
+    }
+    .quote {
+      background: linear-gradient(135deg, var(--navy), #132042);
+      color: white;
+    }
+    .quote h3, .quote p { color: white; }
+    .quote p { opacity: .86; }
+    .rule-list {
+      margin-top: 16px; display: grid; gap: 12px;
+    }
+    .rule {
+      padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
+      font-size: 14px; line-height: 1.55;
+    }
+    .cta-band {
+      padding: 28px; border-radius: 22px;
+      background: linear-gradient(135deg, rgba(0,223,154,.12), rgba(255,107,53,.12));
+      border: 1px solid rgba(10,17,40,.08);
+      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+      margin: 30px 0 54px;
+    }
+    .cta-band h2 { font-family: "Lexend Deca", sans-serif; font-size: clamp(26px, 3vw, 38px); color: var(--navy); }
+    .cta-band p { margin: 10px 0 0; color: var(--muted); max-width: 58ch; }
+    footer {
+      padding: 0 0 56px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+    }
+    .kicker {
+      font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: #087b58; font-weight: 800;
+    }
+    @media (max-width: 980px) {
+      .hero, .trust, .layout, .section-head { grid-template-columns: 1fr; }
+      .section-head { align-items: start; }
+      .three-col, .trust-grid, .footer-grid, .proof, .metric-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .wrap { width: min(1180px, calc(100vw - 28px)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="wrap nav">
+      <div class="brand">d<span class="dot"></span>istro</div>
+      <div class="nav-links">
+        <span>Giải pháp</span>
+        <span>AI Cue</span>
+        <span>Use Cases</span>
+        <span>Pricing</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn-ghost" href="#">Xem demo</a>
+        <a class="btn" href="#">Dùng thử 14 ngày</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><span class="mini-dot"></span>AI-Embedded Light DMS</div>
+        <h1>Quản lý phân phối nhẹ đầu, để đội bán hàng chạy nhanh hơn.</h1>
+        <p>
+          Outcome theo quy trình absorb hiện tại ưu tiên bám Brand ID của Distro: light UI, trust-first, nhịp nhìn yên tĩnh,
+          và AI chỉ phát sáng đúng lúc có giá trị thay vì phủ khắp trang.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#">Đặt lịch walkthrough</a>
+          <a class="btn-ghost" href="#">Xem flow nhập đơn</a>
+        </div>
+        <div class="proof">
+          <div class="proof-card"><strong>+31%</strong><span>Tốc độ xử lý đơn cho đội điều phối</span></div>
+          <div class="proof-card"><strong>-42%</strong><span>Thao tác lặp tay trong xác nhận đơn</span></div>
+          <div class="proof-card"><strong>24/7</strong><span>AI cue cho dữ liệu cần chú ý ngay</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="mock-top">
+          <div class="mock-nav">
+            <span class="pill">Đơn hàng</span>
+            <span class="pill">Kho</span>
+            <span class="pill">Công nợ</span>
+          </div>
+          <div class="ai-tag"><span class="mini-dot"></span>AI-processed signals</div>
+        </div>
+        <div class="layout">
+          <div class="metric-grid">
+            <div class="metric-card">
+              <em><span class="mini-dot"></span>Dự báo thiếu hàng</em>
+              <strong>08</strong>
+              <span>Sản phẩm cần xoay kho trong 48 giờ tới để tránh trễ đơn đại lý.</span>
+            </div>
+            <div class="metric-card">
+              <em><span class="mini-dot"></span>AI đề xuất</em>
+              <strong>126</strong>
+              <span>Đơn có thể xác nhận nhanh từ lịch sử điều phối và tồn kho hiện tại.</span>
+            </div>
+            <div class="metric-card">
+              <em><span class="mini-dot"></span>Cảnh báo tuyến giao</em>
+              <strong>03</strong>
+              <span>Khu vực giao nhận có rủi ro quá tải, nên gộp lịch hoặc đổi ca.</span>
+            </div>
+            <div class="metric-card">
+              <em><span class="mini-dot"></span>Nhịp vận hành</em>
+              <strong>Ổn định</strong>
+              <span>Dashboard ưu tiên scan nhanh, ít áp lực màu sắc, nhiều khoảng thở.</span>
+            </div>
+          </div>
+          <div class="side-stack">
+            <div class="side-block">
+              <h3>Nguyên tắc visual</h3>
+              <p>Nền sáng, navy cho neo thị giác lớn, mint cho dữ liệu AI, orange cho quyết định thương mại quan trọng.</p>
+            </div>
+            <div class="side-block">
+              <h3>Nguyên tắc copy</h3>
+              <p>Nói bằng năng lực vận hành thật: đơn, kho, công nợ, độ chính xác, giảm áp lực cho SME seller.</p>
+            </div>
+            <div class="side-block">
+              <h3>Nguyên tắc hero</h3>
+              <p>Không làm hero kiểu quảng cáo quá khổ. Hero cần dẫn thẳng vào bằng chứng sản phẩm và signal thực tế.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="kicker">Direction</div>
+          <h2>Định hướng absorb hiện tại</h2>
+        </div>
+        <p>
+          Kết quả này phản ánh phần mạnh nhất của absorb I-Wish: chọn đúng “tính cách sản phẩm”, chống drift sang generic SaaS,
+          và biến Brand ID thành layout logic thay vì chỉ copy màu với font.
+        </p>
+      </div>
+      <div class="three-col">
+        <article class="feature">
+          <h3>Trust before hype</h3>
+          <p>Website phải trông như một hệ điều hành phân phối đáng tin cậy, không phải landing page AI “ồn”.</p>
+          <ul>
+            <li>Ưu tiên proof block thay vì slogan lớn kéo dài</li>
+            <li>Mint chỉ dùng cho AI and signal moments</li>
+            <li>Orange giữ cho CTA thương mại thật rõ</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3>Website nối thẳng vào sản phẩm</h3>
+          <p>Trang public vẫn gợi được cảm giác backend mạnh, dashboard rõ, và quy trình vận hành thực.</p>
+          <ul>
+            <li>Mock product frame có metric thật</li>
+            <li>Có cue AI cạnh dữ liệu được xử lý</li>
+            <li>Section đi theo flow của người vận hành</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3>Anti-pattern pressure</h3>
+          <p>Absorb hiện tại đặc biệt hữu ích ở chỗ chặn mấy hướng nhìn đẹp nhưng lệch sản phẩm.</p>
+          <ul>
+            <li>Tránh card bloat kiểu brochure</li>
+            <li>Tránh dark glass startup aesthetic</li>
+            <li>Tránh AI copy mơ hồ thiếu operational proof</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="kicker">What Users Need</div>
+          <h2>Điểm chạm cho seller và operator</h2>
+        </div>
+        <p>Outcome này coi người dùng là người đang giữ nhịp đơn hàng, hàng tồn, và áp lực thời gian, nên UX ưu tiên sự nhẹ đầu.</p>
+      </div>
+      <div class="trust">
+        <article class="quote">
+          <h3>“Đơn hàng về, distro lo.”</h3>
+          <p>
+            Thông điệp thương hiệu được giữ, nhưng được đỡ bằng cấu trúc thông tin bình tĩnh, mật độ hợp lý,
+            và các khối proof mang ngữ cảnh vận hành thật.
+          </p>
+          <div class="rule-list">
+            <div class="rule">Whitespace dùng để giảm áp lực quyết định cho đội bán hàng SME.</div>
+            <div class="rule">AI cue chỉ hiện khi dữ liệu thật sự đã qua suy luận hoặc đề xuất.</div>
+            <div class="rule">Typography giữ Lexend cho statement, Inter cho mọi tầng đọc dài và dữ liệu.</div>
+          </div>
+        </article>
+        <div class="trust-grid">
+          <article class="feature">
+            <h3>Kho vận rõ ràng</h3>
+            <p>Alert và trạng thái dùng ngôn ngữ thao tác được ngay, không chỉ “insight” chung chung.</p>
+          </article>
+          <article class="feature">
+            <h3>CTA có kỷ luật</h3>
+            <p>Mỗi khu chỉ một quyết định chính: xem demo, bắt đầu trial, hoặc walkthrough với đội triển khai.</p>
+          </article>
+          <article class="feature">
+            <h3>AI có bằng chứng</h3>
+            <p>Mint dot và khối AI chỉ đi cùng đề xuất, dự báo hoặc cảnh báo có nguồn gốc vận hành.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div>
+        <div class="kicker">Outcome Verdict</div>
+        <h2>Absorb hiện tại bám Distro tốt hơn.</h2>
+        <p>
+          Nó không giàu corpus bằng repo gốc, nhưng ra quyết định visual cho Brand ID Distro chắc tay hơn, đúng DMS hơn,
+          và ít lạc sang startup-demo aesthetic.
+        </p>
+      </div>
+      <div class="cta-row">
+        <a class="btn-ghost" href="#">So với repo gốc</a>
+        <a class="btn" href="#">Giữ cho Visual Foundation</a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-grid">
+        <article class="footer-card">
+          <h3>Fonts</h3>
+          <p>Lexend Deca cho headlines, Inter cho body, bảng biểu và ngữ cảnh điều hành.</p>
+        </article>
+        <article class="footer-card">
+          <h3>Color Logic</h3>
+          <p>Cloud nền sáng, Navy neo cấu trúc, Mint cho AI cue, Orange cho commerce CTA.</p>
+        </article>
+        <article class="footer-card">
+          <h3>Primary Risk Avoided</h3>
+          <p>Không biến Distro thành một landing page AI generic có nhiều hiệu ứng hơn giá trị.</p>
+        </article>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

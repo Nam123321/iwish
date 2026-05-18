@@ -36,8 +36,8 @@ function readYamlFile<T>(filePath: string): T | null {
 
 function getSprintStatusPaths(projectRoot: string): string[] {
   return [
-    path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml'),
-    path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml'),
+    path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml'),
+    path.join(projectRoot, '_iwish-output', 'iwish-skills', 'sprint-status.yaml'),
   ].filter((filePath) => fs.existsSync(filePath));
 }
 
@@ -129,8 +129,8 @@ function collectIdsFromFilenames(dirPath: string): string[] {
 
 function findStoryFileById(projectRoot: string, id: string): string | null {
   const candidateDirs = [
-    path.join(projectRoot, '_bmad-output', 'stories'),
-    path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories'),
+    path.join(projectRoot, '_iwish-output', 'stories'),
+    path.join(projectRoot, '_iwish-output', 'iwish-skills', 'stories'),
   ];
 
   for (const dir of candidateDirs) {
@@ -154,8 +154,8 @@ function findStoryFileById(projectRoot: string, id: string): string | null {
 }
 
 export function loadSourceOfTruth(projectRoot: string): SourceOfTruthSummary {
-  const storiesSprintPath = path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml');
-  const skillsSprintPath = path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml');
+  const storiesSprintPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
+  const skillsSprintPath = path.join(projectRoot, '_iwish-output', 'iwish-skills', 'sprint-status.yaml');
   const storiesSprintDoc = readYamlFile<Record<string, unknown>>(storiesSprintPath);
   const skillsSprintDoc = readYamlFile<Record<string, unknown>>(skillsSprintPath);
   const sprintStatuses = getSprintStatusPaths(projectRoot).map((filePath) => {
@@ -178,8 +178,8 @@ export function loadSourceOfTruth(projectRoot: string): SourceOfTruthSummary {
     new Set([
       ...collectIdsFromSprintYaml(storiesSprintDoc).storyIds,
       ...collectIdsFromSprintYaml(skillsSprintDoc).storyIds,
-      ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'stories')),
-      ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'stories')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'iwish-skills', 'stories')),
     ]),
   );
 
@@ -187,12 +187,12 @@ export function loadSourceOfTruth(projectRoot: string): SourceOfTruthSummary {
     new Set([
       ...collectIdsFromSprintYaml(storiesSprintDoc).epicIds,
       ...collectIdsFromSprintYaml(skillsSprintDoc).epicIds,
-      ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'epics')),
-      ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'epics')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'epics')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'iwish-skills', 'epics')),
     ]),
   );
 
-  const reconciliationDir = path.join(projectRoot, '_bmad-output', 'reconciliation');
+  const reconciliationDir = path.join(projectRoot, '_iwish-output', 'reconciliation');
   const reconciliationScopes = fs.existsSync(reconciliationDir)
     ? fs.readdirSync(reconciliationDir).filter((entry) => entry.endsWith('.md')).map((entry) => path.basename(entry, '.md'))
     : [];

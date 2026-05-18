@@ -1,13 +1,13 @@
 ---
 name: "ux-pro-max"
-description: "Specialist wrapper for invoking UI/UX Pro Max design intelligence inside BMAD without replacing BMAD's existing UX governance."
+description: "Specialist wrapper for invoking UI/UX Pro Max design intelligence inside I-Wish without replacing I-Wish's existing UX governance."
 ---
 
 # UI/UX Pro Max Specialist
 
 ## Purpose
 
-This skill gives BMAD agents a controlled way to use UI/UX Pro Max as a design-intelligence specialist.
+This skill gives I-Wish agents a controlled way to use UI/UX Pro Max as a design-intelligence specialist.
 
 It is a `SKILL_ATTACHMENT`, not a standalone workflow, persona, or compound subsystem.
 
@@ -26,11 +26,11 @@ This skill does **not** replace any of the above.
 
 Rejected classifications:
 - `DEDICATED_WORKFLOW`
-  Reason: the value here is embedded design intelligence inside existing BMAD workflows, not an independent end-to-end process.
+  Reason: the value here is embedded design intelligence inside existing I-Wish workflows, not an independent end-to-end process.
 - `NEW_PERSONA`
-  Reason: BMAD already has UX/design governance agents. Another top-level authority would create routing conflict.
+  Reason: I-Wish already has UX/design governance agents. Another top-level authority would create routing conflict.
 - `COMPOUND_INTEGRATION`
-  Reason: BMAD is not importing the full external repo, installer, or a librarian-style subsystem in this rollout.
+  Reason: I-Wish is not importing the full external repo, installer, or a librarian-style subsystem in this rollout.
 
 ## When to Use
 
@@ -40,7 +40,7 @@ Primary triggers:
 - creating or refining visual direction
 - choosing style, color system, typography, or interaction tone
 - seeding a design-system recommendation before Stitch generation
-- writing per-story UI guidance after BMAD gates pass
+- writing per-story UI guidance after I-Wish gates pass
 - reviewing frontend UX/UI output for accessibility, layout, interaction, motion, and anti-patterns
 - selecting product-aware UI guidance for a specific domain such as SaaS, admin, marketplace, sales, dashboard, or mobile UX
 
@@ -54,11 +54,11 @@ Skip this skill when the task is:
 - API contract work with no visual or interaction surface
 - low-level bugfix work unrelated to UI, UX, styling, or user-facing behavior
 
-## BMAD Authority Order
+## I-Wish Authority Order
 
 This skill is advisory. It must obey the following authority order:
 
-1. BMAD workflow gates and explicit user approvals
+1. I-Wish workflow gates and explicit user approvals
 2. Approved portal Design System `DESIGN.md`
 3. Approved Stitch screens and extracted CSS/HTML visual contract
 4. Page-specific design-system overrides for the active page or story, when they exist
@@ -74,8 +74,8 @@ Interpretation rule for page overrides:
 
 ### Non-override Rule and Conflict Resolution Procedure
 
-- If UI/UX Pro Max conflicts with an approved BMAD Design System token, layout rule, or page override, the BMAD artifact wins.
-- If UI/UX Pro Max conflicts with an approved Stitch screen, extracted CSS/HTML visual contract, or approved component structure, the BMAD artifact wins.
+- If UI/UX Pro Max conflicts with an approved I-Wish Design System token, layout rule, or page override, the I-Wish artifact wins.
+- If UI/UX Pro Max conflicts with an approved Stitch screen, extracted CSS/HTML visual contract, or approved component structure, the I-Wish artifact wins.
 - If UI/UX Pro Max recommends a conflicting color, typography, layout, interaction, animation, component structure, or accessibility tradeoff, record it only as a recommendation, critique note, or future improvement candidate.
 
 #### UX Guardian Conflict Rules
@@ -119,7 +119,7 @@ If no approved portal Design System exists yet, this skill may provide seed reco
 - effects and motion character
 - anti-patterns to avoid
 
-These seed recommendations are advisory only. They do not become source of truth until they pass BMAD's Design System Gate and are approved into the portal Design System.
+These seed recommendations are advisory only. They do not become source of truth until they pass I-Wish's Design System Gate and are approved into the portal Design System.
 
 ## Conflict Status Requirement
 
@@ -131,12 +131,12 @@ Whenever this skill returns advice, it must include a conflict status:
 - `CONFLICT_WITH_DESIGN_CONSULTATION`
 - `CONFLICT_WITH_UX_GUARDIAN`
 
-If the status is not `NO_CONFLICT`, the response must name the winning BMAD authority and keep the specialist advice framed as secondary guidance.
+If the status is not `NO_CONFLICT`, the response must name the winning I-Wish authority and keep the specialist advice framed as secondary guidance.
 
 ## Source References
 
 Use these as the canonical source context for this specialist:
-- Repo DNA: `_bmad-output/repo-dna/ui-ux-skill-dna.md`
+- Repo DNA: `_iwish-output/repo-dna/ui-ux-skill-dna.md`
 - Gap Analysis: `docs/ui-ux-integration/gap-analysis.md`
 - Integration Plan: `docs/ui-ux-integration/implementation-plan.md`
 - Reusable Patterns & Interaction System: `.agent/skills/ui-ux/resources/interaction-system-patterns.md`
@@ -149,14 +149,14 @@ When proposing UX patterns (e.g., sticky headers, dense tables) or interaction-s
 3. If a pattern introduces friction that violates a `UX Guardian` rule (or vice versa), the `UX Guardian` rule retains absolute authority. Log the discarded pattern in `Rejected Archetypes`.
 
 Out of scope for this skill:
-- copying the full external repo into BMAD core
+- copying the full external repo into I-Wish core
 - importing the external CLI installer
 - importing large CSV/font bundles in this story
-- patching BMAD workflows directly in this story
+- patching I-Wish workflows directly in this story
 
 ## Recommended Output Contract
 
-The specialist must return a compact BMAD-facing recommendation using exactly these sections unless the user explicitly asks for more:
+The specialist must return a compact I-Wish-facing recommendation using exactly these sections unless the user explicitly asks for more:
 - `Product Type`
 - `Evidence Sources`
 - `Rejected Archetypes`
@@ -170,7 +170,7 @@ The specialist must return a compact BMAD-facing recommendation using exactly th
 - `Implementation Checklist`
 - `Conflict Status`
 - `Winning Authority`
-- `BMAD Conflict Check`
+- `I-Wish Conflict Check`
 - `Next Workflow Use`
 - `[NEW_UX_PATTERN_PROPOSAL]` (Optional, only if proposing a new behavior)
 - `[STITCH_PROMPT_INJECTION]` (Optional, required if invoked for Phase 1 Stitch Prompt Generation)
@@ -192,16 +192,16 @@ If invoked during `/enrich-ux` (when `Enrichment_Required: true`), generate the 
 
 Minimum conflict-shape rule:
 - `Conflict Status` must use one of the exact enum values from `Conflict Status Requirement`.
-- `Winning Authority` must use one of these exact values: `N/A`, `USER_APPROVAL`, `BMAD_WORKFLOW_GATE`, `DESIGN_SYSTEM_MASTER`, `STITCH_VISUAL_CONTRACT`, `PAGE_OVERRIDE`, `USER_SIMULATION_GUARDIAN`, `DESIGN_CONSULTATION`, `UX_GUARDIAN`.
+- `Winning Authority` must use one of these exact values: `N/A`, `USER_APPROVAL`, `I-Wish_WORKFLOW_GATE`, `DESIGN_SYSTEM_MASTER`, `STITCH_VISUAL_CONTRACT`, `PAGE_OVERRIDE`, `USER_SIMULATION_GUARDIAN`, `DESIGN_CONSULTATION`, `UX_GUARDIAN`.
 - `Winning Authority` must be `N/A` only when `Conflict Status` is `NO_CONFLICT`.
-- `BMAD Conflict Check` must summarize why the advice is accepted, constrained, or downgraded to a recommendation.
-- `Rejection Reasons` must explicitly cite the specific BMAD constraint (e.g., Brand Truth, Product Truth, UX Guardian) that caused the rejection if any archetypes were rejected.
+- `I-Wish Conflict Check` must summarize why the advice is accepted, constrained, or downgraded to a recommendation.
+- `Rejection Reasons` must explicitly cite the specific I-Wish constraint (e.g., Brand Truth, Product Truth, UX Guardian) that caused the rejection if any archetypes were rejected.
 
 Concision rule:
 - prefer one primary direction
 - `Evidence Sources` must list at most 3 source files or patterns
 - `Rejected Archetypes` must list at most 3 discarded patterns
-- `Rejection Reasons` must be brief bullet points referencing specific BMAD constraints
+- `Rejection Reasons` must be brief bullet points referencing specific I-Wish constraints
 - `Alternatives` may contain at most two alternatives
 - no more than five anti-patterns unless the user asks for depth
 - `Implementation Checklist` may contain no more than ten checklist-style points unless the user asks for depth
@@ -223,7 +223,7 @@ Anti-Patterns: Marketing hero layout; oversized cards; decorative gradients
 Implementation Checklist: Keep dense data tables; keep sticky filters; preserve predictable drawer actions
 Conflict Status: NO_CONFLICT
 Winning Authority: N/A
-BMAD Conflict Check: Recommendation aligns with current BMAD governance and does not conflict with approved artifacts.
+I-Wish Conflict Check: Recommendation aligns with current I-Wish governance and does not conflict with approved artifacts.
 Next Workflow Use: Pass to visual foundation or story UI spec generation
 
 [STITCH_PROMPT_INJECTION]
@@ -236,7 +236,7 @@ Next Workflow Use: Pass to visual foundation or story UI spec generation
 Product Type: Mobile commerce flow
 Evidence Sources: mobile-commerce-checkout.tsx, warm-coral-theme.css
 Rejected Archetypes: dark-mode-rigid-tokens.css
-Rejection Reasons: - Rejected dark mode rigid tokens due to BMAD light-theme brand truth
+Rejection Reasons: - Rejected dark mode rigid tokens due to I-Wish light-theme brand truth
 Recommended Direction: Use warmer accent tones and softer rounded CTA treatment (synthesized for light theme)
 Alternatives: Slightly warmer CTA accent only; softer secondary button radius only
 Color/Tone: Warm coral secondary accents proposed
@@ -246,7 +246,7 @@ Anti-Patterns: Replacing approved checkout layout; adding extra promo noise
 Implementation Checklist: Keep approved checkout layout; keep current validation order; carry advisory note to review
 Conflict Status: CONFLICT_WITH_DESIGN_SYSTEM
 Winning Authority: DESIGN_SYSTEM_MASTER
-BMAD Conflict Check: Accent suggestion is downgraded to advisory only because the portal color tokens are already approved.
+I-Wish Conflict Check: Accent suggestion is downgraded to advisory only because the portal color tokens are already approved.
 Next Workflow Use: Keep current tokens and pass advisory note to design review if needed
 
 [Example C - UX Guardian conflict with pattern proposal]
@@ -263,7 +263,7 @@ Anti-Patterns: Double-confirmation on non-destructive batch actions
 Implementation Checklist: Keep current modal for destructive actions; carry proposal for non-destructive actions
 Conflict Status: CONFLICT_WITH_UX_GUARDIAN
 Winning Authority: UX_GUARDIAN
-BMAD Conflict Check: UX Guardian behavioral tokens require confirmation modals for all batch actions. Specialist advice is downgraded to advisory. A [NEW_UX_PATTERN_PROPOSAL] is raised because UX Guardian does not currently distinguish destructive from non-destructive batch actions.
+I-Wish Conflict Check: UX Guardian behavioral tokens require confirmation modals for all batch actions. Specialist advice is downgraded to advisory. A [NEW_UX_PATTERN_PROPOSAL] is raised because UX Guardian does not currently distinguish destructive from non-destructive batch actions.
 Next Workflow Use: Log proposal for UX Guardian maintainer review; keep current modal pattern for this story
 
 [NEW_UX_PATTERN_PROPOSAL]
@@ -292,7 +292,7 @@ Suggested node metadata:
 id: skill-ux-pro-max
 type: skill
 path: /.agent/skills/ux-pro-max/SKILL.md
-description: Specialist wrapper for invoking UI/UX Pro Max design intelligence inside BMAD without replacing BMAD UX governance.
+description: Specialist wrapper for invoking UI/UX Pro Max design intelligence inside I-Wish without replacing I-Wish UX governance.
 tags: ui,ux,design-system,specialist,frontend,review,typography,color,interaction,animation,accessibility,stitch,palette
 depends_on: skill-ux-guardian,skill-design-consultation,skill-stitch-design-taste,skill-user-simulation-guardian
 ```

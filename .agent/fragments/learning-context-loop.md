@@ -1,6 +1,6 @@
 # Learning Context Loop Protocol
 
-> **Purpose:** Enables cross-session learning for BMAD agents. Agents log operational learnings at the end of each session and retrieve relevant prior learnings at the start of the next session, breaking the "fresh start every time" anti-pattern.
+> **Purpose:** Enables cross-session learning for I-Wish agents. Agents log operational learnings at the end of each session and retrieve relevant prior learnings at the start of the next session, breaking the "fresh start every time" anti-pattern.
 
 ---
 

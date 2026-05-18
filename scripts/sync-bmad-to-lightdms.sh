@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================
-# BMAD Sync Script: BMAD-DragonBall → AI-Embedded Light DMS
+# I-Wish Sync Script: I-Wish-DragonBall → AI-Embedded Light DMS
 # ADR-002 ALL-IN Graph Migration
 # Date: 2026-04-01
 # ==============================================================
@@ -20,23 +20,23 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo "=============================================="
-echo " BMAD Sync: DragonBall → Light DMS"
+echo " I-Wish Sync: DragonBall → Light DMS"
 echo " ADR-002 ALL-IN Graph Migration"
 echo "=============================================="
 
 # ==============================================================
 # 1. UPDATE code-review → add step 7+8 (FeatureGraph validation)
 # ==============================================================
-echo -e "\n${YELLOW}[1/6] Updating bmad-bmm-code-review.md...${NC}"
+echo -e "\n${YELLOW}[1/6] Updating iwish-bmm-code-review.md...${NC}"
 
 # Check if already updated
-if grep -q "ADR-002" "$LDM/.agent/workflows/bmad-bmm-code-review.md" 2>/dev/null; then
+if grep -q "ADR-002" "$LDM/.agent/workflows/iwish-bmm-code-review.md" 2>/dev/null; then
   echo -e "${GREEN}  → Already up-to-date, skipping${NC}"
 else
   # Remove the old </steps> closing tag first, then add new steps + closing tag
-  sed -i '' 's|</steps>||g' "$LDM/.agent/workflows/bmad-bmm-code-review.md"
+  sed -i '' 's|</steps>||g' "$LDM/.agent/workflows/iwish-bmm-code-review.md"
 
-  cat >> "$LDM/.agent/workflows/bmad-bmm-code-review.md" << 'EOF'
+  cat >> "$LDM/.agent/workflows/iwish-bmm-code-review.md" << 'EOF'
 7. CRITICAL — DATA-SPEC VALIDATION via FeatureGraph (ADR-002): After completing the standard code review, you MUST perform data-spec compliance checks using FeatureGraph MCP tools.
 
    PREREQUISITE: Check if FeatureGraph MCP tools are available (feature_impact, cross_feature, add_data_entity).
@@ -232,7 +232,7 @@ fi
 echo -e "\n${YELLOW}[6/6] Verification...${NC}"
 
 echo -n "  code-review ADR-002: "
-grep -c "ADR-002" "$LDM/.agent/workflows/bmad-bmm-code-review.md" && echo " refs" || echo "❌"
+grep -c "ADR-002" "$LDM/.agent/workflows/iwish-bmm-code-review.md" && echo " refs" || echo "❌"
 
 echo -n "  fix-bug 16c: "
 grep -c "16c\." "$LDM/.agent/workflows/fix-bug.md" && echo " refs" || echo "❌"
@@ -245,5 +245,5 @@ echo -n "  ADR-002 file: "
 
 echo ""
 echo "=============================================="
-echo -e "${GREEN}🎉 BMAD Sync Complete!${NC}"
+echo -e "${GREEN}🎉 I-Wish Sync Complete!${NC}"
 echo "=============================================="

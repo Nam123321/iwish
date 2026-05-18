@@ -4,12 +4,12 @@ const { execSync } = require('child_process');
 const yaml = require('yaml');
 
 const WORKSPACE_ROOT = path.resolve(__dirname, '..');
-const OUTPUT_DIR = path.join(WORKSPACE_ROOT, '_bmad-output', 'operation-report', 'data');
-const SPRINT_STATUS_FILE = path.join(WORKSPACE_ROOT, '_bmad-output', 'stories', 'sprint-status.yaml');
-const BUG_TRACKER_FILE = path.join(WORKSPACE_ROOT, '_bmad-output', 'bug-tracker.yaml');
+const OUTPUT_DIR = path.join(WORKSPACE_ROOT, '_iwish-output', 'operation-report', 'data');
+const SPRINT_STATUS_FILE = path.join(WORKSPACE_ROOT, '_iwish-output', 'stories', 'sprint-status.yaml');
+const BUG_TRACKER_FILE = path.join(WORKSPACE_ROOT, '_iwish-output', 'bug-tracker.yaml');
 const SKILLS_DIR = path.join(WORKSPACE_ROOT, '.agent', 'skills');
 const WORKFLOWS_DIR = path.join(WORKSPACE_ROOT, '.agent', 'workflows');
-const KNOWLEDGE_DIR = path.join(WORKSPACE_ROOT, '_bmad-output', 'knowledge');
+const KNOWLEDGE_DIR = path.join(WORKSPACE_ROOT, '_iwish-output', 'knowledge');
 
 function parseYamlSafely(filePath) {
     if (!fs.existsSync(filePath)) return null;
@@ -356,7 +356,7 @@ function generateReport() {
     const reportData = {
         generatedAt: new Date().toISOString(),
         meta: {
-            source: 'BMAD Operation Report Generator',
+            source: 'I-Wish Operation Report Generator',
             formatVersion: 2,
             absorbedPatterns: [
                 'html-anything/data-report',

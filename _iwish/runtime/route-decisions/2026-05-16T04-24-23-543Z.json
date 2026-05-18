@@ -48,10 +48,10 @@
       "source": "/.agent/skills/ux-guardian/SKILL.md"
     },
     {
-      "id": "context-bmad-architecture",
+      "id": "context-iwish-architecture",
       "type": "workflow",
-      "canonical": "context-bmad-architecture",
-      "source": "/.agent/BMAD-ARCHITECTURE.md"
+      "canonical": "context-iwish-architecture",
+      "source": "/.agent/I-Wish-ARCHITECTURE.md"
     },
     {
       "id": "fragment-taxonomy-8-pillars",

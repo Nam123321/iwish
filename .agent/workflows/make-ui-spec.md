@@ -7,4 +7,4 @@ description: 'Canonical short workflow for UI and UX specification'
 
 Canonical workflow name for UI and UX specification.
 
-Read and execute: `bmad-bmm-create-ui-spec.md`
+Read and execute: `iwish-bmm-create-ui-spec.md`

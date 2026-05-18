@@ -146,7 +146,7 @@ function main() {
     }
 
     if (isDualRun && !checkDarwinian()) {
-        console.error("\n[BMAD-ERROR: DEPENDENCY_MISSING]");
+        console.error("\n[I-Wish-ERROR: DEPENDENCY_MISSING]");
         console.error("The 'darwinian' CLI tool is required for Dual-Run A/B Testing.");
         process.exit(2);
     }
@@ -160,15 +160,15 @@ function main() {
     const evaluationResults = {};
 
     // 1. Native Engine
-    const nativeCandidate = runEngineMock('bmad-native', FIXTURE_DIR, isCode);
+    const nativeCandidate = runEngineMock('iwish-native', FIXTURE_DIR, isCode);
     const nativePath = path.join(CANDIDATES_DIR, `${trialId}-native${fileExt}`);
     fs.writeFileSync(nativePath, nativeCandidate);
     candidates.push({
         path: `candidates/${trialId}-native${fileExt}`,
-        source_engine: 'bmad-native',
+        source_engine: 'iwish-native',
         engine_version: 'internal'
     });
-    evaluationResults['bmad-native'] = runEvaluatorMock('bmad-native', nativeCandidate, isCode);
+    evaluationResults['iwish-native'] = runEvaluatorMock('iwish-native', nativeCandidate, isCode);
 
     // 2. Darwinian Engine (if enabled)
     if (isDualRun) {
@@ -183,7 +183,7 @@ function main() {
             });
             evaluationResults['darwinian'] = runEvaluatorMock('darwinian', darwinianCandidate, isCode);
         } else {
-            console.warn("\n[BMAD-WARNING: RUNTIME_ERROR]");
+            console.warn("\n[I-Wish-WARNING: RUNTIME_ERROR]");
             console.warn("Darwinian execution failed or returned no result.");
         }
     }
