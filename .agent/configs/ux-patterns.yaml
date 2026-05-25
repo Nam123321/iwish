@@ -1,0 +1,37 @@
+version: "1.0"
+description: "Master UX/Interaction Registry for AI Agents"
+patterns:
+  modals:
+    default_form:
+      layout: "center_popup"
+      backdrop: "blur_md"
+      motion_token: "fade_scale_in"
+      close_on_outside_click: false
+    complex_edit:
+      layout: "slide_panel_from_right"
+      backdrop: "darken"
+      motion_token: "slide_in_right"
+
+  bulk_actions:
+    table_context:
+      layout: "table_header_replacement"
+      state: "contextual_batch_mode"
+    global_multi_select:
+      layout: "bottom_floating_cart"
+      motion_token: "slide_up"
+
+  form_submission:
+    success:
+      behavior: "toast_top_right"
+      auto_dismiss: 3000
+    validation_error:
+      behavior: "inline_field_error"
+      scroll_to_first_error: true
+    server_error:
+      behavior: "alert_banner_top"
+
+  empty_states:
+    first_time_use:
+      layout: "illustration_center_with_cta"
+    no_search_results:
+      layout: "icon_text_clear_filters_cta"

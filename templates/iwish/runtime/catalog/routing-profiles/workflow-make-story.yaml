@@ -1,0 +1,17 @@
+id: workflow-make-story
+name: make-story
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution]
+stages: [epics-and-stories, acceptance-criteria, implementation-slicing]
+triggers: [story, epic, acceptance criteria, backlog]
+anti_triggers: [raw-ux-audit, deploy]
+primary_agents: [delivery-manager-agent, orch-agent]
+primary_workflows: [make-story]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Prefer after planning clarity exists or when a known story/epic needs refinement.
+source_path: /_iwish/catalog/routing-profiles/workflow-make-story.yaml
+tags: [starter-bundle, canonical]

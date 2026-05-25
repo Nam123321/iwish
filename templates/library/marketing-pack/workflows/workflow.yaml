@@ -1,0 +1,37 @@
+name: mkt-sync
+description: "Generate MKT materials when an epic/feature is completed — covers all 8 content types"
+author: "Council"
+
+config_source: "{project-root}/_bmad/bmm/config.yaml"
+communication_language: "{config_source}:communication_language"
+planning_artifacts: "{config_source}:planning_artifacts"
+implementation_artifacts: "{config_source}:implementation_artifacts"
+output_folder: "{implementation_artifacts}/../mkt-materials"
+
+installed_path: "{project-root}/_bmad/bmm/workflows/4-implementation/mkt-sync"
+validation: "{installed_path}/checklist.md"
+
+variables:
+  sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+  epics_file: "{planning_artifacts}/epics.md"
+  architecture_file: "{planning_artifacts}/architecture.md"
+  mkt_materials_dir: "_bmad-output/mkt-materials"
+  mkt_index: "_bmad-output/mkt-materials/index.md"
+
+# Content templates
+templates:
+  feature_announcement: "{output_folder}/templates/feature-announcement.md"
+  user_guide: "{output_folder}/templates/user-guide.md"
+  business_use_case: "{output_folder}/templates/business-use-case.md"
+  social_media: "{output_folder}/templates/social-media.md"
+  email_campaign: "{output_folder}/templates/email-campaign.md"
+  release_notes: "{output_folder}/templates/release-notes.md"
+  landing_page: "{output_folder}/templates/landing-page.md"
+
+# Cognee integration
+cognee:
+  enabled: true
+  queries:
+    - "selling points and user personas for {epic_title}"
+    - "business value and competitive advantage of {feature_name}"
+    - "related state machines and business rules for {entity}"

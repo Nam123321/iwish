@@ -1,0 +1,18 @@
+id: workflow-audit-ux-patterns
+name: audit-ux-patterns
+kind: workflow
+shape: workflow
+role: supportive
+phases: [validate]
+stages: [ux-discovery, behavior-mapping, design-diagnostic]
+triggers: [audit ux, ux inconsistencies, modal inconsistency, ux pattern]
+anti_triggers: [pure-backend-migration]
+primary_agents: [ux-agent, review-agent]
+primary_workflows: [audit-ux-patterns]
+supportive_skills: [ux-guardian, visual-fidelity-gate]
+tool_dependencies: [design, browser, graph]
+constraints:
+  - Must label graph evidence unavailable if CodebaseGraph or FeatureGraph is stale or unsupported.
+source_path: /.agent/workflows/audit-ux-patterns.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, ux, graph, browser, design]

@@ -1,0 +1,19 @@
+id: workflow-enhance-skill
+name: enhance-skill
+kind: workflow
+shape: workflow
+role: supportive
+phases: [operate-learn]
+stages: [capability-evolution, patch-merge-split-rewrite]
+triggers: [enhance skill, improve workflow, evolve agent, patch capability]
+anti_triggers: [brand-new-capability]
+primary_agents: [capability-agent, orch-agent]
+primary_workflows: [enhance-skill]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Prefer patch or merge over duplicate capability creation.
+review_pack: docs/open-modules/enhance-skill-integration-guide.md
+source_path: /.agent/workflows/enhance-skill.md
+story_refs: [story-1.7]
+tags: [capability-evolution, canonical]

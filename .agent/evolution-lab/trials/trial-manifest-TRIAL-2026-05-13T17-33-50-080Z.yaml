@@ -1,0 +1,11 @@
+trial_id: "TRIAL-2026-05-13T17-33-50-080Z"
+timestamp: "2026-05-13T17:33:50.108Z"
+fixture: "fix-bug"
+decision: "PENDING"
+candidates:
+  - path: "candidates/TRIAL-2026-05-13T17-33-50-080Z-native.md"
+    source_engine: "bmad-native"
+    engine_version: "internal"
+  - path: "candidates/TRIAL-2026-05-13T17-33-50-080Z-darwinian.md"
+    source_engine: "darwinian"
+    engine_version: "latest"

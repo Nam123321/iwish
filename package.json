@@ -1,0 +1,92 @@
+{
+  "name": "iwish",
+  "version": "1.0.0",
+  "description": "I-Wish open platform CLI with shim-first compatibility for legacy BMAD runtimes",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "templates/iwish",
+    "templates/library",
+    ".agent/agents",
+    ".agent/fragments",
+    ".agent/knowledge-graph.yaml",
+    ".agent/BMAD-ARCHITECTURE.md",
+    ".agent/scripts",
+    ".agent/skills",
+    ".agent/templates",
+    ".agent/workflows",
+    "docs/iwish-introduction.md",
+    "docs/iwish-introduction.html",
+    "docs/iwish-runtime-substrate.md",
+    "docs/iwish-capability-system-framework.md",
+    "docs/iwish-routing-profile-standard.md",
+    "docs/iwish-routing-reconciliation.md",
+    "docs/iwish-brownfield-bootstrap.md",
+    "docs/iwish-open-tool-usage-pack-standard.md",
+    "docs/iwish-adoption-review-pack-standard.md",
+    "docs/iwish-github-launch-plan.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "bin": {
+    "iwish": "./dist/index.js",
+    "bmad-db": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "guard:magic": "node .agent/scripts/magic-hunter.js",
+    "guard:leak": "node .agent/scripts/context-leak-detector.js",
+    "guard:registry": "node .agent/scripts/check-registry.js",
+    "prepare": "node scripts/prepare-husky.js",
+    "prepublishOnly": "npm run build"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
+  "keywords": [
+    "iwish",
+    "agent",
+    "open-platform",
+    "cli",
+    "workflow",
+    "orchestration",
+    "ai-agents"
+  ],
+  "author": "AI-Embedded Light DMS",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "dompurify": "^3.4.3",
+    "fs-extra": "^11.3.4",
+    "jsdom": "^29.1.1",
+    "marked": "^18.0.3",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^25.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "@typescript-eslint/parser": "^8.59.2",
+    "eslint": "^10.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

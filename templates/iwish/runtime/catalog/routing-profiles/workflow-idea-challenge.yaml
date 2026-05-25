@@ -1,0 +1,19 @@
+id: workflow-idea-challenge
+name: idea-challenge
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discover]
+stages: [idea-forging, working-backwards, concept-validation]
+triggers: [prfaq, working backwards, idea challenge, business advantage, product concept]
+anti_triggers: [simple-bugfix, implementation patch]
+primary_agents: [pm-agent, orch-agent]
+primary_workflows: [idea-challenge]
+supportive_skills: [socratic-review, unique-advantage-evaluator]
+tool_dependencies: [graph]
+constraints:
+  - Distill output into planning-ready artifacts before heavy delivery.
+review_pack: docs/open-modules/idea-challenge-integration-guide.md
+source_path: /_iwish/catalog/routing-profiles/workflow-idea-challenge.yaml
+story_refs: [story-1.13]
+tags: [canonical, discover, strategy, idea]

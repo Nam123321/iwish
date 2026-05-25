@@ -1,0 +1,19 @@
+id: skill-qa-simulator-guardian
+name: qa-simulator-guardian
+kind: skill
+shape: skill
+role: supportive
+phases: [validate]
+stages: [qa-simulation, review-scoring]
+triggers: [qa simulation, scorecard, review quality]
+anti_triggers: [create-architecture]
+primary_agents: [review-agent, qa-agent]
+primary_workflows: [review]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Prefer as a subroutine under review/QA workflows.
+review_pack: docs/open-modules/qa-simulator-guardian-integration-guide.md
+source_path: /.agent/skills/qa-simulator-guardian/SKILL.md
+story_refs: [story-1.7]
+tags: [qa, tactical]

@@ -1,0 +1,622 @@
+nodes:
+- id: skill-repo-absorption
+  type: skill
+  path: /.agent/skills/repo-absorption/SKILL.md
+  description: 'Core engine for deep-learning an external repository in 5 phases:
+    INGEST, INDEX, MAP, DISSECT, and DOCUMENT.'
+  tags:
+  - absorb
+  - repo
+  - ingest
+  - index
+  - map
+  - dissect
+  depends_on:
+  - skill-security-guardian
+- id: skill-security-guardian
+  type: skill
+  path: /.agent/skills/security-guardian/SKILL.md
+  description: Security checkpoint for the Repo Absorption Protocol. Analyzes remote
+    and local context across 4 layers.
+  tags:
+  - security
+  - audit
+  - safety
+  - repo
+  depends_on: []
+- id: skill-clone-website
+  type: skill
+  path: /.agent/skills/clone-website/SKILL.md
+  description: Suite of skills for reverse-engineering websites. Includes DOM extraction,
+    design token extraction, and interaction analysis.
+  tags:
+  - clone
+  - ui
+  - dom
+  - tokens
+  depends_on: []
+- id: skill-github-deep-research
+  type: skill
+  path: /.agent/skills/github-deep-research/SKILL.md
+  description: Universal skill for performing a 3-Layer MCP Deep-Dive to extract architectures
+    and best practices from Github repositories.
+  tags:
+  - github
+  - research
+  - architecture
+  depends_on: []
+- id: skill-pivot-guardian
+  type: skill
+  path: /.agent/skills/pivot-guardian/SKILL.md
+  description: Enforces the PIV loop and Convergence Detection to prevent agents from
+    cascading errors.
+  tags:
+  - pivot
+  - guardian
+  - safety
+  depends_on: []
+- id: skill-stitch-design-taste
+  type: skill
+  path: /.agent/skills/stitch-design-taste/SKILL.md
+  description: Visual enforcement gate that rigidly validates UI implementations against
+    the approved Stitch CSS/HTML contract.
+  tags:
+  - stitch
+  - design
+  - ui
+  - guardian
+  depends_on: []
+- id: skill-visual-fidelity-gate
+  type: skill
+  path: /.agent/skills/visual-fidelity-gate/SKILL.md
+  description: Visual enforcement gate that validates UI implementations against the approved master design source across Stitch, Figma, Canva, Claude Design, or equivalent UI kits.
+  tags:
+  - visual
+  - fidelity
+  - design
+  - gate
+  - ui
+  depends_on: []
+- id: skill-ux-guardian
+  type: skill
+  path: /.agent/skills/ux-guardian/SKILL.md
+  description: Enforces consistency by matching UI execution to established Behavioral
+    Tokens and Master UX flows.
+  tags:
+  - ux
+  - guardian
+  - ui
+  - behavior
+  depends_on: []
+- id: skill-user-simulation-guardian
+  type: skill
+  path: /.agent/skills/user-simulation-guardian/SKILL.md
+  description: "1st-Principle User Thinking \u2014 REAL-USER Protocol for simulating\
+    \ authentic user behavior across DMS personas."
+  tags:
+  - user
+  - simulation
+  - guardian
+  - testing
+  depends_on: []
+- id: context-bmad-architecture
+  type: context
+  path: /.agent/BMAD-ARCHITECTURE.md
+  description: Central Governance & Sharing Registry. Defines the Classification Matrix,
+    Iron Rule, and Double-Lock strategy.
+  tags:
+  - architecture
+  - governance
+  - classification
+  - registry
+  depends_on: []
+- id: fragment-feature-validation
+  type: fragment
+  path: /.agent/fragments/feature-validation.md
+  description: Checklist for validating user-facing features against non-linear behaviors
+    and REAL-USER protocol.
+  tags:
+  - checklist
+  - validation
+  - user-simulation
+  depends_on: []
+- id: fragment-quality-criteria
+  type: fragment
+  path: /.agent/fragments/quality-criteria.md
+  description: Passive quality gate criteria for BMAD epic and story creation.
+  tags:
+  - quality
+  - criteria
+  - gate
+  depends_on: []
+- id: fragment-research-prompt-library
+  type: fragment
+  path: /.agent/fragments/research-prompt-library.md
+  description: Reference library of research prompts for various domains and use cases.
+  tags:
+  - prompts
+  - research
+  - library
+  depends_on: []
+- id: fragment-risk-matrix-template
+  type: fragment
+  path: /.agent/fragments/risk-matrix-template.md
+  description: Template for evaluating risks across technical, business, and operational
+    axes.
+  tags:
+  - risk
+  - matrix
+  - template
+  depends_on: []
+- id: fragment-taxonomy-8-pillars
+  type: fragment
+  path: /.agent/fragments/taxonomy-8-pillars.md
+  description: Quick-reference taxonomy card detailing the 8 pillars of BMAD architecture.
+  tags:
+  - taxonomy
+  - pillars
+  - reference
+  depends_on: []
+- id: fragment-anti-sycophancy
+  type: fragment
+  path: /.agent/fragments/anti-sycophancy.md
+  description: Anti-Sycophancy Rules (Office Hours Protocol). Banned phrases, pushback
+    patterns, response posture, and 6 forcing questions for product discovery. Prevents
+    echo chamber in council reviews and ideation.
+  tags:
+  - anti-sycophancy
+  - pushback
+  - review
+  - feedback
+  - governance
+  depends_on: []
+- id: fragment-learning-context-loop
+  type: fragment
+  path: /.agent/fragments/learning-context-loop.md
+  description: Learning Context Loop Protocol. LOAD/SAVE protocol for cross-session
+    learning persistence. Includes prune rules and search templates for Knowledge
+    Graph querying.
+  tags:
+  - learning
+  - context
+  - persistence
+  - session
+  - knowledge-graph
+  depends_on: []
+- id: fragment-iron-law-debug
+  type: fragment
+  path: /.agent/fragments/iron-law-debug.md
+  description: Debugging rigor methodology with the 3-strike escalation rule.
+  tags:
+  - debugging
+  - iron-law
+  - methodology
+  depends_on: []
+- id: fragment-fix-first-review
+  type: fragment
+  path: /.agent/fragments/fix-first-review.md
+  description: Proactive auto-fixing and confidence calibration for code reviews.
+  tags:
+  - review
+  - auto-fix
+  - confidence
+  depends_on: []
+- id: fragment-test-bootstrap
+  type: fragment
+  path: /.agent/fragments/test-bootstrap.md
+  description: Standardized testing principles and boilerplates.
+  tags:
+  - testing
+  - aaa
+  - methodology
+  depends_on: []
+- id: fragment-ux-principles
+  type: fragment
+  path: /.agent/fragments/ux-principles.md
+  description: Standardized UI/UX guidelines and design alignment.
+  tags:
+  - ux
+  - ui
+  - design
+  depends_on: []
+- id: skill-qa-simulator-guardian
+  type: skill
+  path: /.agent/skills/qa-simulator-guardian/SKILL.md
+  description: QA Simulator Guardian for conducting the Fat-Guardian Simulator mental
+    run and calculating the 7-row Hybrid Scorecard.
+  tags:
+  - qa
+  - simulator
+  - review
+  - scorecard
+  depends_on: []
+- id: skill-design-consultation
+  type: skill
+  path: /.agent/skills/design-consultation/SKILL.md
+  description: Design Consultation specialist using the Design Army pattern. Dispatches
+    5 specialist lenses (Typography, Color, Layout, Interaction, IA) for adversarial
+    UX/UI review.
+  tags:
+  - design
+  - consultation
+  - ui
+  - ux
+  - review
+  depends_on:
+  - fragment-ux-principles
+  - skill-stitch-design-taste
+  - skill-ux-guardian
+- id: skill-unique-advantage-evaluator
+  type: skill
+  path: /.agent/skills/unique-advantage-evaluator/SKILL.md
+  description: Strategic business-advantage evaluator used to stress-test and strengthen ideas, plans, and pivots through defensibility, pricing, distribution, and biz-stack analysis.
+  tags:
+  - strategy
+  - business
+  - advantage
+  - competitive
+  - moat
+  - pricing
+  - distribution
+  depends_on:
+  - fragment-anti-sycophancy
+- id: skill-socratic-review
+  type: skill
+  path: /.agent/skills/socratic-review/SKILL.md
+  description: Structured adversarial questioning engine with discovery, business, technical, and drift gates for stress-testing assumptions before they solidify into plans or code.
+  tags:
+  - socratic
+  - questioning
+  - review
+  - discovery
+  - drift
+  depends_on:
+  - fragment-anti-sycophancy
+- id: skill-idea-hardening
+  type: skill
+  path: /.agent/skills/idea-hardening/SKILL.md
+  description: Ideation-discipline skill that enforces multi-option framing, YAGNI challenge, and visual-routing efficiency before ideas harden into plans.
+  tags:
+  - idea
+  - hardening
+  - mvp
+  - yagni
+  - ideation
+  depends_on:
+  - fragment-anti-sycophancy
+- id: skill-canary
+  type: skill
+  path: /.agent/skills/canary/SKILL.md
+  description: Canary Deployment Protocol for structured CI/CD safety. Provides 4-phase
+    rollout (Pre-Deploy, Staging, Canary, Full) with go/no-go gates and automatic
+    rollback criteria.
+  tags:
+  - canary
+  - deployment
+  - ci-cd
+  - safety
+  - rollout
+  depends_on: []
+- id: skill-land-and-deploy
+  type: skill
+  path: /.agent/skills/land-and-deploy/SKILL.md
+  description: Structured pre-merge and release checklist with Plan Completion Audit.
+    Ensures no code lands on main without passing all quality gates.
+  tags:
+  - deploy
+  - merge
+  - release
+  - checklist
+  - landing
+  depends_on:
+  - skill-canary
+- id: fragment-plan-tune-heuristic
+  type: fragment
+  path: /.agent/fragments/plan-tune-heuristic.md
+  description: Story complexity scoring (6-dimension CS), Split/Merge Protocol (6
+    split criteria, 5 merge signals), and AC-to-Task Traceability Matrix. Scavenged
+    from Gstack Plan Tune skill.
+  tags:
+  - plan-tune
+  - complexity
+  - story-split
+  - story-merge
+  - traceability
+  - heuristic
+  depends_on: []
+- id: fragment-terminal-safety
+  type: fragment
+  path: /.agent/fragments/terminal-safety.md
+  description: "Defensive rules for terminal command execution \u2014 Loop Guard,\
+    \ Command Timeout, No-Watch Mode, Output Kill Switch, Destructive Command Awareness.\
+    \ Scavenged from Gstack Guard skill."
+  tags:
+  - terminal
+  - safety
+  - guard
+  - timeout
+  - loop
+  depends_on:
+  - fragment-iron-law-debug
+- id: skill-ux-pro-max
+  type: skill
+  path: /.agent/skills/ux-pro-max/SKILL.md
+  description: Specialist wrapper for invoking UI/UX Pro Max design intelligence inside
+    BMAD without replacing BMAD UX governance. Use for design-system seeding,
+    typography, color palette, interaction tone, accessibility, motion, and
+    Stitch-adjacent UI review guidance.
+  tags:
+  - ui
+  - ux
+  - design-system
+  - specialist
+  - frontend
+  - review
+  - typography
+  - color
+  - palette
+  - interaction
+  - animation
+  - accessibility
+  - stitch
+  depends_on:
+  - skill-ux-guardian
+  - skill-design-consultation
+  - skill-stitch-design-taste
+  - skill-user-simulation-guardian
+- id: skill-caveman-mode
+  type: skill
+  path: /.agent/skills/caveman-mode/SKILL.md
+  description: "Productivity skill featuring a 'Rule-of-Three' compression protocol for token-efficient communication without hallucination."
+  tags:
+  - caveman
+  - productivity
+  - compression
+  - token-optimization
+  depends_on: []
+- id: workflow-prototype
+  type: workflow
+  path: /.agent/workflows/prototype.md
+  description: "Experimental development workflow for safe, isolated prototyping on proto/* branches with automated stash/cleanup."
+  tags:
+  - prototype
+  - experimentation
+  - git
+  - productivity
+  depends_on: []
+- id: fragment-caveman-logging
+  type: fragment
+  path: /.agent/fragments/caveman-logging.md
+  description: Enforcement rules for JSONL logging during Caveman Mode sessions.
+  tags:
+  - caveman
+  - logging
+  - enforcement
+  - audit
+  depends_on: []
+- id: script-magic-hunter
+  type: script
+  path: /.agent/scripts/magic-hunter.js
+  description: Generic scanner for hardcoded CSS values (magic numbers).
+  tags:
+  - guardrail
+  - lint
+  - tokens
+  depends_on: []
+- id: script-context-leak-detector
+  type: script
+  path: /.agent/scripts/context-leak-detector.js
+  description: Scanner for hardcoded business data (context leaks).
+  tags:
+  - guardrail
+  - security
+  - data-integrity
+  depends_on: []
+- id: script-check-registry
+  type: script
+  path: /.agent/scripts/check-registry.js
+  description: Ensures all source files are registered in the knowledge graph.
+  tags:
+  - guardrail
+  - architectural-integrity
+  depends_on: []
+- id: story-psa-2.2
+  type: story
+  path: /_bmad-output/stories/epic-pocock-skills-absorption/story-psa-2.2-local-devex-ops-integration.md
+  description: Local DevEx Ops Integration (Husky, Lint, Guardrails).
+  tags:
+  - psa
+  - devex
+  - guardrails
+  depends_on:
+  - epic-psa
+- id: config-eslint
+  type: config
+  path: /eslint.config.js
+  description: ESLint Flat Config for the project.
+  tags:
+  - lint
+  - quality
+  depends_on: []
+- id: entry-cli
+  type: source
+  path: /src/index.ts
+  description: Entry point for the BMAD-DragonBall CLI.
+  tags:
+  - cli
+  - core
+  - entry
+  depends_on: []
+- id: config-package-json
+  type: config
+  path: /package.json
+  description: Project manifest and dependencies.
+- id: config-tsconfig
+  type: config
+  path: /tsconfig.json
+  description: TypeScript compiler configuration.
+- id: .agent-agents-android-18-md
+  type: agent
+  path: /.agent/agents/android-18.md
+  description: "Core agent: android-18.md"
+- id: .agent-agents-bulma-md
+  type: agent
+  path: /.agent/agents/bulma.md
+  description: "Core agent: bulma.md"
+- id: .agent-agents-cell-md
+  type: agent
+  path: /.agent/agents/cell.md
+  description: "Core agent: cell.md"
+- id: .agent-agents-data-architect-md
+  type: agent
+  path: /.agent/agents/data-architect.md
+  description: "Core agent: data-architect.md"
+- id: .agent-agents-data-strategist-md
+  type: agent
+  path: /.agent/agents/data-strategist.md
+  description: "Core agent: data-strategist.md"
+- id: .agent-agents-gotenks-md
+  type: agent
+  path: /.agent/agents/gotenks.md
+  description: "Core agent: gotenks.md"
+- id: .agent-agents-grand-priest-md
+  type: agent
+  path: /.agent/agents/grand-priest.md
+  description: "Core agent: grand-priest.md"
+- id: .agent-agents-hit-md
+  type: agent
+  path: /.agent/agents/hit.md
+  description: "Core agent: hit.md"
+- id: .agent-agents-king-kai-md
+  type: agent
+  path: /.agent/agents/king-kai.md
+  description: "Core agent: king-kai.md"
+- id: .agent-agents-krillin-md
+  type: agent
+  path: /.agent/agents/krillin.md
+  description: "Core agent: krillin.md"
+- id: .agent-agents-master-roshi-md
+  type: agent
+  path: /.agent/agents/master-roshi.md
+  description: "Core agent: master-roshi.md"
+- id: .agent-agents-piccolo-md
+  type: agent
+  path: /.agent/agents/piccolo.md
+  description: "Core agent: piccolo.md"
+- id: .agent-agents-quick-flow-solo-vegeta-md
+  type: agent
+  path: /.agent/agents/quick-flow-solo-vegeta.md
+  description: "Core agent: quick-flow-solo-vegeta.md"
+- id: .agent-agents-shenron-md
+  type: agent
+  path: /.agent/agents/shenron.md
+  description: "Core agent: shenron.md"
+- id: .agent-agents-songoku-md
+  type: agent
+  path: /.agent/agents/songoku.md
+  description: "Core agent: songoku.md"
+- id: .agent-agents-tien-shinhan-md
+  type: agent
+  path: /.agent/agents/tien-shinhan.md
+  description: "Core agent: tien-shinhan.md"
+- id: .agent-agents-trunks-md
+  type: agent
+  path: /.agent/agents/trunks.md
+  description: "Core agent: trunks.md"
+- id: .agent-agents-vegeta-md
+  type: agent
+  path: /.agent/agents/vegeta.md
+  description: "Core agent: vegeta.md"
+- id: .agent-agents-whis-md
+  type: agent
+  path: /.agent/agents/whis.md
+  description: "Core agent: whis.md"
+- id: .agent-scripts-add-to-kg-py
+  type: doc
+  path: /.agent/scripts/add-to-kg.py
+  description: "Core architectural document: add-to-kg.py"
+- id: .agent-scripts-add-to-kg-sh
+  type: doc
+  path: /.agent/scripts/add-to-kg.sh
+  description: "Core architectural document: add-to-kg.sh"
+- id: .agent-scripts-bmad-runtime-lib-sh
+  type: doc
+  path: /.agent/scripts/bmad-runtime-lib.sh
+  description: "Core architectural document: bmad-runtime-lib.sh"
+- id: .agent-scripts-check-bmad-runtime-sh
+  type: doc
+  path: /.agent/scripts/check-bmad-runtime.sh
+  description: "Core architectural document: check-bmad-runtime.sh"
+- id: .agent-scripts-check-registry-js
+  type: doc
+  path: /.agent/scripts/check-registry.js
+  description: "Core architectural document: check-registry.js"
+- id: .agent-scripts-cleanup-proto-sh
+  type: doc
+  path: /.agent/scripts/cleanup-proto.sh
+  description: "Core architectural document: cleanup-proto.sh"
+- id: .agent-scripts-context-leak-detector-js
+  type: doc
+  path: /.agent/scripts/context-leak-detector.js
+  description: "Core architectural document: context-leak-detector.js"
+- id: .agent-scripts-guardrail-config-json
+  type: doc
+  path: /.agent/scripts/guardrail-config.json
+  description: "Core architectural document: guardrail-config.json"
+- id: .agent-scripts-magic-hunter-js
+  type: doc
+  path: /.agent/scripts/magic-hunter.js
+  description: "Core architectural document: magic-hunter.js"
+- id: .agent-scripts-materialize-bmad-runtime-sh
+  type: doc
+  path: /.agent/scripts/materialize-bmad-runtime.sh
+  description: "Core architectural document: materialize-bmad-runtime.sh"
+- id: .agent-scripts-validate-kg-py
+  type: doc
+  path: /.agent/scripts/validate-kg.py
+  description: "Core architectural document: validate-kg.py"
+- id: .agent-scripts-validate-kg-sh
+  type: doc
+  path: /.agent/scripts/validate-kg.sh
+  description: "Core architectural document: validate-kg.sh"
+- id: .agent-scripts-validate-portability-sh
+  type: doc
+  path: /.agent/scripts/validate-portability.sh
+  description: "Core architectural document: validate-portability.sh"
+- id: docs-decisions-adr-001-data-workflow-architecture-md
+  type: doc
+  path: /docs/decisions/ADR-001-data-workflow-architecture.md
+  description: "Core architectural document: ADR-001-data-workflow-architecture.md"
+- id: docs-decisions-adr-002-all-in-graph-migration-md
+  type: doc
+  path: /docs/decisions/ADR-002-all-in-graph-migration.md
+  description: "Core architectural document: ADR-002-all-in-graph-migration.md"
+
+- id: core-readme.md
+  type: doc
+  path: /README.md
+  description: "Core project file: README.md"
+- id: core-contributing.md
+  type: doc
+  path: /CONTRIBUTING.md
+  description: "Core project file: CONTRIBUTING.md"
+- id: core-gitignore
+  type: source
+  path: /.gitignore
+  description: "Core project file: .gitignore"
+- id: core-run-migration.sh
+  type: source
+  path: /run-migration.sh
+  description: "Core project file: run-migration.sh"
+- id: core-agent-knowledge-graph.yaml
+  type: source
+  path: /.agent/knowledge-graph.yaml
+  description: "Core project file: .agent/knowledge-graph.yaml"
+- id: core-agent-dna-gitagent-dna.md
+  type: doc
+  path: /.agent/dna/gitagent-dna.md
+  description: "Core project file: .agent/dna/gitagent-dna.md"
+- id: core-docs-ai-native sdlc process.md
+  type: doc
+  path: /docs/AI-Native SDLC Process.md
+  description: "Core project file: docs/AI-Native SDLC Process.md"

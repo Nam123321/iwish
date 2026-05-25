@@ -1,0 +1,19 @@
+id: skill-ux-guardian
+name: ux-guardian
+kind: skill
+shape: skill
+role: foundational
+phases: [solution, validate]
+stages: [ux-alignment, flow-consistency]
+triggers: [ux consistency, master flow, behavior alignment]
+anti_triggers: [raw-database-change]
+primary_agents: [ux-agent]
+primary_workflows: [make-ui-spec, review]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Used as a guardrail, not a top-level workflow replacement.
+review_pack: docs/open-modules/ux-guardian-integration-guide.md
+source_path: /.agent/skills/ux-guardian/SKILL.md
+story_refs: [story-1.7]
+tags: [ux, guardrail]

@@ -1,0 +1,18 @@
+id: workflow-research-project-modules
+name: research-project-modules
+kind: workflow
+shape: workflow
+role: supportive
+phases: [discover, plan]
+stages: [module-fit, project-module-selection, capability-expansion]
+triggers: [research project modules, library pack, choose modules]
+anti_triggers: [raw-code-patch]
+primary_agents: [orch-agent, capability-agent]
+primary_workflows: [research-project-modules]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Should update project context when module decisions materially expand the workflow surface.
+source_path: /.agent/workflows/research-project-modules.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, graph, modules]

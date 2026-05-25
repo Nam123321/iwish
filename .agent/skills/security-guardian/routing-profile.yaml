@@ -1,0 +1,19 @@
+id: skill-security-guardian
+name: security-guardian
+kind: skill
+shape: skill
+role: foundational
+phases: [operate-learn, validate]
+stages: [trust-gate, safety-gate]
+triggers: [security, trust, audit]
+anti_triggers: [general-planning]
+primary_agents: [capability-agent, review-agent]
+primary_workflows: [absorb-repo, review]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Treat as a gate, not a substitute for the parent workflow.
+review_pack: docs/open-modules/security-guardian-integration-guide.md
+source_path: /.agent/skills/security-guardian/SKILL.md
+story_refs: [story-1.7]
+tags: [security, gate]

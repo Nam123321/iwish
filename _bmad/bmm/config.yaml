@@ -1,0 +1,14 @@
+# BMAD-DragonBall Open Source Configuration Example
+
+# DO NOT COMMIT YOUR REAL DETAILS! Rename this file to config.yaml locally.
+user_name: "Developer"
+communication_language: "English"
+output_folder: "{project-root}/_bmad/output"
+model: "claude-3-5-sonnet-latest"
+bmad_version: "vDragonBall-OSS"
+
+# Agnostic Application specific paths mapping
+application_paths:
+  src: "./src"
+  assets: "./assets"
+  tests: "./tests"

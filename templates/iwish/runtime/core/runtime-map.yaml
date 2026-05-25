@@ -1,0 +1,19 @@
+runtime_version: 1
+canonical_runtime_root: _iwish
+legacy_runtime_root: _bmad
+workflow_engine:
+  canonical_path: _iwish/core/tasks/workflow.xml
+  legacy_path: _bmad/core/tasks/workflow.xml
+delivery_workflows:
+  - alias: /make-story
+    canonical_id: make-story
+    legacy_wrapper: .agent/workflows/bmad-bmm-create-story.md
+  - alias: /review
+    canonical_id: review
+    legacy_wrapper: .agent/workflows/bmad-bmm-code-review.md
+  - alias: /code
+    canonical_id: code
+    legacy_wrapper: .agent/workflows/bmad-bmm-dev-story.md
+  - alias: /retro
+    canonical_id: retro
+    legacy_wrapper: .agent/workflows/bmad-bmm-retrospective.md

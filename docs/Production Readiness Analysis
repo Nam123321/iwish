@@ -1,0 +1,275 @@
+# 🐉 Phân Tích Năng Lực Production & Maintenance — Hội Đồng BMAD-DragonBall
+
+> **Ngày phân tích**: 22/03/2026  
+> **Phạm vi**: Toàn bộ hệ sinh thái BMAD-DragonBall (agents, skills, workflows, library packs)
+
+---
+
+## Tóm Tắt Điều Hành
+
+Hệ sinh thái BMAD-DragonBall hiện tại **rất mạnh ở giai đoạn phát triển** (từ Product Brief đến Code Review) nhưng **gần như trống hoàn toàn** ở giai đoạn đưa sản phẩm lên production và duy trì hệ thống sau đó.
+
+| Giai đoạn | Mức độ sẵn sàng | Đánh giá |
+|:---|:---:|:---|
+| 📋 Product Discovery & Planning | ⭐⭐⭐⭐⭐ | Hoàn chỉnh (Bulma, King-Kai, Android-18) |
+| 🏗️ Architecture & Design | ⭐⭐⭐⭐⭐ | Hoàn chỉnh (Piccolo, Hit, Gotenks) |
+| 💻 Development & Testing | ⭐⭐⭐⭐⭐ | Hoàn chỉnh (Vegeta, Tien-Shinhan, code-review) |
+| 📊 Sprint Management | ⭐⭐⭐⭐ | Tốt (Trunks, sprint-planning, retrospective) |
+| 🤖 AI Engineering | ⭐⭐⭐⭐ | Tốt (Songoku — ai-pack) |
+| 📢 Marketing | ⭐⭐⭐⭐ | Tốt (Hercule, Majin-Buu — marketing-pack) |
+| 🐛 Bug Fixing | ⭐⭐⭐⭐ | Tốt (fix-bug workflow — 8 phase SBRP) |
+| 🐳 Docker Optimization | ⭐⭐⭐ | Cơ bản (devops-pack — chỉ SlimToolkit) |
+| 🚀 **Production Deployment** | ❌ | **KHÔNG CÓ** |
+| 📡 **Monitoring & Observability** | ❌ | **KHÔNG CÓ** |
+| 🔥 **Incident Management** | ❌ | **KHÔNG CÓ** |
+| 🔄 **CI/CD Pipeline** | ❌ | **KHÔNG CÓ** |
+| 🛡️ **SRE & Reliability** | ❌ | **KHÔNG CÓ** |
+| 🔧 **Maintenance & Operations** | ❌ | **KHÔNG CÓ** |
+| ↩️ **Rollback & Recovery** | ❌ | **KHÔNG CÓ** |
+| 📦 **Release Management** | ❌ | **KHÔNG CÓ** |
+
+---
+
+## I. Hiện Trạng — Những Gì Đã Có
+
+### 1. Đội hình Agent hiện tại (16 agents)
+
+| Agent | Vai trò | Giai đoạn |
+|:---|:---|:---|
+| **Bulma** | Business Analyst / Product Brief | Discovery |
+| **King-Kai** | Product Manager / PRD | Planning |
+| **Android-18** | UX Designer | Design |
+| **Piccolo** | Architect | Architecture |
+| **Hit** | Adversarial Risk Analyst | Quality Gate |
+| **Gotenks** | Creative Intelligence | Ideation |
+| **Vegeta** | Developer | Implementation |
+| **Quick-Flow-Solo-Vegeta** | Quick Developer | Implementation |
+| **Tien-Shinhan** | QA Engineer | Testing |
+| **Trunks** | Scrum Master | Sprint Mgmt |
+| **Master-Roshi** | Technical Writer | Documentation |
+| **Grand-Priest** | Workflow Orchestrator | Orchestration |
+| **Shenron (Data-Piccolo)** | Data Analyst | Data |
+| **Songoku** | AI Engineer (ai-pack) | AI Features |
+| **Hercule** | MKT Content Specialist (marketing-pack) | Marketing |
+| **Majin-Buu** | MKT Ops Executor (marketing-pack) | Marketing |
+
+### 2. Workflows liên quan đến DevOps (rất hạn chế)
+
+| Workflow | Mô tả | Thuộc |
+|:---|:---|:---|
+| `optimize-docker.md` | Tối ưu 1 Docker image bằng SlimToolkit | devops-pack |
+| `optimize-all-docker.md` | Tối ưu hàng loạt Docker images | devops-pack |
+
+### 3. Skills liên quan đến DevOps
+
+| Skill | Mô tả | Thuộc |
+|:---|:---|:---|
+| `devops-pack/skills/SKILL.md` | Docker Optimizer (SlimToolkit) | devops-pack |
+
+> [!IMPORTANT]
+> DevOps-pack hiện tại **chỉ xử lý tối ưu Docker image**. Không có bất kỳ skill/workflow nào cho deployment, CI/CD, monitoring, hay maintenance.
+
+---
+
+## II. Gap Analysis — Những Gì Thiếu
+
+### 🚨 GAP 1: Production Deployment Pipeline
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **deploy-to-staging** — Triển khai lên môi trường staging
+- [ ] Workflow: **deploy-to-production** — Triển khai lên production với checklist
+- [ ] Workflow: **pre-deployment-checklist** — Kiểm tra trước khi deploy (tests pass, migrations, env vars, secrets)
+- [ ] Skill: **deployment-strategies** — Blue/green, canary, rolling update
+- [ ] Skill: **infrastructure-as-code** — Terraform/Pulumi templates
+
+### 🚨 GAP 2: CI/CD Pipeline Setup & Management
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **setup-ci-pipeline** — Cài đặt GitHub Actions / GitLab CI
+- [ ] Workflow: **setup-cd-pipeline** — Auto-deploy on merge
+- [ ] Skill: **ci-cd-patterns** — Best practices cho CI/CD
+- [ ] Templates: `.github/workflows/` hoặc `.gitlab-ci.yml`
+
+### 🚨 GAP 3: Monitoring & Observability
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **setup-monitoring** — Prometheus/Grafana, Datadog, hoặc Cloud Monitoring
+- [ ] Workflow: **setup-alerting** — Alert rules cho CPU, memory, error rate, latency
+- [ ] Workflow: **setup-logging** — Centralized logging (ELK, Loki, CloudWatch)
+- [ ] Skill: **observability-stack** — Metrics, traces, logs best practices
+- [ ] Skill: **apm-setup** — Application Performance Monitoring
+
+### 🚨 GAP 4: Incident Management
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Agent: **Krillin** (đề xuất) — SRE/DevOps Agent chuyên trách
+- [ ] Workflow: **incident-response** — Phát hiện → Triage → Fix → Post-mortem
+- [ ] Workflow: **post-mortem** — Blameless post-mortem template
+- [ ] Workflow: **on-call-runbook** — Runbooks cho các sự cố phổ biến
+- [ ] Skill: **incident-classification** — Severity levels, escalation matrix
+
+### 🚨 GAP 5: Rollback & Disaster Recovery
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **rollback-deployment** — Rollback nhanh khi phát hiện lỗi
+- [ ] Workflow: **database-rollback** — Migration rollback strategy
+- [ ] Workflow: **disaster-recovery** — DR plan và drill
+- [ ] Skill: **backup-strategy** — Backup schedules, retention policies
+
+### 🚨 GAP 6: Release Management
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **create-release** — Semantic versioning, changelog generation
+- [ ] Workflow: **release-notes** — Auto-generate release notes từ stories
+- [ ] Workflow: **feature-flags** — Feature flag management
+- [ ] Skill: **versioning-strategy** — Git flow / trunk-based / release branching
+
+### 🚨 GAP 7: System Maintenance & Operations
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **database-maintenance** — Index optimization, vacuum, archival
+- [ ] Workflow: **dependency-update** — Automated dependency updates (Dependabot/Renovate)
+- [ ] Workflow: **security-patch** — Security vulnerability scanning & patching
+- [ ] Workflow: **performance-audit** — Periodic performance reviews
+- [ ] Workflow: **cost-optimization** — Cloud cost review và right-sizing
+- [ ] Skill: **system-health-checks** — Health check endpoints, readiness/liveness probes
+
+### 🚨 GAP 8: Infrastructure Management
+
+**Hiện trạng**: KHÔNG CÓ  
+**Cần có**:
+- [ ] Workflow: **provision-environment** — Dev/Staging/Production environment setup
+- [ ] Workflow: **scale-infrastructure** — Auto-scaling policies
+- [ ] Skill: **cloud-architecture** — AWS/GCP/Azure best practices
+- [ ] Skill: **kubernetes-operations** — K8s deployment, HPA, resource limits
+
+---
+
+## III. Đề Xuất Giải Pháp — Roadmap Mở Rộng
+
+### Phase 1: Agent Mới — **Krillin** (SRE/DevOps Agent) 🥋
+
+Đề xuất tạo agent mới tên **Krillin** — đóng vai trò SRE/DevOps Engineer:
+
+```
+Vai trò: Site Reliability Engineer & DevOps Specialist
+Trách nhiệm:
+  - CI/CD pipeline setup & management
+  - Production deployment orchestration
+  - Monitoring & alerting setup
+  - Incident response & management
+  - Infrastructure as Code
+  - Release management
+  - System maintenance automation
+```
+
+### Phase 2: DevOps-Pack Expansion
+
+Mở rộng `devops-pack` hiện có với:
+
+| Priority | Workflow/Skill | Mức độ quan trọng |
+|:---:|:---|:---:|
+| P0 | `deploy-to-production` workflow | 🔴 Critical |
+| P0 | `setup-ci-pipeline` workflow | 🔴 Critical |
+| P0 | `pre-deployment-checklist` workflow | 🔴 Critical |
+| P1 | `setup-monitoring` workflow | 🟠 High |
+| P1 | `incident-response` workflow | 🟠 High |
+| P1 | `rollback-deployment` workflow | 🟠 High |
+| P2 | `create-release` workflow | 🟡 Medium |
+| P2 | `database-maintenance` workflow | 🟡 Medium |
+| P2 | `security-patch` workflow | 🟡 Medium |
+| P3 | `disaster-recovery` workflow | 🟢 Low (initially) |
+| P3 | `cost-optimization` workflow | 🟢 Low |
+
+### Phase 3: New Library Pack — **Ops-Pack** (đề xuất)
+
+Tạo library pack mới chuyên cho operations:
+
+```
+templates/library/ops-pack/
+├── agents/
+│   └── krillin.md              # SRE/DevOps Agent
+├── skills/
+│   ├── SKILL.md                # CI/CD & Deployment expertise
+│   ├── monitoring-setup.md     # Observability stack setup
+│   ├── incident-response.md    # Incident management protocols
+│   ├── release-management.md   # Versioning & release 
+│   └── infrastructure.md       # IaC & cloud architecture
+└── workflows/
+    ├── deploy-staging.md
+    ├── deploy-production.md
+    ├── setup-ci-pipeline.md
+    ├── setup-monitoring.md
+    ├── incident-response.md
+    ├── rollback-deployment.md
+    ├── create-release.md
+    ├── database-maintenance.md
+    ├── security-scan.md
+    ├── performance-audit.md
+    └── disaster-recovery-drill.md
+```
+
+---
+
+## IV. Lifecycle Coverage Map
+
+```mermaid
+graph LR
+    subgraph "✅ ĐÃ CÓ (Phases 1-3)"
+        A["💡 Discovery<br/>Bulma, King-Kai"] --> B["🏗️ Architecture<br/>Piccolo, Hit"]
+        B --> C["💻 Development<br/>Vegeta, Tien-Shinhan"]
+        C --> D["📊 Sprint Mgmt<br/>Trunks"]
+        D --> E["🐛 Bug Fix<br/>fix-bug workflow"]
+        E --> F["📢 Marketing<br/>Hercule, Majin-Buu"]
+    end
+
+    subgraph "❌ CHƯA CÓ (Phases 4-6)"
+        G["🚀 Deployment<br/>???"]
+        H["📡 Monitoring<br/>???"]
+        I["🔥 Incident Mgmt<br/>???"]
+        J["🔧 Maintenance<br/>???"]
+        K["↩️ Rollback<br/>???"]
+        L["📦 Release Mgmt<br/>???"]
+    end
+
+    F -.->|"GAP"| G
+    G -.-> H
+    H -.-> I
+    I -.-> J
+    J -.-> K
+    K -.-> L
+    L -.->|"feedback loop"| A
+
+    style G fill:#ff6b6b,stroke:#c0392b,color:white
+    style H fill:#ff6b6b,stroke:#c0392b,color:white
+    style I fill:#ff6b6b,stroke:#c0392b,color:white
+    style J fill:#ff6b6b,stroke:#c0392b,color:white
+    style K fill:#ff6b6b,stroke:#c0392b,color:white
+    style L fill:#ff6b6b,stroke:#c0392b,color:white
+```
+
+---
+
+## V. Kết Luận Hội Đồng
+
+> [!CAUTION]
+> **Hệ thống BMAD-DragonBall hiện tại KHÔNG SẴN SÀNG cho production deployment và maintenance.** Tất cả 8 lĩnh vực quan trọng cho vận hành production đều trống hoàn toàn. DevOps-pack chỉ có Docker image optimization — không đủ cho bất kỳ deployment pipeline nào.
+
+### Khuyến nghị ưu tiên:
+1. **Ngay lập tức (P0)**: Tạo agent **Krillin** + 3 workflows cốt lõi (deploy, CI/CD, pre-deploy checklist)
+2. **Tuần tiếp theo (P1)**: Monitoring, incident response, rollback workflows
+3. **Sprint sau (P2)**: Release management, database maintenance, security scanning
+4. **Quý sau (P3)**: Disaster recovery, cost optimization, full ops-pack
+
+### Quyết định cần từ bạn:
+1. Bạn có muốn tôi bắt đầu thiết kế agent **Krillin** và ops-pack không?
+2. Cloud platform mục tiêu là gì? (AWS / GCP / Azure / Self-hosted)
+3. CI/CD tool ưa thích? (GitHub Actions / GitLab CI / Jenkins / Other)
+4. Monitoring stack ưa thích? (Prometheus+Grafana / Datadog / Cloud-native)

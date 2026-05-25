@@ -1,0 +1,17 @@
+id: workflow-plan
+name: plan
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [plan]
+stages: [product-brief, prd, roadmap]
+triggers: [plan, prd, roadmap, brief, strategy]
+anti_triggers: [raw-code-patch]
+primary_agents: [pm-agent, orch-agent]
+primary_workflows: [plan]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Prefer before solutioning or implementation when request is still under-scoped.
+source_path: /_iwish/catalog/routing-profiles/workflow-plan.yaml
+tags: [starter-bundle, canonical]

@@ -1,0 +1,19 @@
+id: skill-stitch-design-taste
+name: stitch-design-taste
+kind: skill
+shape: skill
+role: foundational
+phases: [solution, validate]
+stages: [design-contract-validation]
+triggers: [stitch, design taste, visual contract]
+anti_triggers: [non-design-task]
+primary_agents: [ux-agent]
+primary_workflows: [make-ui-spec, review]
+supportive_skills: []
+tool_dependencies: [design]
+constraints:
+  - Invoke when visual/design contract fidelity matters.
+review_pack: docs/open-modules/stitch-design-taste-integration-guide.md
+source_path: /.agent/skills/stitch-design-taste/SKILL.md
+story_refs: [story-1.7]
+tags: [stitch, visual]

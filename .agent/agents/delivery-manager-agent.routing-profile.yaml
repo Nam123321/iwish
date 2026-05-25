@@ -1,0 +1,19 @@
+id: agent-delivery-manager-agent
+name: delivery-manager-agent
+kind: agent
+shape: agent
+role: process-primary
+phases: [solution, validate, deliver]
+stages: [story-slicing, sprint-review, retrospective]
+triggers: [story, epic, sprint, retro]
+anti_triggers: [raw-design-audit]
+primary_agents: [delivery-manager-agent]
+primary_workflows: [make-story, retro, status]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Use as the owner of delivery slicing and cadence, not low-level implementation.
+review_pack: docs/open-modules/delivery-manager-agent-integration-guide.md
+source_path: /.agent/agents/delivery-manager-agent.md
+story_refs: [story-1.7]
+tags: [delivery, canonical]

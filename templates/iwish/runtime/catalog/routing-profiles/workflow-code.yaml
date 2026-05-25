@@ -1,0 +1,17 @@
+id: workflow-code
+name: code
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [implement]
+stages: [dev-execution, bug-fix, patching]
+triggers: [implement, code, bugfix, patch, refactor, feature]
+anti_triggers: [prd, roadmap, market-research]
+primary_agents: [dev-agent, orch-agent]
+primary_workflows: [code]
+supportive_skills: [pivot-guardian]
+tool_dependencies: [graph]
+constraints:
+  - Requires reconciliation when implementation changes source-of-truth.
+source_path: /_iwish/catalog/routing-profiles/workflow-code.yaml
+tags: [starter-bundle, canonical]

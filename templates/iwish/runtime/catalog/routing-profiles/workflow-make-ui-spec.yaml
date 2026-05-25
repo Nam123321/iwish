@@ -1,0 +1,17 @@
+id: workflow-make-ui-spec
+name: make-ui-spec
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution, validate]
+stages: [ui-spec, design-compliance, ux-alignment]
+triggers: [ui, ux, design, layout, master design, stitch]
+anti_triggers: [backend-migration]
+primary_agents: [ux-agent, orch-agent]
+primary_workflows: [make-ui-spec]
+supportive_skills: [design-consultation, ux-guardian, visual-fidelity-gate]
+tool_dependencies: [design]
+constraints:
+  - Requires reconciliation when design decisions affect stories or implementation scope.
+source_path: /_iwish/catalog/routing-profiles/workflow-make-ui-spec.yaml
+tags: [starter-bundle, canonical]

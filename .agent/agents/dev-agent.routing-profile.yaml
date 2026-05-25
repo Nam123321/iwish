@@ -1,0 +1,19 @@
+id: agent-dev-agent
+name: dev-agent
+kind: agent
+shape: agent
+role: process-primary
+phases: [implement]
+stages: [dev-execution, patching, bug-fixing]
+triggers: [implement, code, fix, patch, refactor]
+anti_triggers: [market-research]
+primary_agents: [dev-agent]
+primary_workflows: [code]
+supportive_skills: [pivot-guardian]
+tool_dependencies: []
+constraints:
+  - Reconciliation required when work changes tracked story/spec context.
+review_pack: docs/open-modules/dev-agent-integration-guide.md
+source_path: /.agent/agents/dev-agent.md
+story_refs: [story-1.7]
+tags: [development, canonical]

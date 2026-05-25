@@ -1,0 +1,113 @@
+--- BMAD Registry Consistency Check ---
+[ERROR] Duplicate command name 'Bulma' found in:
+  - .agent/agents/bulma.md
+  - .agent/workflows/bmad-agent-bmm-bulma.md
+[ERROR] Duplicate command name 'Cell' found in:
+  - .agent/agents/cell.md
+  - .agent/workflows/bmad-agent-bmm-cell.md
+[ERROR] Duplicate command name 'data-Piccolo' found in:
+  - .agent/agents/shenron.md
+  - .agent/workflows/bmad-agent-bmm-data-piccolo.md
+[ERROR] Duplicate command name 'data-strategist' found in:
+  - .agent/agents/data-strategist.md
+  - .agent/workflows/bmad-agent-bmm-data-strategist.md
+[ERROR] Duplicate command name 'Hit' found in:
+  - .agent/agents/hit.md
+  - .agent/workflows/bmad-agent-bmm-edge-guardian.md
+[ERROR] Duplicate command name 'King-Kai' found in:
+  - .agent/agents/king-kai.md
+  - .agent/workflows/bmad-agent-bmm-king-kai.md
+[ERROR] Duplicate command name 'Piccolo' found in:
+  - .agent/agents/piccolo.md
+  - .agent/workflows/bmad-agent-bmm-piccolo.md
+[ERROR] Duplicate command name 'data-Piccolo' found in:
+  - .agent/agents/shenron.md
+  - .agent/workflows/bmad-agent-bmm-shenron.md
+[ERROR] Duplicate command name 'Tien-Shinhan' found in:
+  - .agent/agents/tien-shinhan.md
+  - .agent/workflows/bmad-agent-bmm-tien-shinhan.md
+[ERROR] Duplicate command name 'Trunks' found in:
+  - .agent/agents/trunks.md
+  - .agent/workflows/bmad-agent-bmm-trunks.md
+[ERROR] Duplicate command name 'Vegeta' found in:
+  - .agent/agents/vegeta.md
+  - .agent/workflows/bmad-agent-bmm-vegeta.md
+[ERROR] Duplicate command name 'Hit' found in:
+  - .agent/agents/hit.md
+  - .agent/workflows/hit.md
+[ERROR] Duplicate command name 'prototype' found in:
+  - .agent/workflows/prototype.md
+  - .agent/workflows/prototype.yaml
+[ERROR] Duplicate command name 'create-prd' found in:
+  - .agent/workflows/bmad-bmm-create-prd.md
+  - .agent/workflows/workflow-create-prd.md
+[ERROR] Duplicate command name 'domain-research' found in:
+  - .agent/workflows/bmad-bmm-domain-research.md
+  - .agent/workflows/workflow-domain-research.md
+[ERROR] Duplicate command name 'edit-prd' found in:
+  - .agent/workflows/bmad-bmm-edit-prd.md
+  - .agent/workflows/workflow-edit-prd.md
+[ERROR] Duplicate command name 'create-ui-spec' found in:
+  - .agent/workflows/bmad-bmm-create-ui-spec.md
+  - .agent/workflows/workflow-entry.md
+[ERROR] Duplicate command name 'market-research' found in:
+  - .agent/workflows/bmad-bmm-market-research.md
+  - .agent/workflows/workflow-market-research.md
+[ERROR] Duplicate command name 'technical-research' found in:
+  - .agent/workflows/bmad-bmm-technical-research.md
+  - .agent/workflows/workflow-technical-research.md
+[ERROR] Duplicate command name 'validate-prd' found in:
+  - .agent/workflows/bmad-bmm-validate-prd.md
+  - .agent/workflows/workflow-validate-prd.md
+[ERROR] Duplicate command name 'generate-project-context' found in:
+  - .agent/workflows/bmad-bmm-generate-project-context.md
+  - .agent/workflows/workflow.md
+[ERROR] Duplicate command name 'Tien-Shinhan-automate' found in:
+  - .agent/workflows/bmad-bmm-qa-automate.md
+  - .agent/workflows/workflow.yaml
+[ERROR] Duplicate command name 'clone-website' found in:
+  - .agent/workflows/bmad-bmm-clone-website.md
+  - .agent/skills/clone-website/SKILL.md
+[ERROR] Duplicate command name 'Vegeta-story' found in:
+  - .agent/workflows/bmad-bmm-dev-story.md
+  - _bmad/bmm/workflows/4-implementation/Vegeta-story/workflow.yaml
+[ERROR] Duplicate command name 'code-review' found in:
+  - .agent/workflows/bmad-bmm-code-review.md
+  - _bmad/bmm/workflows/4-implementation/code-review/workflow.yaml
+[ERROR] Duplicate command name 'correct-course' found in:
+  - .agent/workflows/bmad-bmm-correct-course.md
+  - _bmad/bmm/workflows/4-implementation/correct-course/workflow.yaml
+[ERROR] Duplicate command name 'create-story' found in:
+  - .agent/workflows/bmad-bmm-create-story.md
+  - _bmad/bmm/workflows/4-implementation/create-story/workflow.yaml
+[ERROR] Duplicate command name 'retrospective' found in:
+  - .agent/workflows/bmad-bmm-retrospective.md
+  - _bmad/bmm/workflows/4-implementation/retrospective/workflow.yaml
+[ERROR] Duplicate command name 'sprint-planning' found in:
+  - .agent/workflows/bmad-bmm-sprint-planning.md
+  - _bmad/bmm/workflows/4-implementation/sprint-planning/workflow.yaml
+[ERROR] Duplicate command name 'sprint-status' found in:
+  - .agent/workflows/bmad-bmm-sprint-status.md
+  - _bmad/bmm/workflows/4-implementation/sprint-status/workflow.yaml
+[OK] Found 134 unique commands registered.
+[ERROR] Broken file reference './api-contracts-server.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './project-overview.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './source-tree-analysis.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './deployment-guide.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './contribution-guide.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './integration-architecture.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './architecture-server.md' in .agent/workflows/full-scan-instructions.md
+[ERROR] Broken file reference './project-overview.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './source-tree-analysis.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './architecture.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './component-inventory.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './development-guide.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './api-contracts.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './data-models.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './integration-architecture.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './project-parts.json' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './deployment-guide.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './contribution-guide.md' in .agent/workflows/index-template.md
+[ERROR] Broken file reference './index.md' in .agent/workflows/project-overview-template.md
+[ERROR] Broken file reference './source-tree-analysis.md' in .agent/workflows/project-overview-template.md
+--- Result: [FAIL] Inconsistencies Found ---

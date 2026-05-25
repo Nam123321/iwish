@@ -1,0 +1,24 @@
+id: skill-<name>
+name: <name>
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - implement
+stages:
+  - task-execution
+triggers:
+  - <primary-trigger>
+anti_triggers: []
+primary_agents:
+  - orch-agent
+primary_workflows:
+  - code
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Update with real constraints before promotion.
+review_pack: generated-skills/<name>/integration-guide.md
+source_path: .agent/skills/<name>/SKILL.md
+story_refs: []
+tags: []

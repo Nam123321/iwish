@@ -1,0 +1,4 @@
+code: integrations
+name: I-Wish Integrations
+class: integrations
+description: Tool adapters, absorbed modules, and external compatibility surfaces.

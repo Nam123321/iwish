@@ -1,0 +1,36 @@
+id: workflow-research-solution-sources
+name: research-solution-sources
+kind: workflow
+shape: workflow
+role: supportive
+phases: [discover, plan, operate_learn]
+stages: [capability-gap-analysis, source-search, capability-decision]
+triggers:
+  - find repo
+  - github
+  - research github
+  - search github
+  - external repo
+  - open source solution
+  - find skill
+  - find framework
+  - find package
+  - find module
+  - existing solution
+  - before create skill
+  - before enhance skill
+  - tìm repo
+  - tìm skill
+  - tìm giải pháp
+  - tìm framework
+anti_triggers:
+  - explicit code implementation
+primary_agents: [capability-agent, orch-agent]
+primary_workflows: [research-solution-sources]
+supportive_skills: [github-deep-research, repo-absorption]
+tool_dependencies: [graph]
+constraints:
+  - Prefer enhance-skill over create-skill when overlap is strong.
+  - Prefer absorb-repo over blind creation when a strong external candidate exists.
+  - If the user explicitly asks for GitHub or external-solution research, external search is mandatory and github-deep-research must be used on shortlisted candidates.
+source_path: /.agent/workflows/research-solution-sources.md

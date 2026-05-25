@@ -1,0 +1,18 @@
+id: workflow-impact-analysis
+name: impact-analysis
+kind: workflow
+shape: workflow
+role: supportive
+phases: [solution, validate]
+stages: [feature-impact, dependency-analysis, scope-estimation]
+triggers: [impact analysis, feature impact, cross-feature impact]
+anti_triggers: [simple-copy-edit]
+primary_agents: [pm-agent, architect-agent]
+primary_workflows: [impact-analysis]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Must use graph-backed evidence when available and explicitly call out degraded graph confidence when not.
+source_path: /.agent/workflows/impact-analysis.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, graph, impact]

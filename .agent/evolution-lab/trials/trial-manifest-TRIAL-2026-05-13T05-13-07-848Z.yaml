@@ -1,0 +1,11 @@
+trial_id: "TRIAL-2026-05-13T05-13-07-848Z"
+timestamp: "2026-05-13T05:13:07.849Z"
+fixture: "land-and-deploy"
+decision: "APPROVED"
+candidates:
+  - path: "candidates/TRIAL-2026-05-13T05-13-07-848Z-native.md"
+    source_engine: "bmad-native"
+    engine_version: "internal"
+  - path: "candidates/TRIAL-2026-05-13T05-13-07-848Z-darwinian.md"
+    source_engine: "darwinian"
+    engine_version: "latest"

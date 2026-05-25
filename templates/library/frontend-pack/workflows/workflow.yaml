@@ -1,0 +1,26 @@
+name: stitch-to-code
+description: "Extract code from approved Stitch designs and adapt to project design system."
+author: "BMad"
+
+# Critical variables from config
+config_source: "{project-root}/_bmad/bmm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+user_skill_level: "{config_source}:user_skill_level"
+document_output_language: "{config_source}:document_output_language"
+implementation_artifacts: "{config_source}:implementation_artifacts"
+planning_artifacts: "{config_source}:planning_artifacts"
+date: system-generated
+
+# Workflow components
+installed_path: "{project-root}/_bmad/bmm/workflows/4-implementation/stitch-to-code"
+instructions: "{installed_path}/instructions.xml"
+validation: "{installed_path}/checklist.md"
+
+story_file: "" # Explicit story path; auto-discovered if empty
+sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+project_context: "**/project-context.md"
+
+# Output configuration
+output_folder: "{implementation_artifacts}"
+stitch_extract_dir: "{implementation_artifacts}/stitch-extracts"

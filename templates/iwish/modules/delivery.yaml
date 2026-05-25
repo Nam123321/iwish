@@ -1,0 +1,4 @@
+code: delivery
+name: I-Wish Delivery
+class: delivery
+description: Story, planning, implementation, review, and reverse-sync execution layer.

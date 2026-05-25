@@ -1,0 +1,63 @@
+<workflow-engine>
+  <critical>This is the generic BMAD workflow execution engine. It is intentionally workflow-agnostic.</critical>
+  <critical>The caller MUST pass a workflow-config path, usually under `{project-root}/_bmad/bmm/workflows/.../workflow.yaml`.</critical>
+  <critical>Read the full workflow-config before executing workflow-specific behavior.</critical>
+
+  <step n="1" goal="Load workflow config">
+    <action>Read the complete workflow-config file passed by the wrapper or agent menu item.</action>
+    <action>Parse at least: `name`, `runtime_kind`, `source_wrapper`, `instructions`, `validation`, `template`, `installed_path`, and any declared variables when present.</action>
+    <action>If the workflow-config file is missing, stop with a runtime readiness error and instruct the user to run `./.agent/scripts/materialize-bmad-runtime.sh --apply`.</action>
+  </step>
+
+  <step n="2" goal="Resolve execution mode">
+    <check if="workflow-config has `runtime_kind: wrapper-config`">
+      <action>Treat the config as a wrapper-backed workflow manifest.</action>
+      <action>Resolve `source_wrapper` relative to `{project-root}`.</action>
+      <action>Read the complete source wrapper markdown.</action>
+      <action>Execute the wrapper's `steps` block as the workflow-specific contract.</action>
+      <action>Apply any additional rules in this generic engine, including save-after-section and validation requirements.</action>
+      <action>Mark execution mode resolved. Do not execute the generic `instructions` branch for this workflow-config.</action>
+    </check>
+
+    <check if="workflow-config has `instructions` AND `runtime_kind` is not `wrapper-config`">
+      <action>Resolve `instructions` relative to `{project-root}` or `installed_path`.</action>
+      <action>Read the complete instructions file.</action>
+      <action>Execute the instructions exactly in order.</action>
+    </check>
+
+    <check if="workflow-config has neither `runtime_kind: wrapper-config` nor `instructions`">
+      <action>Stop with `Invalid workflow config: no executable wrapper or instructions`.</action>
+    </check>
+  </step>
+
+  <step n="3" goal="Execution rules">
+    <critical>Execute workflow steps in exact order. Do not skip steps unless a workflow-specific condition explicitly says to skip.</critical>
+    <critical>Save outputs after each generated document section when the workflow generates documents from templates.</critical>
+    <critical>Respect project memory gates and story constraints declared by the source wrapper or instructions file.</critical>
+    <critical>Do not silently fallback in project runtime mode. Missing runtime files must be repaired before continuing.</critical>
+  </step>
+
+  <step n="4" goal="Validation and completion">
+    <action>Run workflow-specific validation commands when declared.</action>
+    <action>For implementation or review workflows, run the deterministic compiler/build check required by the wrapper.</action>
+    <action>Report unavailable optional graph tooling as unavailable evidence, never as proof of no impact.</action>
+  </step>
+
+  <step n="5" goal="Turn-Exit Diagnostics">
+    <critical>Upon exiting or pausing this workflow (whether completed, blocked, failed, or awaiting user approval), you MUST append a Turn-Exit Diagnostic record.</critical>
+    <action>Construct a single-line JSON object with the following fields:
+      - `timestamp`: Current ISO-8601 string.
+      - `workflow`: Name of the executed workflow or agent.
+      - `story_id`: The ID of the current story, if applicable (or null).
+      - `exit_reason`: Must be exactly one of: `completed`, `blocked`, `awaiting_user_approval`, `validation_failed`, `scope_split_required`, `security_blocked`, or `deferred`.
+      - `memory_follow_up`: Must be exactly one of: `scored` (if memory admission was run), `skipped` (if intentionally bypassed), or `pending` (if follow-up is required).
+      - `message`: A brief 1-2 sentence description of the exit context.
+    </action>
+    <action>Use a terminal command to append this JSON string to the diagnostics file. To prevent bash quoting errors with JSON, use a heredoc. Example:
+      `mkdir -p .agent/memory && cat << 'EOF' >> .agent/memory/turn-exits.jsonl`
+      `{"timestamp":"...", "workflow":"...", ...}`
+      `EOF`
+    </action>
+    <action>Orchestration Handback Rule: After outputting the diagnostic record (regardless of `exit_reason`), explicitly append a Handback Statement to your final output. Example: "✅ Workflow exited. I am now returning to the **Grand Priest** orchestrator role. How else can I help you?". Adopt the Grand Priest persona for the next natural language interaction.</action>
+  </step>
+</workflow-engine>

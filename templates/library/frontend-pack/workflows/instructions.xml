@@ -1,0 +1,60 @@
+<workflow>
+  <critical>The workflow execution engine is governed by: {project-root}/_bmad/core/tasks/workflow.xml</critical>
+  <critical>You MUST have already loaded and processed: {installed_path}/workflow.yaml</critical>
+  <critical>MANDATORY UX GUARDIAN CHECK: Khi Assembly & Gap Check UI, băt buộc phải tuân theo `{project-root}/.agent/skills/ux-guardian/SKILL.md` và tham chiếu Behavior token tại `ux-patterns.yaml`. Nếu phát sinh Pattern mới, hãy thực hiện cắm cờ [NEW_UX_PATTERN_PROPOSAL].</critical>
+  
+  <step n="1" goal="Phase 1: Screen Inventory">
+    <action>Read the UI Spec file for the current story</action>
+    <action>Extract ALL screens/views described in the UI Spec</action>
+    <action>Load _bmad-output/planning-artifacts/design-system/stitch-project-registry.json to identify the canonical Stitch project for the target portal</action>
+    <action>Call mcp_StitchMCP_list_screens(projectId) to get all screens in the Stitch project</action>
+    <action>Match each UI Spec screen to a Stitch screen</action>
+    <action>Assign Tiers: Tier 1 (Direct match), Tier 2 (Shared match), Tier 3 (No match)</action>
+    
+    <check if="Tier 3 screens exist">
+      <critical>NO SCREEN MAY PROCEED TO CODE WITHOUT A STITCH-APPROVED VISUAL</critical>
+      <action>For each Tier 3 screen: Build a detailed prompt describing the screen</action>
+      <action>Call mcp_StitchMCP_generate_screen_from_text to generate the missing screen on Stitch</action>
+      <action>Present the generated screen to the user for review</action>
+      <ask>Approve / Edit / Regenerate the newly created Stitch screen?</ask>
+      <action>Update Screen Inventory to Tier 1 once approved</action>
+    </check>
+  </step>
+
+  <step n="2" goal="Phase 2: Code Extraction">
+    <action>For each Tier 1 screen: Call mcp_StitchMCP_get_screen</action>
+    <action>Extract HTML structure, CSS styles, and component patterns from the response</action>
+    <action>Save extracted code to a temporary reference file in /tmp/stitch-extract/{screenId}.html</action>
+    <action>Build a Component Registry documenting all usable structural components and patterns</action>
+    <check if="MCP connection fails or times out">
+      <action>Implement backoff and retry. Prompts user if permanent failure</action>
+    </check>
+  </step>
+
+  <step n="3" goal="Phase 3: Token Adaptation">
+    <action>Transform ALL hardcoded Stitch CSS colors and measurements into CSS Variable tokens (e.g., var(--admin-primary))</action>
+    <action>Load and use the Token Mapping Reference from _bmad-output/planning-artifacts/stitch-first-playbook.md for converting values</action>
+    <action>Replace generic Stitch classes with arbitrary/utility values following project design rules</action>
+    <action>Map font definitions to var(--font-sans) or var(--font-mono)</action>
+    <check if="unmapped or unrecognized CSS value is encountered">
+      <action>Map to nearest semantic token and log a warning in the output documentation</action>
+    </check>
+  </step>
+
+  <step n="4" goal="Phase 4: Assembly &amp; Gap Check">
+    <action>Assemble the adapted components into the final page/component layout</action>
+    <action>Add React state, hooks, API connections as required</action>
+    <action>Run grep regex check targeting hardcoded colors (e.g. bg-[#...], text-[#...]) in the generated code</action>
+    <check if="grep reveals hardcoded colors">
+      <action>FAIL the check, find matching CSS variables, and replace</action>
+    </check>
+  </step>
+
+  <step n="5" goal="Phase 5: Visual Validation">
+    <action>Run local Vegeta server if not already running</action>
+    <action>Capture a browser screenshot of the newly assembled UI using browser_subagent</action>
+    <action>Compare the screenshot against the original Stitch output</action>
+    <action>Format all extracted details, mappings, and outputs into {story-key}-stitch-extract.md</action>
+    <action>Save the extraction reference document into {implementation_artifacts}/</action>
+  </step>
+</workflow>

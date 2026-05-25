@@ -1,0 +1,32 @@
+id: skill-socratic-review
+name: socratic-review
+kind: skill
+shape: skill
+role: supportive
+phases: [discover, plan, solution, implement]
+stages: [questioning-gate, assumption-testing, adversarial-review]
+triggers:
+  - socratic
+  - stress test assumptions
+  - challenge assumptions
+  - discovery gate
+  - business gate
+  - technical gate
+  - drift gate
+  - phản biện
+  - chất vấn
+  - hỏi khó
+anti_triggers:
+  - trivial formatting
+  - raw file export
+primary_agents: [pm-agent, review-agent, orch-agent]
+primary_workflows: [idea-challenge, make-story, review, pivot-project]
+supportive_skills: [idea-hardening]
+tool_dependencies: []
+constraints:
+  - Ask at most 1-2 questions per turn and end with synthesis.
+  - Do not auto-overwrite planning or context artifacts without approval.
+review_pack: docs/open-modules/idea-challenge-integration-guide.md
+source_path: /.agent/skills/socratic-review/SKILL.md
+story_refs: [story-1.13]
+tags: [questioning, gate, discovery, business, technical, drift]

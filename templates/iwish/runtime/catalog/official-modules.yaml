@@ -1,0 +1,13 @@
+modules:
+  - code: core
+    class: core
+    source: templates/iwish/modules/core.yaml
+  - code: delivery
+    class: delivery
+    source: templates/iwish/modules/delivery.yaml
+  - code: library
+    class: library
+    source: templates/iwish/modules/library.yaml
+  - code: integrations
+    class: integrations
+    source: templates/iwish/modules/integrations.yaml

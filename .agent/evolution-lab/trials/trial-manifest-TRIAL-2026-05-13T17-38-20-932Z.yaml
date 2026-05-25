@@ -1,0 +1,12 @@
+trial_id: "TRIAL-2026-05-13T17-38-20-932Z"
+timestamp: "2026-05-13T17:38:21.110Z"
+fixture: "BUG-001"
+is_code_eval: true
+decision: "PENDING"
+candidates:
+  - path: "candidates/TRIAL-2026-05-13T17-38-20-932Z-native.js"
+    source_engine: "bmad-native"
+    engine_version: "internal"
+  - path: "candidates/TRIAL-2026-05-13T17-38-20-932Z-darwinian.js"
+    source_engine: "darwinian"
+    engine_version: "latest"

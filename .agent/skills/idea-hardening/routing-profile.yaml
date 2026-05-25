@@ -1,0 +1,31 @@
+id: skill-idea-hardening
+name: idea-hardening
+kind: skill
+shape: skill-attachment
+role: supportive
+phases: [discover, plan]
+stages: [ideation-discipline, option-framing, scope-control]
+triggers:
+  - idea hardening
+  - 2 options
+  - 3 options
+  - YAGNI
+  - scope creep
+  - mvp scope
+  - visual routing
+  - chốt phương án
+  - giới hạn MVP
+anti_triggers:
+  - post-release metrics only
+  - deployment only
+primary_agents: [pm-agent, orch-agent, research-agent]
+primary_workflows: [idea-challenge, research, plan]
+supportive_skills: [socratic-review]
+tool_dependencies: []
+constraints:
+  - Always offer at least 2 contrasted approaches when shaping ideas.
+  - Challenge scope creep without silently removing user-requested features.
+review_pack: docs/open-modules/idea-challenge-integration-guide.md
+source_path: /.agent/skills/idea-hardening/SKILL.md
+story_refs: [story-1.13]
+tags: [ideation, mvp, yagni, options, discover]

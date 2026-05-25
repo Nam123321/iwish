@@ -1,0 +1,267 @@
+# I-Wish Migration Fallback Manifest
+# Generated: 2026-05-17
+# Purpose: Track all BMAD→I-Wish renames for rollback
+
+version: "1.0"
+status: in-progress
+
+renames:
+  agents:
+    - old: ".agent/agents/songoku.md"
+      new: ".agent/agents/ai-agent.md"
+      status: pending
+    - old: ".agent/agents/vegeta.md"
+      new: ".agent/agents/dev-agent.md"
+      status: pending
+    - old: ".agent/agents/piccolo.md"
+      new: ".agent/agents/architect-agent.md"
+      status: pending
+    - old: ".agent/agents/king-kai.md"
+      new: ".agent/agents/pm-agent.md"
+      status: pending
+    - old: ".agent/agents/bulma.md"
+      new: ".agent/agents/pm-agent.md"
+      status: pending
+    - old: ".agent/agents/product-agent.md"
+      new: ".agent/agents/pm-agent.md"
+      status: pending
+    - old: ".agent/agents/trunks.md"
+      new: ".agent/agents/delivery-manager-agent.md"
+      status: pending
+    - old: ".agent/agents/tien-shinhan.md"
+      new: ".agent/agents/qa-agent.md"
+      status: pending
+    - old: ".agent/agents/android-18.md"
+      new: ".agent/agents/ux-agent.md"
+      status: pending
+    - old: ".agent/agents/hit.md"
+      new: ".agent/agents/review-agent.md"
+      status: pending
+    - old: ".agent/agents/master-roshi.md"
+      new: ".agent/agents/research-agent.md"
+      status: pending
+    - old: ".agent/agents/gotenks.md"
+      new: ".agent/agents/creative-agent.md"
+      status: pending
+    - old: ".agent/agents/whis.md"
+      new: ".agent/agents/capability-agent.md"
+      status: pending
+    - old: ".agent/agents/krillin.md"
+      new: ".agent/agents/devops-agent.md"
+      status: pending
+    - old: ".agent/agents/grand-priest.md"
+      new: ".agent/agents/orch-agent.md"
+      status: pending
+    - old: ".agent/agents/shenron.md"
+      new: ".agent/agents/data-architect-agent.md"
+      status: pending
+    - old: ".agent/agents/data-strategist.md"
+      new: ".agent/agents/data-strategist-agent.md"
+      status: pending
+    - old: ".agent/agents/cell.md"
+      new: ".agent/agents/cloner-agent.md"
+      status: pending
+    - old: ".agent/agents/quick-flow-solo-vegeta.md"
+      new: ".agent/agents/quick-dev-agent.md"
+      status: pending
+
+  workflows:
+    - old: ".agent/workflows/bmad-agent-bmm-vegeta.md"
+      new: ".agent/workflows/activate-dev.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-songoku.md"
+      new: ".agent/workflows/activate-ai.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-bulma.md"
+      new: ".agent/workflows/activate-product.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-piccolo.md"
+      new: ".agent/workflows/activate-architect.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-trunks.md"
+      new: ".agent/workflows/activate-delivery.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-tien-shinhan.md"
+      new: ".agent/workflows/activate-qa.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-cell.md"
+      new: ".agent/workflows/activate-cloner.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-edge-guardian.md"
+      new: ".agent/workflows/activate-review.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-king-kai.md"
+      new: ".agent/workflows/activate-pm.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-master-roshi.md"
+      new: ".agent/workflows/activate-research.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-data-piccolo.md"
+      new: ".agent/workflows/activate-data-architect.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-shenron.md"
+      new: ".agent/workflows/activate-data-strategist.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-bmm-quick-flow-solo-vegeta.md"
+      new: ".agent/workflows/activate-quick-dev.md"
+      status: pending
+    - old: ".agent/workflows/bmad-agent-grand-priest.md"
+      new: ".agent/workflows/activate-orch.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-dev-story.md"
+      new: ".agent/workflows/execute-story.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-quick-dev.md"
+      new: ".agent/workflows/quick-dev.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-quick-spec.md"
+      new: ".agent/workflows/quick-spec.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-code-review.md"
+      new: ".agent/workflows/code-review.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-qa-automate.md"
+      new: ".agent/workflows/qa-automate.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-prd.md"
+      new: ".agent/workflows/workflow-create-prd.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-edit-prd.md"
+      new: ".agent/workflows/workflow-edit-prd.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-validate-prd.md"
+      new: ".agent/workflows/workflow-validate-prd.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-sprint-planning.md"
+      new: ".agent/workflows/sprint-planning.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-sprint-status.md"
+      new: ".agent/workflows/sprint-status.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-retrospective.md"
+      new: ".agent/workflows/retrospective.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-architecture.md"
+      new: ".agent/workflows/create-architecture.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-epics-and-stories.md"
+      new: ".agent/workflows/create-epics-and-stories.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-product-brief.md"
+      new: ".agent/workflows/create-product-brief.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-story.md"
+      new: ".agent/workflows/create-story.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-ui-spec.md"
+      new: ".agent/workflows/create-ui-spec.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-create-ux-design.md"
+      new: ".agent/workflows/create-ux-design.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-check-implementation-readiness.md"
+      new: ".agent/workflows/check-implementation-readiness.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-check-registry.md"
+      new: ".agent/workflows/check-registry.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-correct-course.md"
+      new: ".agent/workflows/correct-course.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-document-project.md"
+      new: ".agent/workflows/document-project.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-domain-research.md"
+      new: ".agent/workflows/domain-research.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-market-research.md"
+      new: ".agent/workflows/market-research.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-technical-research.md"
+      new: ".agent/workflows/technical-research.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-generate-project-context.md"
+      new: ".agent/workflows/generate-project-context.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-enrich-ux.md"
+      new: ".agent/workflows/enrich-ux.md"
+      status: pending
+    - old: ".agent/workflows/bmad-bmm-sync-stitch-design.md"
+      new: ".agent/workflows/sync-stitch-design.md"
+      status: pending
+    - old: ".agent/workflows/bmad-party-mode.md"
+      new: ".agent/workflows/party-mode.md"
+      status: pending
+    - old: ".agent/workflows/bmad-brainstorming.md"
+      new: ".agent/workflows/brainstorming.md"
+      status: pending
+    - old: ".agent/workflows/bmad-help.md"
+      new: ".agent/workflows/help.md"
+      status: pending
+    - old: ".agent/workflows/bmad-review-adversarial-general.md"
+      new: ".agent/workflows/review-adversarial.md"
+      status: pending
+    - old: ".agent/workflows/bmad-editorial-review-prose.md"
+      new: ".agent/workflows/editorial-review-prose.md"
+      status: pending
+    - old: ".agent/workflows/bmad-editorial-review-structure.md"
+      new: ".agent/workflows/editorial-review-structure.md"
+      status: pending
+    - old: ".agent/workflows/bmad-index-docs.md"
+      new: ".agent/workflows/index-docs.md"
+      status: pending
+    - old: ".agent/workflows/bmad-shard-doc.md"
+      new: ".agent/workflows/shard-doc.md"
+      status: pending
+
+  paths:
+    - old: "_bmad-output"
+      new: "_iwish-output"
+      status: pending
+    - old: "_bmad"
+      new: "_iwish"
+      status: pending
+
+  source_code:
+    - file: "src/iwish/constants.ts"
+      changes:
+        - old: "'legacy-bmad'"
+          new: "REMOVED"
+          status: pending
+    - file: "src/iwish/runtime.ts"
+      changes:
+        - old: "_bmad-output/planning"
+          new: "_iwish-output/planning"
+          status: pending
+    - file: "src/iwish/source-of-truth.ts"
+      changes:
+        - old: "_bmad-output"
+          new: "_iwish-output"
+          status: pending
+    - file: "src/iwish/routing.ts"
+      changes:
+        - old: "_bmad-output"
+          new: "_iwish-output"
+          status: pending
+    - file: "src/iwish/cli.ts"
+      changes:
+        - old: "bmad-db"
+          new: "REMOVED"
+          status: pending
+    - file: "src/iwish/skill-graph.ts"
+      changes:
+        - old: "bmad-bmm-*"
+          new: "REMOVED/RENAMED"
+          status: pending
+    - file: "src/iwish/inventory.ts"
+      changes:
+        - old: "name.startsWith('bmad-')"
+          new: "REMOVED"
+          status: pending
+    - file: "src/iwish/reconciliation.ts"
+      changes:
+        - old: "_bmad-output/reconciliation"
+          new: "_iwish-output/reconciliation"
+          status: pending
+
+verification_checksum: null

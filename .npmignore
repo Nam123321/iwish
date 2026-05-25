@@ -1,0 +1,48 @@
+_bmad-output
+_iwish
+_bmad
+.bmad-sandbox
+.venv-weasy
+dragonball_distribution
+distro
+distro-landing
+tmp
+scratch
+Test
+Test HTML - Phase 1
+Similation SKILL
+Knowledge
+gap-analysis
+node_modules
+.git
+.DS_Store
+registry_check_output.txt
+test.js
+test_parse.py
+test_yaml.js
+run-migration.sh
+.agent/evolution-lab
+.agent/evolution-lab/**
+.agent/memory
+.agent/memory/**
+.agent/learnings
+.agent/learnings/**
+.agent/skills/export-pdf/scripts/__pycache__
+.agent/skills/export-pdf/scripts/__pycache__/**
+.agent/darwinian-evolver
+.agent/dna
+.agent/configs
+docs/.DS_Store
+docs/AI-Native SDLC Process.md
+docs/Production Readiness Analysis
+docs/Rca Schema Drift Report
+docs/bmad-*
+docs/code-intelligence-evaluation.md
+docs/data-architecture
+docs/data-strategy-upgrade
+docs/gitnexus-evaluation.md
+docs/meta-research-github-research-stack.md
+docs/meta-research-github-solution-intelligence-stack.md
+docs/party-mode-github-solution-search-council-review.md
+docs/ui-ux-integration
+.agent/skills/export-pdf/scripts/__pycache__

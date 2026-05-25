@@ -1,0 +1,167 @@
+# 🔍 Root Cause Analysis: Schema Drift — Phantom Fields in Production Code
+
+**Date:** 2026-04-08  
+**Investigator:** Antigravity (AI Engineering Auditor)  
+**Severity:** 🔴 Critical — caused cascading 500 errors in production  
+**Affected Systems:** Order Processing, Print Page, Force Process, Cancel Flow
+
+---
+
+## Executive Summary
+
+Three database fields were referenced extensively in `admin-order.service.ts` but **never existed** in `schema.prisma`:
+
+| Phantom Field | Model | Introduced By | Data Spec? | Migration Run? |
+|---|---|---|---|---|
+| `parentOrderId` | `Order` | Story 3.4d | ❌ No data spec | ❌ Never |
+| `splitOrders` | `Order` (relation) | Story 3.4d | ❌ No data spec | ❌ Never |
+| `netCommission` | `OrderItem` | Story 3.13 | ✅ 3-13-data-spec.md (`3-13-data-spec.md`) | ❌ Never |
+
+This caused `PrismaClientValidationError` → 500 Internal Server Error on every `GET /admin/orders/:id` call and every order status transition involving cancellation.
+
+---
+
+## Detailed Forensic Analysis
+
+### 🔴 Finding 1: `parentOrderId` — False Assumption in Story 3.4d Spec
+
+**Evidence:** story-3.4d-partial-fulfillment.md (`story-3.4d-partial-fulfillment.md`)
+
+> Line 41: *"The schema already has `parentOrderId` `(String?)` and `isForceProcessed` `(Boolean)` on the `Order` model from Phase 1."*
+
+**Reality:** The actual schema.prisma Order model (`schema.prisma`) has **neither field**. The spec author (AI) fabricated the existence of these fields and built the entire implementation plan on a false premise.
+
+**Root Cause:** The AI agent that wrote Story 3.4d **hallucinated** the existence of `parentOrderId` and `isForceProcessed` without verifying against the actual schema file. No human or automated check caught this before the code was generated.
+
+---
+
+### 🔴 Finding 2: `netCommission` — Data Spec Written, Migration Never Executed
+
+**Evidence:** 3-13-data-spec.md (`3-13-data-spec.md`)
+
+> Line 101: *"OrderItem missing requested columns: Need to run Prisma migration for `expectedCommissionAmount`, `discountAbsorbed`, `netCommission`, `commissionRate`, `commissionType`. (Severity: **INFO**)"*
+
+The Data Architect (Kira) correctly identified these fields needed migration. Yet:
+1. The migration was **never created** (`prisma migrate dev`)
+2. The implementation code in 3-13-commission-checkout-engine.md (`3-13-commission-checkout-engine-and-flexible-pricing.md`) marked it as `[x] done`
+3. Code review rounds **never verified** schema parity
+
+**Root Cause:** The workflow lacks a mandatory **"Migration Execution Gate"** — a step that blocks code merge until database schema changes are actually applied and verified.
+
+---
+
+### 🔴 Finding 3: `splitOrders` — Relation Never Defined
+
+The `splitOrders` relation and `parentOrder` back-relation were used in the `getAdminOrderDetail` query but never existed in `schema.prisma`. This is a direct consequence of Finding 1 — since `parentOrderId` was never added, the Prisma relations `splitOrders` and `parentOrder` could never be generated.
+
+---
+
+## 5 Systemic Process Failures
+
+### ❌ Failure 1: No Schema Verification Gate in Code Review
+
+**What happened:** AI adversarial code reviews (Round 1 & Round 2 for Story 3.4d) auto-applied fixes that referenced `parentOrderId`, `netCommission`, and `splitOrders` without running `npx prisma validate` or checking `schema.prisma`.
+
+**Evidence:** The Senior Developer Review signed off as "✅ Approved" twice without catching the missing fields.
+
+---
+
+### ❌ Failure 2: Story 3.4d Had No Data Spec
+
+**What happened:** Story 3.13 (Commission) had a proper data spec from Kira. But Story 3.4d (Split Orders) — which introduced the much more invasive `parentOrderId` + `splitOrders` relation — **had no data spec at all**.
+
+---
+
+### ❌ Failure 3: Data Spec → Migration Pipeline is Broken
+
+**What happened:** Even when a data spec exists (3-13), it correctly identifies the need for migration but there's no automated or enforced step to actually run it.
+
+---
+
+### ❌ Failure 4: AI Agent Hallucination Without Grounding
+
+**What happened:** The AI author of Story 3.4d stated *"The schema already has parentOrderId"* without reading `schema.prisma`. This is a classic LLM hallucination — the agent inferred the field should exist (because it's a logical pattern) and stated it as fact.
+
+---
+
+### ❌ Failure 5: `tsc --noEmit` Was Not Run End-to-End
+
+**What happened:** The 13.2 Code Review Round 2 claims *"Compiler Check: PASSED"*. However, `admin-order.service.ts` had **12+ TypeScript errors** related to these phantom fields. Either the compiler was never actually run, or it was run on a subset of files.
+
+---
+
+## Impact Assessment
+
+| Area | Impact | Status |
+|---|---|---|
+| `GET /admin/orders/:id` | 500 crash on every request | 🟢 Fixed (commented out) |
+| Order Cancel flow | 500 crash (netCommission update) | 🟢 Fixed (commented out) |
+| Bulk Cancel flow | 500 crash (netCommission update) | 🟢 Fixed (commented out) |
+| Print Page | 500 crash (fetch order detail) | 🟢 Fixed (commented out) |
+| Split Order feature | Non-functional (schema missing) | ⚠️ Disabled |
+| Commission clawback on return | Non-functional (netCommission missing) | ⚠️ Disabled |
+
+---
+
+## 🛠️ Plan 1: Process Improvement (Workflow Overhaul)
+
+To prevent this from ever happening again, the BMAD workflows will be updated.
+
+1. **Integrate Schema Impact Assessment into `/create-story`:**
+   Instead of completely merging `/create-data-spec`, we create a **2-Tier Schema Strategy**:
+   *   **Tier 1 (Inside `create-story`)**: Grep and verify all fields mentioned in ACs against `schema.prisma`. If missing fields are found, auto-generate a `### Schema Changes Required` section in the story file.
+   *   **Tier 2 (The `/create-data-spec` workflow)**: Only invoked to design complex migrations, seed data, and data flow topologies if Tier 1 detected missing database structures.
+
+2. **Add `prisma validate` + Full TypeScript Checks to `/code-review`:**
+   Any review that touches backend `.ts` files MUST verify that `npx prisma validate` passes and run `tsc --noEmit` from the exact project root to ensure complete compiler safety.
+
+3. **Schema Grounding Rules (`/generate-project-context`):**
+   Agent prompts will be updated to explicitly forbid claiming schema structures exist without invoking a search on `schema.prisma`.
+
+4. **Migration Execution Checklist (`/dev-story`):**
+   Add a required step: `prisma migrate dev` + `prisma generate` before considering the backend implementation complete.
+
+---
+
+## 🛠️ Plan 2: Technical Fix Roadmap (Current Disabled Features)
+
+The Hotfix strategy commented out missing field queries, bringing the system back online. To actually deliver Stories 3.4d and 3.13, we follow this technical roadmap:
+
+### Phase 1: Target Schema Migrations
+We will construct and apply a single Prisma schema update to resolve all stranded fields.
+
+```prisma
+// 1. Order Model (Story 3.4d)
+parentOrderId  String?  @map("parent_order_id")
+parentOrder    Order?   @relation("SplitOrders", fields: [parentOrderId], references: [id])
+splitOrders    Order[]  @relation("SplitOrders")
+isForceProcessed Boolean @default(false) @map("is_force_processed") // Requested in initial 3.4d specs
+
+// 2. OrderItem Model (Story 3.13)
+expectedCommissionAmount Decimal? @map("expected_commission_amount") @db.Decimal(15, 2)
+discountAbsorbed         Decimal? @map("discount_absorbed") @db.Decimal(15, 2)
+netCommission            Decimal? @map("net_commission") @db.Decimal(15, 2)
+commissionRate           Decimal? @map("commission_rate") @db.Decimal(15, 2)
+commissionType           String?  @map("commission_type") @db.VarChar(20)
+```
+**Action:** Let AI Agent execute `schema.prisma` edits, then run `npx prisma migrate dev --name add_missing_commission_and_split_order` and `npx prisma generate`.
+
+### Phase 2: Restoring DTOs & Types
+After migration, we must align the frontend/backend typing:
+*   Ensure `@ApiProperty()` is added for `netCommission` and friends on the backend DTOs.
+*   Validate `Order` types in `apps/admin/src/lib/types/order.ts`.
+
+### Phase 3: Unleashing the Disabled Code
+*   Navigate to `distro/apps/api/src/modules/orders/admin-order.service.ts`.
+*   Search for `Commented out: missing from Prisma schema`.
+*   Uncomment the blocked code blocks (parent-child refund deductions, splitOrders includes, zeroing out netCommission).
+*   Run the TypeScript compiler to ensure all newly generated Prisma types align with the uncommented logic perfectly.
+
+### Phase 4: Regression Testing
+*   Test canceling a split parent order (verify cascaded child order cancellations and stock replacements).
+*   Test force process again to ensure `isForceProcessed` boolean is properly captured without breaking UI.
+*   Verify Print Page still behaves identically but now lists split/commission fields contextually.
+
+---
+
+*End of Root Cause Analysis Report & Fix Plan*
