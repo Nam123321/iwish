@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-Wish Multi-Agent Orchestration & Sprint Dashboard</title>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="https://unpkg.com/marked/marked.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f8f5ef;
+      --panel-bg: rgba(255, 255, 255, 0.88);
+      --border-color: rgba(31, 41, 55, 0.12);
+      --text-color: #1f2937;
+      --text-muted: #5b6472;
+      --primary: #0f766e;
+      --primary-glow: rgba(15, 118, 110, 0.08);
+      --success: #16a34a;
+      --warning: #d97706;
+      --error: #dc2626;
+      --accent: #1d4ed8;
+      --gradient: linear-gradient(135deg, #0f766e 0%, #1d4ed8 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #fcfaf5 0%, var(--bg-color) 100%);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Header Nav */
+    header {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-glow {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary-glow);
+      animation: pulse 2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+
+    .brand h1 {
+      font-size: 22px;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      background: white;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background: var(--primary-glow);
+      border-color: var(--primary);
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      background: rgba(29, 78, 216, 0.08);
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(29, 78, 216, 0.1);
+    }
+
+    /* Main Container */
+    .container {
+      display: flex;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-content {
+      display: none;
+      flex: 1;
+      height: 100%;
+      position: relative;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    /* Canvas Panels */
+    .canvas-panel {
+      flex: 1;
+      height: 100%;
+      background: radial-gradient(circle at center, #fbfaf5 0%, var(--bg-color) 100%);
+    }
+
+    /* Sidebar Glassmorphism */
+    .sidebar {
+      width: 400px;
+      height: 100%;
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border-color);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 10;
+      box-shadow: -10px 0 30px rgba(31, 41, 55, 0.03);
+      overflow-y: auto;
+    }
+
+    .card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: var(--text-color);
+    }
+
+    .detail-row {
+      margin-bottom: 14px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: rgba(31, 41, 55, 0.04);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    .badge-epic { background: rgba(15, 118, 110, 0.08); color: var(--primary); border: 1px solid rgba(15, 118, 110, 0.2); }
+    .badge-story { background: rgba(29, 78, 216, 0.08); color: var(--accent); border: 1px solid rgba(29, 78, 216, 0.2); }
+    .badge-status { background: rgba(31, 41, 55, 0.06); color: var(--text-muted); border: 1px solid var(--border-color); }
+
+    /* Kanban Board Styles */
+    .kanban-board {
+      flex: 1;
+      display: flex;
+      gap: 20px;
+      padding: 30px;
+      overflow-x: auto;
+      background: var(--bg-color);
+    }
+
+    .kanban-column {
+      flex: 1;
+      min-width: 280px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 16px;
+      height: 100%;
+    }
+
+    .column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .column-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .column-count {
+      background: rgba(31, 41, 55, 0.06);
+      color: var(--text-color);
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .kanban-cards {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .kanban-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .kanban-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .card-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-color);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .readiness-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .readiness-high { background-color: var(--success); box-shadow: 0 0 6px var(--success); }
+    .readiness-medium { background-color: var(--warning); box-shadow: 0 0 6px var(--warning); }
+    .readiness-low { background-color: var(--error); box-shadow: 0 0 6px var(--error); }
+
+    /* Integration Guide Panel */
+    .guide-panel {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      background: var(--bg-color);
+      display: flex;
+      justify-content: center;
+    }
+
+    .markdown-body {
+      width: 100%;
+      max-width: 800px;
+      line-height: 1.7;
+    }
+
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+      color: var(--text-color);
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .markdown-body h1 { font-size: 32px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+    .markdown-body h2 { font-size: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+    .markdown-body p, .markdown-body li {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .markdown-body code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(31, 41, 55, 0.06);
+      color: var(--text-color);
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .markdown-body pre {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    .markdown-body pre code {
+      background: transparent;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo-glow"></div>
+      <h1>I-Wish Workspace</h1>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('idea')">Idea tree</button>
+      <button class="tab-btn" onclick="switchTab('features')">Feature graph</button>
+      <button class="tab-btn" onclick="switchTab('sprint')">Sprint Kanban</button>
+      <button class="tab-btn" onclick="switchTab('orchestration')">Orchestration Graph</button>
+      <button class="tab-btn" onclick="switchTab('guide')">Integration Guide</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Tab 1: Idea Tree -->
+    <div id="tab-idea" class="tab-content active">
+      <div id="idea-canvas" class="canvas-panel"></div>
+      <div class="sidebar">
+        <h2>Idea Tree Details</h2>
+        <div class="card" id="idea-details">
+          <h3 id="idea-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Node Selected</h3>
+          <div id="idea-node-desc" style="font-size: 14px; color: var(--text-muted);">
+            Click on any Node (Idea, Epic, or Story) to inspect hierarchy links.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Feature Graph -->
+    <div id="tab-features" class="tab-content">
+      <div id="features-canvas" class="canvas-panel"></div>
+      <div class="sidebar">
+        <h2>Feature Graph Details</h2>
+        <div class="card" id="features-details">
+          <h3 id="features-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Node Selected</h3>
+          <div id="features-node-desc" style="font-size: 14px; color: var(--text-muted);">
+            Select a feature to inspect its incoming and outgoing code/dependency relationships.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Sprint Dashboard (Kanban Board) -->
+    <div id="tab-sprint" class="tab-content">
+      <div class="kanban-board">
+        <div class="kanban-column" id="col-backlog">
+          <div class="column-header">
+            <h3>Backlog</h3>
+            <span class="column-count" id="count-backlog">0</span>
+          </div>
+          <div class="kanban-cards" id="cards-backlog"></div>
+        </div>
+        <div class="kanban-column" id="col-ready">
+          <div class="column-header">
+            <h3>Ready</h3>
+            <span class="column-count" id="count-ready">0</span>
+          </div>
+          <div class="kanban-cards" id="cards-ready"></div>
+        </div>
+        <div class="kanban-column" id="col-inprogress">
+          <div class="column-header">
+            <h3>In Progress</h3>
+            <span class="column-count" id="count-inprogress">0</span>
+          </div>
+          <div class="kanban-cards" id="cards-inprogress"></div>
+        </div>
+        <div class="kanban-column" id="col-review">
+          <div class="column-header">
+            <h3>Review</h3>
+            <span class="column-count" id="count-review">0</span>
+          </div>
+          <div class="kanban-cards" id="cards-review"></div>
+        </div>
+        <div class="kanban-column" id="col-done">
+          <div class="column-header">
+            <h3>Done</h3>
+            <span class="column-count" id="count-done">0</span>
+          </div>
+          <div class="kanban-cards" id="cards-done"></div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <h2>Story Details</h2>
+        <div class="card" id="sprint-details">
+          <h3 id="sprint-story-title" style="margin-bottom: 10px; color: var(--text-color);">No Story Selected</h3>
+          <div id="sprint-story-desc">
+            <p style="color: var(--text-muted); font-size:14px;">Select a card on the board to view its implementation path and details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: Visual Orchestration Graph -->
+    <div id="tab-orchestration" class="tab-content">
+      <div id="orchestration-canvas" class="canvas-panel"></div>
+      <div class="sidebar">
+        <h2>Orchestration Trace</h2>
+        <div class="card" id="orch-details">
+          <h3 id="orch-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Spawning Event</h3>
+          <div id="orch-node-desc">
+            <p style="color: var(--text-muted); font-size:14px;">Select an execution node to view sub-agent token metrics and times.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 5: Integration Guide -->
+    <div id="tab-guide" class="tab-content">
+      <div class="guide-panel">
+        <div class="markdown-body" id="guide-renderer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // Injected placeholders
+    const nodesEdgesData = {NODES_EDGES_PLACEHOLDER};
+    const sprintData = {SPRINT_DATA_PLACEHOLDER};
+    const orchestrationData = {ORCHESTRATION_DATA_PLACEHOLDER};
+    const integrationGuide = {INTEGRATION_GUIDE_PLACEHOLDER};
+
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.toLowerCase().includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      const contentEl = document.getElementById(`tab-${tabId}`);
+      if (contentEl) contentEl.classList.add('active');
+    }
+
+    // Tab 1: Idea Tree Setup (Hierarchical)
+    function renderIdeaTree() {
+      const visNodes = nodesEdgesData.nodes.map(n => ({
+        id: n.id,
+        label: n.label.split(':')[0],
+        fullLabel: n.label,
+        group: n.group
+      }));
+      const container = document.getElementById('idea-canvas');
+      const data = { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(nodesEdgesData.edges) };
+      const options = {
+        layout: {
+          hierarchical: {
+            direction: 'UD',
+            sortMethod: 'directed',
+            nodeSpacing: 180,
+            levelSeparation: 150
+          }
+        },
+        nodes: {
+          shape: 'box',
+          margin: 10,
+          font: { face: 'Inter', color: '#1f2937', size: 14 },
+          borderWidth: 2
+        },
+        edges: {
+          arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+          color: 'rgba(31, 41, 55, 0.2)'
+        },
+        groups: {
+          idea: { color: { background: '#0f766e', border: '#0f766e', font: { color: '#ffffff' } } },
+          epic: { color: { background: 'rgba(15, 118, 110, 0.08)', border: '#0f766e', font: { color: '#0f766e' } } },
+          story: { color: { background: 'rgba(29, 78, 216, 0.08)', border: '#1d4ed8', font: { color: '#1d4ed8' } } }
+        }
+      };
+      const network = new vis.Network(container, data, options);
+      network.on("selectNode", function (params) {
+        const id = params.nodes[0];
+        const node = data.nodes.get(id);
+        if (node) {
+          document.getElementById('idea-node-title').innerText = node.fullLabel;
+          document.getElementById('idea-node-desc').innerHTML = `
+            <div class="detail-row">
+              <div class="detail-label">Identifier</div>
+              <div class="detail-value mono">${node.id}</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Type</div>
+              <div class="detail-value" style="text-transform: capitalize;">${node.group}</div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Tab 2: Feature Graph Setup
+    function renderFeatureGraph() {
+      // Connect technical file dependencies or story links
+      const container = document.getElementById('features-canvas');
+      const data = { 
+        nodes: new vis.DataSet(nodesEdgesData.nodes.filter(n => n.group !== 'idea')), 
+        edges: new vis.DataSet(nodesEdgesData.edges.filter(e => e.from !== 'root-idea')) 
+      };
+      const options = {
+        nodes: {
+          shape: 'dot',
+          size: 16,
+          font: { color: '#1f2937', face: 'Inter' },
+          borderWidth: 2
+        },
+        edges: {
+          arrows: 'to',
+          color: 'rgba(31, 41, 55, 0.2)'
+        },
+        groups: {
+          epic: { color: { background: 'rgba(15, 118, 110, 0.08)', border: '#0f766e', font: { color: '#0f766e' } } },
+          story: { color: { background: 'rgba(29, 78, 216, 0.08)', border: '#1d4ed8', font: { color: '#1d4ed8' } } }
+        }
+      };
+      const network = new vis.Network(container, data, options);
+      network.on("selectNode", function (params) {
+        const id = params.nodes[0];
+        const node = data.nodes.get(id);
+        if (node) {
+          document.getElementById('features-node-title').innerText = node.label;
+          document.getElementById('features-node-desc').innerHTML = `
+            <div class="detail-row">
+              <div class="detail-label">Node ID</div>
+              <div class="detail-value mono">${node.id}</div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Tab 3: Kanban Sprint Dashboard
+    function renderSprintDashboard() {
+      const colMap = {
+        'backlog': 'cards-backlog',
+        'ready': 'cards-ready',
+        'ready-for-dev-agent': 'cards-ready',
+        'in-progress': 'cards-inprogress',
+        'review': 'cards-review',
+        'done': 'cards-done'
+      };
+
+      // Clear columns
+      Object.values(colMap).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+      });
+
+      const counts = { backlog: 0, ready: 0, inprogress: 0, review: 0, done: 0 };
+
+      sprintData.forEach(story => {
+        let cleanStatus = story.status.toLowerCase();
+        let colId = 'cards-backlog';
+
+        if (cleanStatus.includes('progress') || cleanStatus.includes('inprogress') || cleanStatus.includes('implementing')) {
+          colId = 'cards-inprogress';
+          counts.inprogress++;
+        } else if (cleanStatus.includes('review') || cleanStatus.includes('qa')) {
+          colId = 'cards-review';
+          counts.review++;
+        } else if (cleanStatus.includes('ready')) {
+          colId = 'cards-ready';
+          counts.ready++;
+        } else if (cleanStatus.includes('done') || cleanStatus.includes('complete')) {
+          colId = 'cards-done';
+          counts.done++;
+        } else {
+          colId = 'cards-backlog';
+          counts.backlog++;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'kanban-card';
+        card.onclick = () => selectSprintStory(story);
+
+        card.innerHTML = `
+          <div class="card-id">${story.id}</div>
+          <div class="card-title">${story.id.replace(/-/g, ' ')}</div>
+          <div class="card-meta">
+            <span class="badge badge-status">${story.status}</span>
+            <div class="readiness-dot readiness-${story.readiness}"></div>
+          </div>
+        `;
+
+        const columnEl = document.getElementById(colId);
+        if (columnEl) columnEl.appendChild(card);
+      });
+
+      document.getElementById('count-backlog').innerText = counts.backlog;
+      document.getElementById('count-ready').innerText = counts.ready;
+      document.getElementById('count-inprogress').innerText = counts.inprogress;
+      document.getElementById('count-review').innerText = counts.review;
+      document.getElementById('count-done').innerText = counts.done;
+    }
+
+    function selectSprintStory(story) {
+      document.getElementById('sprint-story-title').innerText = story.id;
+      document.getElementById('sprint-story-desc').innerHTML = `
+        <div class="detail-row">
+          <div class="detail-label">Status</div>
+          <div class="detail-value mono">${story.status}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">File Path</div>
+          <div class="detail-value mono" style="word-break: break-all;">${story.path}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Readiness</div>
+          <div class="detail-value" style="display:flex; align-items:center; gap: 8px;">
+            <div class="readiness-dot readiness-${story.readiness}"></div>
+            <span style="text-transform: uppercase; font-weight:700;">${story.readiness}</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Acceptance Criteria</div>
+          <div class="detail-value">${story.hasAcceptanceCriteria ? '✅ Present' : '❌ Missing'}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Task Breakdown</div>
+          <div class="detail-value">${story.hasTaskBreakdown ? '✅ Present' : '❌ Missing'}</div>
+        </div>
+      `;
+    }
+
+    // Tab 4: Visual Orchestration Tree (Multi-Agent Trace)
+    function renderOrchestrationGraph() {
+      const container = document.getElementById('orchestration-canvas');
+      
+      // Build a demo trace if trace file is empty
+      const traces = (orchestrationData && orchestrationData.length > 0) ? orchestrationData : [
+        { id: 'orch-main', label: 'orch-agent', group: 'agent', duration: 1.2, tokens: 250, parent: null },
+        { id: 'dev-story-1', label: 'dev-agent', group: 'agent', duration: 6.8, tokens: 1200, parent: 'orch-main' },
+        { id: 'qa-test-1', label: 'qa-agent', group: 'agent', duration: 4.1, tokens: 800, parent: 'orch-main' }
+      ];
+
+      const nodesArray = [];
+      const edgesArray = [];
+
+      traces.forEach(t => {
+        nodesArray.push({
+          id: t.id,
+          label: `${t.label}\n(${t.duration}s · ${t.tokens} tok)`,
+          title: `Duration: ${t.duration}s | Tokens: ${t.tokens}`,
+          group: 'agent',
+          traceData: t
+        });
+
+        if (t.parent) {
+          edgesArray.push({ from: t.parent, to: t.id, label: 'spawns', color: '#1d4ed8' });
+        }
+      });
+
+      const data = {
+        nodes: new vis.DataSet(nodesArray),
+        edges: new vis.DataSet(edgesArray)
+      };
+
+      const options = {
+        layout: {
+          hierarchical: {
+            direction: 'LR',
+            sortMethod: 'directed'
+          }
+        },
+        nodes: {
+          shape: 'box',
+          margin: 12,
+          font: { color: '#1f2937', face: 'Inter', size: 14 },
+          color: { background: '#eff6ff', border: '#1d4ed8' },
+          borderWidth: 2
+        },
+        edges: {
+          arrows: 'to',
+          color: 'rgba(31, 41, 55, 0.2)'
+        }
+      };
+
+      const network = new vis.Network(container, data, options);
+      network.on("selectNode", function (params) {
+        const id = params.nodes[0];
+        const node = data.nodes.get(id);
+        if (node && node.traceData) {
+          const td = node.traceData;
+          document.getElementById('orch-node-title').innerText = td.label;
+          document.getElementById('orch-node-desc').innerHTML = `
+            <div class="detail-row">
+              <div class="detail-label">Trace ID</div>
+              <div class="detail-value mono">${td.id}</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Execution Duration</div>
+              <div class="detail-value">${td.duration} seconds</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Token Consumption</div>
+              <div class="detail-value">${td.tokens} tokens</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Parent Agent</div>
+              <div class="detail-value mono">${td.parent || 'None (Orchestrator Root)'}</div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Tab 5: Integration Guide
+    function renderIntegrationGuide() {
+      const contentEl = document.getElementById('guide-renderer');
+      if (integrationGuide) {
+        contentEl.innerHTML = marked.parse(integrationGuide);
+      } else {
+        contentEl.innerHTML = '<p style="color:var(--text-muted);">No integration guide found.</p>';
+      }
+    }
+
+    // Initialize all renders on load
+    window.onload = () => {
+      renderIdeaTree();
+      renderFeatureGraph();
+      renderSprintDashboard();
+      renderOrchestrationGraph();
+      renderIntegrationGuide();
+    };
+  </script>
+</body>
+</html>

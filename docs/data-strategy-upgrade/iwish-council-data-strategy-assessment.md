@@ -1,4 +1,4 @@
-# 🏛️ BMAD Council Assessment: Data Strategy Gap & KB Synchronization Architecture
+# 🏛️ I-Wish Council Assessment: Data Strategy Gap & KB Synchronization Architecture
 
 **Ngày:** 2026-03-19 | **Triệu tập bởi:** User (Product Owner) | **Đánh giá bởi:** Antigravity (Master Executor)
 
@@ -91,7 +91,7 @@ AI Consumers → Cognee Unified Search → response
 
 ---
 
-## III. Gap Analysis: BMAD SDLC Thiếu Data Strategy Phase
+## III. Gap Analysis: I-Wish SDLC Thiếu Data Strategy Phase
 
 ### Quy Trình Hiện Tại (5 Bước)
 

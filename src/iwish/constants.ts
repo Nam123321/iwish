@@ -1,7 +1,7 @@
 import * as os from 'os';
 import * as path from 'path';
 
-export type RuntimeNamespace = 'iwish';
+export type RuntimeNamespace = 'iwish' | 'legacy-bmad';
 export type InstallTargetStatus = 'supported' | 'planned';
 export type InstallTargetDefinition = {
   id: string;
@@ -61,6 +61,13 @@ export const INSTALL_TARGET_CATALOG: InstallTargetDefinition[] = [
     summary: 'First-party runtime materialization for Google Antigravity and Gemini-aligned workspace instructions.',
     adapterStory: null,
   },
+  {
+    id: 'openai',
+    status: 'supported',
+    installPath: '.openai',
+    summary: 'First-party runtime materialization for OpenAI Custom GPTs and workspace instructions.',
+    adapterStory: null,
+  },
 ] as const;
 
 export const SUPPORTED_INSTALL_TARGETS = INSTALL_TARGET_CATALOG.filter((target) => target.status === 'supported').map(
@@ -104,6 +111,16 @@ export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
 export function getCanonicalHome(): string {
   return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');
 }
+
+export type PlatformMode = 'AG_MAO' | 'LEGACY_INJECTION';
+
+export function getPlatformMode(): PlatformMode {
+  if (process.env.ANTIGRAVITY_SDK_VERSION) {
+    return 'AG_MAO';
+  }
+  return 'LEGACY_INJECTION';
+}
+
 
 export function getRuntimeRoot(projectRoot: string, namespace: RuntimeNamespace): string {
   return path.join(projectRoot, '_iwish');

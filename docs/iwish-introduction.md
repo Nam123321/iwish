@@ -659,11 +659,10 @@ Nếu là user mới, thứ tự học tốt nhất là:
 
 ## 13. Tài liệu nên đọc tiếp
 
-- [I-Wish Capability System Framework](/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/docs/iwish-capability-system-framework.md)
-- [I-Wish Routing Profile Standard](/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/docs/iwish-routing-profile-standard.md)
-- [I-Wish Adoption Review Pack Standard](/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/docs/iwish-adoption-review-pack-standard.md)
-- [I-Wish vs BMAD Method vs BMAD-DragonBall Report](/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/docs/iwish-bmad-comparison-report.md)
-- [I-Wish Skill Graph and Orch Routing Analysis](/Users/hatrang20061988/Desktop/AI Project/BMAD-DragonBall/docs/iwish-skill-graph-routing-analysis.md)
+- [I-Wish Capability System Framework](iwish-capability-system-framework.md)
+- [I-Wish Routing Profile Standard](iwish-routing-profile-standard.md)
+- [I-Wish Adoption Review Pack Standard](iwish-adoption-review-pack-standard.md)
+- [I-Wish Skill Graph and Orch Routing Analysis](iwish-skill-graph-routing-analysis.md)
 
 ## 14. Bottom line
 

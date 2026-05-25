@@ -19,6 +19,7 @@ As of the current packaging pass:
   - `windsurf`
   - `opencode`
   - `google antigravity`
+  - `openai`
 - latest allowlist slimming pass reduced the publish surface materially, but the package still needs explicit review before publish
 
 ## Recommended Launch Shape
@@ -91,6 +92,7 @@ Risks:
   - `windsurf`
   - `opencode`
   - `google antigravity`
+  - `openai`
 
 ### 4. Docs bundle
 

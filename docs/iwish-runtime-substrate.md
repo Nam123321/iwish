@@ -66,6 +66,7 @@ Officially supported:
 - `windsurf`
 - `opencode`
 - `google antigravity`
+- `openai`
 
 When `--platform` is omitted on install/update, the CLI should ask the user which target(s) to scaffold instead of silently assuming a default target. The prompt accepts target names or numeric choices separated by commas.
 

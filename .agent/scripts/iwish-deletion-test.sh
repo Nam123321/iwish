@@ -1,6 +1,6 @@
 #!/bin/bash
-# bmad-deletion-test.sh
-# BMAD Universal Deletion Test Engine
+# iwish-deletion-test.sh
+# I-Wish Universal Deletion Test Engine
 # Enforces architectural depth by verifying that a module's deletion causes tests to fail.
 
 set -euo pipefail

@@ -1,8 +1,8 @@
-# BMAD Graph Backend Selection and Adapter Contract
+# I-Wish Graph Backend Selection and Adapter Contract
 
 ## Decision
 
-BMAD graph intelligence is project-scoped. A project should choose a graph profile during init/readiness and store that choice in project configuration or project memory.
+I-Wish graph intelligence is project-scoped. A project should choose a graph profile during init/readiness and store that choice in project configuration or project memory.
 
 FalkorDB remains the recommended full-mode default because current CodeGraphContext and FeatureGraph materials already align around FalkorDB. The default must still be explicit, because some projects need a lower-setup mode or a custom backend.
 
@@ -10,7 +10,7 @@ FalkorDB remains the recommended full-mode default because current CodeGraphCont
 
 | Profile | Use When | Required Behavior |
 |---|---|---|
-| `falkordb-full` | Full BMAD project, multi-agent implementation, HSEA/self-evolution, FeatureGraph validation | CodebaseGraph, FeatureGraph, and MemoryGraph should run on FalkorDB-backed or compatible graph services |
+| `falkordb-full` | Full I-Wish project, multi-agent implementation, HSEA/self-evolution, FeatureGraph validation | CodebaseGraph, FeatureGraph, and MemoryGraph should run on FalkorDB-backed or compatible graph services |
 | `lite-static` | Small/offline/discovery projects | Markdown/static indexes and shell search are allowed; graph evidence is advisory |
 | `custom-adapter` | User already has graph infrastructure | Backend must pass the adapter evaluation before trusted use |
 
@@ -103,20 +103,20 @@ Blocking rule:
 
 ```text
 Select graph intelligence profile:
-1. falkordb-full (recommended for full BMAD, multi-agent, HSEA, FeatureGraph validation)
+1. falkordb-full (recommended for full I-Wish, multi-agent, HSEA, FeatureGraph validation)
 2. lite-static (recommended for small/offline/low-setup projects)
-3. custom-adapter (BMAD evaluates before trusting)
+3. custom-adapter (I-Wish evaluates before trusting)
 ```
 
 Default:
 
-- Full BMAD/HSEA/FeatureGraph mode: `falkordb-full`.
+- Full I-Wish/HSEA/FeatureGraph mode: `falkordb-full`.
 - Small/source/offline mode: `lite-static`.
 
 If the project wants a runtime-side mirror outside canonical repo config or project memory, use:
 
 ```text
-${BMAD_HOME}/profiles/<profile-id>/projects/<project-slug>/runtime-config/graph-profile.yaml
+${IWISH_HOME}/profiles/<profile-id>/projects/<project-slug>/runtime-config/graph-profile.yaml
 ```
 
 ## Related Assets
@@ -125,4 +125,4 @@ ${BMAD_HOME}/profiles/<profile-id>/projects/<project-slug>/runtime-config/graph-
 - `.agent/workflows/analyze-codebase.md`
 - `.agent/workflows/codebase-health.md`
 - `templates/library/code-intelligence-pack/featuregraph/README.md`
-- `_bmad-output/knowledge/codegraph-integration-key-learnings.md`
+- `_iwish-output/knowledge/codegraph-integration-key-learnings.md`

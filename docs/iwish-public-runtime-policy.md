@@ -1,24 +1,24 @@
-# BMAD Public Runtime Policy
+# I-Wish Public Runtime Policy
 
 ## Purpose
 
-BMAD-DragonBall is both a working development system and a public distribution. Keep these two spaces separate:
+I-Wish is both a working development system and a public distribution. Keep these two spaces separate:
 
 - **Canonical repo assets** are files intended to ship in GitHub packages.
-- **Runtime user artifacts** are generated while a user runs BMAD locally and must stay outside the canonical repo unless explicitly promoted.
+- **Runtime user artifacts** are generated while a user runs I-Wish locally and must stay outside the canonical repo unless explicitly promoted.
 
 ## Runtime Home
 
 All generated, downloaded, cloned, or temporary artifacts MUST use:
 
 ```bash
-BMAD_HOME=${BMAD_HOME:-~/.bmad-dragonball}
+IWISH_HOME=${IWISH_HOME:-~/.iwish}
 ```
 
 Standard runtime layout:
 
 ```text
-${BMAD_HOME}/
+${IWISH_HOME}/
   profiles/
     <profile-id>/
       shared/
@@ -40,9 +40,9 @@ ${BMAD_HOME}/
           reports/
 ```
 
-The previous hidden sandbox directory is deprecated. Existing local installs may migrate its contents to `${BMAD_HOME}/sandbox`, but canonical BMAD docs, workflows, stories, and templates must not introduce new references to the legacy path.
+The previous hidden sandbox directory is deprecated. Existing local installs may migrate its contents to `${IWISH_HOME}/sandbox`, but canonical I-Wish docs, workflows, stories, and templates must not introduce new references to the legacy path.
 
-For HSEA-aware runtime policy, prefer the profile/project-aware form above. Existing references to `${BMAD_HOME}/generated-*`, `${BMAD_HOME}/repo-dna/`, `${BMAD_HOME}/gap-analysis/`, or `${BMAD_HOME}/absorbed-repos/` remain valid as shorthand for the active project's runtime root when the profile/project context is already known.
+For HSEA-aware runtime policy, prefer the profile/project-aware form above. Existing references to `${IWISH_HOME}/generated-*`, `${IWISH_HOME}/repo-dna/`, `${IWISH_HOME}/gap-analysis/`, or `${IWISH_HOME}/absorbed-repos/` remain valid as shorthand for the active project's runtime root when the profile/project context is already known.
 
 ## Canonical Assets
 
@@ -60,7 +60,7 @@ docs/
 
 Generated assets MUST NOT be written directly to these paths until a human or approved agent explicitly promotes them.
 
-Project-local runtime materialization under `_bmad/` and repo-local approved memory under `.agent/memory/` are also distinct from `${BMAD_HOME}` runtime artifacts and remain governed by their own policies.
+Project-local runtime materialization under `_iwish/` and repo-local approved memory under `.agent/memory/` are also distinct from `${IWISH_HOME}` runtime artifacts and remain governed by their own policies.
 
 ## Generated Capability Lifecycle
 
@@ -73,9 +73,9 @@ draft -> approved -> promoted -> validated
 Draft locations:
 
 ```text
-${BMAD_HOME}/generated-skills/<id>/
-${BMAD_HOME}/generated-workflows/<id>/
-${BMAD_HOME}/generated-agents/<id>/
+${IWISH_HOME}/generated-skills/<id>/
+${IWISH_HOME}/generated-workflows/<id>/
+${IWISH_HOME}/generated-agents/<id>/
 ```
 
 Each draft MUST include a `metadata.yaml` file:
@@ -104,8 +104,8 @@ Promotion means:
 
 ## Path Hygiene
 
-Canonical assets MUST use repo-relative paths, `{project-root}`, or `${BMAD_HOME}`. They MUST NOT contain user-specific or machine-specific paths:
+Canonical assets MUST use repo-relative paths, `{project-root}`, or `${IWISH_HOME}`. They MUST NOT contain user-specific or machine-specific paths:
 
 Forbidden path families include user-home absolute paths, local `file:` URLs into user homes, machine-specific desktop workspace paths, and the deprecated hidden sandbox path.
 
-Use `.agent/scripts/validate-portability.sh` before completing any story that modifies agents, skills, workflows, templates, docs, or committed BMAD output.
+Use `.agent/scripts/validate-portability.sh` before completing any story that modifies agents, skills, workflows, templates, docs, or committed I-Wish output.
