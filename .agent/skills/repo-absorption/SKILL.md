@@ -1,5 +1,5 @@
 ---
-name: repo-absorption
+name: 'repo-absorption-wrapper'
 description: "Core engine for deep-learning an external repository in 5 phases: INGEST (pack with Repomix), INDEX (Dual-Indexer with Hybrid Resolution), MAP (Graph-Directed architecture mapping), DISSECT (Dual-Layer priority-based deep reading), and DOCUMENT (generate repo-dna.md with Symlink)."
 ---
 
@@ -13,8 +13,8 @@ Use this skill when you need to deeply understand, analyze, and map a cloned rep
 
 ## 🚦 PREREQUISITES
 1. The target repository MUST have been successfully vetted by the `security-guardian` skill.
-2. The repository MUST be cloned into the sandbox: `${BMAD_HOME}/sandbox/{repo-name}/`.
-3. Runtime output directories MUST exist under `${BMAD_HOME:-~/.bmad-dragonball}`. Reports go to `${BMAD_HOME}/absorbed-repos/{repo-name}/`; generated capability drafts go to `${BMAD_HOME}/generated-*`.
+2. The repository MUST be cloned into the sandbox: `${IWISH_HOME}/sandbox/{repo-name}/`.
+3. Runtime output directories MUST exist under `${IWISH_HOME:-~/.iwish}`. Reports go to `${IWISH_HOME}/absorbed-repos/{repo-name}/`; generated capability drafts go to `${IWISH_HOME}/generated-*`.
 
 ---
 
@@ -40,18 +40,18 @@ Use this skill when you need to deeply understand, analyze, and map a cloned rep
    ```
 3. **Run Repomix:** Execute the following command:
    ```bash
-   npx repomix --output ${BMAD_HOME}/absorbed-repos/{repo-name}/context.md --style markdown ${BMAD_HOME}/sandbox/{repo-name}/
+   npx repomix --output ${IWISH_HOME}/absorbed-repos/{repo-name}/context.md --style markdown ${IWISH_HOME}/sandbox/{repo-name}/
    ```
    - *Fallback:* If `repomix` is unavailable or fails, fallback to manual exploration (3-Layer methodology) and emit a WARNING to the user: "Repomix unavailable — using fallback. Results may be less comprehensive."
 4. **Validate Output:**
-   - Verify `${BMAD_HOME}/absorbed-repos/{repo-name}/context.md` exists and is > 1KB.
+   - Verify `${IWISH_HOME}/absorbed-repos/{repo-name}/context.md` exists and is > 1KB.
    - If the file size is > 2MB, emit a WARNING: "Large context — may exceed token limits. Consider aggressive filtering."
 
 ### PHASE 1.5: INDEX (Dual-Indexer — Build Knowledge Graph)
 **Goal:** Create a unified Knowledge Graph that links code AND behavioral assets (prompts, workflows, personas).
 
 #### Step 1: Tech Graph (Primary — CGC)
-1. Execute `/analyze-codebase` on `${BMAD_HOME}/sandbox/{repo-name}/` to generate CodeGraphContext via AST/Tree-sitter.
+1. Execute `/analyze-codebase` on `${IWISH_HOME}/sandbox/{repo-name}/` to generate CodeGraphContext via AST/Tree-sitter.
 2. If successful, the Tech Graph provides: Module Boundaries, Entry Points, Hub Nodes, Dependency Edges.
 
 #### Step 2: AST-to-Asset Tracing
@@ -98,7 +98,7 @@ If `analyze-codebase` fails (FalkorDB offline, unsupported language, Tree-sitter
 4. ALL `.md`/`.prompt`/`.yaml` files found inside behavioral directories → Label as `[P0.5 - Linked Behavioral Asset]`.
 5. ALL other `.md` files → Label as `[P4 - Orphan Asset]`.
 
-**Output:** Asset Inventory saved to `${BMAD_HOME}/absorbed-repos/{repo-name}/asset-inventory.md` containing:
+**Output:** Asset Inventory saved to `${IWISH_HOME}/absorbed-repos/{repo-name}/asset-inventory.md` containing:
 ```markdown
 ## Asset Inventory for {repo-name}
 ### Indexing Method: [CGC | Heuristic Fallback]
@@ -181,7 +181,7 @@ For EACH Behavioral Asset, extract and document:
 ### PHASE 4: DOCUMENT (Generate DNA — Single Source of Truth)
 **Goal:** Save the extracted knowledge into a permanent format with NO duplication.
 
-1. Use the BMAD 11-section template (Story RAP-1.3).
+1. Use the I-Wish 11-section template (Story RAP-1.3).
 2. **Flexible Template Rules:**
    - You MUST address all 11 sections.
    - If a section is genuinely N/A for the repo type (e.g., "Database Schema" for a prompt-only repo), write: `N/A — [Reason]. Repo classified as [{repo-type}].`
@@ -191,18 +191,46 @@ For EACH Behavioral Asset, extract and document:
 3. **Save Output (Runtime Symlink Strategy — Single Source of Truth):**
    ```bash
    # Step 1: Save runtime source of truth
-   mkdir -p ${BMAD_HOME}/repo-dna/
-   # Write DNA content to: ${BMAD_HOME}/repo-dna/{repo-name}-dna.md
+   mkdir -p ${IWISH_HOME}/repo-dna/
+   # Write DNA content to: ${IWISH_HOME}/repo-dna/{repo-name}-dna.md
    
    # Step 2: Create symlink in sandbox (NOT a copy)
-   ln -sf ${BMAD_HOME}/repo-dna/{repo-name}-dna.md ${BMAD_HOME}/sandbox/{repo-name}/repo-dna.md
+   ln -sf ${IWISH_HOME}/repo-dna/{repo-name}-dna.md ${IWISH_HOME}/sandbox/{repo-name}/repo-dna.md
    
    # Step 3: Verify symlink
-   ls -la ${BMAD_HOME}/sandbox/{repo-name}/repo-dna.md
-   # Expected: repo-dna.md -> ${BMAD_HOME}/repo-dna/{repo-name}-dna.md
+   ls -la ${IWISH_HOME}/sandbox/{repo-name}/repo-dna.md
+   # Expected: repo-dna.md -> ${IWISH_HOME}/repo-dna/{repo-name}-dna.md
    ```
    - ⚠️ **NEVER** create a second independent copy. The sandbox path MUST be a symlink.
-   - Copy into `_bmad-output/repo-dna/` only when the DNA is explicitly promoted into the canonical repo.
+   - Copy into `_iwish-output/repo-dna/` only when the DNA is explicitly promoted into the canonical repo.
+
+### PHASE 5: COMPARE & CONTRAST (Gap & Comparison Matrix)
+**Goal:** Perform an objective gap analysis and comparison between the external codebase/behavioral assets and I-Wish's existing resources.
+
+1. **Anti-Sycophancy Review:** Load `.agent/fragments/anti-sycophancy-guard.md` to establish constructive skepticism. Identify at least 3 architectural risks or "bloat" patterns in the external repository.
+2. **Feature Categorization:** Group the target repository's files and features into logical functional groups (e.g., *Tooling Skills*, *Custom Rules/Checklists*, *Coordination Workflows*, *Installer/Sync Scripts*, *Utility Modules*).
+3. **Safety Isolation Check:** Proactively inspect files (e.g., `install.sh`, `sync-skills.sh`, Python/JS installation hooks) for script patterns that write to paths outside the current project workspace (e.g., global paths like `$HOME/.claude/` or system bin paths). If found, automatically classify these groups as `SKIP` to enforce strict project isolation.
+4. **Comparison Matrix Structure:** Generate a structured bilingual (Vietnamese/English) comparison matrix saved as `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`. The matrix MUST follow a strict 5-column table format:
+   - **Nhóm Tính năng / Feature Group**: Logical categorized component/module.
+   - **Ưu điểm / Pros**: Unique strengths, optimizations, or capabilities.
+   - **Nhược điểm / Cons**: Weaknesses, token overhead, maintenance cost, or limitations.
+   - **Khoảng cách & Trùng lặp / Gap & Overlaps**: Precise overlap or delta compared to existing I-Wish assets.
+   - **Phương án & Nơi tích hợp / Proposed Action & Target**: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
+5. **Actionable Integration Spec:** For all feature groups marked as `ADOPT` or `MERGE` into `SYSTEM_SKILL`, define:
+   - Specific destination directories under `.agent/` (e.g., `.agent/skills/white-hacker/rules/`).
+   - Standardization rules for YAML frontmatter schema to match I-Wish:
+     ```yaml
+     name: name-of-skill
+     description: Clear role/purpose
+     inputs: [input_vars]
+     outputs: [output_vars]
+     mcp_tools_required: [mcp_tools]
+     subagent_triggers: [triggers]
+     ```
+   - Invocation and routing mechanisms (RAG-injecting, loading dynamically via `load_skill`, or triggering via subagent rules).
+6. **Save Output:**
+   - Save the Comparison Report to `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`.
+   - Create a symlink in the absorbed repo directory: `ln -sf ${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md ${IWISH_HOME}/absorbed-repos/{repo-name}/comparison.md`.
 
 ## 🏁 COMPLETION CRITERIA
 The skill is successfully executed when:
@@ -210,4 +238,5 @@ The skill is successfully executed when:
 2. Asset Inventory with labels has been produced (Phase 1.5).
 3. An architecture map and Mermaid diagram have been created, including Behavioral overlay (Phase 2).
 4. At least 5 core patterns have been identified across Tech + Behavioral layers (Phase 3).
-5. `{repo-name}-dna.md` has been written to `${BMAD_HOME}/repo-dna/` with a verified symlink in sandbox (Phase 4).
+5. `{repo-name}-dna.md` has been written to `${IWISH_HOME}/repo-dna/` with a verified symlink in sandbox (Phase 4).
+6. `{repo-name}-comparison.md` has been written to `${IWISH_HOME}/gap-analysis/` with a verified symlink in the absorbed repo directory (Phase 5) following the strict 5-column bilingual matrix and containing the integration plan.
