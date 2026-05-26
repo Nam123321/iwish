@@ -208,15 +208,21 @@ For EACH Behavioral Asset, extract and document:
 **Goal:** Perform an objective gap analysis and comparison between the external codebase/behavioral assets and I-Wish's existing resources.
 
 1. **Anti-Sycophancy Review:** Load `.agent/fragments/anti-sycophancy-guard.md` to establish constructive skepticism. Identify at least 3 architectural risks or "bloat" patterns in the external repository.
-2. **Feature Categorization:** Group the target repository's files and features into logical functional groups (e.g., *Tooling Skills*, *Custom Rules/Checklists*, *Coordination Workflows*, *Installer/Sync Scripts*, *Utility Modules*).
-3. **Safety Isolation Check:** Proactively inspect files (e.g., `install.sh`, `sync-skills.sh`, Python/JS installation hooks) for script patterns that write to paths outside the current project workspace (e.g., global paths like `$HOME/.claude/` or system bin paths). If found, automatically classify these groups as `SKIP` to enforce strict project isolation.
-4. **Comparison Matrix Structure:** Generate a structured bilingual (Vietnamese/English) comparison matrix saved as `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`. The matrix MUST follow a strict 5-column table format:
-   - **Nhóm Tính năng / Feature Group**: Logical categorized component/module.
-   - **Ưu điểm / Pros**: Unique strengths, optimizations, or capabilities.
-   - **Nhược điểm / Cons**: Weaknesses, token overhead, maintenance cost, or limitations.
-   - **Khoảng cách & Trùng lặp / Gap & Overlaps**: Precise overlap or delta compared to existing I-Wish assets.
-   - **Phương án & Nơi tích hợp / Proposed Action & Target**: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
-5. **Actionable Integration Spec:** For all feature groups marked as `ADOPT` or `MERGE` into `SYSTEM_SKILL`, define:
+2. **Operational DNA Synthesis:** Analyze Section 10 (Reusable Patterns) of the target repository's DNA to extract and summarize:
+   - **Orchestration / Coordination Model**: How the repository coordinates agents or drives workflows (e.g., sequential pipelines, multi-agent networks, state machines).
+   - **Skill Invocation / Prompt Loading**: How skills, personas, or prompts are resolved, RAG-loaded, or injected at runtime.
+   - **State & Context Management**: How variables, intermediate states, and agent memory flow between components.
+3. **Feature Categorization:** Group the target repository's files and features into logical functional groups (e.g., *Tooling Skills*, *Custom Rules/Checklists*, *Coordination Workflows*, *Installer/Sync Scripts*, *Utility Modules*).
+4. **Safety Isolation Check:** Proactively inspect files (e.g., `install.sh`, `sync-skills.sh`, Python/JS installation hooks) for script patterns that write to paths outside the current project workspace (e.g., global paths like `$HOME/.claude/` or system bin paths). If found, automatically classify these groups as `SKIP` to enforce strict project isolation.
+5. **Comparison Matrix Structure:** Generate a structured bilingual (Vietnamese/English) comparison matrix saved as `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`. The matrix MUST contain:
+   - **Bảng So sánh Tính năng / Feature Comparison Table**: A strict 5-column table format comparing feature groups:
+     - *Nhóm Tính năng / Feature Group*: Logical categorized component/module.
+     - *Ưu điểm / Pros*: Unique strengths, optimizations, or capabilities.
+     - *Nhược điểm / Cons**: Weaknesses, token overhead, maintenance cost, or limitations.
+     - *Khoảng cách & Trùng lặp / Gap & Overlaps*: Precise overlap or delta compared to existing I-Wish assets.
+     - *Phương án & Nơi tích hợp / Proposed Action & Target*: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
+   - **Phân tích Cơ chế Vận hành / Operational Mechanisms Analysis**: A dedicated section comparing the execution model, orchestrator flows, prompt loading methods, and state flow of the target repository versus I-Wish. Highlight which operational patterns should be adopted or avoided.
+6. **Actionable Integration Spec:** For all feature groups marked as `ADOPT` or `MERGE` into `SYSTEM_SKILL`, define:
    - Specific destination directories under `.agent/` (e.g., `.agent/skills/white-hacker/rules/`).
    - Standardization rules for YAML frontmatter schema to match I-Wish:
      ```yaml
@@ -227,8 +233,8 @@ For EACH Behavioral Asset, extract and document:
      mcp_tools_required: [mcp_tools]
      subagent_triggers: [triggers]
      ```
-   - Invocation and routing mechanisms (RAG-injecting, loading dynamically via `load_skill`, or triggering via subagent rules).
-6. **Save Output:**
+   - Invocation and routing mechanisms (how host agents load, RAG-inject, or trigger the skill/workflow based on the synthesized operational model).
+7. **Save Output:**
    - Save the Comparison Report to `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`.
    - Create a symlink in the absorbed repo directory: `ln -sf ${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md ${IWISH_HOME}/absorbed-repos/{repo-name}/comparison.md`.
 
@@ -239,4 +245,4 @@ The skill is successfully executed when:
 3. An architecture map and Mermaid diagram have been created, including Behavioral overlay (Phase 2).
 4. At least 5 core patterns have been identified across Tech + Behavioral layers (Phase 3).
 5. `{repo-name}-dna.md` has been written to `${IWISH_HOME}/repo-dna/` with a verified symlink in sandbox (Phase 4).
-6. `{repo-name}-comparison.md` has been written to `${IWISH_HOME}/gap-analysis/` with a verified symlink in the absorbed repo directory (Phase 5) following the strict 5-column bilingual matrix and containing the integration plan.
+6. `{repo-name}-comparison.md` has been written to `${IWISH_HOME}/gap-analysis/` with a verified symlink in the absorbed repo directory (Phase 5) following the strict 5-column bilingual matrix, including the Operational DNA analysis and integration plan.

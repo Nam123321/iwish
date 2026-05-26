@@ -118,17 +118,23 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
 - **Pre-requisite:** Invoke `.agent/fragments/anti-sycophancy-guard.md` to perform an adversarial review of the generated DNA.
 - **Steps:**
   1. Load Section 10 of the generated DNA (Reusable Patterns).
-  2. **Adversarial Stress-Test:** Identify at least 3 architectural risks or "bloat" patterns that should NOT be absorbed.
-  3. Scan I-Wish `.agent/` directories for overlapping functionality.
-  4. **Categorize and Classify Assets:** Group the external repository's features/components into logical Functional Groups (e.g., Tooling Skills, Custom Rules/Checklists, Coordination Workflows, Installer/Sync Scripts, Utility Modules).
-  5. **Safety Isolation Check:** Proactively scan all repository files for configuration, setup, or installer scripts (e.g., `install.sh`, `sync-skills.sh`, Python/JS install hooks) that attempt to write to or configure directories outside the workspace (e.g., `$HOME/.claude/` or system-wide directories). Automatically classify these as `SKIP` to enforce strict project isolation.
-  6. **Generate Comparison Report:** Create a structured bilingual (Vietnamese/English) comparison matrix saved as `{repo-name}-comparison.md`. The matrix MUST follow a strict 5-column table format:
-     - **Nhóm Tính năng / Feature Group**: Logical categorized component/module.
-     - **Ưu điểm / Pros**: Unique strengths, optimizations, or capabilities.
-     - **Nhược điểm / Cons**: Weaknesses, token overhead, maintenance cost, or limitations.
-     - **Khoảng cách & Trùng lặp / Gap & Overlaps**: Precise overlap or delta compared to existing I-Wish assets.
-     - **Phương án & Nơi tích hợp / Proposed Action & Target**: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
-  7. **Create Detailed Integration Plan:** Following the matrix, provide concrete, actionable integration steps for each group marked for adoption/merging:
+  2. **Synthesize Operational DNA:** Deeply analyze Section 10 to extract the core **Operational & Execution Mechanisms** of the target repository:
+     - **Orchestration / Coordination Model**: How tasks/agents are orchestrated (e.g., sequential scripts, multi-agent coordination, event-driven loops).
+     - **Skill Invocation / Prompt Loading**: How prompts and tools are resolved, parsed, and loaded into execution context.
+     - **State & Context Management**: How variables, execution state, and agent memory are persisted and transferred across steps.
+  3. **Adversarial Stress-Test:** Identify at least 3 architectural risks or "bloat" patterns that should NOT be absorbed.
+  4. Scan I-Wish `.agent/` directories for overlapping functionality.
+  5. **Categorize and Classify Assets:** Group the external repository's features/components into logical Functional Groups (e.g., Tooling Skills, Custom Rules/Checklists, Coordination Workflows, Installer/Sync Scripts, Utility Modules).
+  6. **Safety Isolation Check:** Proactively scan all repository files for configuration, setup, or installer scripts (e.g., `install.sh`, `sync-skills.sh`, Python/JS install hooks) that attempt to write to or configure directories outside the workspace (e.g., `$HOME/.claude/` or system-wide directories). Automatically classify these as `SKIP` to enforce strict project isolation.
+  7. **Generate Comparison Report:** Create a structured bilingual (Vietnamese/English) comparison matrix saved as `{repo-name}-comparison.md`. The matrix MUST contain:
+     - **Bảng So sánh Tính năng / Feature Comparison Table**: A strict 5-column table format comparing feature groups:
+       - *Nhóm Tính năng / Feature Group*: Logical categorized component/module.
+       - *Ưu điểm / Pros*: Unique strengths, optimizations, or capabilities.
+       - *Nhược điểm / Cons*: Weaknesses, token overhead, maintenance cost, or limitations.
+       - *Khoảng cách & Trùng lặp / Gap & Overlaps*: Precise overlap or delta compared to existing I-Wish assets.
+       - *Phương án & Nơi tích hợp / Proposed Action & Target*: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
+     - **Phân tích Cơ chế Vận hành / Operational Mechanisms Analysis**: A dedicated section comparing the execution model, orchestrator flows, prompt loading methods, and state flow of the target repository versus I-Wish. Highlight which operational patterns should be adopted or avoided.
+  8. **Create Detailed Integration Plan:** Following the matrix, provide concrete, actionable integration steps for each group marked for adoption/merging:
      - Target destination directories under `.agent/` (e.g., `.agent/skills/white-hacker/rules/`).
      - Standardized YAML frontmatter schema to be used for newly created files:
        ```yaml
@@ -139,13 +145,13 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
        mcp_tools_required: [mcp_tools]
        subagent_triggers: [triggers]
        ```
-     - Execution and routing mechanisms (how host agents load, RAG-inject, or trigger the skill/workflow).
-  8. **Compound Check:** Determine if the repo contains >3 independent modules (e.g., a monorepo).
+     - Execution and routing mechanisms (how host agents load, RAG-inject, or trigger the skill/workflow based on the synthesized operational model).
+  9. **Compound Check:** Determine if the repo contains >3 independent modules (e.g., a monorepo).
 - **Output:** 
   - Save Gap Analysis report to: `${IWISH_HOME}/gap-analysis/{repo-name}-gap-analysis.md`
   - Save Comparison report to: `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`
   - Create symlink in the absorbed repo directory: `ln -sf ${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md ${IWISH_HOME}/absorbed-repos/{repo-name}/comparison.md`
-- 🛑 **HUMAN CHECKPOINT 1:** Present `gap-analysis.md` and the newly structured bilingual `comparison.md` to user.
+- 🛑 **HUMAN CHECKPOINT 1:** Present `gap-analysis.md` and the newly structured bilingual `comparison.md` (featuring both Feature Comparison and Operational DNA Analysis) to the user.
   - **Wait for Input:** User must [Approve All], [Edit specific], [Reject All], or [Abort].
   - *Track Selection:* User MUST confirm if the absorption targets `SYSTEM_SKILL` or `USER_SPACE`.
   - *If Compound detected:* Explicitly ask user if they want to integrate as a `BUNDLE` or selectively extract modules.
