@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Integration Guide | I-Wish Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #121824;
+            --bg-tertiary: #1a2336;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-dim: #6b7280;
+            --border: #26354a;
+            --card-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #a855f7);
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .meta-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+        }
+
+        .badge-accent {
+            background-color: var(--accent-glow);
+            color: #818cf8;
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--card-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #3b4e6b;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .io-box {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .io-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .io-in { color: #818cf8; }
+        .io-out { color: #34d399; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #e2e8f0;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #cbd5e1;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .alert-info {
+            border-left-color: var(--accent);
+            color: #a5b4fc;
+        }
+
+        .alert-warning {
+            border-left-color: var(--warning);
+            color: #fcd34d;
+        }
+
+        .alert-danger {
+            border-left-color: var(--danger);
+            color: #fca5a5;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        .scenarios {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .scenario-item {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .scenario-title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Integration Guide: strix</h1>
+            <div class="meta-subtitle">Adoption Review Pack & Context Reference</div>
+            <div class="badge-container">
+                <span class="badge badge-accent">Shape: Skill Pack</span>
+                <span class="badge badge-success">Role: Security Validation</span>
+                <span class="badge badge-warning">State: Absorbed</span>
+            </div>
+        </header>
+
+        <!-- SECTION 1: OVERVIEW -->
+        <div class="card">
+            <h2>🛡️ 1. Overview & Purpose</h2>
+            <p><strong>Strix</strong> is an open-source, autonomous application security validation agent. Unlike standard vulnerability scanners that generate high-noise static checklists, Strix acts like an AI-hacker: discovering security flaws, attempting to construct safe Proofs-of-Concept (PoCs) to validate exploitability, and generating remediation code.</p>
+            <p>By absorbing Strix into the <strong>I-Wish Platform</strong>, we introduce native application-security checks into codebases directly during development and testing workflows.</p>
+        </div>
+
+        <!-- SECTION 2: FRAMEWORK PLACEMENT -->
+        <div class="card">
+            <h2>⚙️ 2. Delivery Framework Placement</h2>
+            <p>Strix is integrated as a <strong>supportive/auxiliary skill pack</strong> that works alongside existing agents. It operates in the following stages:</p>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Active Stage</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Validate</strong></td>
+                            <td>Triaging pull request security alerts & writing verification unit tests.</td>
+                            <td><code>process-primary</code> (for security audits)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Solution</strong></td>
+                            <td>Advising on configuration hardening and threat modeling.</td>
+                            <td><code>supportive</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Operate & Learn</strong></td>
+                            <td>Executing safe active probing in sandboxes.</td>
+                            <td><code>supportive</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 3: INPUT / PROCESS / OUTPUT -->
+        <div class="card">
+            <h2>🔄 3. Execution Pipeline</h2>
+            <div class="grid-2">
+                <div class="io-box">
+                    <div class="io-title io-in">📥 Expected Inputs</div>
+                    <ul>
+                        <li><code>target_url</code>: Live environment for active verification probes.</li>
+                        <li><code>local_code_path</code>: Root directory for code audits.</li>
+                        <li><code>vulnerability_type</code>: Targeted OWASP vulnerability.</li>
+                    </ul>
+                </div>
+                <div class="io-box">
+                    <div class="io-title io-out">📤 Expected Outputs</div>
+                    <ul>
+                        <li><code>vulnerability_report</code>: Structured details with CVSS metrics.</li>
+                        <li><code>poc_payload</code>: Replicable curl payload or script.</li>
+                        <li><code>remediation_patch</code>: Code diff containing fix.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: USE CASES -->
+        <div class="card">
+            <h2>💡 4. Target Use Cases</h2>
+            <div class="alert alert-info">
+                <strong>Core Use Cases:</strong> Automated verification of pull requests, active vulnerability testing against sandboxed test suites, and dynamic validation to eliminate false positives from static code analysis (SAST).
+            </div>
+            <div class="alert alert-warning">
+                <strong>Adjacent Use Cases:</strong> Auditing configuration parameters (e.g. Firebase Firestore rules, NestJS CORS config) and inspecting Docker/Kubernetes files for local privilege escalations.
+            </div>
+            <div class="alert alert-danger">
+                <strong>Do-Not-Use Cases:</strong> Never use for general coding assistance, non-security features, or executing scanners against domains/URLs not registered inside the platform's verified target scope.
+            </div>
+        </div>
+
+        <!-- SECTION 5: CONSTRAINTS & RISKS -->
+        <div class="card">
+            <h2>⚠️ 5. Stress Cases & Operational Constraints</h2>
+            <ul>
+                <li><strong>WAF Evasion:</strong> Targets behind active WAFs may block scanner probes, leading to false negatives. Requires using advanced bypass techniques.</li>
+                <li><strong>DoS Safety:</strong> High concurrency active fuzzer checks (e.g. ffuf sprays) can overwhelm small dev servers. Concurrency limits are hardcoded.</li>
+                <li><strong>Sandbox Isolation:</strong> All active validation scripts MUST execute strictly inside isolated containers to prevent unintended damage to the host machine.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 6: SCENARIOS -->
+        <div class="card">
+            <h2>📖 6. Example Scenarios</h2>
+            <div class="scenarios">
+                <div class="scenario-item">
+                    <div class="scenario-title">Scenario 1: Pre-merge API Audit</div>
+                    <p><em>User Prompt:</em> "Verify if our authentication routing in NestJS is secure before merging this PR."</p>
+                    <p><em>Orch Action:</em> Invokes <code>review-agent</code>, loads <code>strix/skills/frameworks/nestjs.md</code>, scans routing parameters, and runs local unit tests to verify JWT validations.</p>
+                </div>
+                <div class="scenario-item">
+                    <div class="scenario-title">Scenario 2: IDOR Validation</div>
+                    <p><em>User Prompt:</em> "A SQL issue was reported in our user retrieval function. Audit the code."</p>
+                    <p><em>Orch Action:</em> Loads <code>strix/skills/vulnerabilities/sql_injection.md</code>, runs Semgrep to isolate database queries, and verifies if parameters are properly escaped.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: REVIEW PROMPTS -->
+        <div class="card">
+            <h2>❓ 7. Review Questions for the User</h2>
+            <ol>
+                <li>Do you want to enable automatic dynamic scans against local development servers during code reviews?</li>
+                <li>Should exploits that could perform state modifications require explicit human approval?</li>
+                <li>Do you want to restrict testing commands strictly to standard vulnerability checks (e.g. nuclei templates) or allow custom scripts?</li>
+            </ol>
+        </div>
+
+        <footer>
+            I-Wish Platform Governance Subsystem &copy; 2026. All rights reserved.
+        </footer>
+    </div>
+</body>
+</html>

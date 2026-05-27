@@ -1,5 +1,5 @@
 ---
-name: research-agent
+name: research-agent-persona
 description: Domain, market, and technical research synthesis
 role: Research specialist and information synthesizer
 ---

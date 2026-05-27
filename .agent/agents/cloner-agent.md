@@ -1,5 +1,5 @@
 ---
-name: cloner-agent
+name: cloner-agent-persona
 description: Website cloning, DOM extraction, and design token absorption
 role: Frontend cloner and UI extraction specialist
 ---

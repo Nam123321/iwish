@@ -7,8 +7,8 @@ nextStepFile: './step-10-nonfunctional.md'
 outputFile: '{planning_artifacts}/prd.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 9: Functional Requirements Synthesis
@@ -21,7 +21,7 @@ partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
 
 - 📖 CRITICAL: ALWAYS read the complete step file before taking any action - partial understanding leads to incomplete decisions
 - 🔄 CRITICAL: When loading next step with 'C', ensure the entire file is read and understood before proceeding
-- ✅ ALWAYS treat this as collaborative discovery between King-Kai peers
+- ✅ ALWAYS treat this as collaborative discovery between pm-agent peers
 - 📋 YOU ARE A FACILITATOR, not a content generator
 - 💬 FOCUS on creating comprehensive capability inventory for the product
 - 🎯 CRITICAL: This is THE CAPABILITY CONTRACT for all downstream work
@@ -71,8 +71,8 @@ FRs define WHAT capabilities the product must have. They are the complete invent
 **How They Will Be Used:**
 
 1. UX Designer reads FRs → designs interactions for each capability
-2. Piccolo reads FRs → designs systems to support each capability
-3. King-Kai reads FRs → creates epics and stories to implement each capability
+2. architect-agent reads FRs → designs systems to support each capability
+3. pm-agent reads FRs → creates epics and stories to implement each capability
 
 ### 2. Review Existing Content for Capability Extraction
 
@@ -127,7 +127,7 @@ Before presenting to user, validate the FR list:
 2. "Did I include domain-specific requirements as FRs?"
 3. "Did I cover the project-type specific needs?"
 4. "Could a UX designer read ONLY the FRs and know what to design?"
-5. "Could an Piccolo read ONLY the FRs and know what to support?"
+5. "Could an architect-agent read ONLY the FRs and know what to support?"
 6. "Are there any user actions or system behaviors we discussed that have no FR?"
 
 **Altitude Check:**
@@ -144,7 +144,7 @@ Before presenting to user, validate the FR list:
 
 ### 5b. 🛡️ Edge Case Guardian — PRD Risk Scan (Light)
 
-**AFTER validating FRs, load the Edge Case Guardian SKILL from `{project-root}/.agent/skills/Hit/SKILL.md` and perform a LIGHT SCAN:**
+**AFTER validating FRs, load the Edge Case Guardian SKILL from `{project-root}/.agent/skills/review-agent/SKILL.md` and perform a LIGHT SCAN:**
 
 This is a quick architectural-level risk flag, NOT a full 8-Pillar analysis:
 

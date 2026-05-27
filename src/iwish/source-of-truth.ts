@@ -38,6 +38,8 @@ function getSprintStatusPaths(projectRoot: string): string[] {
   return [
     path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml'),
     path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml'),
+    path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml'),
+    path.join(projectRoot, '_iwish-output', 'bmad-skills', 'sprint-status.yaml'),
   ].filter((filePath) => fs.existsSync(filePath));
 }
 
@@ -67,7 +69,16 @@ function collectIdsFromSprintYaml(doc: Record<string, unknown> | null): { epicId
 
 function frontmatterValue(content: string, key: string): string | null {
   const match = content.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)["']?`, 'm'));
-  return match ? match[1].trim() : null;
+  if (match) {
+    return match[1].trim();
+  }
+  if (key === 'status') {
+    const statusMatch = content.match(/\*\*Status:\*\*\s*`?([A-Za-z0-9_-]+)`?/i);
+    if (statusMatch) {
+      return statusMatch[1].trim();
+    }
+  }
+  return null;
 }
 
 function getStoryReadiness(content: string): {
@@ -131,6 +142,8 @@ function findStoryFileById(projectRoot: string, id: string): string | null {
   const candidateDirs = [
     path.join(projectRoot, '_bmad-output', 'stories'),
     path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories'),
+    path.join(projectRoot, '_iwish-output', 'stories'),
+    path.join(projectRoot, '_iwish-output', 'bmad-skills', 'stories'),
   ];
 
   for (const dir of candidateDirs) {
@@ -156,8 +169,11 @@ function findStoryFileById(projectRoot: string, id: string): string | null {
 export function loadSourceOfTruth(projectRoot: string): SourceOfTruthSummary {
   const storiesSprintPath = path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml');
   const skillsSprintPath = path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml');
-  const storiesSprintDoc = readYamlFile<Record<string, unknown>>(storiesSprintPath);
-  const skillsSprintDoc = readYamlFile<Record<string, unknown>>(skillsSprintPath);
+  const iwishStoriesSprintPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
+  const iwishSkillsSprintPath = path.join(projectRoot, '_iwish-output', 'bmad-skills', 'sprint-status.yaml');
+
+  const storiesSprintDoc = readYamlFile<Record<string, unknown>>(storiesSprintPath) || readYamlFile<Record<string, unknown>>(iwishStoriesSprintPath);
+  const skillsSprintDoc = readYamlFile<Record<string, unknown>>(skillsSprintPath) || readYamlFile<Record<string, unknown>>(iwishSkillsSprintPath);
   const sprintStatuses = getSprintStatusPaths(projectRoot).map((filePath) => {
     const doc = readYamlFile<Record<string, unknown>>(filePath);
     const ids = collectIdsFromSprintYaml(doc);
@@ -180,6 +196,8 @@ export function loadSourceOfTruth(projectRoot: string): SourceOfTruthSummary {
       ...collectIdsFromSprintYaml(skillsSprintDoc).storyIds,
       ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'stories')),
       ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'stories')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'bmad-skills', 'stories')),
     ]),
   );
 
@@ -189,12 +207,16 @@ export function loadSourceOfTruth(projectRoot: string): SourceOfTruthSummary {
       ...collectIdsFromSprintYaml(skillsSprintDoc).epicIds,
       ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'epics')),
       ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'epics')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'epics')),
+      ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'bmad-skills', 'epics')),
     ]),
   );
 
   const reconciliationDir = path.join(projectRoot, '_bmad-output', 'reconciliation');
-  const reconciliationScopes = fs.existsSync(reconciliationDir)
-    ? fs.readdirSync(reconciliationDir).filter((entry) => entry.endsWith('.md')).map((entry) => path.basename(entry, '.md'))
+  const iwishReconciliationDir = path.join(projectRoot, '_iwish-output', 'reconciliation');
+  const reconciliationDirToUse = fs.existsSync(reconciliationDir) ? reconciliationDir : iwishReconciliationDir;
+  const reconciliationScopes = fs.existsSync(reconciliationDirToUse)
+    ? fs.readdirSync(reconciliationDirToUse).filter((entry) => entry.endsWith('.md')).map((entry) => path.basename(entry, '.md'))
     : [];
 
   const sprintStoryRecords = [

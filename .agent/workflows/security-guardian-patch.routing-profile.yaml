@@ -1,0 +1,18 @@
+id: workflow-security-guardian-patch
+name: security-guardian-patch
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution, verify]
+stages: [security-validation, patching]
+triggers: [security-guardian-patch, vulnerability-patch, vulnerability patch, audit security exploit]
+anti_triggers: [prd, roadmap]
+primary_agents: [review-agent, qa-agent, dev-agent]
+primary_workflows: [security-guardian-patch]
+supportive_skills: [skill-pack-white-hacker]
+tool_dependencies: []
+constraints:
+  - Requires isolated sandbox environment (Docker or native sandbox under PLATFORM_MODE = AG_MAO).
+source_path: /.agent/workflows/security-guardian-patch.md
+story_refs: [story-5.2]
+tags: [security, validation, patching]

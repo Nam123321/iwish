@@ -2,7 +2,7 @@
 
 ## MANDATORY EXECUTION RULES:
 
-- 📖 Read the ENTIRE story file — every AC, task, and Vegeta note
+- 📖 Read the ENTIRE story file — every AC, task, and dev-agent note
 - 🔍 Cross-reference EVERY data need against the loaded Prisma schema
 - ⚠️ Flag any gap between what the story needs and what the schema provides
 - 📋 Apply ALL rules from the Data Integrity Guardian SKILL

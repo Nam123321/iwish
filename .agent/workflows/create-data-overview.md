@@ -21,8 +21,8 @@ This workflow generates a cross-epic data architecture overview — running **on
 ## Activation
 
 1. Load the Kira++ Data Architect agent from `{project-root}/.agent/agents/data-architect.md`
-2. Load the Shinji Data Strategist agent from `{project-root}/.agent/agents/data-strategist.md`
-3. Load config from `{project-root}/_bmad/bmm/config.yaml`
+2. Load the Shinji Data Strategist agent from `{project-root}/.agent/agents/data-strategist-agent.md`
+3. Load config from `{project-root}/_iwish/bmm/config.yaml`
 4. Execute the full Tier 2 analysis: `{project-root}/.agent/workflows/step-04b-data-and-test-spec.md`
 
 ## Relationship to Per-Story Data Spec

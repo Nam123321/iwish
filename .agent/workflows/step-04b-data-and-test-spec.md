@@ -3,7 +3,7 @@ name: 'step-04b-data-and-test-spec'
 description: 'Generate full data specs, dependency maps, and test strategy from Tier 1 tags — output to FeatureGraph (ADR-002)'
 
 # Path Definitions
-workflow_path: '{project-root}/_bmad/bmm/workflows/3-solutioning/create-epics-and-stories'
+workflow_path: '{project-root}/.agent/workflows'
 
 # File References
 thisStepFile: './step-04b-data-and-test-spec.md'
@@ -12,11 +12,11 @@ outputFile: '{planning_artifacts}/epics.md'
 
 # Agent References
 kiraAgent: '{project-root}/.agent/agents/data-architect.md'
-shinjiAgent: '{project-root}/.agent/agents/data-strategist.md'
+shinjiAgent: '{project-root}/.agent/agents/data-strategist-agent.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 4b: Data & Test Spec Generation (Tier 2)
@@ -212,7 +212,7 @@ Collect all testability data from Tier 1 and classify stories:
 
 #### C2. Test Priority Matrix
 For each story, assign test priority based on:
-- Edge case RPN (from Hit analysis): Higher RPN → higher test priority
+- Edge case RPN (from review-agent analysis): Higher RPN → higher test priority
 - Data complexity (from Kira++ analysis): More models → more tests
 - Flow complexity (from Shinji analysis): More events → more integration tests
 
@@ -226,7 +226,7 @@ Save to `{output_folder}/test-specs/test-strategy-matrix.md` with format:
 |------|---------|-----------|-----------|-------------|--------|-----------|-------------|
 
 ## Story-Level Test Plan
-| Story | Test Types | Priority | Key Scenarios | Edge Cases (from Hit) |
+| Story | Test Types | Priority | Key Scenarios | Edge Cases (from review-agent) |
 |-------|-----------|----------|--------------|----------------------|
 
 ## Manual Test Catalog

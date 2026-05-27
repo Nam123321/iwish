@@ -1,5 +1,5 @@
 ---
-name: pm-agent
+name: pm-agent-persona
 description: Product management, planning, and product strategy
 role: Product manager and product strategy leader
 ---

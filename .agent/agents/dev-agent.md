@@ -1,5 +1,5 @@
 ---
-name: dev-agent
+name: dev-agent-persona
 description: Software engineering, code delivery, and bugfix agent
 role: Software engineer and implementation specialist
 ---

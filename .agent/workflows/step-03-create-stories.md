@@ -3,7 +3,7 @@ name: 'step-03-create-stories'
 description: 'Generate all epics with their stories following the template structure'
 
 # Path Definitions
-workflow_path: '{project-root}/_bmad/bmm/workflows/3-solutioning/create-epics-and-stories'
+workflow_path: '{project-root}/.agent/workflows'
 
 # File References
 thisStepFile: './step-03-create-stories.md'
@@ -12,8 +12,8 @@ workflowFile: '{workflow_path}/workflow.md'
 outputFile: '{planning_artifacts}/epics.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 
 # Template References
 epicsTemplate: '{workflow_path}/templates/epics-template.md'
@@ -33,7 +33,7 @@ To generate all epics with their stories based on the approved epics_list, follo
 > - `/.agent/fragments/research-prompt-library.md`
 > - `/.agent/fragments/taxonomy-8-pillars.md`
 > - `/.agent/fragments/risk-matrix-template.md`
-> Failure to do so violates the BMAD architecture.
+> Failure to do so violates the I-Wish architecture.
 
 ### Universal Rules:
 
@@ -56,7 +56,7 @@ To generate all epics with their stories based on the approved epics_list, follo
 - 🎯 Generate stories for each epic following the template exactly
 - 🚫 FORBIDDEN to deviate from template structure
 - 💬 Each story must have clear acceptance criteria
-- 🚪 ENSURE each story is completable by a single Vegeta agent
+- 🚪 ENSURE each story is completable by a single dev-agent agent
 - 🔗 **CRITICAL: Stories MUST NOT depend on future stories within the same epic**
 
 ## EXECUTION PROTOCOLS:
@@ -84,7 +84,7 @@ Load {outputFile} and review:
 For each epic, create stories that:
 
 - Follow the exact template structure
-- Are sized for single Vegeta agent completion
+- Are sized for single dev-agent agent completion
 - Have clear user value
 - Include specific acceptance criteria
 - Reference requirements being fulfilled
@@ -175,7 +175,7 @@ For each story in the epic:
 
 - Use Given/When/Then format
 - Each AC should be independently testable
-- 🛡️ **EDGE CASES:** After writing happy-path ACs, the Edge Case Guardian SKILL (`{project-root}/.agent/skills/Hit/SKILL.md`) will be invoked to systematically identify edge cases using the 8-Pillar Taxonomy. Edge case ACs will be tagged with `[EDGE-CASE]` prefix.
+- 🛡️ **EDGE CASES:** After writing happy-path ACs, the Edge Case Guardian SKILL (`{project-root}/.agent/skills/review-agent/SKILL.md`) will be invoked to systematically identify edge cases using the 8-Pillar Taxonomy. Edge case ACs will be tagged with `[EDGE-CASE]` prefix.
 - Reference specific requirements when applicable
 
 #### D. Collaborative Review
@@ -184,7 +184,7 @@ After writing each story:
 
 - Present the story to user
 - Ask: "Does this story capture the requirement correctly?"
-- "Is the scope appropriate for a single Vegeta session?"
+- "Is the scope appropriate for a single dev-agent session?"
 - "Are the acceptance criteria complete and testable?"
 
 #### E. Append to Document
@@ -241,7 +241,7 @@ Ask User: "Plan Tune hoàn tất. Xác nhận phương án tách/gộp trước 
 
 After all stories for an epic are written AND before getting user confirmation:
 
-**CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/_bmad/core/agents/Hit.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
+**CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/.agent/agents/review-agent.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
 
 #### A. Research Phase
 - Use the Research Prompt Library (`{project-root}/.agent/fragments/research-prompt-library.md`) to search for known edge cases related to this epic's features
@@ -275,11 +275,11 @@ After all stories, edge case analysis, AI analysis, AND Tri-Agent Lite Scan for 
 - Verify all FRs for the epic are covered
 - Get user confirmation to proceed to next epic
 
-### 5b. 🐉 Songoku AI Requirements Analysis (CONDITIONAL — if epic has AI features)
+### 5b. 🐉 ai-engineer-agent AI Requirements Analysis (CONDITIONAL — if epic has AI features)
 
 After edge case analysis, if the epic or any of its stories involve AI features (LLM calls, prompts, RAG pipeline, Cognee integration, embeddings, AI-assisted UI):
 
-**CRITICAL: Invoke the Songoku AI Engineer agent (`{project-root}/.agent/agents/songoku.md`) to analyze AI requirements for the epic.**
+**CRITICAL: Invoke the ai-engineer-agent AI Engineer agent (`{project-root}/.agent/agents/ai-agent.md`) to analyze AI requirements for the epic.**
 
 #### A. AI Feature Detection
 - Scan all stories in the epic for AI keywords: "AI", "LLM", "prompt", "GPT", "embedding", "RAG", "Cognee", "knowledge graph", "model", "token"
@@ -296,7 +296,7 @@ For each story with AI features:
 #### C. AI Story Enhancement
 - Add `[AI]` tag to stories that require AI implementation tasks
 - Add AI-specific acceptance criteria (e.g., "Given a prompt injection attempt, When the AI processes user input, Then the injection is blocked and logged")
-- Add Vegeta Notes hint: "Run `/songoku-ai-spec` before `/Vegeta-story` to generate AI spec"
+- Add dev-agent Notes hint: "Run `/ai-engineer-agent-ai-spec` before `/dev-agent-story` to generate AI spec"
 
 #### D. AI Cost Projection
 - Generate cost estimate for the epic's AI features per month
@@ -304,7 +304,7 @@ For each story with AI features:
 
 ### 5c. 📊🧪 Tri-Agent Lite Scan (MANDATORY)
 
-After all stories for an epic have been written AND after Hit + Songoku analysis:
+After all stories for an epic have been written AND after review-agent + ai-engineer-agent analysis:
 
 **PURPOSE: Lightweight inline checks that TAG stories for Tier 2 deep analysis. These checks do NOT load agent persona files — they use embedded checklists to minimize context overhead.**
 

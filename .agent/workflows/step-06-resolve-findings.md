@@ -126,13 +126,13 @@ Before considering the resolution complete, verify the fixes didn't break compil
 
 ## WORKFLOW COMPLETE
 
-This is the final step. The Quick Vegeta workflow is now complete.
+This is the final step. The Quick dev-agent workflow is now complete.
 
 User can:
 
 - Commit changes
 - Run additional tests
-- Start new Quick Vegeta session
+- Start new Quick dev-agent session
 
 ---
 

@@ -1,14 +1,14 @@
 # Step E-02: Clustering (Pattern Recognition)
 
 ## Goal
-Transform raw evidence into actionable "Pattern Failures" and map them to specific BMAD capabilities.
+Transform raw evidence into actionable "Pattern Failures" and map them to specific I-Wish capabilities.
 
 ## Execution Instructions
 1. **Thematic Clustering**:
    - Review the lessons and hotspots from Step E-01.
    - Group them into failure modes:
-     - **Mechanical**: Syntax errors, broken imports, missing types (Upgrade logic in `ast-health.js` or `Tien-Shinhan`).
-     - **Contextual**: Agent missed an edge case in a specific domain (Upgrade `Edge Case Guardian` or `Kira Data Piccolo`).
+     - **Mechanical**: Syntax errors, broken imports, missing types (Upgrade logic in `ast-health.js` or `qa-agent`).
+     - **Contextual**: Agent missed an edge case in a specific domain (Upgrade `Edge Case Guardian` or `Kira Data architect-agent`).
      - **Architectural**: Repeated loops in file editing or dependency violations (Upgrade `Pivot Guardian`).
      - **Workflow**: A workflow step is too ambiguous or causes deadlocks (Upgrade the specific `.md` workflow).
 2. **Capability Mapping**:

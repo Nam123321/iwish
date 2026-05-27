@@ -1,8 +1,8 @@
 ---
-name: "socratic-review"
+name: 'socratic-review-wrapper'
 description: 'Use when generating an implementation plan to evaluate architectural drift, database migrations, and backward compatibility before execution.'
 version: "1.0.0"
-author: "BMAD Architecture Team"
+author: "I-Wish Architecture Team"
 type: "SKILL"
 ---
 
@@ -23,7 +23,7 @@ When invoking this skill, you must specify the `mode` parameter.
 |---|---|---|
 | `discovery` | Gate 0: `/brainstorming`, `/create-prd`, `/create-architecture` | Strategy, MVP scope, tech stack choice. Why this? Why now? Simplest version? Trade-offs? |
 | `business` | Gate 1: `/create-story` | UX flow, AC completeness, **Tracer Bullet (Vertical Slice)** identification, and persona coverage. |
-| `technical` | Gate 2: `/Vegeta-story` (Before Implementation Plan) | DB schema, API contracts, **Module Depth (Deletion Test)**, performance, security, and state management. |
+| `technical` | Gate 2: `/dev-agent-story` (Before Implementation Plan) | DB schema, API contracts, **Module Depth (Deletion Test)**, performance, security, and state management. |
 | `drift` | Gate 3: Implementation Plan creation (e.g. `/fix-bug`) | Feature Drift detection. If the fix/plan introduces new logic, grill the user on backward syncing to the PRD. |
 
 ## 4. Constraints & Rules (MANDATORY)
@@ -79,7 +79,7 @@ Feature **[X]** có vẻ vượt quá MVP scope. Bạn chắc chắn cần nó n
 
 ### Rule 7: Agent Pre-Debate Protocol (Party Mode Integration)
 - **Scope Division:** For Epic-level decisions (Gate 0: Discovery), ALWAYS ask the user directly. Zero-to-one strategic decisions require human input.
-- **Story-Level Auto-Resolution:** For Story-level gates (Gate 1: Business, Gate 2: Technical, Gate 3: Drift), before asking the user a question, you MUST simulate a 1-round `party-mode` debate internally with other relevant agent personas (e.g., Vegeta, Piccolo, Bulma).
+- **Story-Level Auto-Resolution:** For Story-level gates (Gate 1: Business, Gate 2: Technical, Gate 3: Drift), before asking the user a question, you MUST simulate a 1-round `party-mode` debate internally with other relevant agent personas (e.g., dev-agent, architect-agent, analyst-agent).
 - **Anti-Sycophancy:** The simulated debate MUST follow the `anti-sycophancy` rules (e.g., one agent must play devil's advocate and push back).
 - **Context-Backed Consensus:** If the agents reach a consensus *explicitly backed by existing project documentation* (e.g., `project-context.md`, existing PRDs, or reference stories), auto-select that option. Do NOT ask the user.
 - **Escalation Trigger:** If the agents cannot reach a context-backed consensus in exactly one round, or if the documentation is ambiguous/conflicting, you MUST escalate the question to the user. Include a brief summary of why the agents conflicted.

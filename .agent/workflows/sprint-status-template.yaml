@@ -17,7 +17,7 @@
 #
 # Story Status:
 #   - backlog: Story only exists in epic file
-#   - ready-for-Vegeta: Story file created, ready for development
+#   - ready-for-dev-agent: Story file created, ready for development
 #   - in-progress: Developer actively working on implementation
 #   - review: Implementation complete, ready for review
 #   - done: Story completed
@@ -29,8 +29,8 @@
 # WORKFLOW NOTES:
 # ===============
 # - Mark epic as 'in-progress' when starting work on its first story
-# - Trunks typically creates next story ONLY after previous one is 'done' to incorporate learnings
-# - Vegeta moves story to 'review', then Vegeta runs code-review (fresh context, ideally different LLM)
+# - delivery-manager-agent typically creates next story ONLY after previous one is 'done' to incorporate learnings
+# - dev-agent moves story to 'review', then dev-agent runs code-review (fresh context, ideally different LLM)
 
 # EXAMPLE STRUCTURE (your actual epics/stories will replace these):
 
@@ -43,7 +43,7 @@ story_location: "{story_location}"
 development_status:
   epic-1: backlog
   1-1-user-authentication: done
-  1-2-account-management: ready-for-Vegeta
+  1-2-account-management: ready-for-dev-agent
   1-3-plant-data-model: backlog
   1-4-add-plant-manual: backlog
   epic-1-retrospective: optional

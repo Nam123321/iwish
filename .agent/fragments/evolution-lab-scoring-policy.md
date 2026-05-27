@@ -1,6 +1,6 @@
 # Evolution Lab Scoring, Novelty, Holdout, and Population Policy
 
-> **Purpose:** Define how BMAD scores Evolution Lab candidates, rewards useful novelty, protects holdouts, selects parents/recommendations, and records learning without implementing a runner.
+> **Purpose:** Define how I-Wish scores Evolution Lab candidates, rewards useful novelty, protects holdouts, selects parents/recommendations, and records learning without implementing a runner.
 
 Load `.agent/fragments/evolution-lab-core-model.md` before this fragment. This policy reuses HSEA-2.1 candidate states, `candidate.yaml`, `current_state`, target-specific packaging, and append-only lineage rules.
 
@@ -15,7 +15,7 @@ Fitness is a 100-point score. It measures whether a candidate is better than the
 | Scenario pass rate | 25 | Candidate resolves trainable failure cases and expected scenario checks. | Fixture/scenario result IDs, pass/partial/fail counts, evaluator notes. |
 | Holdout preservation | 20 | Candidate avoids regression on withheld cases. | Holdout summary only; do not expose holdout prompts/content to mutator. |
 | Specificity/actionability | 15 | Candidate gives concrete, executable guidance rather than vague prose. | Reviewer rubric, checklist deltas, examples of clearer criteria. |
-| Governance preservation | 15 | Candidate preserves BMAD safety, approval, source, and human review gates. | Structural validation, authority checks, no removed constraints. |
+| Governance preservation | 15 | Candidate preserves I-Wish safety, approval, source, and human review gates. | Structural validation, authority checks, no removed constraints. |
 | Brevity/token discipline | 10 | Candidate improves signal without unnecessary length or context bloat. | Token/line delta, duplicated section check, removed fluff. |
 | Project fit | 10 | Candidate respects project memory, story scope, persona, and domain context. | Source refs, PROJECT.md/config refs when available, reviewer notes. |
 | Reviewer confidence | 5 | Human or review workflow can explain why the candidate should proceed. | Reviewer reason and confidence score. |

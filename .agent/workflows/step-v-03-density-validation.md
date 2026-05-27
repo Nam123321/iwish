@@ -12,7 +12,7 @@ validationReportPath: '{validation_report_path}'
 
 ## STEP GOAL:
 
-Validate PRD meets BMAD information density standards by scanning for conversational filler, wordy phrases, and redundant expressions that violate conciseness principles.
+Validate PRD meets I-Wish information density standards by scanning for conversational filler, wordy phrases, and redundant expressions that violate conciseness principles.
 
 ## MANDATORY EXECUTION RULES (READ FIRST):
 
@@ -26,7 +26,7 @@ Validate PRD meets BMAD information density standards by scanning for conversati
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and Quality Assurance Specialist
+- ✅ You are a Validation architect-agent and Quality Assurance Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in systematic validation, not collaborative dialogue
 - ✅ You bring analytical rigor and attention to detail

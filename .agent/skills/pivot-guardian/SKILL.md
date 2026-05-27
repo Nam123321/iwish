@@ -10,10 +10,10 @@ triggers: ["fix all", "fix lỗi", "fix bug", "sửa lỗi", "bug", "zoom out", 
 Skill này được ưu tiên KÍCH HOẠT TỰ ĐỘNG ngay lập tức khi Agent nhận được các yêu cầu từ người dùng có chứa các cụm từ sau:
 - `"fix all"`, `"fix lỗi"`, `"fix bug"`, `"sửa lỗi"` → Kích hoạt **PIV Loop** (xem §1-3)
 - `"zoom out"`, `"zoom-out"`, `"lùi lại"`, `"toàn cảnh"` → Kích hoạt **Zoom-Out Mode** (xem §4)
-Và áp dụng mặc định trong các workflows: `/vegeta-dev`, `/fix-bug`, `/quick-Vegeta`, `/step-03-execute`.
+Và áp dụng mặc định trong các workflows: `/dev-agent-dev`, `/fix-bug`, `/quick-dev-agent`, `/step-03-execute`.
 
 ## 📌 Khái quát (Overview)
-Pivot Guardian is a core BMAD skill with two complementary modes:
+Pivot Guardian is a core I-Wish skill with two complementary modes:
 1. **PIV Loop** — Prevents agents from "doubling down" on a failing approach by enforcing Plan → Implement → Validate → Pivot.
 2. **Zoom-Out Heuristic** — Prevents "tunnel vision" by forcing agents to step back to a higher abstraction layer and map the surrounding architecture before continuing.
 
@@ -30,7 +30,7 @@ Every single file changed or created MUST be validated (via tests, linting, or t
 If an error occurs (e.g., `tsc` fails, `eslint` catches an issue, tests fail):
 - **Strike 1 (Attempt 1)**: Analyze the error carefully, search for relevant context using tools, and attempt a fix.
 - **Strike 2 (Attempt 2)**: If the fix fails AGAIN with the same or a very similar error, trigger **Zoom-Out** BEFORE attempting the new approach. Rethink the architecture from scratch.
-- **Strike 3 (Attempt 3)**: If it fails a 3rd time, **STOP**. You have hit convergence failure. Do not guess. Do not blindly loop in endless fix attempts.
+- **Strike 3 (Attempt 3)**: If it fails a 3rd time, **STOP**. You have review-agent convergence failure. Do not guess. Do not blindly loop in endless fix attempts.
 - **ESCALATION ACTION**: You MUST escalate to the User or Master Agent using the **Escalation Protocol** (see §3).
 > **Exclusion:** When working in throwaway branches, exploratory loops, or using the `/prototype` workflow, the strict 3-retry limit is relaxed to avoid killing momentum. You may exceed 3 retries, but must still provide empirical evidence upon success.
 
@@ -44,10 +44,10 @@ If an error occurs (e.g., `tsc` fails, `eslint` catches an issue, tests fail):
   3. Review `project-context.md` for any specific Immune System Watchouts before modifying.
 
 ### 5. Escalation Protocol & Status Flags
-When transitioning out of the Execution phase to Verification, or when hitting a Strike 3, your `TaskStatus` MUST reflect one of these 4 strict flags:
+When transitioning out of the Execution phase to Verification, or when review-agentting a Strike 3, your `TaskStatus` MUST reflect one of these 4 strict flags:
 - `DONE`: Task completed, full Evidence Block provided (see §5).
 - `DONE_WITH_CONCERNS`: Task completed but agent has reservations. Explain the concerns directly in the chat for the user to review and take action if needed. Do NOT create a separate report file.
-- `BLOCKED`: Agent cannot proceed (e.g., hit 3-Retry limit).
+- `BLOCKED`: Agent cannot proceed (e.g., review-agent 3-Retry limit).
 - `NEEDS_CONTEXT`: Agent needs more information or user clarification to proceed.
 
 **Mandatory Escalation Payload:**
@@ -61,14 +61,14 @@ The payload MUST include:
 
 ## 🔭 §4. Zoom-Out Heuristic (Perspective Escalation)
 
-> **Origin:** Merged from `mattpocock/skills` `zoom-out` pattern. Enhanced for BMAD multi-agent context.
+> **Origin:** Merged from `mattpocock/skills` `zoom-out` pattern. Enhanced for I-Wish multi-agent context.
 
 ### When to Activate
 The Zoom-Out heuristic is triggered in three situations:
 
 1. **User Command**: User explicitly says `"zoom out"`, `"zoom-out"`, `"lùi lại"`, or `"toàn cảnh"`.
 2. **Auto-Detection (Tunnel Vision Signal)**: Agent detects it has been editing the **same file for 3+ consecutive tool calls** without referencing any other file or running validation. This is a strong signal of tunnel vision.
-3. **Pivot Complement**: When the 3-Retry rule hits Strike 2, the agent SHOULD execute a Zoom-Out BEFORE attempting the new approach to ensure it understands the broader context it is pivoting into.
+3. **Pivot Complement**: When the 3-Retry rule review-agents Strike 2, the agent SHOULD execute a Zoom-Out BEFORE attempting the new approach to ensure it understands the broader context it is pivoting into.
 
 ### Zoom-Out Execution Protocol
 
@@ -110,7 +110,7 @@ When Zoom-Out is triggered, the agent MUST perform these steps **before writing 
 - `[ZOOM-OUT]` -> If editing the same file for 3+ calls, or if user requests, step back and map the module neighborhood.
 - `[PIVOT & ESCALATE]` -> If validation fails 2 times, execute Zoom-Out. If it fails 3 times, generate `escalation-report.md` and use `BLOCKED` or `NEEDS_CONTEXT` flag.
 
-> "A smart agent knows how to code. A master agent knows when to stop coding and zoom out." - King-Kai Council
+> "A smart agent knows how to code. A master agent knows when to stop coding and zoom out." - pm-agent Council
 
 ## 🛡️ §5. Empirical Evidence Gate (Task-Type Specific)
 

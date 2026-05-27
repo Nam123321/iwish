@@ -21,7 +21,7 @@ When this skill is active, all communication is compressed. However, to prevent 
 - If unsure (Confidence < 80%), **BREAK** Caveman Mode and ask for clarification.
 
 ## 3. Logging Requirement
-Every decision made in Caveman Mode must be logged to `_bmad-output/logs/caveman-decisions.log` in JSONL format:
+Every decision made in Caveman Mode must be logged to `_iwish-output/logs/caveman-decisions.log` in JSONL format:
 ```json
 {"ts": "ISO-TIMESTAMP", "intent": "...", "cmd": "...", "files": ["..."]}
 ```

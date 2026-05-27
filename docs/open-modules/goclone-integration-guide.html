@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoClone Integration Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #070a13 0%, #0f172a 50%, #1e1b4b 100%);
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.65;
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #818cf8, #a78bfa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.75rem;
+      color: #f8fafc;
+      border-left: 5px solid var(--accent);
+      padding-left: 1rem;
+    }
+
+    p {
+      color: #cbd5e1;
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    ul, ol {
+      margin-left: 1.75rem;
+      margin-bottom: 1.75rem;
+      color: #cbd5e1;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+      font-size: 1.05rem;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-family: monospace;
+      color: #f472b6;
+      font-size: 0.9em;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.75rem;
+      border-radius: 14px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.75rem;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: #38bdf8;
+      font-size: 0.95rem;
+      border: none;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .meta-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      color: #f8fafc;
+      font-size: 1.1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.75rem;
+    }
+
+    th, td {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.07em;
+    }
+
+    td {
+      color: #cbd5e1;
+      font-size: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-primary { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .warning-box {
+      border: 1px dashed var(--warning);
+      background: rgba(245, 158, 11, 0.05);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.75rem;
+    }
+
+    .hybrid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .hybrid-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 14px;
+    }
+
+    .hybrid-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #f8fafc;
+    }
+
+    .hybrid-card p {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>GoClone</h1>
+      <div class="subtitle">Adoption Review Pack &amp; Integration Guide</div>
+    </header>
+
+    <div class="card">
+      <h2>1. What is it</h2>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Name</div>
+          <div class="meta-value">GoClone</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">State</div>
+          <div class="meta-value"><span class="badge badge-success">Approved</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Shape</div>
+          <div class="meta-value">CLI / Scraping Utility</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Asset Scraping &amp; Re-linking</div>
+        </div>
+      </div>
+      <p>Source Repository: <a href="https://github.com/goclone-dev/goclone" style="color: var(--accent); text-decoration: none;">github.com/goclone-dev/goclone</a></p>
+    </div>
+
+    <div class="card">
+      <h2>2. Why it exists</h2>
+      <p><strong>The Problem:</strong> When cloning website templates or pages, visual elements (like custom logos, icons, illustrations, and background SVG patterns) often point to absolute URLs hosted on the source domain. When that domain goes down, redirects, or blocks the scraper, the cloned layout breaks.</p>
+      <p><strong>The Solution:</strong> GoClone runs an asynchronous crawler that resolves and downloads all static assets (stylesheets, JavaScript files, images, SVGs) into local subfolders (<code>css/</code>, <code>js/</code>, <code>imgs/</code>). It then parses the HTML and rewrites all references to point to these relative local assets, creating a standalone, offline-ready copy of the page.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. Delivery Framework Placement</h2>
+      <ul>
+        <li><strong>Phases Helped:</strong> <code>design</code> (visual and asset gathering), <code>implement</code> (resource management)</li>
+        <li><strong>Stages Served:</strong> Asset Harvesting &amp; Image/Icon Management, Cloner Pipeline Setup</li>
+        <li><strong>Classification:</strong> <code>supportive</code> visual asset collector.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>4. Use Cases</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-primary">Core</span></td>
+            <td>Downloading reference styles and scripts locally; Archiving logo SVGs and custom image assets offline; Re-linking image tags automatically.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-success">Adjacent</span></td>
+            <td>Downloading and serving a cloned page via a local HTTP preview server.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-warning">Exclusions</span></td>
+            <td>Handling JS-rendered single-page app (SPA) DOM trees (use screenshot visions instead); Modifying layout responsiveness or spacing.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>5. Upgrade Blueprint: The Hybrid Cloner</h2>
+      <p>By merging GoClone's asset-harvesting with Hallmark's semantic Visual DNA study, we build a far superior website cloner for I-Wish:</p>
+      <div class="hybrid-grid">
+        <div class="hybrid-card">
+          <h3>1. GoClone Track (Asset Scraper)</h3>
+          <p>Crawl the target URL to extract and download all high-value visual assets (brand logos, custom icons, background illustrations) into a local <code>imgs/</code> folder.</p>
+        </div>
+        <div class="hybrid-card">
+          <h3>2. Hallmark Track (Visual DNA)</h3>
+          <p>Perform a semantic visual audit on the reference site. Extract macro structures, layout skeletons, font pairing roles, and HSL color anchors instead of copying raw messy styles.</p>
+        </div>
+        <div class="hybrid-card">
+          <h3>3. Re-linked Synthesis</h3>
+          <p>Assemble the new component using clean responsive Tailwind CSS tokens, and dynamically insert references to the downloaded local assets (logos and icons) to preserve brand styling.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. Constraints &amp; Edge Cases</h2>
+      <div class="warning-box">
+        <p><strong>Go Runtime Dependency:</strong> Since I-Wish is a Node-based runtime, executing a compiled Go binary introduces cross-compilation and setup hurdles. We address this by porting the GoQuery and Colly logic directly to Node.js using `cheerio` and `axios/fetch` crawlers.</p>
+        <p><strong>Dynamic SPAs:</strong> Standard HTTP GET fetches return empty HTML roots for client-side React apps. In these situations, I-Wish fallbacks to screenshot vision passes to analyze the design.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. Example: Link Re-writing</h2>
+      <p>Below is how the crawler rewrites resource links from absolute source URLs to relative local folders:</p>
+      <pre><code>// Original fetched HTML
+&lt;link rel="stylesheet" href="https://stripe.com/assets/global.css"&gt;
+&lt;img src="https://stripe.com/assets/logo.svg"&gt;
+
+// Rewritten HTML using Cheerio (GoQuery Port)
+&lt;link rel="stylesheet" href="css/global.css"&gt;
+&lt;img src="imgs/logo.svg"&gt;</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>8. User Review Questions</h2>
+      <ol>
+        <li>Should we automatically clean up unused JS files (analytics, tracking tags) during the asset-harvesting phase to keep local folders lightweight?</li>
+        <li>Do you want downloaded stylesheets to be auto-inlined into the main HTML preview page, or kept in separate CSS files?</li>
+        <li>Should the Hybrid Cloner support downloading font binaries (e.g. `.woff2` files) locally, or is referencing Google Fonts/System fonts preferred?</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

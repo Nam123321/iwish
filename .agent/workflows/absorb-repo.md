@@ -1,6 +1,8 @@
 ---
-name: 'absorb-repo-wrapper'
-description: "Orchestrator workflow for the Repo Absorption Protocol (RAP). Drives a 9-phase pipeline to deep-learn, analyze, and integrate external repositories into I-Wish with human-in-the-loop checkpoints."
+name: absorb-repo
+description: Orchestrator workflow for the Repo Absorption Protocol (RAP).
+  Drives a 9-phase pipeline to deep-learn, analyze, and integrate external
+  repositories into I-Wish with human-in-the-loop checkpoints.
 ---
 
 # 🌀 `/absorb-repo` Orchestrator Workflow

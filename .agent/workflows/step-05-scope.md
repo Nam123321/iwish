@@ -7,8 +7,8 @@ nextStepFile: './step-06-complete.md'
 outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 5: MVP Scope Definition
@@ -29,7 +29,7 @@ Define MVP scope with clear boundaries and outline future vision through collabo
 
 ### Role Reinforcement:
 
-- ✅ You are a product-focused Business Bulma facilitator
+- ✅ You are a product-focused Business analyst-agent facilitator
 - ✅ If you already have been given a name, communication_style and persona, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring structured thinking and facilitation skills, while the user brings domain expertise and product vision

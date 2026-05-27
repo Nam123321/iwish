@@ -13,7 +13,7 @@ validationReportPath: '{validation_report_path}'
 
 ## STEP GOAL:
 
-Detect if PRD follows BMAD format and route appropriately - classify as BMAD Standard / BMAD Variant / Non-Standard, with optional parity check for non-standard formats.
+Detect if PRD follows I-Wish format and route appropriately - classify as I-Wish Standard / I-Wish Variant / Non-Standard, with optional parity check for non-standard formats.
 
 ## MANDATORY EXECUTION RULES (READ FIRST):
 
@@ -27,7 +27,7 @@ Detect if PRD follows BMAD format and route appropriately - classify as BMAD Sta
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and Quality Assurance Specialist
+- ✅ You are a Validation architect-agent and Quality Assurance Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring systematic validation expertise and pattern recognition
@@ -72,9 +72,9 @@ Load the complete PRD file and extract:
 - Extract classification.projectType if present
 - Note any other relevant metadata
 
-### 2. Check for BMAD PRD Core Sections
+### 2. Check for I-Wish PRD Core Sections
 
-Check if the PRD contains the following BMAD PRD core sections:
+Check if the PRD contains the following I-Wish PRD core sections:
 
 1. **Executive Summary** (or variations: ## Executive Summary, ## Overview, ## Introduction)
 2. **Success Criteria** (or: ## Success Criteria, ## Goals, ## Objectives)
@@ -92,18 +92,18 @@ Check if the PRD contains the following BMAD PRD core sections:
 
 Based on core section count, classify:
 
-**BMAD Standard:**
+**I-Wish Standard:**
 - 5-6 core sections present
-- Follows BMAD PRD structure closely
+- Follows I-Wish PRD structure closely
 
-**BMAD Variant:**
+**I-Wish Variant:**
 - 3-4 core sections present
-- Generally follows BMAD patterns but may have structural differences
-- Missing some sections but recognizable as BMAD-style
+- Generally follows I-Wish patterns but may have structural differences
+- Missing some sections but recognizable as I-Wish-style
 
 **Non-Standard:**
 - Fewer than 3 core sections present
-- Does not follow BMAD PRD structure
+- Does not follow I-Wish PRD structure
 - May be completely custom format, legacy format, or from another framework
 
 ### 4. Report Format Findings to Validation Report
@@ -116,7 +116,7 @@ Append to validation report:
 **PRD Structure:**
 [List all ## Level 2 headers found]
 
-**BMAD Core Sections Present:**
+**I-Wish Core Sections Present:**
 - Executive Summary: [Present/Missing]
 - Success Criteria: [Present/Missing]
 - Product Scope: [Present/Missing]
@@ -124,13 +124,13 @@ Append to validation report:
 - Functional Requirements: [Present/Missing]
 - Non-Functional Requirements: [Present/Missing]
 
-**Format Classification:** [BMAD Standard / BMAD Variant / Non-Standard]
+**Format Classification:** [I-Wish Standard / I-Wish Variant / Non-Standard]
 **Core Sections Present:** [count]/6
 ```
 
 ### 5. Route Based on Format Classification
 
-**IF format is BMAD Standard or BMAD Variant:**
+**IF format is I-Wish Standard or I-Wish Variant:**
 
 Display: "**Format Detected:** {classification}
 
@@ -142,7 +142,7 @@ Without delay, read fully and follow: {nextStepFile} (step-v-03-density-validati
 
 Display: "**Format Detected:** Non-Standard PRD
 
-This PRD does not follow BMAD standard structure (only {count}/6 core sections present).
+This PRD does not follow I-Wish standard structure (only {count}/6 core sections present).
 
 You have options:"
 
@@ -150,7 +150,7 @@ Present MENU OPTIONS below for user selection
 
 ### 6. Present MENU OPTIONS (Non-Standard PRDs Only)
 
-**[A] Parity Check** - Analyze gaps and estimate effort to reach BMAD PRD parity
+**[A] Parity Check** - Analyze gaps and estimate effort to reach I-Wish PRD parity
 **[B] Validate As-Is** - Proceed with validation using current structure
 **[C] Exit** - Exit validation and review format findings
 
@@ -173,10 +173,10 @@ Present MENU OPTIONS below for user selection
 ### ✅ SUCCESS:
 
 - All ## Level 2 headers extracted successfully
-- BMAD core sections checked systematically
+- I-Wish core sections checked systematically
 - Format classified correctly based on section count
 - Findings reported to validation report
-- BMAD Standard/Variant PRDs proceed directly to next validation step
+- I-Wish Standard/Variant PRDs proceed directly to next validation step
 - Non-Standard PRDs pause and present options to user
 - User can choose parity check, validate as-is, or exit
 

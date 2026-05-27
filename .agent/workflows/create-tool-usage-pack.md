@@ -1,6 +1,7 @@
 ---
-name: 'create-tool-usage-pack'
-description: 'Research a tool platform, define its operational fit, and scaffold the usage pack required for Orch-first execution'
+name: create-tool-usage-pack
+description: Research a tool platform, define its operational fit, and scaffold
+  the usage pack required for Orch-first execution
 ---
 
 # /create-tool-usage-pack

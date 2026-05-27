@@ -5,8 +5,8 @@ description: 'Run 1st-Principle user simulation on a feature or UI spec using th
 # /simulate-user — 1st-Principle User Simulation
 
 > **Purpose:** Force non-linear, real-world user thinking on any feature before it ships.
-> **Owner:** Songoku (AI Engineer) — via User Simulation Guardian SKILL
-> **Gate Integration:** `/create-ui-spec`, `/Vegeta-story`, `/code-review`
+> **Owner:** ai-engineer-agent (AI Engineer) — via User Simulation Guardian SKILL
+> **Gate Integration:** `/create-ui-spec`, `/dev-agent-story`, `/code-review`
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: "qa-simulator-guardian"
+name: 'qa-simulator-guardian-wrapper'
 description: "Use when validating a story's completeness by mentally simulating edge cases, state integrity, and generating the 7-row Hybrid Scorecard."
 ---
 
@@ -30,7 +30,7 @@ When invoked, the agent MUST calculate the EXACT 7-row Hybrid Scorecard based on
 
 ## Architectural DNA Check (Pass/Fail)
 
-Beneath the table, the Guardian MUST perform an explicit pass/fail check against the BMAD Architectural DNA:
+Beneath the table, the Guardian MUST perform an explicit pass/fail check against the I-Wish Architectural DNA:
 
 - [ ] **Tracer Bullet?** (Is this a complete Vertical Slice, or just a horizontal layer?)
 - [ ] **Deletion Testable?** (Can this module be deleted and its behavior tested through the interface?)

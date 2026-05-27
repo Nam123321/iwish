@@ -1,5 +1,5 @@
 ---
-name: "github-deep-research"
+name: 'github-deep-research-wrapper'
 description: "Universal skill for performing a 3-Layer MCP Deep-Dive to extract architectures and best practices from Github repositories."
 ---
 

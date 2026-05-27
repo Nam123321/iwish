@@ -1,6 +1,8 @@
 ---
-name: generate-project-context
-description: Creates a concise project-context.md file with critical rules and patterns that AI agents must follow when implementing code. Optimized for LLM context efficiency.
+legacy_name: generate-project-context-legacy
+description: Creates a concise project-context.md file with critical rules and
+  patterns that AI agents must follow when implementing code. Optimized for LLM
+  context efficiency.
 ---
 
 # Generate Project Context Workflow
@@ -27,7 +29,7 @@ This uses **micro-file architecture** for disciplined execution:
 
 ### Configuration Loading
 
-Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
+Load config from `{project-root}/_iwish/bmm/config.yaml` and resolve:
 
 - `project_name`, `output_folder`, `user_name`
 - `communication_language`, `document_output_language`, `user_skill_level`
@@ -36,7 +38,7 @@ Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
 
 ### Paths
 
-- `installed_path` = `{project-root}/_bmad/bmm/workflows/generate-project-context`
+- `installed_path` = `{project-root}/.agent/workflows`
 - `template_path` = `{installed_path}/project-context-template.md`
 - `output_file` = `{output_folder}/project-context.md`
 

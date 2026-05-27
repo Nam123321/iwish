@@ -364,6 +364,342 @@
       background: transparent;
       padding: 0;
     }
+
+    /* I-Wish Guide Tab Styles */
+    .guide-layout {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-color);
+      overflow: hidden;
+    }
+
+    .guide-sidebar {
+      width: 260px;
+      border-right: 1px solid var(--border-color);
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+    }
+
+    .guide-sidebar h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .sidebar-link {
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-link:hover {
+      color: var(--primary);
+      background: var(--primary-glow);
+    }
+
+    .sidebar-link.active-link {
+      color: var(--primary);
+      background: var(--primary-glow);
+      font-weight: 600;
+      border-left: 3px solid var(--primary);
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .guide-main {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      scroll-behavior: smooth;
+    }
+
+    .guide-section {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .guide-section h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-color);
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    /* Pipeline Timeline */
+    .pipeline-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      margin-left: 20px;
+      border-left: 2px dashed var(--border-color);
+      padding-left: 30px;
+    }
+
+    .pipeline-step {
+      position: relative;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .pipeline-step:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px var(--primary-glow);
+      transform: translateX(5px);
+    }
+
+    .step-number {
+      position: absolute;
+      left: -46px;
+      top: 20px;
+      width: 30px;
+      height: 30px;
+      background: white;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 0 10px rgba(15, 118, 110, 0.15);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .step-title-group h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .step-focus {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .step-agents {
+      display: flex;
+      gap: 6px;
+    }
+
+    .agent-badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      background: rgba(29, 78, 216, 0.06);
+      color: var(--accent);
+      border: 1px solid rgba(29, 78, 216, 0.15);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .step-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 15px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .step-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .detail-block h5 {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .detail-block p {
+      font-size: 13.5px;
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .skill-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(29, 78, 216, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .skill-name {
+      font-weight: 700;
+      color: var(--text-color);
+      font-size: 15px;
+    }
+
+    .skill-type {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .type-supportive { background: rgba(217, 119, 6, 0.08); color: var(--warning); border: 1px solid rgba(217, 119, 6, 0.2); }
+    .type-foundational { background: rgba(22, 163, 74, 0.08); color: var(--success); border: 1px solid rgba(22, 163, 74, 0.2); }
+    .type-primary { background: rgba(15, 118, 110, 0.08); color: var(--primary); border: 1px solid rgba(15, 118, 110, 0.2); }
+
+    .skill-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Use Cases Styles */
+    .usecase-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .usecase-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .usecase-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 25px rgba(15, 118, 110, 0.08);
+    }
+
+    .usecase-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .usecase-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+
+    .usecase-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    .usecase-steps li {
+      font-size: 13.5px;
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+
+    /* CLI Command Box */
+    .cli-box {
+      background: #1e1e2e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: #cdd6f4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cli-cmd {
+      user-select: all;
+      word-break: break-all;
+    }
+
+    .cli-copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #a6adc8;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .cli-copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -377,7 +713,7 @@
       <button class="tab-btn" onclick="switchTab('features')">Feature graph</button>
       <button class="tab-btn" onclick="switchTab('sprint')">Sprint Kanban</button>
       <button class="tab-btn" onclick="switchTab('orchestration')">Orchestration Graph</button>
-      <button class="tab-btn" onclick="switchTab('guide')">Integration Guide</button>
+      <button class="tab-btn" onclick="switchTab('iwish-guide')">I-Wish Guide</button>
     </div>
   </header>
 
@@ -474,12 +810,434 @@
       </div>
     </div>
 
-    <!-- Tab 5: Integration Guide -->
-    <div id="tab-guide" class="tab-content">
-      <div class="guide-panel">
-        <div class="markdown-body" id="guide-renderer"></div>
+    <!-- Tab 5: I-Wish Guide -->
+    <div id="tab-iwish-guide" class="tab-content">
+      <div class="guide-layout">
+        <!-- Sidebar Navigation -->
+        <div class="guide-sidebar">
+          <h3>Guide Navigation</h3>
+          <a onclick="scrollToSection('pipeline-section')" class="sidebar-link active-link">🚀 Main Pipeline</a>
+          <a onclick="scrollToSection('skills-section')" class="sidebar-link">🛠️ Supportive Skills</a>
+          <a onclick="scrollToSection('usecases-section')" class="sidebar-link">💡 Key Use Cases</a>
+        </div>
+        <!-- Main Content -->
+        <div class="guide-main">
+          <!-- Section 1: Main Pipeline -->
+          <div id="pipeline-section" class="guide-section">
+            <h2>🚀 Trục Phát Triển Chính (Main Pipeline)</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px;">
+              Quy trình phát triển phần mềm trong I-Wish được thiết kế theo mô hình <strong>AI-Native Factory</strong> gồm 6 giai đoạn rõ ràng từ ý tưởng đến phân phối sản phẩm.
+            </p>
+            <div class="pipeline-timeline">
+              <!-- Step 1 -->
+              <div class="pipeline-step">
+                <div class="step-number">1</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Discover & Idea Hardening (Phát hiện & Thách thức Ý tưởng)</h4>
+                    <div class="step-focus">Mục tiêu: Đánh giá tính khả thi, lập giả thuyết kinh doanh & nghiên cứu bối cảnh dự án.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">research-agent</span>
+                    <span class="agent-badge">analyst-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Giai đoạn đầu tiên tập trung vào việc nghiên cứu thị trường, domain kĩ thuật và thách thức các điểm yếu của ý tưởng sản phẩm.
+                </p>
+                <div class="step-details">
+                  <div class="detail-block">
+                    <h5>Lệnh chạy đầu tiên</h5>
+                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                      <span class="cli-cmd">/idea-challenge</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/idea-challenge', this)">COPY</button>
+                    </div>
+                    <div class="cli-box">
+                      <span class="cli-cmd">/research</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/research', this)">COPY</button>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <h5>Output nhận được</h5>
+                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
+                      📄 <code>docs/idea-distillate.md</code> (chứa press release & customer FAQ)<br>
+                      📄 <code>research_notes.md</code> (báo cáo nghiên cứu thị trường/technical)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="pipeline-step">
+                <div class="step-number">2</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Plan (Hoạch Định Yêu Cầu)</h4>
+                    <div class="step-focus">Mục tiêu: Chi tiết hóa sản phẩm thành tài liệu đặc tả chức năng rõ ràng.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">pm-agent</span>
+                    <span class="agent-badge">product-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Lớp kế hoạch tạo ra Product Requirements Document (PRD) hoàn chỉnh với Success Metrics, Technical Stack và phân chia chức năng rõ ràng.
+                </p>
+                <div class="step-details">
+                  <div class="detail-block">
+                    <h5>Lệnh tiếp theo</h5>
+                    <div class="cli-box" style="margin-top: 5px;">
+                      <span class="cli-cmd">/create-prd</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/create-prd', this)">COPY</button>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <h5>Output nhận được</h5>
+                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
+                      📄 <code>docs/PRD.md</code> (Bản PRD chi tiết đạt chuẩn SMART)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="pipeline-step">
+                <div class="step-number">3</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Solution (Kiến Trúc & Đặc Tả UI UX)</h4>
+                    <div class="step-focus">Mục tiêu: Bản vẽ kiến trúc, thiết kế UI UX và bẻ nhỏ Epic & User Story.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">architect-agent</span>
+                    <span class="agent-badge">ux-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Chuyển đổi PRD thành kiến trúc kỹ thuật chi tiết (ADR), sơ đồ cơ sở dữ liệu, các Epic & Story sẵn sàng code và các bản đặc tả UI/UX.
+                </p>
+                <div class="step-details">
+                  <div class="detail-block">
+                    <h5>Lệnh tiếp theo</h5>
+                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                      <span class="cli-cmd">/create-architecture</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/create-architecture', this)">COPY</button>
+                    </div>
+                    <div class="cli-box">
+                      <span class="cli-cmd">/create-epics-and-stories</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/create-epics-and-stories', this)">COPY</button>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <h5>Output nhận được</h5>
+                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
+                      📄 <code>docs/architecture.md</code> (Ghi nhận quyết định kiến trúc - ADR)<br>
+                      📄 <code>docs/epics_list.md</code> & các file <code>story_*.md</code> sẵn sàng để dev-agent nhận việc.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="pipeline-step">
+                <div class="step-number">4</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Implement (Thực Thi & Viết Code)</h4>
+                    <div class="step-focus">Mục tiêu: Code logic tính năng và viết unit test cho từng Story.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">dev-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Bắt đầu lập kế hoạch sprint và giao việc cho Coding Agent viết code. Các file story được update liên tục trạng thái sang ready, in-progress, review, done.
+                </p>
+                <div class="step-details">
+                  <div class="detail-block">
+                    <h5>Lệnh tiếp theo</h5>
+                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                      <span class="cli-cmd">/sprint-planning</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/sprint-planning', this)">COPY</button>
+                    </div>
+                    <div class="cli-box">
+                      <span class="cli-cmd">/dev-agent-story</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/dev-agent-story', this)">COPY</button>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <h5>Output nhận được</h5>
+                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
+                      💻 Source Code sạch chuẩn Clean Architecture.<br>
+                      🧪 Unit Tests tự động hoàn thành (coverage > 80%).
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 5 -->
+              <div class="pipeline-step">
+                <div class="step-number">5</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Validate (Cổng Đảm Bảo Chất Lượng)</h4>
+                    <div class="step-focus">Mục tiêu: Đánh giá chất lượng code, giả lập người dùng, quét bảo mật.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">review-agent</span>
+                    <span class="agent-badge">qa-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Chạy kiểm thử tự động, review mã nguồn, phân tích rủi ro tương thích ngược và chạy giả lập người dùng để tìm lỗi logic nghiệp vụ.
+                </p>
+                <div class="step-details">
+                  <div class="detail-block">
+                    <h5>Lệnh tiếp theo</h5>
+                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                      <span class="cli-cmd">/code-review-internal</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/code-review-internal', this)">COPY</button>
+                    </div>
+                    <div class="cli-box">
+                      <span class="cli-cmd">/simulate-user</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/simulate-user', this)">COPY</button>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <h5>Output nhận được</h5>
+                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
+                      📄 Báo cáo review chi tiết, log quét bảo mật (SAST), và điểm chất lượng Hybrid QA Scorecard.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 6 -->
+              <div class="pipeline-step">
+                <div class="step-number">6</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Deliver & Evolve (Bàn Giao & Tiến Hóa Tri Thức)</h4>
+                    <div class="step-focus">Mục tiêu: Handoff sản phẩm, cập nhật bối cảnh tri thức, tổng hợp dashboard.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">delivery-manager-agent</span>
+                    <span class="agent-badge">capability-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Khi sprint kết thúc, tiến hành họp cải tiến (Retro) để thu hoạch "Knowledge Delta" nạp lại vào Corporate Brain. Biên dịch dashboard để cập nhật trạng thái làm việc.
+                </p>
+                <div class="step-details">
+                  <div class="detail-block">
+                    <h5>Lệnh tiếp theo</h5>
+                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                      <span class="cli-cmd">/retro</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/retro', this)">COPY</button>
+                    </div>
+                    <div class="cli-box">
+                      <span class="cli-cmd">iwish gen-dashboard</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('iwish gen-dashboard', this)">COPY</button>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <h5>Output nhận được</h5>
+                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
+                      📄 <code>docs/KNOWLEDGE_DELTA.md</code> (báo cáo tri thức thu hoạch)<br>
+                      🖥️ Dashboard I-Wish Workspace tương tác được cập nhật mới nhất.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Supportive Skills System -->
+          <div id="skills-section" class="guide-section">
+            <h2>🛠️ Hệ Thống Kỹ Năng Bổ Trợ (Supportive & Foundational Skills)</h2>
+            <p style="color:var(--text-muted); margin-bottom: 25px; font-size: 14.5px;">
+              Bên cạnh luồng chính, I-Wish trang bị hệ thống kĩ năng chuyên biệt làm nhiệm vụ bảo vệ chất lượng phần mềm, quản trị bảo mật và tối ưu trải nghiệm người dùng.
+            </p>
+            <div class="skills-grid">
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">repo-absorption</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Phân tích, hấp thụ và giải cấu trúc các repository bên ngoài từ GitHub, tự động tích hợp tài liệu hướng dẫn và liên kết với Orch routing.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">idea-hardening</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Đánh giá nghiêm túc các ý tưởng sản phẩm, phân tích ít nhất 2-3 phương pháp thực hiện kèm theo phân tích trade-offs và giá trị cốt lõi.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">security-guardian</span>
+                  <span class="skill-type type-foundational">Foundational</span>
+                </div>
+                <p class="skill-desc">
+                  Kiểm soát an ninh vòng ngoài: Quét lỗ hổng, secret leak, rà soát mức độ tin cậy và cấp quyền tối thiểu trước khi code được merge/deploy.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">ux-guardian</span>
+                  <span class="skill-type type-foundational">Foundational</span>
+                </div>
+                <p class="skill-desc">
+                  Đảm bảo giao diện người dùng đồng bộ tuyệt đối với Master Design System, ngăn chặn tình trạng "lệch giao diện" sau nhiều sprint.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">user-simulation-guardian</span>
+                  <span class="skill-type type-foundational">Foundational</span>
+                </div>
+                <p class="skill-desc">
+                  Sử dụng tư duy 1st-Principle giả lập hành vi của các Persona người dùng doanh nghiệp khác nhau để test tính mạch lạc của luồng UX.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">pivot-guardian</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Người gác cổng vòng lặp: Tự động ngắt agent nếu chỉnh sửa liên tục một tệp quá 3 lần mà không thông qua chạy test hoặc build xác thực.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">socratic-review</span>
+                  <span class="skill-type type-foundational">Foundational</span>
+                </div>
+                <p class="skill-desc">
+                  Thực hiện hỏi đáp Socratic để rà soát thay đổi cơ sở dữ liệu, kiểm soát tính tương thích ngược và chống drift kiến trúc.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">qa-simulator-guardian</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Mô phỏng quy trình kiểm thử toàn diện, tính toán bảng điểm chất lượng Hybrid Scorecard giúp đánh giá độ sẵn sàng ship code.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Use Cases & Action Guides -->
+          <div id="usecases-section" class="guide-section">
+            <h2>💡 Các Use Case Cụ Thể & Hướng Dẫn Nhanh</h2>
+            <p style="color:var(--text-muted); margin-bottom: 25px; font-size: 14.5px;">
+              Các kịch bản thực tế khi làm việc với hệ thống I-Wish và các lệnh cần chạy tương ứng.
+            </p>
+            <div class="usecase-container">
+              <!-- Use case 1 -->
+              <div class="usecase-card">
+                <div class="usecase-title">📂 1. Hấp thụ và bổ sung Skill mới từ GitHub (RAP Protocol)</div>
+                <p class="usecase-desc">
+                  Khi bạn muốn tích hợp một thư viện, template, hoặc skill bên thứ ba từ một repository công khai trên GitHub vào hệ thống I-Wish.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Hệ thống kích hoạt quy trình Repo Absorption (RAP). Đầu tiên <code>security-guardian</code> sẽ quét mã độc, sau đó <code>repo-absorption</code> clone và index toàn bộ repo để trích xuất API/Specs, sinh tài liệu <code>integration-guide.md</code>, và đăng ký định tuyến routing cho Orch Agent.</li>
+                  <li><strong>Lệnh CLI để thực hiện:</strong></li>
+                </ul>
+                <div class="cli-box">
+                  <span class="cli-cmd">iwish register-module https://github.com/sickn33/antigravity-awesome-skills</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('iwish register-module https://github.com/sickn33/antigravity-awesome-skills', this)">COPY</button>
+                </div>
+              </div>
+
+              <!-- Use case 2 -->
+              <div class="usecase-card">
+                <div class="usecase-title">🌐 2. Sao chép và lập trình UI từ Website có sẵn (Clone Website)</div>
+                <p class="usecase-desc">
+                  Khi bạn muốn clone giao diện của một trang web bất kì để chuyển đổi thành components React/HTML code sạch chuẩn trong workspace.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Gọi workflow <code>/clone-website</code>, agent sử dụng browser tool (Chrome DevTools MCP) để chụp ảnh màn hình, lưu lại cấu trúc DOM và CSS, phân tách các Tokens thiết kế và tự động build các components code.</li>
+                  <li><strong>Lệnh slash command trong chat:</strong></li>
+                </ul>
+                <div class="cli-box">
+                  <span class="cli-cmd">/clone-website</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/clone-website', this)">COPY</button>
+                </div>
+              </div>
+
+              <!-- Use case 3 -->
+              <div class="usecase-card">
+                <div class="usecase-title">🎨 3. Thiết kế & Đồng bộ giao diện (UI UX Pro Max / Stitch)</div>
+                <p class="usecase-desc">
+                  Khi bạn thiết kế UI và muốn đồng bộ hoá file <code>DESIGN.md</code> của bạn với server Stitch để tạo và tối ưu giao diện.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Đầu tiên, chạy <code>/create-ux-design</code> và <code>/create-ui-spec</code> để lập spec thiết kế. Sử dụng workflow <code>/sync-stitch-design</code> để đẩy thiết kế lên máy chủ Stitch. Cuối cùng, <code>visual-fidelity-gate</code> sẽ audit tự động xem code frontend có khớp pixel với nguồn thiết kế không.</li>
+                  <li><strong>Lệnh slash command:</strong></li>
+                </ul>
+                <div class="cli-box" style="margin-bottom: 10px;">
+                  <span class="cli-cmd">/create-ui-spec</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/create-ui-spec', this)">COPY</button>
+                </div>
+                <div class="cli-box">
+                  <span class="cli-cmd">/sync-stitch-design</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/sync-stitch-design', this)">COPY</button>
+                </div>
+              </div>
+
+              <!-- Use case 4 -->
+              <div class="usecase-card">
+                <div class="usecase-title">📊 4. Phân tích Codebase & Tạo Graph phụ thuộc</div>
+                <p class="usecase-desc">
+                  Để vẽ được sơ đồ liên kết giữa các file code và các User Story (Feature Graph), giúp Orch Agent hiểu được độ ảnh hưởng khi thay đổi code.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Công cụ quét toàn bộ source code của bạn, trích xuất import statements, các hàm gọi và ánh xạ chúng vào Feature Graph. Dữ liệu này được hiển thị trực tiếp trên tab "Feature graph" của Dashboard.</li>
+                  <li><strong>Lệnh CLI chạy trên terminal:</strong></li>
+                </ul>
+                <div class="cli-box">
+                  <span class="cli-cmd">iwish analyze-codebase</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('iwish analyze-codebase', this)">COPY</button>
+                </div>
+              </div>
+
+              <!-- Use case 5 -->
+              <div class="usecase-card">
+                <div class="usecase-title">🖥️ 5. Biên dịch & Xem Dashboard I-Wish Workspace</div>
+                <p class="usecase-desc">
+                  Để tạo ra trang HTML Dashboard tương tác mà bạn đang xem, tổng hợp toàn bộ cây ý tưởng, biểu đồ thực thi và Kanban sprint.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Lệnh đọc các file metadata trong <code>_iwish-output/</code> và build thành file HTML tĩnh <code>_iwish-output/dashboard.html</code>. Bạn có thể mở trực tiếp trong trình duyệt để giám sát tiến độ thực tế của AI Agents.</li>
+                  <li><strong>Lệnh CLI biên dịch:</strong></li>
+                </ul>
+                <div class="cli-box">
+                  <span class="cli-cmd">iwish gen-dashboard</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('iwish gen-dashboard', this)">COPY</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+
   </div>
 
   <script type="text/javascript">
@@ -487,18 +1245,59 @@
     const nodesEdgesData = {NODES_EDGES_PLACEHOLDER};
     const sprintData = {SPRINT_DATA_PLACEHOLDER};
     const orchestrationData = {ORCHESTRATION_DATA_PLACEHOLDER};
-    const integrationGuide = {INTEGRATION_GUIDE_PLACEHOLDER};
 
     // Tab Switching
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       
-      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.toLowerCase().includes(tabId));
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        return onclickAttr.includes(`'${tabId}'`);
+      });
       if (activeBtn) activeBtn.classList.add('active');
       
       const contentEl = document.getElementById(`tab-${tabId}`);
       if (contentEl) contentEl.classList.add('active');
+    }
+
+    // Guide section scrolling
+    function scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const container = document.querySelector('.guide-main');
+      if (section && container) {
+        container.scrollTo({
+          top: section.offsetTop - container.offsetTop,
+          behavior: 'smooth'
+        });
+        
+        // Update active class in guide sidebar
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+          link.classList.remove('active-link');
+        });
+        const activeLink = Array.from(document.querySelectorAll('.sidebar-link')).find(link => {
+          const onclickAttr = link.getAttribute('onclick') || '';
+          return onclickAttr.includes(sectionId);
+        });
+        if (activeLink) activeLink.classList.add('active-link');
+      }
+    }
+
+    // CLI copy function
+    function copyCommand(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = 'COPIED!';
+        btn.style.background = 'var(--success)';
+        btn.style.color = '#fff';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.background = 'rgba(255, 255, 255, 0.1)';
+          btn.style.color = '#a6adc8';
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
     }
 
     // Tab 1: Idea Tree Setup (Hierarchical)
@@ -771,15 +1570,7 @@
       });
     }
 
-    // Tab 5: Integration Guide
-    function renderIntegrationGuide() {
-      const contentEl = document.getElementById('guide-renderer');
-      if (integrationGuide) {
-        contentEl.innerHTML = marked.parse(integrationGuide);
-      } else {
-        contentEl.innerHTML = '<p style="color:var(--text-muted);">No integration guide found.</p>';
-      }
-    }
+
 
     // Initialize all renders on load
     window.onload = () => {
@@ -787,7 +1578,6 @@
       renderFeatureGraph();
       renderSprintDashboard();
       renderOrchestrationGraph();
-      renderIntegrationGuide();
     };
   </script>
 </body>

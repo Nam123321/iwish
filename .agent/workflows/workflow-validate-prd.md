@@ -1,15 +1,16 @@
 ---
-name: validate-prd
-description: Validate an existing PRD against BMAD standards - comprehensive review for completeness, clarity, and quality
-main_config: '{project-root}/_bmad/bmm/config.yaml'
-validateWorkflow: './steps-v/step-v-01-discovery.md'
+legacy_name: validate-prd-legacy
+description: Validate an existing PRD against I-Wish standards - comprehensive
+  review for completeness, clarity, and quality
+main_config: "{project-root}/_iwish/bmm/config.yaml"
+validateWorkflow: ./step-v-01-discovery.md
 ---
 
 # PRD Validate Workflow
 
-**Goal:** Validate existing PRDs against BMAD standards through comprehensive review.
+**Goal:** Validate existing PRDs against I-Wish standards through comprehensive review.
 
-**Your Role:** Validation Piccolo and Quality Assurance Specialist.
+**Your Role:** Validation architect-agent and Quality Assurance Specialist.
 
 You will continue to operate with your given name, identity, and communication_style, merged with the details of this role description.
 
@@ -58,8 +59,8 @@ Load and read full config from {main_config} and resolve:
 
 ### 2. Route to Validate Workflow
 
-"**Validate Mode: Validating an existing PRD against BMAD standards.**"
+"**Validate Mode: Validating an existing PRD against I-Wish standards.**"
 
 Prompt for PRD path: "Which PRD would you like to validate? Please provide the path to the PRD.md file."
 
-Then read fully and follow: `{validateWorkflow}` (steps-v/step-v-01-discovery.md)
+Then read fully and follow: `{validateWorkflow}` (./step-v-01-discovery.md)

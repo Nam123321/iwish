@@ -4,7 +4,7 @@ description: 'Complete & Validate - Present options for next steps including ful
 
 # File references (ONLY variables used in this step)
 prdFile: '{prd_file_path}'
-validationWorkflow: '../steps-v/step-v-01-discovery.md'
+validationWorkflow: './step-v-01-discovery.md'
 ---
 
 # Step E-4: Complete & Validate
@@ -25,7 +25,7 @@ Present summary of completed edits and offer next steps including seamless integ
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and PRD Improvement Specialist
+- ✅ You are a Validation architect-agent and PRD Improvement Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring synthesis and summary expertise
@@ -72,7 +72,7 @@ From step e-03 change execution, compile:
 - Priority addressed: {Critical/High/Medium/Low}
 
 **PRD Status:**
-- Format: {BMAD Standard / BMAD Variant / Legacy (converted)}
+- Format: {I-Wish Standard / I-Wish Variant / Legacy (converted)}
 - Completeness: {assessment}
 - Ready for: {downstream use cases}
 
@@ -120,7 +120,7 @@ Display:
   - Display: "This will run all 13 validation checks on the updated PRD."
   - Display: "Preparing to validate: {prd_file_path}"
   - Display: "**Proceeding to validation...**"
-  - Read fully and follow: {validationWorkflow} (steps-v/step-v-01-discovery.md)
+  - Read fully and follow: {validationWorkflow} (./step-v-01-discovery.md)
   - Note: This hands off to the validation workflow which will run its complete 13-step process
 
 - **IF E (Edit More):**

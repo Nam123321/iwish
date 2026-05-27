@@ -1,5 +1,5 @@
 ---
-name: quick-dev-agent
+name: quick-dev-agent-persona
 description: Quick implementation and lightweight development
 role: Rapid prototyping and quick execution engineer
 ---

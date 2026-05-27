@@ -1,6 +1,7 @@
 ---
-name: 'register-skill-pack'
-description: 'Open customization module intake flow for external skills, skill packs, and hybrid repositories'
+name: register-skill-pack
+description: Open customization module intake flow for external skills, skill
+  packs, and hybrid repositories
 ---
 
 # /register-skill-pack

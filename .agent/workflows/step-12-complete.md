@@ -4,7 +4,7 @@ description: 'Complete the PRD workflow, update status files, and suggest next s
 
 # File References
 outputFile: '{planning_artifacts}/prd.md'
-validationFlow: '../steps-v/step-v-01-discovery.md'
+validationFlow: './step-v-01-discovery.md'
 ---
 
 # Step 12: Workflow Completion
@@ -87,7 +87,7 @@ Offer validation workflows to ensure PRD is ready for implementation:
 
 ### 4. Suggest Next Workflows
 
-PRD complete. Read fully and follow: `_bmad/core/tasks/help.md` with argument `Create PRD`.
+PRD complete. Read fully and follow: `_iwish/core/tasks/help.md` with argument `Create PRD`.
 
 ### 5. Final Completion Confirmation
 

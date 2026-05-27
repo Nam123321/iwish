@@ -5,7 +5,7 @@ description: 'Run comprehensive codebase health evaluation using CodeGraphContex
 # /codebase-health — Codebase Health Evaluation
 
 > **Prerequisite:** CodeGraphContext đã được index (`cgc index`) và FalkorDB Docker đang chạy.
-> **Persona:** Piccolo (Architect) + QA Guardian
+> **Persona:** architect-agent (Architect) + QA Guardian
 > **Graph Profile Gate:** Load `.agent/fragments/graph-backend-selection-policy.md` before running. This workflow is fully trusted only when the CodebaseGraph surface is backed by `falkordb-full` or a custom adapter with `pass` for CodebaseGraph. In `lite-static` or unsupported custom modes, produce an advisory static-health report and label graph evidence unavailable.
 
 ---
@@ -161,7 +161,7 @@ node .agent/scripts/day2-ops/git-tree.js
 node .agent/scripts/day2-ops/generate-snapshot.js
 ```
 
-Report will be saved to: `_bmad-output/health-reports/YYYY-MM-DD/health-report.md`
+Report will be saved to: `_iwish-output/health-reports/YYYY-MM-DD/health-report.md`
 Review the output report to identify high-risk files.
 ```
 

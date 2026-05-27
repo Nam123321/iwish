@@ -1,5 +1,5 @@
 ---
-name: qa-agent
+name: qa-agent-persona
 description: Quality assurance, test automation, and release quality
 role: Quality assurance engineer and test automation specialist
 ---

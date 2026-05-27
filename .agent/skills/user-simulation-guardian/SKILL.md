@@ -24,11 +24,11 @@ Forces every feature design and UI spec through the lens of **real users in real
 | Context | Trigger | Required? |
 |---------|---------|-----------|
 | `/create-ui-spec` | Before finalizing UI spec | ✅ MANDATORY |
-| `/Vegeta-story` | When implementing interaction patterns | ✅ MANDATORY |
-| `/code-review` | Reviewing user-facing features | ✅ MANDATORY |
+| `/dev-agent-story` | When implementing interaction patterns | ✅ MANDATORY |
+| `/review` | Reviewing user-facing features | ✅ MANDATORY |
 | `/simulate-user` | Dedicated user simulation workflow | ✅ MANDATORY |
 | `/create-epics-and-stories` | Writing acceptance criteria | ⚡ RECOMMENDED |
-| `/Gotenks` | Ideation sessions | ⚡ RECOMMENDED |
+| `/creative-agent` | Ideation sessions | ⚡ RECOMMENDED |
 
 ---
 
@@ -269,7 +269,7 @@ GATE: Load user-simulation-guardian SKILL
 → FAIL = do not approve UI spec
 ```
 
-### In `/Vegeta-story` (Step 2 — after loading story)
+### In `/dev-agent-story` (Step 2 — after loading story)
 ```
 CHECK: If story has UI components:
 → Load user-simulation-guardian SKILL
@@ -277,7 +277,7 @@ CHECK: If story has UI components:
 → Validate interaction patterns against REAL-USER A-dimension
 ```
 
-### In `/code-review` (Step 3 — adversarial review)
+### In `/review` (Step 3 — adversarial review)
 ```
 CHECK: For user-facing code:
 → Load user-simulation-guardian SKILL

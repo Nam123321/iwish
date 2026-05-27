@@ -121,7 +121,7 @@ In `{planning_artifacts}/feature-hierarchy.md`:
 ## Directory Structure
 
 ```
-_bmad-output/mkt-materials/
+_iwish-output/mkt-materials/
 ├── screenshots/
 │   ├── admin-portal/
 │   │   ├── dashboard/

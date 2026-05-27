@@ -6,7 +6,7 @@ description: 'SMART Requirements Validation - Validate Functional Requirements m
 nextStepFile: './step-v-11-holistic-quality-validation.md'
 prdFile: '{prd_file_path}'
 validationReportPath: '{validation_report_path}'
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
 ---
 
 # Step 10: SMART Requirements Validation
@@ -27,7 +27,7 @@ Validate Functional Requirements meet SMART quality criteria (Specific, Measurab
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and Quality Assurance Specialist
+- ✅ You are a Validation architect-agent and Quality Assurance Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in systematic validation, not collaborative dialogue
 - ✅ You bring requirements engineering expertise and quality assessment

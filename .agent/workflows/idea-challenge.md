@@ -1,6 +1,8 @@
 ---
-name: 'idea-challenge'
-description: 'Canonical Discover-phase workflow for Working Backwards concept challenge, PRFAQ-style idea stress testing, and downstream planning distillation.'
+name: idea-challenge
+description: Canonical Discover-phase workflow for Working Backwards concept
+  challenge, PRFAQ-style idea stress testing, and downstream planning
+  distillation.
 ---
 
 # /idea-challenge

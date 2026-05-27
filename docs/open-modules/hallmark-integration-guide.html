@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hallmark Integration Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1e1b4b 100%);
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #818cf8;
+      --accent-glow: rgba(129, 140, 248, 0.15);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #a5b4fc, #c084fc, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(129, 140, 248, 0.3);
+      transform: translateY(-2px);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.75rem;
+      color: #f9fafb;
+      border-left: 5px solid var(--accent);
+      padding-left: 1rem;
+    }
+
+    p {
+      color: #d1d5db;
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    ul, ol {
+      margin-left: 1.75rem;
+      margin-bottom: 1.75rem;
+      color: #d1d5db;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+      font-size: 1.05rem;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'Fira Code', 'Courier New', Courier, monospace;
+      color: #f472b6;
+      font-size: 0.9em;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.75rem;
+      border-radius: 14px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.75rem;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: #38bdf8;
+      font-size: 0.95rem;
+      border: none;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 1.25rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .meta-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      color: #f9fafb;
+      font-size: 1.1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.75rem;
+    }
+
+    th, td {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.07em;
+    }
+
+    td {
+      color: #d1d5db;
+      font-size: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-primary { background: rgba(129, 140, 248, 0.2); color: #a5b4fc; border: 1px solid rgba(129, 140, 248, 0.3); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .highlight-box {
+      border: 1px dashed var(--accent);
+      background: var(--accent-glow);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.75rem;
+    }
+
+    .warning-box {
+      border: 1px dashed var(--warning);
+      background: rgba(245, 158, 11, 0.05);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.75rem;
+    }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .step-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 1.25rem;
+      border-radius: 12px;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .step-num {
+      background: var(--accent-glow);
+      color: var(--accent);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      border: 1px solid var(--accent);
+    }
+
+    .step-content h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: #f9fafb;
+    }
+
+    .step-content p {
+      font-size: 0.95rem;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Hallmark</h1>
+      <div class="subtitle">Adoption Review Pack &amp; Integration Guide</div>
+    </header>
+
+    <div class="card">
+      <h2>1. What is it</h2>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Name</div>
+          <div class="meta-value">Hallmark</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">State</div>
+          <div class="meta-value"><span class="badge badge-success">Approved</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Shape</div>
+          <div class="meta-value">Prompt Collection / Rules</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Visual DNA &amp; Aesthetic QA</div>
+        </div>
+      </div>
+      <p>Source Repository: <a href="https://github.com/nutlope/hallmark" style="color: var(--accent); text-decoration: none;">github.com/nutlope/hallmark</a></p>
+    </div>
+
+    <div class="card">
+      <h2>2. Why it exists</h2>
+      <p><strong>Problem 1: Fragmented &amp; Fragile Cloners.</strong> Standard website cloning utilities like <code>clone-website</code> attempt to duplicate DOM structures and raw styles synchronously. This breaks easily under Single Page Applications (SPAs), introduces heavy inline styles, and lacks responsive structural adaptation.</p>
+      <p><strong>Problem 2: The "AI Design" Tell.</strong> AI-generated layouts are notoriously sloppy. They frequently suffer from generic typeface pairings (e.g., standard Inter/Roboto combos), default linear gradients (purple-to-blue), lazy transition timing (<code>transition-all</code> on everything), lack of state feedback (no active, focus, or disabled states), and uneven margins.</p>
+      <p><strong>Solution:</strong> Hallmark introduces <strong>Design DNA Study Mode</strong>, which extracts layout skeleton rules, colors, and rhythm without duplicating pixel-for-pixel code. It then builds code utilizing clean, modern tokens, and verifies the layout against a <strong>69-Gate Slop Test</strong> and enforces an **8-State Interactive Preview**.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. Delivery Framework Placement</h2>
+      <ul>
+        <li><strong>Phases Helped:</strong> <code>design</code>, <code>implement</code>, <code>validate</code></li>
+        <li><strong>Stages Served:</strong> UI Specification &amp; Theme Setup, Frontend Implementation, Visual Verification</li>
+        <li><strong>Classification:</strong> <code>supportive</code> design auditor and layout refiner.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>4. Use Cases</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-primary">Core</span></td>
+            <td>Extracting design layout guides from reference links/images; Enforcing clean, tokenized CSS; Auditing generated code for "AI tells" (bad padding, purple-to-blue text gradients).</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-success">Adjacent</span></td>
+            <td>Ensuring responsive pages survive widths from 320px to 1920px without horizontal scrollbars; Verification of 8 active interactive CSS states.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-warning">Exclusions</span></td>
+            <td>Generating backend routing or business logic; Rebuilding pixel-perfect copyrighted images/illustrations.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>5. The 5-Step DNA Study Protocol</h2>
+      <p>When analyzing a reference site, Hallmark follows a strict, sequential pipeline to decode the visual skeleton:</p>
+      <div class="step-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Surface (Color &amp; Vibe)</h3>
+            <p>Analyzes paper lightness bands (dark/light/mid), background color temperature, anchor accent hue, and accent footprint percentage.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Type (Typography Roles)</h3>
+            <p>Maps typefaces to roles: Display role (e.g., italic editorial serif), Body role (e.g., neutral grotesque), and Label role (e.g., monospace). Records exact names in URL mode.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Structure (Layout Archetypes)</h3>
+            <p>Identifies layout skeletons (e.g., Bento Grid, Split Studio, Hero Specimen) and component layout knobs.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Motion (Keyframes &amp; Interactions)</h3>
+            <p>Reads libraries loaded (GSAP, Lenis, Framer Motion) and custom `@keyframes` variables.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h3>Rhythm (Spacing &amp; Density)</h3>
+            <p>Gauges visual tension, negative space, and padding scale. (Marked as a blind spot in URL Mode).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. Constraints &amp; Edge Cases</h2>
+      <div class="warning-box">
+        <p><strong>URL Mode Rhythm Blind Spot:</strong> WebFetch parses HTML source code, meaning it cannot visualize actual layout margins and padding density. Rhythm defaults to <code>unknown (URL mode)</code>. Attach a screenshot alongside the URL if spacing analysis is required.</p>
+        <p><strong>Empty SPA Mounts:</strong> Pages rendered entirely client-side (e.g., standard Create React App, Webflow redirects) fail on fetch as only the initial script mount tag is returned. Hallmark fallbacks to screenshot image input.</p>
+        <p><strong>Context Window Tax:</strong> Hallmark's full design prompts are extremely large (~350KB total). Injected dynamically into every prompt, they cause slow processing. We mitigate this by extracting key rules and adding them to targeted <code>UX Guardian</code> profiles.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. Example: 8-State Interactive CSS Pattern</h2>
+      <p>Hallmark mandates that every interactive element defines styling for all eight key interactive states to ensure a premium UX. Here is an example of an integrated CSS component:</p>
+      <pre><code>/* Button - 8 States Enforced */
+.btn-action {
+  /* 1. Default State */
+  background-color: oklch(0.65 0.2 260);
+  color: #ffffff;
+  border-radius: 8px;
+  transition: background-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-action:hover {
+  /* 2. Hover State */
+  background-color: oklch(0.58 0.2 260);
+}
+
+.btn-action:active {
+  /* 3. Active State */
+  background-color: oklch(0.5 0.2 260);
+}
+
+.btn-action:focus-visible {
+  /* 4. Focus State */
+  outline: 2px solid oklch(0.65 0.2 260);
+  outline-offset: 3px;
+}
+
+.btn-action:disabled {
+  /* 5. Disabled State */
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Modifier classes for advanced states */
+.btn-action.is-loading {
+  /* 6. Loading State */
+  cursor: wait;
+}
+
+.btn-action.is-selected {
+  /* 7. Selected State */
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.btn-action.has-error {
+  /* 8. Error State */
+  background-color: var(--danger);
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>8. User Review Questions</h2>
+      <ol>
+        <li>Do you want the 8-state component preview generation (via <code>.preview.html</code>) to be automatically run for all frontend tickets, or only when explicitly requested?</li>
+        <li>How strictly should we block builds that fail our visual anti-slop checks (e.g. use of pure black/white background colors, default transition-all definitions)?</li>
+        <li>For reference site imports, would you prefer using screenshots by default to ensure Rhythm/negative space analysis is always included?</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,17 +1,17 @@
 ---
-name: 'research'
-description: 'Canonical short workflow for market, domain, and technical research routing'
+name: research
+description: Canonical short workflow for market, domain, and technical research routing
 ---
 
 # /research
 
 Canonical workflow entry for research.
 
-If the ask is market-oriented, read and execute: `bmad-bmm-market-research.md`
+If the ask is market-oriented, read and execute: `iwish-feature-market-research.md`
 
-If the ask is domain-oriented, read and execute: `bmad-bmm-domain-research.md`
+If the ask is domain-oriented, read and execute: `iwish-feature-domain-research.md`
 
-If the ask is technical-oriented, read and execute: `bmad-bmm-technical-research.md`
+If the ask is technical-oriented, read and execute: `iwish-feature-technical-research.md`
 
 If `/research` is being called as part of an `idea-challenge` chain, feed the evidence back into:
 

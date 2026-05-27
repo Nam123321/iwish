@@ -91,7 +91,7 @@ a) Update `{wipFile}` frontmatter:
    ```yaml
    ---
    # ... existing values ...
-   status: 'ready-for-Vegeta'
+   status: 'ready-for-dev-agent'
    stepsCompleted: [1, 2, 3, 4]
    ---
    ```
@@ -118,19 +118,19 @@ Saved to: {finalFile}
 [R] Adversarial Review - critique of the spec (highly recommended)
 [B] Begin Development - start implementing now (not recommended)
 [D] Done - exit workflow
-[P] Party Mode - get expert feedback before Vegeta
+[P] Party Mode - get expert feedback before dev-agent
 
 ---
 
 Once you are fully satisfied with the spec (ideally after **Adversarial Review** and maybe a few rounds of **Advanced Elicitation**), it is recommended to run implementation in a FRESH CONTEXT for best results.
 
-Copy this prompt to start Vegeta:
+Copy this prompt to start dev-agent:
 
 \`\`\`
-quick-Vegeta {finalFile}
+quick-dev-agent {finalFile}
 \`\`\`
 
-This ensures the Vegeta agent has clean context focused solely on implementation.
+This ensures the dev-agent agent has clean context focused solely on implementation.
 ```
 
 b) **HALT and wait for user selection.**
@@ -153,7 +153,7 @@ b) **HALT and wait for user selection.**
 
 1. **Invoke Adversarial Review Task**:
        > With `{finalFile}` constructed, load and follow the review task. If possible, use information asymmetry: load this task, and only it, in a separate subagent or process with read access to the project, but no context except the `{finalFile}`.
-       <invoke-task>Review {finalFile} using {project-root}/_bmad/core/tasks/review-adversarial-general.xml</invoke-task>
+       <invoke-task>Review {finalFile} using {project-root}/_iwish/core/tasks/review-adversarial-general.xml</invoke-task>
        > **Platform fallback:** If task invocation not available, load the task file and follow its instructions inline, passing `{finalFile}` as the content.
        > The task should: review `{finalFile}` and return a list of findings.
 
@@ -179,7 +179,7 @@ b) **HALT and wait for user selection.**
 When you're ready to implement, run:
 
 ```
-quick-Vegeta {finalFile}
+quick-dev-agent {finalFile}
 ```
 
 Ship it!"
@@ -188,9 +188,9 @@ Ship it!"
 
 ## REQUIRED OUTPUTS:
 
-- MUST update status to 'ready-for-Vegeta'.
+- MUST update status to 'ready-for-dev-agent'.
 - MUST rename file to `tech-spec-{slug}.md`.
-- MUST provide clear next-step guidance and recommend fresh context for Vegeta.
+- MUST provide clear next-step guidance and recommend fresh context for dev-agent.
 
 ## VERIFICATION CHECKLIST:
 

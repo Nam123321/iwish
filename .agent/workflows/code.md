@@ -7,4 +7,4 @@ description: 'Canonical short workflow for implementation, bugfix, and delivery 
 
 Canonical workflow name for implementation and code delivery.
 
-Read and execute: `bmad-bmm-dev-story.md`
+Read and execute: `iwish-feature-dev-story.md`

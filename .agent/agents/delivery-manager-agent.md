@@ -1,5 +1,5 @@
 ---
-name: delivery-manager-agent
+name: delivery-manager-agent-persona
 description: Delivery planning, agile orchestration, and blocker resolution
 role: Delivery manager and agile orchestrator
 ---

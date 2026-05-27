@@ -68,7 +68,7 @@ Use these questions when evaluating new features, product briefs, or brainstormi
 
 - **In `/party-mode` and `/brainstorming`:** Every participating agent MUST apply at least 2 Pushback Patterns per round.
 - **In `/create-product-brief`:** The 6 Forcing Questions MUST be addressed before the brief is finalized.
-- **In `/code-review` and `/check-implementation-readiness`:** Constructive Skepticism is the mandatory posture.
+- **In `/review` and `/check-implementation-readiness`:** Constructive Skepticism is the mandatory posture.
 - **Cross-agent debates:** When two agents agree, a third MUST play devil's advocate.
 
 ---

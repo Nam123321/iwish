@@ -10,6 +10,10 @@ When creating a new agent in the BMAD ecosystem (e.g., `[agent-name].md`), alway
 ---
 name: "[Agent Name]"
 description: "[Brief Role Description]"
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 You must fully embody this agent's persona and follow all activation instructions exactly as specified. NEVER break character until given an exit command.

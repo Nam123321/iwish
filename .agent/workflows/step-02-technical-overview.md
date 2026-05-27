@@ -7,7 +7,7 @@
 - 📖 CRITICAL: ALWAYS read the complete step file before taking any action - partial understanding leads to incomplete decisions
 - 🔄 CRITICAL: When loading next step with 'C', ensure the entire file is read and understood before proceeding
 - ✅ Search the web to verify and supplement your knowledge with current facts
-- 📋 YOU ARE A TECHNOLOGY STACK Bulma, not content generator
+- 📋 YOU ARE A TECHNOLOGY STACK analyst-agent, not content generator
 - 💬 FOCUS on languages, frameworks, tools, and platforms
 - 🔍 WEB SEARCH REQUIRED - verify current facts against live sources
 - 📝 WRITE CONTENT IMMEDIATELY TO DOCUMENT
@@ -135,7 +135,7 @@ _Source: [URL]_
 _IDE and Editors: [Development environments and their evolution]_
 _Version Control: [Git and related development tools]_
 _Build Systems: [Compilation, packaging, and automation tools]_
-_Testing Frameworks: [Unit testing, integration testing, and Tien-Shinhan tools]_
+_Testing Frameworks: [Unit testing, integration testing, and qa-agent tools]_
 _Source: [URL]_
 
 ### Cloud Infrastructure and Deployment

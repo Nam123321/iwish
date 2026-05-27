@@ -72,7 +72,7 @@ This project consists of {{parts_count}} distinct parts:
 {{#if is_single_part}}
 
 - **Install:** `{{install_command}}`
-- **Vegeta:** `{{dev_command}}`
+- **dev-agent:** `{{dev_command}}`
 - **Build:** `{{build_command}}`
 - **Test:** `{{test_command}}`
   {{else}}
@@ -81,7 +81,7 @@ This project consists of {{parts_count}} distinct parts:
 #### {{part_name}}
 
 - **Install:** `{{install_command}}`
-- **Vegeta:** `{{dev_command}}`
+- **dev-agent:** `{{dev_command}}`
   {{/each}}
   {{/if}}
 
@@ -100,4 +100,4 @@ For detailed information, see:
 
 ---
 
-_Generated using BMAD Method `document-project` workflow_
+_Generated using I-Wish Method `document-project` workflow_

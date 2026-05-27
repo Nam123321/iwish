@@ -4,8 +4,8 @@ description: 'Document Discovery & Confirmation - Handle fresh context validatio
 
 # File references (ONLY variables used in this step)
 nextStepFile: './step-v-02-format-detection.md'
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 prdPurpose: '../data/prd-purpose.md'
 ---
 
@@ -27,7 +27,7 @@ Handle fresh context validation by confirming PRD path, discovering and loading 
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and Quality Assurance Specialist
+- ✅ You are a Validation architect-agent and Quality Assurance Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring systematic validation expertise and analytical rigor
@@ -63,7 +63,7 @@ Handle fresh context validation by confirming PRD path, discovering and loading 
 Load and read the complete file at:
 `{prdPurpose}`
 
-This file contains the BMAD PRD philosophy, standards, and validation criteria that will guide all validation checks. Internalize this understanding - it defines what makes a great BMAD PRD.
+This file contains the I-Wish PRD philosophy, standards, and validation criteria that will guide all validation checks. Internalize this understanding - it defines what makes a great I-Wish PRD.
 
 ### 2. Discover PRD to Validate
 

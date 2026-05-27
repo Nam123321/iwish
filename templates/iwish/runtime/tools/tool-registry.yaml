@@ -32,6 +32,9 @@ groups:
       - id: falkordb-full
         description: Full graph-backed codebase, feature, and knowledge surfaces. Pair with graph-ops usage workflows for mature orchestration.
         usage_pack_status: default-pack
+      - id: antigravity-memory
+        description: Native Google Antigravity 2.0 memory and knowledge graph harness integration.
+        usage_pack_status: default-pack
       - id: lite-static
         description: Low-setup fallback that treats graph evidence as advisory. Pair with graph-ops usage workflows for mature orchestration.
         usage_pack_status: default-pack
@@ -44,3 +47,4 @@ groups:
       - id: custom-adapter
         description: Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.
         usage_pack_status: adapter-only
+

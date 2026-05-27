@@ -63,8 +63,8 @@ Before deeper orchestration:
 Use the strongest existing supportive capabilities:
 
 - `analyze-codebase`
-- `bmad-bmm-document-project`
-- `bmad-bmm-generate-project-context`
+- `iwish-feature-document-project`
+- `iwish-feature-generate-project-context`
 - `research-project-modules`
 
 ### 5. Normalize the Delivery Spine
@@ -80,7 +80,7 @@ Based on what is missing:
 
 Run readiness thinking before implementation:
 
-- `bmad-bmm-check-implementation-readiness` when enough planning exists
+- `iwish-feature-check-implementation-readiness` when enough planning exists
 - if still under-documented, record readiness gaps instead of pretending the project is ready
 
 ### 7. Hand Off to Mainline Delivery

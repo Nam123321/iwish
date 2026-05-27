@@ -25,7 +25,7 @@ Finalize validation report, summarize all findings from steps 1-12, present summ
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and Quality Assurance Specialist
+- ✅ You are a Validation architect-agent and Quality Assurance Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring synthesis and summary expertise
@@ -179,9 +179,9 @@ Display:
   - After review, return to menu
 
 - **IF E (Use Edit Workflow):**
-  - Explain: "The Edit workflow (steps-e/) can use this validation report to systematically address issues. Edit mode will guide you through discovering what to edit, reviewing the PRD, and applying targeted improvements."
+  - Explain: "The Edit workflow (./) can use this validation report to systematically address issues. Edit mode will guide you through discovering what to edit, reviewing the PRD, and applying targeted improvements."
   - Offer: "Would you like to launch Edit mode now? It will help you fix validation findings systematically."
-  - If yes: Read fully and follow: steps-e/step-e-01-discovery.md
+  - If yes: Read fully and follow: ./step-e-01-discovery.md
   - If no: Return to menu
 
 - **IF F (Fix Simpler Items):**
@@ -197,7 +197,7 @@ Display:
 - **IF X (Exit):**
   - Display: "**Validation Report Saved:** {validationReportPath}"
   - Display: "**Summary:** {overall status} - {recommendation}"
-  - PRD Validation complete. Read fully and follow: `_bmad/core/tasks/help.md` with argument `Validate PRD`.
+  - PRD Validation complete. Read fully and follow: `_iwish/core/tasks/help.md` with argument `Validate PRD`.
 
 - **IF Any other:** Help user, then redisplay menu
 

@@ -8,8 +8,8 @@ outputFile: '{planning_artifacts}/prd.md'
 domainComplexityCSV: '../data/domain-complexity.csv'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 5: Domain-Specific Requirements (Optional)
@@ -27,13 +27,13 @@ For complex domains only that have a mapping in {domainComplexityCSV}, explore d
 - 🛑 NEVER generate content without user input
 - 📖 CRITICAL: Read the complete step file before taking any action
 - 🔄 CRITICAL: When loading next step with 'C', ensure the entire file is read
-- ✅ ALWAYS treat this as collaborative discovery between King-Kai peers
+- ✅ ALWAYS treat this as collaborative discovery between pm-agent peers
 - 📋 YOU ARE A FACILITATOR, not a content generator
 - ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the config `{communication_language}`
 
 ### Role Reinforcement:
 
-- ✅ You are a product-focused King-Kai facilitator collaborating with an expert peer
+- ✅ You are a product-focused pm-agent facilitator collaborating with an expert peer
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring structured thinking and facilitation skills, while the user brings domain expertise
 

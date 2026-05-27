@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pretext Integration Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #e2e8f0;
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+    }
+
+    p {
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #cbd5e1;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #f472b6;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: #38bdf8;
+      font-size: 0.95rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .meta-item {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .meta-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      color: #cbd5e1;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-primary { background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .highlight-box {
+      border: 1px dashed var(--accent);
+      background: var(--accent-glow);
+      padding: 1.25rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .warning-box {
+      border: 1px dashed var(--warning);
+      background: rgba(245, 158, 11, 0.05);
+      padding: 1.25rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>pretext</h1>
+      <div class="subtitle">Adoption Review Pack &amp; Integration Guide</div>
+    </header>
+
+    <div class="card">
+      <h2>1. What is it</h2>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Name</div>
+          <div class="meta-value">pretext</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">State</div>
+          <div class="meta-value"><span class="badge badge-success">Approved</span></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Shape</div>
+          <div class="meta-value">Library / Utility</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Text Layout Engine</div>
+        </div>
+      </div>
+      <p>Source Repository: <a href="https://github.com/chenglou/pretext" style="color: var(--accent);">github.com/chenglou/pretext</a></p>
+    </div>
+
+    <div class="card">
+      <h2>2. Why it exists</h2>
+      <p><strong>Problem:</strong> Standard DOM-based text measurement (e.g. <code>getBoundingClientRect()</code>) triggers expensive browser layout reflows, causing substantial scroll jank and framerate drops when rendering dynamic lists.</p>
+      <p><strong>Solution:</strong> Pretext implements a custom multiline text layout and measurement library in pure JS/TS. It shapes segments off-screen using a single Canvas context, cache-stores the metrics, and wraps lines using arithmetic calculations without ever touching the DOM.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. Delivery Framework Placement</h2>
+      <ul>
+        <li><strong>Phases Helped:</strong> <code>implement</code>, <code>validate</code></li>
+        <li><strong>Stages Served:</strong> UI &amp; Layout implementation, Visual validation</li>
+        <li><strong>Role:</strong> <code>supportive</code> client utility library.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>4. Use Cases</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-primary">Core</span></td>
+            <td>Virtualized scroll lists sizing, Masonry layouts, Obstacle-aware text routing (flowing text around shapes).</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-success">Adjacent</span></td>
+            <td>Offline visual checks: validating whether text buttons or badges overflow/wrap without running a browser session.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-warning">Exclusions</span></td>
+            <td>Full WYSIWYG markup rendering, Node.js backend rendering lacking a canvas implementation, system-ui font stacks.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>5. Constraints &amp; Edge Cases</h2>
+      <div class="warning-box">
+        <p><strong>macOS Canvas Emoji discrepancy:</strong> Chrome and Firefox canvas measures emoji wider than DOM at font sizes &lt;24px on macOS. Pretext addresses this by executing a one-time DOM calibration read, creating an intermittent DOM dependency.</p>
+        <p><strong>System Fonts:</strong> The <code>system-ui</code> macOS font stack resolves differently in Canvas vs. DOM. Use named fonts for guaranteed accuracy.</p>
+        <p><strong>Intl.Segmenter:</strong> The engine requires browser support for <code>Intl.Segmenter</code>. Runtimes without it must be polyfilled.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. Example usage</h2>
+      <pre><code>import { prepare, layout } from '@chenglou/pretext'
+
+// Phase 1: Prepare (Heavy calculation run once)
+const prepared = prepare('AGI 春天到了. بدأت الرحلة 🚀', '16px Inter')
+
+// Phase 2: Layout (Super fast arithmetic on resize)
+const { height, lineCount } = layout(prepared, 320, 20)</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>7. User Review Questions</h2>
+      <ol>
+        <li>Are you planning to run layout measurements in backend environments (e.g. Node serverless)? If yes, ensure Canvas polyfills are registered.</li>
+        <li>Does your font stack use macOS system font stacks? If yes, consider switching to named webfonts to prevent layout variance.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

@@ -30,8 +30,8 @@ This step will generate content and present choices:
 
 ## PROTOCOL INTEGRATION:
 
-- When 'A' selected: Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml
-- When 'P' selected: Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md
+- When 'A' selected: Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml
+- When 'P' selected: Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md
 - PROTOCOLS always return to this step's A/P/C menu
 - User accepts/rejects protocol changes before proceeding
 
@@ -83,7 +83,7 @@ The specialist response MUST use the standard output contract:
 - `Implementation Checklist`
 - `Conflict Status`
 - `Winning Authority`
-- `BMAD Conflict Check`
+- `I-Wish Conflict Check`
 - `Next Workflow Use`
 
 Brand-guideline guard:
@@ -146,7 +146,7 @@ Synthesize all visual decisions:
 
 - [Summarize specialist recommendation using the standard output contract]
 - Label clearly as `seed direction`
-- Note any `Conflict Status`, `Winning Authority`, and `BMAD Conflict Check`
+- Note any `Conflict Status`, `Winning Authority`, and `I-Wish Conflict Check`
 - If brand guidelines constrained the recommendation, state that explicitly
 
 **Color System:**
@@ -192,7 +192,7 @@ Anti-Patterns: [from specialist output]
 Implementation Checklist: [from specialist output]
 Conflict Status: [from specialist output]
 Winning Authority: [from specialist output]
-BMAD Conflict Check: [from specialist output]
+I-Wish Conflict Check: [from specialist output]
 Next Workflow Use: [from specialist output]
 
 Advisory Status: Seed direction only - not final source of truth before Design System Gate and approved Stitch artifacts.
@@ -232,7 +232,7 @@ Show the generated visual foundation content and present choices:
 
 #### If 'A' (Advanced Elicitation):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml with the current visual foundation content
+- Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml with the current visual foundation content
 - Process the enhanced visual insights that come back
 - Ask user: "Accept these improvements to the visual foundation? (y/n)"
 - If yes: Update content with improvements, then return to A/P/C menu
@@ -240,7 +240,7 @@ Show the generated visual foundation content and present choices:
 
 #### If 'P' (Party Mode):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md with the current visual foundation
+- Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md with the current visual foundation
 - Process the collaborative visual insights that come back
 - Ask user: "Accept these changes to the visual foundation? (y/n)"
 - If yes: Update content with improvements, then return to A/P/C menu
@@ -260,7 +260,7 @@ When user selects 'C', append the content directly to the document using the str
 
 ✅ Brand guidelines assessed and incorporated if available
 ✅ Specialist invoked only when product type, target users, and emotional response are known
-✅ Specialist output captured with the standard BMAD contract
+✅ Specialist output captured with the standard I-Wish contract
 ✅ Seed direction clearly labeled as advisory only
 ✅ Color system established with accessibility consideration
 ✅ Typography system defined with appropriate hierarchy

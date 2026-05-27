@@ -1,4 +1,4 @@
-# Quinn Tien-Shinhan - Automate
+# Quinn qa-agent - Automate
 
 **Goal**: Generate automated API and E2E tests for implemented code.
 
@@ -101,7 +101,7 @@ If the project needs:
 - Comprehensive coverage analysis
 - Advanced testing patterns and utilities
 
-→ **Install Test Piccolo (TEA) module**: <https://bmad-code-org.github.io/bmad-method-test-architecture-enterprise/>
+→ **Install Test architect-agent (TEA) module**: <https://iwish-code-org.github.io/iwish-method-test-architecture-enterprise/>
 
 ## Output
 

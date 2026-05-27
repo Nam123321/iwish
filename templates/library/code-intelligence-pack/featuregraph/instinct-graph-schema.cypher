@@ -1,6 +1,6 @@
 -- ============================================================
 -- Instinct Graph Schema Extension for FeatureGraph
--- Part of BMAD Capability Management (Whis)
+-- Part of I-Wish Capability Management (capability-agent)
 -- ============================================================
 -- IMPORTANT: All queries MUST use: GRAPH.QUERY featuregraph "..."
 -- This schema extends the existing FeatureGraph with learning nodes.
@@ -9,7 +9,7 @@
 -- ===================== INSTINCT NODES ========================
 -- Source: .agent/memory/instincts.jsonl
 -- Created by: Any agent after fix-bug, code-review, ad-hoc chat
--- Consumed by: Whis during /enhance-skill evolution cycles
+-- Consumed by: capability-agent during /enhance-skill evolution cycles
 
 CREATE (:Instinct {
   id: "inst_001",
@@ -25,7 +25,7 @@ CREATE (:Instinct {
 
 -- ===================== SKILL NODES ===========================
 -- Represents a distilled SKILL.md file in .agent/skills/
--- Created when Whis clusters instincts into a permanent capability
+-- Created when capability-agent clusters instincts into a permanent capability
 
 CREATE (:Skill {
   name: "prisma-best-practices",
@@ -48,7 +48,7 @@ CREATE (i)-[:AFFECTS {
 MATCH (i:Instinct {id: "inst_001"}), (de:DataEntity {name: "PricingStrategy"})
 CREATE (i)-[:AFFECTS]->(de)
 
--- Instinct RESOLVED_IN Skill (after Whis clusters and evolves)
+-- Instinct RESOLVED_IN Skill (after capability-agent clusters and evolves)
 MATCH (i:Instinct {id: "inst_001"}), (sk:Skill {name: "prisma-best-practices"})
 CREATE (i)-[:RESOLVED_IN {
   resolved_at: "2026-04-07",
@@ -58,11 +58,11 @@ CREATE (i)-[:RESOLVED_IN {
 -- Skill ENHANCES Agent (tracks which agent persona benefits)
 -- Optional: for telemetry and evolution tracking
 MATCH (sk:Skill {name: "prisma-best-practices"})
-CREATE (sk)-[:ENHANCES {target_agent: "vegeta", target_file: ".agent/agents/vegeta.md"}]->(:AgentRef {name: "vegeta"})
+CREATE (sk)-[:ENHANCES {target_agent: "dev-agent", target_file: ".agent/agents/dev-agent.md"}]->(:AgentRef {name: "dev-agent"})
 
 -- =================== QUERY TEMPLATES =========================
 
--- Q1: Get all unresolved instincts (for Whis evolution cycle)
+-- Q1: Get all unresolved instincts (for capability-agent evolution cycle)
 -- GRAPH.QUERY featuregraph "MATCH (i:Instinct) WHERE i.resolved = false RETURN i ORDER BY i.sev DESC"
 
 -- Q2: Get instinct hotspots (most affected features)

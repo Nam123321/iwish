@@ -2,6 +2,8 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import chalk from 'chalk';
 import YAML from 'yaml';
+import * as os from 'os';
+import { validateFrontmatter } from './schema-validator';
 
 import {
   CAPABILITY_TEMPLATE_ROOT,
@@ -16,6 +18,7 @@ import {
   RUNTIME_TEMPLATE_ROOT,
   RuntimeNamespace,
   SUPPORTED_INSTALL_TARGETS,
+  getPlatformMode,
 } from './constants';
 import { getReconciliationStatus } from './reconciliation';
 import { generateReviewPack, ReviewPackKind, ReviewPackRole } from './review-pack';
@@ -325,6 +328,22 @@ async function materializeAgentAssets(projectRoot: string, overwrite = false): P
         status = 'updated';
       }
     }
+    
+    // Story 3.1: Enforce frontmatter validation checks on materialization
+    if (relative.startsWith('agents/') && relative.endsWith('.md')) {
+      try {
+        const finalContent = await fs.readFile(destination, 'utf8');
+        validateFrontmatter(finalContent, destination);
+      } catch (err: any) {
+        if (status === 'created' || status === 'updated') {
+          console.error(chalk.red(`[Schema Error] Agent validation failed for ${relative}: ${err.message}`));
+          throw err;
+        } else {
+          console.warn(chalk.yellow(`[Schema Warning] Agent validation failed for ${relative}: ${err.message}`));
+        }
+      }
+    }
+
     results.push({ file: destination, status });
   }
 
@@ -456,6 +475,7 @@ export function getStatus(projectRoot: string) {
       agentAliases: LEGACY_AGENT_ALIASES,
       commandAliases: LEGACY_COMMAND_ALIASES,
     },
+    platformMode: getPlatformMode(),
   };
 }
 
@@ -473,6 +493,7 @@ export function printStatus(projectRoot: string): void {
   console.log(`install targets: ${status.installTargets.map((target) => target.id).join(', ') || 'none'}`);
   console.log(`selected tools: ${Object.entries(status.selectedTools).map(([group, adapter]) => `${group}=${adapter}`).join(', ') || 'none'}`);
   console.log(`pending tool setup: ${status.pendingToolSetupGroups.join(', ') || 'none'}`);
+  console.log(`platform mode: ${status.platformMode}`);
   console.log(`reconciliation queue: ${status.reconciliation.pendingCount} pending / ${status.reconciliation.workItemCount} work items`);
 }
 
@@ -1187,4 +1208,216 @@ export function normalizeInstallTargets(rawTargets: string[]): string[] {
     throw new Error(`Unsupported install target(s): ${invalid.join(', ')}. Supported targets: ${SUPPORTED_INSTALL_TARGETS.join(', ')}`);
   }
   return Array.from(new Set(normalized));
+}
+
+export async function detectPlatformCapabilities(
+  projectRoot: string,
+  installTargets: string[]
+): Promise<Array<{ id: string; name: string; type: 'skill' | 'mcp' }>> {
+  const list: Array<{ id: string; name: string; type: 'skill' | 'mcp' }> = [];
+
+  for (const target of installTargets) {
+    if (target === 'google antigravity') {
+      list.push(
+        { id: 'teamwork-preview', name: 'Teamwork Preview (Platform Command)', type: 'skill' },
+        { id: 'grill-me', name: 'Grill-Me (Interactive Design Alignment)', type: 'skill' },
+        { id: 'browser', name: 'Browser (DevTools / Search Integration)', type: 'skill' },
+        { id: 'schedule', name: 'Schedule (Cron & Timers)', type: 'skill' }
+      );
+
+      const mcpDir = path.join(os.homedir(), '.gemini', 'antigravity', 'mcp');
+      if (await fs.exists(mcpDir)) {
+        const dirs = await fs.readdir(mcpDir);
+        for (const dir of dirs) {
+          const fullPath = path.join(mcpDir, dir);
+          if ((await fs.stat(fullPath)).isDirectory()) {
+            list.push({
+              id: `mcp:${dir}`,
+              name: `${dir} (MCP Server)`,
+              type: 'mcp'
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return list;
+}
+
+export async function ingestPlatformSkills(
+  projectRoot: string,
+  installTargets: string[],
+  selectedIds: string[]
+): Promise<void> {
+  const manifest = loadExistingManifest(projectRoot);
+  if (!manifest) {
+    return;
+  }
+
+  if (selectedIds.length === 0) {
+    console.log(chalk.blue('No platform capabilities selected for ingestion. Kept I-Wish runtime pure.'));
+    return;
+  }
+
+  console.log(chalk.blue('Scanning and ingesting platform-native skills and workflows...'));
+  const profileDir = getRoutingProfileDir(projectRoot);
+  await fs.ensureDir(profileDir);
+
+  const guidesDir = path.join(profileDir, 'coexistence-guides');
+  await fs.ensureDir(guidesDir);
+
+  for (const id of selectedIds) {
+    if (id === 'teamwork-preview') {
+      // 1. teamwork-preview profile
+      const teamworkProfile = {
+        id: 'skill-antigravity-teamwork-integration',
+        name: 'antigravity-teamwork-integration',
+        kind: 'skill',
+        shape: 'skill',
+        role: 'supportive',
+        phases: ['solution', 'implement'],
+        stages: ['sprint-planning', 'dev-story', 'execution-delegation'],
+        triggers: ['chạy teamwork', 'teamwork-preview', 'multi-agent code', 'chạy song song sprint', 'chạy đa agent'],
+        anti_triggers: ['fix bug đơn lẻ', 'sửa lỗi nhỏ'],
+        primary_agents: ['orch-agent', 'delivery-manager-agent'],
+        primary_workflows: ['plan', 'make-story'],
+        supportive_skills: ['antigravity-teamwork-integration'],
+        tool_dependencies: ['google-antigravity'],
+        constraints: [
+          'Chỉ kích hoạt khi có tệp prompt_draft.md được biên soạn đầy đủ và được User phê duyệt.',
+          'Không chạy song song với các sửa đổi trực tiếp (direct code edits) của dev-agent trên cùng một component.'
+        ],
+        review_pack: '_iwish/catalog/routing-profiles/coexistence-guides/workflow-skill-creator-coexistence.md',
+        tags: ['platform-bridge', 'multi-agent-execution']
+      };
+      await fs.writeFile(path.join(profileDir, 'antigravity-teamwork-integration.yaml'), YAML.stringify(teamworkProfile), 'utf8');
+
+      // 1b. coexistence guide
+      const guideContent = `# Coexistence Guide: workflow-skill-creator vs /create-skill
+
+## 1. Operating Mechanism
+* **workflow-skill-creator**: Reactive transcript distiller. Extracts files, tools, and actions that succeeded in the active session and formats them as a raw instruction guide.
+* **create-skill**: Proactive governance pipeline. Creates design contracts, lineage graphs, metadata, and promotes from draft to canonical.
+
+## 2. Pros & Cons
+* **workflow-skill-creator**:
+  - Pros: High empirical accuracy.
+  - Cons: Rigid, no degraded modes, no schema validation.
+* **create-skill**:
+  - Pros: Clean routing profile, architectural compliance.
+  - Cons: Requires manual transcript distillation.
+
+## 3. Coexistence Strategy
+Use platform skill-creator as the empirical engine to extract steps, then feed into /create-skill to add schema, metadata, and validation gates.
+`;
+      await fs.writeFile(path.join(guidesDir, 'workflow-skill-creator-coexistence.md'), guideContent, 'utf8');
+      console.log(chalk.green('- Ingested teamwork-preview and workflow-skill-creator coexistence guide.'));
+    }
+
+    if (id === 'grill-me') {
+      const grillProfile = {
+        id: 'skill-antigravity-grill-me-integration',
+        name: 'antigravity-grill-me-integration',
+        kind: 'skill',
+        shape: 'skill',
+        role: 'supportive',
+        phases: ['discover', 'plan'],
+        stages: ['alignment', 'concept-challenge'],
+        triggers: ['phỏng vấn thiết kế', 'grill-me', 'grill me', 'phỏng vấn ý tưởng'],
+        anti_triggers: [],
+        primary_agents: ['orch-agent', 'pm-agent'],
+        primary_workflows: ['idea-challenge', 'plan'],
+        supportive_skills: ['antigravity-grill-me-integration'],
+        tool_dependencies: ['google-antigravity'],
+        constraints: ['Sử dụng công cụ ask_question để hiển thị trắc nghiệm nhanh cho người dùng.'],
+        tags: ['platform-bridge', 'interactive-alignment']
+      };
+      await fs.writeFile(path.join(profileDir, 'antigravity-grill-me-integration.yaml'), YAML.stringify(grillProfile), 'utf8');
+      console.log(chalk.green('- Ingested grill-me (interactive alignment).'));
+    }
+
+    if (id === 'browser') {
+      const browserProfile = {
+        id: 'skill-antigravity-browser-integration',
+        name: 'antigravity-browser-integration',
+        kind: 'skill',
+        shape: 'skill',
+        role: 'supportive',
+        phases: ['implement', 'review'],
+        stages: ['ui-verification', 'browser-automation'],
+        triggers: ['mở trình duyệt', 'chạy browser', 'browser', 'chụp screenshot', 'chạy devtools'],
+        anti_triggers: [],
+        primary_agents: ['orch-agent', 'dev-agent', 'review-agent', 'ux-agent'],
+        primary_workflows: ['make-ui-spec', 'review', 'code'],
+        supportive_skills: ['antigravity-browser-integration'],
+        tool_dependencies: ['chrome-devtools-mcp'],
+        constraints: ['Ưu tiên sử dụng chrome-devtools-mcp của nền tảng hơn tự chạy Puppeteer cục bộ.'],
+        tags: ['platform-bridge', 'browser-automation']
+      };
+      await fs.writeFile(path.join(profileDir, 'antigravity-browser-integration.yaml'), YAML.stringify(browserProfile), 'utf8');
+      console.log(chalk.green('- Ingested browser-devtools.'));
+    }
+
+    if (id === 'schedule') {
+      const scheduleProfile = {
+        id: 'skill-antigravity-schedule-integration',
+        name: 'antigravity-schedule-integration',
+        kind: 'skill',
+        shape: 'skill',
+        role: 'supportive',
+        phases: ['implement', 'review'],
+        stages: ['background-checks'],
+        triggers: ['lập lịch', 'schedule'],
+        anti_triggers: [],
+        primary_agents: ['orch-agent', 'dev-agent'],
+        primary_workflows: ['code'],
+        supportive_skills: ['antigravity-schedule-integration'],
+        tool_dependencies: ['google-antigravity'],
+        constraints: ['Sử dụng timers thay thế lệnh sleep của Bash.'],
+        tags: ['platform-bridge', 'timers']
+      };
+      await fs.writeFile(path.join(profileDir, 'antigravity-schedule-integration.yaml'), YAML.stringify(scheduleProfile), 'utf8');
+      console.log(chalk.green('- Ingested schedule (cron/timers).'));
+    }
+
+    if (id.startsWith('mcp:')) {
+      const mcpName = id.replace('mcp:', '');
+      const mcpProfile = {
+        id: `tool-mcp-${mcpName}`,
+        name: `${mcpName}-mcp-adapter`,
+        kind: 'tool',
+        shape: 'mcp',
+        role: 'supportive',
+        phases: ['implement', 'review'],
+        stages: ['tool-usage'],
+        triggers: [`chạy ${mcpName}`, `mcp ${mcpName}`, `${mcpName} tool`],
+        anti_triggers: [],
+        primary_agents: ['orch-agent', 'dev-agent'],
+        primary_workflows: ['code'],
+        supportive_skills: [],
+        tool_dependencies: [mcpName],
+        constraints: [`Gọi trực tiếp thông qua MCP client của host platform.`],
+        tags: ['mcp-server', 'tool-adapter']
+      };
+      await fs.writeFile(path.join(profileDir, `mcp-${mcpName}-adapter.yaml`), YAML.stringify(mcpProfile), 'utf8');
+      console.log(chalk.green(`- Ingested MCP server adapter: ${mcpName}`));
+    }
+  }
+
+  // Write the fix-bug-coexistence guide
+  const fixBugGuideContent = `# Coexistence Guide: Platform Troubleshooting vs /fix-bug
+
+## 1. Operating Mechanism
+* **Platform Troubleshooting**: Auto-inspects node error logs and runs live debugger loops.
+* **/fix-bug**: Coordinates the complete 7-phase bug lifecycle (Reproduction, RCA, Design, Implementation, Validation, Lesson Extraction).
+
+## 2. Coexistence Strategy
+Platform troubleshooting handles Phase 1-2 (Reproduction & RCA), I-Wish coordinates the safety guards, Git checkouts, and lesson extraction in Phase 7.
+`;
+  await fs.writeFile(path.join(guidesDir, 'fix-bug-coexistence.md'), fixBugGuideContent, 'utf8');
+
+  // Reload manifest and update manifest.json with ingested profiles
+  const updatedManifest = buildManifest(projectRoot, installTargets, manifest);
+  await fs.writeJson(getManifestPath(projectRoot), updatedManifest, { spaces: 2 });
 }

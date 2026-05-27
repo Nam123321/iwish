@@ -14,8 +14,8 @@ This skill is a mandatory "Post-Step Hook" for all Phase 1 (Ideation & Analysis)
 ### 2. Execution Protocol
 When triggered, the agent MUST:
 1. Run the sync command: `python3 sync_navigator.py`.
-2. Verify that `_bmad-output/navigator-data.js` has been updated.
-3. Inform the user: "🚀 **Idea Navigator Updated**: Your visual journey has been synchronized. Open `_bmad-output/idea-navigator.html` to view the latest insights."
+2. Verify that `_iwish-output/navigator-data.js` has been updated.
+3. Inform the user: "🚀 **Idea Navigator Updated**: Your visual journey has been synchronized. Open `_iwish-output/idea-navigator.html` to view the latest insights."
 
 ### 3. Visual Lineage Policy
 - If a major pivot occurred, the agent should mention it in the `sync_navigator.py` or update the narrative metadata to reflect the change.

@@ -5,7 +5,7 @@ description: 'Edit & Update - Apply changes to PRD following approved change pla
 # File references (ONLY variables used in this step)
 nextStepFile: './step-e-04-complete.md'
 prdFile: '{prd_file_path}'
-prdPurpose: '{project-root}/_bmad/bmm/workflows/2-plan-workflows/create-prd/data/prd-purpose.md'
+prdPurpose: '{project-root}/.agent/workflows/data/prd-purpose.md'
 ---
 
 # Step E-3: Edit & Update
@@ -26,7 +26,7 @@ Apply changes to the PRD following the approved change plan from step e-02, incl
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and PRD Improvement Specialist
+- ✅ You are a Validation architect-agent and PRD Improvement Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring analytical expertise and precise editing skills
@@ -82,12 +82,12 @@ Display: "**Starting PRD Edits**
 - Section to edit: {section_name}
 - Current content: {existing content}
 - Changes needed: {specific changes from plan}
-- BMAD PRD standards: Load from prd-purpose.md
+- I-Wish PRD standards: Load from prd-purpose.md
 
 **Tasks:**
 1. Read current PRD section
 2. Apply specified changes
-3. Ensure BMAD PRD principles compliance:
+3. Ensure I-Wish PRD principles compliance:
    - High information density (no filler)
    - Measurable requirements
    - Clear structure
@@ -112,7 +112,7 @@ Apply changes and return updated section."
 - Additions: Create new sections with proper content
 - Updates: Modify existing content per plan
 - Removals: Remove specified content
-- Restructuring: Reformat content to BMAD standard
+- Restructuring: Reformat content to I-Wish standard
 
 **c) Update PRD file**
 - Apply changes to PRD
@@ -129,12 +129,12 @@ Changes: {brief summary}
 **If conversion mode is "Full restructuring" or "Both":**
 
 **For restructuring:**
-- Reorganize PRD to BMAD standard structure
+- Reorganize PRD to I-Wish standard structure
 - Ensure proper ## Level 2 headers
 - Reorder sections logically
-- Update PRD frontmatter to match BMAD format
+- Update PRD frontmatter to match I-Wish format
 
-**Follow BMAD PRD structure:**
+**Follow I-Wish PRD structure:**
 1. Executive Summary
 2. Success Criteria
 3. Product Scope
@@ -146,7 +146,7 @@ Changes: {brief summary}
 9. Non-Functional Requirements
 
 Display: "**PRD Restructured**
-BMAD standard structure applied.
+I-Wish standard structure applied.
 {Sections added/reordered}"
 
 ### 5. Update PRD Frontmatter
@@ -210,7 +210,7 @@ Display:
 
 ### 8. Present MENU OPTIONS
 
-**[V] Run Validation** - Execute full validation workflow (steps-v/step-v-01-discovery.md)
+**[V] Run Validation** - Execute full validation workflow (./step-v-01-discovery.md)
 **[S] Summary Only** - End with summary of changes (no validation)
 **[A] Adjust** - Make additional edits
 **[X] Exit** - Exit edit workflow
@@ -222,7 +222,7 @@ Display:
 
 #### Menu Handling Logic:
 
-- IF V (Validate): Display "Starting validation workflow..." then read fully and follow: steps-v/step-v-01-discovery.md
+- IF V (Validate): Display "Starting validation workflow..." then read fully and follow: ./step-v-01-discovery.md
 - IF S (Summary): Present edit summary and exit
 - IF A (Adjust): Accept additional requirements, loop back to editing
 - IF X (Exit): Display summary and exit

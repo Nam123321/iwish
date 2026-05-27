@@ -30,8 +30,8 @@ This step will generate content and present choices:
 
 ## PROTOCOL INTEGRATION:
 
-- When 'A' selected: Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml
-- When 'P' selected: Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md
+- When 'A' selected: Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml
+- When 'P' selected: Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md
 - PROTOCOLS always return to this step's A/P/C menu
 - User accepts/rejects protocol changes before proceeding
 
@@ -46,7 +46,7 @@ This step will generate content and present choices:
 ## STITCH MCP INTEGRATION:
 
 When analyzing inspiring products, also generate visual reference screens:
-1. Use `browser_subagent` to capture competitor screenshots (save to `{output_folder}/mkt-materials/research/competitors/`)
+1. Use `browser_subagent` to capture competitor screenshots (save to `{output_folder}/mkt-materials/./competitors/`)
 2. Use `mcp_StitchMCP_generate_screen_from_text` to recreate key patterns as Stitch screens — this builds a visual language library
 3. When identifying transferable patterns, create a Stitch screen showing how the pattern could look in YOUR product
 4. Present visual references alongside text analysis for richer user discussion
@@ -188,7 +188,7 @@ Show the generated inspiration analysis content and present choices:
 
 #### If 'A' (Advanced Elicitation):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml with the current inspiration analysis content
+- Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml with the current inspiration analysis content
 - Process the enhanced pattern insights that come back
 - Ask user: "Accept these improvements to the inspiration analysis? (y/n)"
 - If yes: Update content with improvements, then return to A/P/C menu
@@ -196,7 +196,7 @@ Show the generated inspiration analysis content and present choices:
 
 #### If 'P' (Party Mode):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md with the current inspiration analysis
+- Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md with the current inspiration analysis
 - Process the collaborative pattern insights that come back
 - Ask user: "Accept these changes to the inspiration analysis? (y/n)"
 - If yes: Update content with improvements, then return to A/P/C menu

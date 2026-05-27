@@ -1,6 +1,8 @@
 ---
-name: 'research-solution-sources'
-description: 'Supportive workflow for finding skills, modules, repos, or tool patterns that can solve a problem before create-skill, enhance-skill, or absorb-repo decisions'
+name: research-solution-sources
+description: Supportive workflow for finding skills, modules, repos, or tool
+  patterns that can solve a problem before create-skill, enhance-skill, or
+  absorb-repo decisions
 ---
 
 # /research-solution-sources

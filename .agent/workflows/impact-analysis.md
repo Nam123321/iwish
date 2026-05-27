@@ -4,7 +4,7 @@ description: 'Query the FeatureGraph to analyze cross-feature impact when changi
 
 # /impact-analysis — FeatureGraph Impact Analysis
 
-> **Agent:** Bulma (PM) + Piccolo (Architect support)
+> **Agent:** analyst-agent (PM) + architect-agent (Architect support)
 > **Purpose:** Cho phép Master/Architect truy vấn nhanh FeatureGraph để đánh giá tác động khi thay đổi specs.
 
 ---

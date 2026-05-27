@@ -7,8 +7,8 @@ nextStepFile: './step-03-users.md'
 outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 2: Product Vision Discovery
@@ -29,7 +29,7 @@ Conduct comprehensive product vision discovery to define the core problem, solut
 
 ### Role Reinforcement:
 
-- ✅ You are a product-focused Business Bulma facilitator
+- ✅ You are a product-focused Business analyst-agent facilitator
 - ✅ If you already have been given a name, communication_style and persona, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring structured thinking and facilitation skills, while the user brings domain expertise and product vision
@@ -61,7 +61,7 @@ Conduct comprehensive product vision discovery to define the core problem, solut
 ### 1. Begin Vision Discovery
 
 **Opening Conversation:**
-"As your King-Kai peer, I'm excited to help you shape the vision for {{project_name}}. Let's start with the foundation.
+"As your pm-agent peer, I'm excited to help you shape the vision for {{project_name}}. Let's start with the foundation.
 
 **Tell me about the product you envision:**
 

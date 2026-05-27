@@ -23,3 +23,7 @@ Nếu UI Spec hoặc Tech-Spec yêu cầu một UX pattern **chưa từng tồn 
 ## 3. Cách Đọc/Ghi Master Record
 - Luôn map các hành vi với Node Pattern tương đương. 
 - Schema chuẩn sử dụng JSON-like hoặc XState-like states (bao gồm trigger event, ui layout, transition).
+
+## 4. Sub-Skills & Rules
+- **Anti-Slop Aesthetic Checklist (`ux-guardian-anti-slop.md`)**: Exposes check gates to eliminate standard AI styling tells (flat greys, bad line lengths, un-centered headers, default hover animations).
+- **8-State Interactive Previews (`8-state-preview-rule.md`)**: Enforces verifying interactive elements (buttons, inputs) in all 8 key interactive states (Default, Hover, Active, Focus, Disabled, Loading, Selected, Error).

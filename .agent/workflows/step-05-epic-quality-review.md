@@ -183,7 +183,7 @@ For each epic, verify:
 
 ### 6b. 🛡️ Edge Case Guardian Cross-Check (MANDATORY)
 
-**CRITICAL: Load the Edge Case Guardian SKILL from `{project-root}/.agent/skills/Hit/SKILL.md` and verify:**
+**CRITICAL: Load the Edge Case Guardian SKILL from `{project-root}/.agent/skills/review-agent/SKILL.md` and verify:**
 
 #### A. Knowledge Graph Coverage
 - Load `{output_folder}/edge-case-knowledge/index.md`

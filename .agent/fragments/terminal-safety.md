@@ -5,7 +5,7 @@ description: 'Defensive rules for terminal command execution — prevents infini
 
 # Terminal Safety — Agent Command Execution Rules
 
-> **Trigger:** This fragment is loaded by Vegeta and Songoku agents before executing any terminal commands during story implementation. It is also referenced by the Iron Law of Debugging fragment.
+> **Trigger:** This fragment is loaded by dev-agent and ai-engineer-agent agents before executing any terminal commands during story implementation. It is also referenced by the Iron Law of Debugging fragment.
 
 ---
 

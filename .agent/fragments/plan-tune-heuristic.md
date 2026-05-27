@@ -1,6 +1,6 @@
 ---
 name: 'Plan Tune Heuristic'
-description: 'Story complexity scoring, split/merge protocol, and AC-to-Task traceability matrix. Scavenged from Gstack Plan Tune skill and adapted for BMAD story generation.'
+description: 'Story complexity scoring, split/merge protocol, and AC-to-Task traceability matrix. Scavenged from Gstack Plan Tune skill and adapted for I-Wish story generation.'
 ---
 
 # Plan Tune Heuristic — Story Complexity Governance
@@ -56,7 +56,7 @@ When CS triggers WARN or HALT, apply these **6 criteria in priority order**:
 
 - ❌ **NEVER** split by technical layer (e.g., "Story A = Backend API", "Story B = Frontend UI").
 - ✅ **ALWAYS** split by **user value** (e.g., "Story A = View list", "Story B = Create new item", "Story C = Edit existing item").
-- **Rationale:** Agent Vegeta needs to see the complete user flow (API → Service → UI) within a single story to maintain development context.
+- **Rationale:** Agent dev-agent needs to see the complete user flow (API → Service → UI) within a single story to maintain development context.
 
 ### 2. 🔗 Context Boundary Rule
 
@@ -128,4 +128,4 @@ After finalizing a Story's ACs, Agent MUST generate this mapping table:
 1. **Every AC MUST map to at least 1 Task.** If any AC shows `⚠️ MISSING` → Workflow **HALTS** until a task is assigned.
 2. **Every Task MUST trace back to an AC.** Tasks without an AC parent are flagged as `⚠️ ORPHAN TASK` — they add scope without adding value. Remove or justify.
 3. **Sub-tasks are optional** but recommended for Tasks touching > 1 file or requiring both backend and frontend work.
-4. **Status column** is updated by Vegeta during execution: `☐` → `🔄` → `✅`.
+4. **Status column** is updated by dev-agent during execution: `☐` → `🔄` → `✅`.

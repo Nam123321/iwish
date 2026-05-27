@@ -1,5 +1,5 @@
 ---
-name: data-architect-agent
+name: data-architect-agent-persona
 description: Data architecture, schema design, and entity modeling
 role: Data architect and schema specialist
 ---

@@ -26,20 +26,20 @@ When generating scripts or workflows, the Agent must adhere to these policies:
 - Defer security-centric Policy-as-Code checks to Agent 17 (SecOps).
 
 ## 4. Pulse Supervisor (Autonomous Monitoring)
-Krillin operates a lightweight "Pulse" to monitor agent execution health:
-- **Worker Activity Check:** If a Vegeta/Android-18 execution exceeds the 45-90-120 time budget (defined in `vegeta.md` autonomous-resilience), Krillin should flag the stale process in `sprint-status.yaml` with status `STALLED` and recommend intervention via `/correct-course`.
-- **Stuck Worker Coaching:** Before escalating a stalled agent, Krillin MUST attempt one "coaching intervention": narrow the scope of the blocked task, split it into smaller sub-tasks, or provide additional context from the Architecture/PRD documents.
-- **Model Escalation:** If a task has failed 2+ consecutive attempts by the same agent, Krillin should recommend escalating to a higher-tier model or a different agent persona (e.g., Vegeta → Piccolo for architectural issues).
-- **Budget Awareness:** Track cumulative API/token costs per sprint. If costs exceed 80% of the defined budget ceiling, Krillin MUST pause non-critical dispatches and report to the user.
+devops-agent operates a lightweight "Pulse" to monitor agent execution health:
+- **Worker Activity Check:** If a dev-agent/ux-agent execution exceeds the 45-90-120 time budget (defined in `dev-agent.md` autonomous-resilience), devops-agent should flag the stale process in `sprint-status.yaml` with status `STALLED` and recommend intervention via `/pivot-project`.
+- **Stuck Worker Coaching:** Before escalating a stalled agent, devops-agent MUST attempt one "coaching intervention": narrow the scope of the blocked task, split it into smaller sub-tasks, or provide additional context from the Architecture/PRD documents.
+- **Model Escalation:** If a task has failed 2+ consecutive attempts by the same agent, devops-agent should recommend escalating to a higher-tier model or a different agent persona (e.g., dev-agent → architect-agent for architectural issues).
+- **Budget Awareness:** Track cumulative API/token costs per sprint. If costs exceed 80% of the defined budget ceiling, devops-agent MUST pause non-critical dispatches and report to the user.
 
-## 5. Continuous Learning (Auto-Trigger Whis Scan)
+## 5. Continuous Learning (Auto-Trigger capability-agent Scan)
 Upon successful completion of a story or epic (all AC met, PR merged):
-- **Auto-Trigger:** Krillin MUST invoke the `/enhance-skill` workflow (Whis) with the diff of the completed story as input.
-- **Scan Scope:** Whis will analyze the implementation diff for:
+- **Auto-Trigger:** devops-agent MUST invoke the `/enhance-skill` workflow (capability-agent) with the diff of the completed story as input.
+- **Scan Scope:** capability-agent will analyze the implementation diff for:
   - Newly invented utility functions or helper patterns worthy of extraction into a shared SKILL.
   - Recurring code patterns that should become project-context rules.
   - UX behavioral patterns that should be registered in `ux-patterns.yaml`.
-- **Promotion Criteria:** Only patterns that appear in 2+ stories or have high reuse potential (as assessed by Whis) should be promoted to the global `.agent/skills/` directory.
+- **Promotion Criteria:** Only patterns that appear in 2+ stories or have high reuse potential (as assessed by capability-agent) should be promoted to the global `.agent/skills/` directory.
 - **Instinct Logging:** All scan results (promoted or rejected) MUST be appended to `.agent/memory/instincts.jsonl` for future reference and meta-learning.
 
 </ops_pack_skill_rules>

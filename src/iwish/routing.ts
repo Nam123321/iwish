@@ -563,7 +563,61 @@ export async function routeRequest(projectRoot: string, request: string): Promis
   const sourceOfTruth = loadSourceOfTruth(projectRoot);
   const truthMatches = findSourceOfTruthMatches(projectRoot, request);
   const routingProfiles = loadRoutingProfiles(projectRoot);
-  const initialRoute = detectCommand(normalizedRequest);
+  let initialRoute = detectCommand(normalizedRequest);
+
+  const activeWorkflowPath = path.join(getRuntimeRoot(projectRoot, 'iwish'), 'runtime', 'workflows', 'active-workflow.json');
+  let activeWorkflow: any = null;
+  if (fs.existsSync(activeWorkflowPath)) {
+    try {
+      activeWorkflow = fs.readJsonSync(activeWorkflowPath);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  const isContinuation = /^(yes|no|continue|next|skip|y|n|c|tiếp tục|tiep tuc)$/.test(normalizedRequest);
+
+  if (activeWorkflow && activeWorkflow.status === 'in-progress' && (isContinuation || normalizedRequest === '')) {
+    const wfName = activeWorkflow.workflow;
+    const currentPhase = activeWorkflow.current_phase;
+    let canonicalCommand = `/${wfName}`;
+    let targetAgent = 'orch-agent';
+    let routeReason = `Active workflow '${wfName}' in progress at phase/step '${currentPhase}'. Continuing sequence.`;
+
+    if (wfName === 'absorb-repo') {
+      const agentsMap: Record<string, string> = {
+        '0': 'review-agent',
+        '1': 'capability-agent',
+        '1.5': 'architect-agent',
+        '2': 'architect-agent',
+        '3': 'capability-agent',
+        '4': 'capability-agent',
+        '5': 'architect-agent',
+        '5.5': 'orch-agent',
+        '6': 'dev-agent',
+        '7': 'review-agent'
+      };
+      targetAgent = agentsMap[String(currentPhase)] || 'orch-agent';
+      routeReason = `Continuing active Repo Absorption (Phase ${currentPhase}) using ${targetAgent}`;
+    } else if (wfName === 'create-skill') {
+      const agentsMap: Record<string, string> = {
+        'triage': 'capability-agent',
+        'spec': 'capability-agent',
+        'red-phase': 'capability-agent',
+        'forge': 'capability-agent',
+        'validate': 'capability-agent'
+      };
+      targetAgent = agentsMap[String(currentPhase)] || 'capability-agent';
+      routeReason = `Continuing active Create Skill (Step ${currentPhase}) using ${targetAgent}`;
+    }
+
+    initialRoute = {
+      canonicalCommand,
+      legacyAliasMatched: null,
+      targetAgent,
+      routeReason
+    };
+  }
   const strongestMatchedStory = sourceOfTruth.storyRecords.find((record) => truthMatches.stories.includes(record.id));
   const strongestStoryState = strongestMatchedStory
     ? (strongestMatchedStory.fileStatus || strongestMatchedStory.sprintStatus || '').toLowerCase()
@@ -649,9 +703,9 @@ export async function routeRequest(projectRoot: string, request: string): Promis
     source: entry.source,
   }));
 
-  const storyCount = sourceOfTruth.storyIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'stories'));
-  const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics'));
-  const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml'));
+  const storyCount = sourceOfTruth.storyIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'stories')) || countFiles(path.join(projectRoot, '_iwish-output', 'stories'));
+  const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics')) || countFiles(path.join(projectRoot, '_iwish-output', 'epics'));
+  const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) || fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml'));
   const routeProfile = routingProfiles.find((profile) => profile.kind === 'workflow' && profile.name === route.canonicalCommand.replace(/^\//, ''));
   const toolSetupPrompts = buildToolSetupPrompts(routeProfile?.tool_dependencies || [], status.selectedTools);
   const scoring = computeScoring(

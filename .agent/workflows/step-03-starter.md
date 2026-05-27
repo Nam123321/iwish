@@ -31,8 +31,8 @@ This step will generate content and present choices:
 
 ## PROTOCOL INTEGRATION:
 
-- When 'A' selected: Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml
-- When 'P' selected: Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md
+- When 'A' selected: Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml
+- When 'P' selected: Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md
 - PROTOCOLS always return to display this step's A/P/C menu after the A or P have completed
 - User accepts/rejects protocol changes before proceeding
 
@@ -58,7 +58,7 @@ Before finalizing technical preferences, load `{project-root}/.agent/fragments/g
 
 Offer these choices:
 
-- `falkordb-full` — recommended for full BMAD, HSEA, multi-agent, FeatureGraph, or MemoryGraph projects.
+- `falkordb-full` — recommended for full I-Wish, HSEA, multi-agent, FeatureGraph, or MemoryGraph projects.
 - `lite-static` — recommended for small, offline, or low-setup projects.
 - `custom-adapter` — allowed only when the user provides backend details and accepts adapter evaluation.
 
@@ -289,7 +289,7 @@ Show the generated content and present choices:
 
 #### If 'A' (Advanced Elicitation):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml with current starter analysis
+- Read fully and follow: {project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml with current starter analysis
 - Process enhanced insights about starter options or custom approaches
 - Ask user: "Accept these changes to the starter template evaluation? (y/n)"
 - If yes: Update content, then return to A/P/C menu
@@ -297,7 +297,7 @@ Show the generated content and present choices:
 
 #### If 'P' (Party Mode):
 
-- Read fully and follow: {project-root}/_bmad/core/workflows/party-mode/workflow.md with starter evaluation context
+- Read fully and follow: {project-root}/_iwish/core/workflows/party-mode/workflow.md with starter evaluation context
 - Process collaborative insights about starter trade-offs
 - Ask user: "Accept these changes to the starter template evaluation? (y/n)"
 - If yes: Update content, then return to A/P/C menu

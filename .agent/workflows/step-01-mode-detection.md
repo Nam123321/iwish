@@ -46,7 +46,7 @@ Analyze the user's input to determine mode:
 
 **Mode A: Tech-Spec**
 
-- User provided a path to a tech-spec file (e.g., `quick-Vegeta tech-spec-auth.md`)
+- User provided a path to a tech-spec file (e.g., `quick-dev-agent tech-spec-auth.md`)
 - Load the spec, extract tasks/context/AC
 - Set `{execution_mode}` = "tech-spec"
 - Set `{tech_spec_path}` = provided path
@@ -90,7 +90,7 @@ Display: "**Select:** [P] Plan first (tech-spec) [E] Execute directly"
 
 #### Menu Handling Logic:
 
-- IF P: Direct user to `{quick_spec_workflow}`. **EXIT Quick Vegeta.**
+- IF P: Direct user to `{quick_spec_workflow}`. **EXIT Quick dev-agent.**
 - IF E: Ask for any additional guidance, then **NEXT:** Read fully and follow: `step-02-context-gathering.md`
 
 #### EXECUTION RULES:
@@ -107,13 +107,13 @@ Present: "This looks like a focused feature with multiple components."
 Display:
 
 **[P] Plan first (tech-spec)** (recommended)
-**[W] Seems bigger than quick-Vegeta** - Recommend the Full BMad Flow PRD Process
+**[W] Seems bigger than quick-dev-agent** - Recommend the Full BMad Flow PRD Process
 **[E] Execute directly**
 
 #### Menu Handling Logic:
 
-- IF P: Direct to `{quick_spec_workflow}`. **EXIT Quick Vegeta.**
-- IF W: Direct user to run the PRD workflow instead. **EXIT Quick Vegeta.**
+- IF P: Direct to `{quick_spec_workflow}`. **EXIT Quick dev-agent.**
+- IF W: Direct user to run the PRD workflow instead. **EXIT Quick dev-agent.**
 - IF E: Ask for guidance, then **NEXT:** Read fully and follow: `step-02-context-gathering.md`
 
 #### EXECUTION RULES:
@@ -135,8 +135,8 @@ Display:
 
 #### Menu Handling Logic:
 
-- IF P: Direct to `{quick_spec_workflow}`. **EXIT Quick Vegeta.**
-- IF W: Direct user to run the PRD workflow instead. **EXIT Quick Vegeta.**
+- IF P: Direct to `{quick_spec_workflow}`. **EXIT Quick dev-agent.**
+- IF W: Direct user to run the PRD workflow instead. **EXIT Quick dev-agent.**
 - IF E: Ask for guidance, then **NEXT:** Read fully and follow: `step-02-context-gathering.md`
 
 #### EXECUTION RULES:
@@ -152,7 +152,7 @@ Display:
 
 - Mode A (tech-spec): "**NEXT:** read fully and follow: `step-03-execute.md`"
 - Mode B (direct, [E] selected): "**NEXT:** Read fully and follow: `step-02-context-gathering.md`"
-- Escalation ([P] or [W]): "**EXITING Quick Vegeta.** Follow the directed workflow."
+- Escalation ([P] or [W]): "**EXITING Quick dev-agent.** Follow the directed workflow."
 
 ---
 

@@ -3,7 +3,7 @@ name: 'step-04-final-validation'
 description: 'Validate complete coverage of all requirements and ensure implementation readiness'
 
 # Path Definitions
-workflow_path: '{project-root}/_bmad/bmm/workflows/3-solutioning/create-epics-and-stories'
+workflow_path: '{project-root}/.agent/workflows'
 
 # File References
 thisStepFile: './step-04-final-validation.md'
@@ -11,8 +11,8 @@ workflowFile: '{workflow_path}/workflow.md'
 outputFile: '{planning_artifacts}/epics.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 
 # Template References
 epicsTemplate: '{workflow_path}/templates/epics-template.md'
@@ -95,7 +95,7 @@ Review the complete epic and story breakdown to ensure EVERY FR is covered:
 
 **Each story must:**
 
-- Be completable by a single Vegeta agent
+- Be completable by a single dev-agent agent
 - Have clear acceptance criteria
 - Reference specific FRs it implements
 - Include necessary technical details

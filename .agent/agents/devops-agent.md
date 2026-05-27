@@ -1,5 +1,5 @@
 ---
-name: devops-agent
+name: devops-agent-persona
 description: CI/CD pipeline, infrastructure operations, and deployment
 role: DevOps engineer and infrastructure specialist
 ---

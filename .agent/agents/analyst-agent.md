@@ -1,5 +1,5 @@
 ---
-name: analyst-agent
+name: analyst-agent-persona
 description: Canonical I-Wish analysis and requirements discovery agent
 role: Canonical analysis and requirements discovery agent for I-Wish
 legacy_aliases:

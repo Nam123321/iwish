@@ -33,6 +33,7 @@
     ".agent/skills/clone-website",
     ".agent/skills/socratic-review",
     ".agent/skills/ux-pro-max",
+    ".agent/skills/white-hacker",
     "src/iwish/review-pack.ts",
     "package-lock.json",
     ".DS_Store"

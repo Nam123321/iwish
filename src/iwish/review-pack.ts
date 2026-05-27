@@ -265,213 +265,198 @@ function buildHtml(input: ReviewPackInput, slug: string): string {
   const edgeCases = input.edgeCases || defaultEdgeCases(input);
   const stressCases = input.stressCases || defaultStressCases(input);
   const constraints = input.constraints || defaultConstraints(input);
-  const orchHints = input.orchHints || defaultOrchHints(input);
   const reviewQuestions = input.reviewQuestions || defaultReviewQuestions(input);
-  const examples = input.examples || defaultExamples(input);
-  const agents = input.primaryAgents && input.primaryAgents.length > 0 ? input.primaryAgents : ['orch-agent'];
-  const workflows = input.primaryWorkflows && input.primaryWorkflows.length > 0 ? input.primaryWorkflows : ['review', 'plan', 'code'];
-  const supportiveSkills = input.supportiveSkills && input.supportiveSkills.length > 0 ? input.supportiveSkills : ['skill selection depends on the parent workflow'];
 
-  return `<!doctype html>
+  // Try to load the template
+  const templatePath = path.join(input.projectRoot, 'templates', 'iwish', 'capability-package', 'review-pack', 'integration-guide.html');
+  if (fs.existsSync(templatePath)) {
+    try {
+      const template = fs.readFileSync(templatePath, 'utf8');
+      const capability_name = input.name;
+      const summary = `A readable, shareable review pack for ${input.name}, explaining where it fits in the delivery framework and its routing constraints.`;
+      const owner = input.primaryAgents && input.primaryAgents.length > 0 ? input.primaryAgents.join(', ') : 'orch-agent';
+      const framework_placement = `Phases: ${phases.map(p => `<code>${p}</code>`).join(', ')}<br>Stages / Tasks: ${stages.map(s => `<code>${s}</code>`).join(', ')}`;
+      const ipo_summary = `Input: user intent, story context.<br>Process: Orch evaluates phase/stage fit and checks constraints.<br>Output: clear execution path, reviewed capability routing.`;
+      const use_case_summary = `<strong>Core Use Cases:</strong><ul>${toHtmlList(coreUseCases)}</ul><strong>Adjacent Use Cases:</strong><ul>${toHtmlList(adjacentUseCases)}</ul><strong>Do Not Use Cases:</strong><ul>${toHtmlList(doNotUseCases)}</ul>`;
+      const edge_case_summary = `<strong>Edge Cases:</strong><ul>${toHtmlList(edgeCases)}</ul><strong>Stress Cases:</strong><ul>${toHtmlList(stressCases)}</ul>`;
+      const constraint_summary = `<strong>Constraints:</strong><ul>${toHtmlList(constraints)}</ul>`;
+      
+      const q1 = reviewQuestions[0] || 'Which use cases of this capability do you want Orch to suggest automatically?';
+      const q2 = reviewQuestions[1] || 'What edge cases, exclusions, or approval boundaries should Orch respect?';
+      const q3 = reviewQuestions[2] || 'Should this stay external/supportive, or do you expect deeper promotion later?';
+      const q4 = reviewQuestions[3] || 'How will you verify this capability is working as expected?';
+
+      return template
+        .replace(/\{\{capability_name\}\}/g, escapeHtml(capability_name))
+        .replace(/\{\{summary\}\}/g, escapeHtml(summary))
+        .replace(/\{\{source\}\}/g, escapeHtml(input.source))
+        .replace(/\{\{shape\}\}/g, escapeHtml(input.shape))
+        .replace(/\{\{role\}\}/g, escapeHtml(input.role))
+        .replace(/\{\{owner\}\}/g, escapeHtml(owner))
+        .replace(/\{\{framework_placement\}\}/g, framework_placement)
+        .replace(/\{\{ipo_summary\}\}/g, ipo_summary)
+        .replace(/\{\{use_case_summary\}\}/g, use_case_summary)
+        .replace(/\{\{edge_case_summary\}\}/g, edge_case_summary)
+        .replace(/\{\{constraint_summary\}\}/g, constraint_summary)
+        .replace(/\{\{review_q1\}\}/g, escapeHtml(q1))
+        .replace(/\{\{review_q2\}\}/g, escapeHtml(q2))
+        .replace(/\{\{review_q3\}\}/g, escapeHtml(q3))
+        .replace(/\{\{review_q4\}\}/g, escapeHtml(q4));
+    } catch (e) {
+      console.warn('Error reading integration guide template, using fallback design:', e);
+    }
+  }
+
+  // Fallback buildHtml implementing the exact design system of integration-guide.html
+  const owner = input.primaryAgents && input.primaryAgents.length > 0 ? input.primaryAgents.join(', ') : 'orch-agent';
+  const q1 = reviewQuestions[0] || 'Which use cases of this capability do you want Orch to suggest automatically?';
+  const q2 = reviewQuestions[1] || 'What edge cases, exclusions, or approval boundaries should Orch respect?';
+  const q3 = reviewQuestions[2] || 'Should this stay external/supportive, or do you expect deeper promotion later?';
+  const q4 = reviewQuestions[3] || 'How will you verify this capability is working as expected?';
+  
+  return `<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(input.name)} Integration Guide</title>
     <style>
       :root {
-        color-scheme: light;
-        --bg: #f5f0e8;
-        --panel: rgba(255, 255, 255, 0.9);
-        --ink: #1d1b19;
-        --muted: #5f5a54;
-        --accent: #b55d32;
-        --accent-soft: #f7d7c5;
-        --line: #dfd4ca;
+        --bg: #f8f5ef;
+        --panel: rgba(255, 255, 255, 0.88);
+        --ink: #1f2937;
+        --muted: #5b6472;
+        --line: rgba(31, 41, 55, 0.12);
+        --brand: #0f766e;
+        --accent: #1d4ed8;
       }
       * { box-sizing: border-box; }
       body {
         margin: 0;
-        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-        background:
-          radial-gradient(circle at top left, rgba(181, 93, 50, 0.12), transparent 32%),
-          linear-gradient(180deg, #fbf8f3 0%, var(--bg) 100%);
+        font-family: "Inter", system-ui, sans-serif;
         color: var(--ink);
+        background: linear-gradient(180deg, #fcfaf5 0%, var(--bg) 100%);
       }
-      .wrap {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 32px 20px 60px;
+      .page {
+        width: min(1120px, calc(100vw - 28px));
+        margin: 24px auto 60px;
       }
-      .hero {
-        display: grid;
-        gap: 18px;
-        margin-bottom: 26px;
+      .hero, .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 24px;
+        margin-bottom: 18px;
       }
       .eyebrow {
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--accent);
-        font-weight: 700;
+        display: inline-block;
+        background: rgba(15, 118, 110, 0.08);
+        color: var(--brand);
+        border-radius: 999px;
+        padding: 8px 14px;
         font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
       }
-      h1 {
-        margin: 0;
-        font-size: clamp(2rem, 4vw, 3.4rem);
-        line-height: 1.05;
-      }
-      .lede {
-        max-width: 78ch;
-        color: var(--muted);
-        font-size: 1.05rem;
-        line-height: 1.7;
+      h1 { font-size: clamp(30px, 5vw, 52px); margin: 16px 0 12px; }
+      h2 { margin: 0 0 12px; font-size: 24px; }
+      h3 { margin: 0 0 10px; font-size: 18px; }
+      p, li { color: var(--muted); line-height: 1.7; }
+      code {
+        background: rgba(31, 41, 55, 0.06);
+        padding: 2px 6px;
+        border-radius: 8px;
       }
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 18px;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       }
-      .panel {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 20px;
-        box-shadow: 0 14px 40px rgba(56, 37, 23, 0.06);
-      }
-      h2, h3 {
-        margin-top: 0;
-      }
-      ul {
-        margin: 10px 0 0;
-        padding-left: 20px;
-      }
-      li { margin: 6px 0; }
-      .meta {
+      .tabs {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 12px;
+        margin-top: 18px;
       }
-      .chip {
+      .tab {
         border: 1px solid var(--line);
-        background: var(--accent-soft);
+        background: white;
         border-radius: 999px;
-        padding: 8px 12px;
-        font-size: 0.92rem;
+        padding: 10px 14px;
+        cursor: pointer;
       }
-      .snapshot {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 12px;
+      .tab.active {
+        background: rgba(29, 78, 216, 0.08);
+        color: var(--accent);
       }
-      .label {
-        font-size: 0.8rem;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-      .value {
-        font-weight: 700;
-        margin-top: 5px;
-      }
-      code {
-        background: #f2ece5;
-        border-radius: 6px;
-        padding: 2px 6px;
-      }
+      [data-panel] { display: none; }
+      [data-panel].active { display: block; }
     </style>
   </head>
   <body>
-    <main class="wrap">
-      <section class="hero">
+    <div class="page">
+      <header class="hero">
         <div class="eyebrow">I-Wish Adoption Review Pack</div>
-        <h1>${escapeHtml(input.name)}</h1>
-        <p class="lede">
-          A readable, shareable review pack for humans and Orch. This artifact explains where
-          <strong>${escapeHtml(input.name)}</strong> fits in the delivery framework, when it should be used,
-          and which boundaries should be respected.
-        </p>
-        <div class="meta">
-          <span class="chip">${escapeHtml(input.kind)}</span>
-          <span class="chip">${escapeHtml(input.role)}</span>
-          <span class="chip">${escapeHtml(input.shape)}</span>
-          <span class="chip">${escapeHtml(input.registrationState)}</span>
+        <h1>${escapeHtml(input.name)} Integration Guide</h1>
+        <p>A readable, shareable review pack for ${escapeHtml(input.name)}, explaining where it fits in the delivery framework and its routing constraints.</p>
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-target="overview">Overview</button>
+          <button class="tab" data-target="framework">Framework Fit</button>
+          <button class="tab" data-target="routing">Routing</button>
+          <button class="tab" data-target="review">Review</button>
         </div>
-      </section>
+      </header>
 
-      <section class="panel">
+      <section class="card active" data-panel="overview">
         <h2>Snapshot</h2>
-        <div class="snapshot">
-          <div><div class="label">Slug</div><div class="value">${escapeHtml(slug)}</div></div>
-          <div><div class="label">Source</div><div class="value">${escapeHtml(input.source)}</div></div>
-          <div><div class="label">Module Class</div><div class="value">${escapeHtml(input.moduleClass || 'n/a')}</div></div>
-          <div><div class="label">Triggers</div><div class="value">${escapeHtml((input.triggers || []).join(', ') || 'none')}</div></div>
-          <div><div class="label">Tools</div><div class="value">${escapeHtml((input.toolDependencies || []).join(', ') || 'none')}</div></div>
+        <div class="grid">
+          <div><h3>Source</h3><p>${escapeHtml(input.source)}</p></div>
+          <div><h3>Shape</h3><p>${escapeHtml(input.shape)}</p></div>
+          <div><h3>Role</h3><p>${escapeHtml(input.role)}</p></div>
+          <div><h3>Owner</h3><p>${escapeHtml(owner)}</p></div>
         </div>
       </section>
 
-      <section class="grid" style="margin-top: 18px;">
-        <article class="panel">
-          <h2>Delivery Placement</h2>
-          <h3>Phases</h3>
-          <ul>${toHtmlList(phases)}</ul>
-          <h3>Stages / Tasks</h3>
-          <ul>${toHtmlList(stages)}</ul>
-        </article>
-
-        <article class="panel">
-          <h2>Coordination</h2>
-          <h3>Canonical Agents</h3>
-          <ul>${toHtmlList(agents)}</ul>
-          <h3>Primary Workflows</h3>
-          <ul>${toHtmlList(workflows)}</ul>
-          <h3>Supportive Skills</h3>
-          <ul>${toHtmlList(supportiveSkills)}</ul>
-        </article>
+      <section class="card" data-panel="framework">
+        <h2>Delivery Framework Placement</h2>
+        <p>Phases: ${phases.map(p => `<code>${p}</code>`).join(', ')}<br>Stages / Tasks: ${stages.map(s => `<code>${s}</code>`).join(', ')}</p>
+        <h3>Input → Process → Output</h3>
+        <p>Input: user intent, story context.<br>Process: Orch evaluates phase/stage fit and checks constraints.<br>Output: clear execution path, reviewed capability routing.</p>
       </section>
 
-      <section class="grid" style="margin-top: 18px;">
-        <article class="panel">
-          <h2>Use Cases</h2>
-          <h3>Core</h3>
-          <ul>${toHtmlList(coreUseCases)}</ul>
-          <h3>Adjacent</h3>
-          <ul>${toHtmlList(adjacentUseCases)}</ul>
-          <h3>Do Not Use</h3>
-          <ul>${toHtmlList(doNotUseCases)}</ul>
-        </article>
-
-        <article class="panel">
-          <h2>Edges and Constraints</h2>
-          <h3>Edge Cases</h3>
-          <ul>${toHtmlList(edgeCases)}</ul>
-          <h3>Stress Cases</h3>
-          <ul>${toHtmlList(stressCases)}</ul>
-          <h3>Constraints</h3>
-          <ul>${toHtmlList(constraints)}</ul>
-        </article>
+      <section class="card" data-panel="routing">
+        <h2>Use Cases, Edge Cases, Constraints</h2>
+        <p><strong>Core Use Cases:</strong><ul>${toHtmlList(coreUseCases)}</ul><strong>Adjacent Use Cases:</strong><ul>${toHtmlList(adjacentUseCases)}</ul><strong>Do Not Use Cases:</strong><ul>${toHtmlList(doNotUseCases)}</ul></p>
+        <p><strong>Edge Cases:</strong><ul>${toHtmlList(edgeCases)}</ul><strong>Stress Cases:</strong><ul>${toHtmlList(stressCases)}</ul></p>
+        <p><strong>Constraints:</strong><ul>${toHtmlList(constraints)}</ul></p>
       </section>
 
-      <section class="grid" style="margin-top: 18px;">
-        <article class="panel">
-          <h2>Orch Routing Hints</h2>
-          <ul>${toHtmlList(orchHints)}</ul>
-        </article>
-
-        <article class="panel">
-          <h2>Review Questions</h2>
-          <ul>${toHtmlList(reviewQuestions)}</ul>
-        </article>
+      <section class="card" data-panel="review">
+        <h2>Review Questions</h2>
+        <ul>
+          <li>${escapeHtml(q1)}</li>
+          <li>${escapeHtml(q2)}</li>
+          <li>${escapeHtml(q3)}</li>
+          <li>${escapeHtml(q4)}</li>
+        </ul>
       </section>
+    </div>
 
-      <section class="panel" style="margin-top: 18px;">
-        <h2>Example Scenarios</h2>
-        <ul>${toHtmlList(examples)}</ul>
-      </section>
-    </main>
+    <script>
+      const tabs = document.querySelectorAll("[data-target]");
+      const panels = document.querySelectorAll("[data-panel]");
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((node) => node.classList.remove("active"));
+          panels.forEach((node) => node.classList.remove("active"));
+          tab.classList.add("active");
+          const panel = document.querySelector(\`[data-panel="\${tab.dataset.target}"]\`);
+          if (panel) panel.classList.add("active");
+        });
+      });
+    </script>
   </body>
-</html>
-`;
+</html>`;
 }
 
 export async function generateReviewPack(input: ReviewPackInput): Promise<ReviewPackResult> {

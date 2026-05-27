@@ -1,7 +1,7 @@
 # Step E-03: Upgrade (Drafting Enhancements)
 
 ## Goal
-Draft the actual technical changes to the BMAD capabilities based on the identified gaps.
+Draft the actual technical changes to the I-Wish capabilities based on the identified gaps.
 
 ## Execution Instructions
 1. **Load Governance Fragments**:

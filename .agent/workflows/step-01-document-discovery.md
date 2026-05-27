@@ -4,7 +4,7 @@ description: 'Discover and inventory all project documents, handling duplicates 
 
 nextStepFile: './step-02-prd-analysis.md'
 outputFile: '{planning_artifacts}/implementation-readiness-report-{{date}}.md'
-templateFile: '../templates/readiness-report-template.md'
+templateFile: './readiness-report-template.md'
 ---
 
 # Step 1: Document Discovery

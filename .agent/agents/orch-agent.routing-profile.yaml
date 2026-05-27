@@ -1,5 +1,5 @@
 id: agent-orch-agent
-name: orch-agent
+name: 'orch-agent-wrapper'
 kind: agent
 shape: agent
 role: process-primary

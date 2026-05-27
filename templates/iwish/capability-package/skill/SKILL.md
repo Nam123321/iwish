@@ -1,6 +1,10 @@
 ---
 name: new-skill
 description: Trigger-focused description only. Avoid workflow summaries here.
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # New Skill

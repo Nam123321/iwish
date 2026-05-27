@@ -499,11 +499,11 @@ project-root/
 
 <action>Update state file:
 
-- Add to completed_steps: {"step": "step_6", "status": "completed", "timestamp": "{{now}}", "summary": "Vegeta/deployment guides written"}
+- Add to completed_steps: {"step": "step_6", "status": "completed", "timestamp": "{{now}}", "summary": "dev-agent/deployment guides written"}
 - Update current_step = "step_7"
 - Add generated outputs to list
   </action>
-  <action>PURGE detailed instructions, keep only: "Vegeta setup and deployment documented"</action>
+  <action>PURGE detailed instructions, keep only: "dev-agent setup and deployment documented"</action>
   </step>
 
 <step n="7" goal="Detect multi-part integration architecture" if="workflow_mode != deep_dive and project has multiple parts">

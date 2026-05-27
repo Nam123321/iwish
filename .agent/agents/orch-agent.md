@@ -1,5 +1,5 @@
 ---
-name: orch-agent
+name: orch-agent-persona
 description: High-level orchestration, routing, and system management
 role: System orchestrator and routing director
 ---

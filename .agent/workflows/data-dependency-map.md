@@ -1,5 +1,5 @@
 ---
-description: Map cross-story and cross-epic data dependencies with visual dependency graph using Kira Data Piccolo
+description: Map cross-story and cross-epic data dependencies with visual dependency graph using Kira Data architect-agent
 ---
 
 # Data Dependency Map
@@ -11,6 +11,6 @@ This workflow maps all cross-story data dependencies and generates execution ord
 
 ## Activation
 
-1. Load the Piccolo agent persona from `{project-root}/.agent/agents/piccolo.md` and apply Kira Data Piccolo behavior from this workflow.
-2. Load config from `{project-root}/_bmad/bmm/config.yaml`
-3. Execute the workflow: `{project-root}/_bmad/bmm/workflows/3-solutioning/data-dependency-map/workflow.md`
+1. Load the architect-agent agent persona from `{project-root}/.agent/agents/architect-agent.md` and apply Kira Data architect-agent behavior from this workflow.
+2. Load config from `{project-root}/_iwish/bmm/config.yaml`
+3. Execute the workflow: `{project-root}/.agent/workflows/step-01-map.md`

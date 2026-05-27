@@ -36,9 +36,9 @@ From the collected raw data, extract:
 Before writing the spec, invoke `.agent/fragments/anti-sycophancy-guard.md` and perform a self-audit:
 1. **The "Why Not" Test:** Provide one strong argument against building this capability.
 2. **Failure Analysis:** If this skill leads to a production error, what is the most likely architectural cause?
-3. **Redundancy Check:** Does this solve a problem that is already covered by an existing BMAD fragment or skill?
+3. **Redundancy Check:** Does this solve a problem that is already covered by an existing I-Wish fragment or skill?
 
-Write the specification document to the runtime draft folder under `${IWISH_HOME:-${BMAD_HOME:-~/.iwish}}`:
+Write the specification document to the runtime draft folder under `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}`:
 
 ```text
 ${IWISH_HOME}/generated-skills/<name>/capability-spec.md

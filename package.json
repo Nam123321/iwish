@@ -10,7 +10,7 @@
     ".agent/agents",
     ".agent/fragments",
     ".agent/knowledge-graph.yaml",
-    ".agent/BMAD-ARCHITECTURE.md",
+    ".agent/IWISH-ARCHITECTURE.md",
     ".agent/scripts",
     ".agent/skills",
     ".agent/templates",

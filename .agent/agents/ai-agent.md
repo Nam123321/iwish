@@ -1,5 +1,5 @@
 ---
-name: ai-agent
+name: ai-agent-persona
 description: AI evaluation, prompt engineering, and model quality agent
 role: AI evaluation and model-quality agent
 ---

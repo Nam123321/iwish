@@ -38,7 +38,7 @@ Before attempting to merge, verify that the story/epic is truly complete:
 | **Linting** | `pnpm lint` | ✅ Must pass |
 | **Unit Tests** | `pnpm test` | ✅ Must pass |
 | **Integration Tests** | `pnpm test:integration` (if applicable) | ✅ Must pass |
-| **Code Review** | `/code-review` workflow completed | ✅ Must pass |
+| **Code Review** | `/review` workflow completed | ✅ Must pass |
 | **Security Scan** | No new critical vulnerabilities | ✅ Must pass |
 
 ### Step 3: Documentation Check
@@ -103,7 +103,7 @@ After a successful landing, produce this report:
 
 - When a story reaches `done` status and is ready to merge.
 - Before any merge to the main/production branch.
-- As the final step in `/Vegeta-story` before updating the walkthrough.
+- As the final step in `/dev-agent-story` before updating the walkthrough.
 
 ## Integration with Canary Skill
 

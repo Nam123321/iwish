@@ -4,7 +4,7 @@ description: Index codebase into a knowledge graph using CodeGraphContext (CGC) 
 
 # `/analyze-codebase` Workflow
 
-**Persona:** Grand-Priest (Master Orchestrator) + Piccolo (Architect)
+**Persona:** orch-agent (Master Orchestrator) + architect-agent (Architect)
 
 ---
 
@@ -171,7 +171,7 @@ impact({target: "AuthGuard", direction: "downstream", maxDepth: 2})
 | Layer | Cơ chế | Owner | Khi nào |
 |-------|--------|-------|---------|
 | Layer 1 | `ENABLE_AUTO_WATCH=true` (watchdog) | System (automatic) | Realtime — khi file thay đổi |
-| Layer 2 | `add_code_to_graph("<file>")` per file | **Vegeta** (Dev Agent) | Cuối `/dev-story` và `/fix-bug` |
+| Layer 2 | `add_code_to_graph("<file>")` per file | **dev-agent** (Dev Agent) | Cuối `/dev-story` và `/fix-bug` |
 | Layer 3 | `cgc index --force .` full re-index | **Master Roshi** (SM) | Đầu sprint (`/sprint-planning`) và cuối epic (`/retrospective`) |
 | IGNORE_DIRS sync | `sync-ignore-dirs.sh --check` | **Master Roshi** (SM) | Đầu mỗi sprint |
 

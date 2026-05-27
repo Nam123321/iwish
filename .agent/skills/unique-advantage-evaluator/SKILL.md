@@ -1,5 +1,5 @@
 ---
-name: "unique-advantage-evaluator"
+name: 'unique-advantage-evaluator-wrapper'
 description: 'Use when evaluating whether an idea, plan, or active project has a durable business advantage, or when proposing stronger business-model, pricing, and positioning options.'
 ---
 

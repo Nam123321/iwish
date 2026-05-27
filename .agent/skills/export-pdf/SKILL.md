@@ -1,6 +1,6 @@
 ---
 name: export-pdf
-description: Export a local HTML file to PDF with WeasyPrint when the user asks to turn an HTML artifact, report, dashboard, or preview page into a printable PDF. Use for BMAD-generated HTML such as Idea Navigator, operation reports, pilot review pages, or other local static HTML outputs.
+description: Export a local HTML file to PDF with WeasyPrint when the user asks to turn an HTML artifact, report, dashboard, or preview page into a printable PDF. Use for I-Wish-generated HTML such as Idea Navigator, operation reports, pilot review pages, or other local static HTML outputs.
 ---
 
 # HTML to PDF with WeasyPrint
@@ -44,7 +44,7 @@ python3 .agent/skills/export-pdf/scripts/export_html_to_pdf.py "/absolute/input.
 - If rendering looks wrong, inspect the HTML for browser-only behavior such as heavy JavaScript-driven UI. WeasyPrint works best with static HTML/CSS.
 - `python3 -m pip install weasyprint` may still fail if the host machine lacks native dependencies required by WeasyPrint. If that happens, report the failure clearly and stop rather than guessing.
 
-## BMAD-specific guidance
-- Prefer this skill for `_bmad-output/operation-report/*.html`, `Idea Navigator` derivatives, and pilot HTML review packets.
+## I-Wish-specific guidance
+- Prefer this skill for `_iwish-output/operation-report/*.html`, `Idea Navigator` derivatives, and pilot HTML review packets.
 - If the source HTML is meant for screen-first browsing, consider generating a PDF-specific variant later with print CSS, but do not block the first export attempt on that refinement.
 - For pilot outputs that ship with a helper shell script, update the flow to: check -> ask install if needed -> install on approval -> export PDF.

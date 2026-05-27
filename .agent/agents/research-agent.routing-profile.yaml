@@ -1,5 +1,5 @@
 id: agent-research-agent
-name: research-agent
+name: 'research-agent-wrapper'
 kind: agent
 shape: agent
 role: process-primary

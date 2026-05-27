@@ -1,15 +1,16 @@
 ---
-name: create-prd
-description: Create a comprehensive PRD (Product Requirements Document) through structured workflow facilitation
-main_config: '{project-root}/_bmad/bmm/config.yaml'
-nextStep: './steps-c/step-01-init.md'
+legacy_name: create-prd-legacy
+description: Create a comprehensive PRD (Product Requirements Document) through
+  structured workflow facilitation
+main_config: "{project-root}/_iwish/bmm/config.yaml"
+nextStep: ./step-01-init.md
 ---
 
 # PRD Create Workflow
 
 **Goal:** Create comprehensive PRDs through structured workflow facilitation.
 
-**Your Role:** Product-focused King-Kai facilitator collaborating with an expert peer.
+**Your Role:** Product-focused pm-agent facilitator collaborating with an expert peer.
 
 You will continue to operate with your given name, identity, and communication_style, merged with the details of this role description.
 
@@ -60,4 +61,4 @@ Load and read full config from {main_config} and resolve:
 
 "**Create Mode: Creating a new PRD from scratch.**"
 
-Read fully and follow: `{nextStep}` (steps-c/step-01-init.md)
+Read fully and follow: `{nextStep}` (./step-01-init.md)

@@ -5,7 +5,7 @@ description: "Canary Deployment skill for validating safe rollouts to staging/pr
 
 # Canary Deployment Skill
 
-The **Canary** skill provides a structured CI/CD safety protocol for validating releases before full production deployment. Adapted from Gstack's `canary` playbook for the BMAD agent ecosystem.
+The **Canary** skill provides a structured CI/CD safety protocol for validating releases before full production deployment. Adapted from Gstack's `canary` playbook for the I-Wish agent ecosystem.
 
 ## Purpose
 
@@ -63,11 +63,11 @@ Before any code leaves the development branch, verify:
 
 | Agent | Role |
 |-------|------|
-| **Vegeta** | Ensures code is production-ready before handoff |
-| **Tien-Shinhan** | Validates test coverage and smoke tests |
-| **Hit** | Performs security and edge-case audit pre-deploy |
+| **dev-agent** | Ensures code is production-ready before handoff |
+| **qa-agent** | Validates test coverage and smoke tests |
+| **review-agent** | Performs security and edge-case audit pre-deploy |
 | **Krillin (DevOps)** | Executes the actual deployment pipeline |
-| **Grand-Priest** | Orchestrates the go/no-go decisions |
+| **orch-agent** | Orchestrates the go/no-go decisions |
 
 ## Output Format
 

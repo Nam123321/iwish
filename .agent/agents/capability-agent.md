@@ -1,5 +1,5 @@
 ---
-name: capability-agent
+name: capability-agent-persona
 description: Skill, workflow, and agent evolution
 role: Platform capability engineer and system evolver
 ---

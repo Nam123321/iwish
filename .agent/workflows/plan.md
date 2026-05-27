@@ -1,13 +1,13 @@
 ---
-name: 'plan'
-description: 'Canonical short workflow for sprint and execution planning'
+name: plan
+description: Canonical short workflow for sprint and execution planning
 ---
 
 # /plan
 
 Canonical workflow name for planning and sprint orchestration.
 
-Read and execute: `bmad-bmm-sprint-planning.md`
+Read and execute: `iwish-feature-sprint-planning.md`
 
 If `/plan` follows `idea-challenge`, treat these as upstream planning inputs:
 

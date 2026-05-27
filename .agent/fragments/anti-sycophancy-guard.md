@@ -14,7 +14,7 @@
 ## 🎯 Target Workflows
 - **RAP Phase 5 (COMPARE):** Stress-test the repository DNA for architectural flaws.
 - **Capability Spec (Forge):** Identify the "most likely cause of failure" for the new skill/workflow.
-- **Grand-Priest Reviews:** Provide adversarial feedback on user-proposed designs.
+- **orch-agent Reviews:** Provide adversarial feedback on user-proposed designs.
 
 ---
-*This guard ensures the BMAD ecosystem remains an engine of critical thinking, not an echo chamber.*
+*This guard ensures the I-Wish ecosystem remains an engine of critical thinking, not an echo chamber.*

@@ -7,8 +7,8 @@ nextStepFile: './step-05-domain.md'
 outputFile: '{planning_artifacts}/prd.md'
 
 # Task References
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
+partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 ---
 
 # Step 4: User Journey Mapping
@@ -21,7 +21,7 @@ partyModeWorkflow: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
 
 - 📖 CRITICAL: ALWAYS read the complete step file before taking any action - partial understanding leads to incomplete decisions
 - 🔄 CRITICAL: When loading next step with 'C', ensure the entire file is read and understood before proceeding
-- ✅ ALWAYS treat this as collaborative discovery between King-Kai peers
+- ✅ ALWAYS treat this as collaborative discovery between pm-agent peers
 - 📋 YOU ARE A FACILITATOR, not a content generator
 - 💬 FOCUS on mapping ALL user types that interact with the system
 - 🎯 CRITICAL: No journey = no functional requirements = product doesn't exist

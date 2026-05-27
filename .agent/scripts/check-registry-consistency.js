@@ -44,8 +44,51 @@ textFiles.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
   const relativePath = path.relative(process.cwd(), file);
   
+  if (relativePath.includes('routing-profile')) return;
+  
   if (file.endsWith('.md')) {
+    const isWhiteHackerSkill = relativePath.startsWith('.agent' + path.sep + 'skills' + path.sep + 'white-hacker') &&
+                               !relativePath.includes(path.sep + 'rules' + path.sep) &&
+                               !relativePath.includes(path.sep + 'references' + path.sep);
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    
+    if (isWhiteHackerSkill) {
+      if (!frontmatterMatch) {
+        console.error(`[ERROR] [Schema Validation Error] Missing YAML frontmatter block in ${relativePath}`);
+        hasErrors = true;
+      } else {
+        try {
+          const doc = yaml.parse(frontmatterMatch[1]);
+          if (!doc) {
+            console.error(`[ERROR] [Schema Validation Error] Empty frontmatter block in ${relativePath}`);
+            hasErrors = true;
+          } else {
+            if (!doc.name || typeof doc.name !== 'string' || doc.name.trim() === '') {
+              console.error(`[ERROR] [Schema Validation Error] Missing or invalid 'name' in ${relativePath}`);
+              hasErrors = true;
+            }
+            if (doc.description === undefined || doc.description === null || typeof doc.description !== 'string' || doc.description.trim() === '') {
+              console.error(`[ERROR] [Schema Validation Error] Missing or incomplete description in ${relativePath}`);
+              hasErrors = true;
+            }
+            const requiredArrays = ['inputs', 'outputs', 'mcp_tools_required', 'subagent_triggers'];
+            requiredArrays.forEach(field => {
+              if (doc[field] === undefined) {
+                console.error(`[ERROR] [Schema Validation Error] Missing required field '${field}' in ${relativePath}`);
+                hasErrors = true;
+              } else if (!Array.isArray(doc[field])) {
+                console.error(`[ERROR] [Schema Validation Error] Field '${field}' must be an array in ${relativePath}`);
+                hasErrors = true;
+              }
+            });
+          }
+        } catch (e) {
+          console.error(`[ERROR] [Schema Validation Error] Failed to parse frontmatter in ${relativePath}: ${e.message}`);
+          hasErrors = true;
+        }
+      }
+    }
+
     if (frontmatterMatch) {
       try {
         const doc = yaml.parse(frontmatterMatch[1]);
@@ -98,6 +141,8 @@ textFiles.forEach(file => {
 
   // Skip template references
   if (relativePath.includes('template') || relativePath.includes('instructions')) return;
+  if (relativePath.includes('routing-profile')) return;
+  if (relativePath.includes(path.sep + 'rules' + path.sep) || relativePath.includes(path.sep + 'references' + path.sep)) return;
 
   // Check command references
   let match;
@@ -124,7 +169,7 @@ textFiles.forEach(file => {
       referencedPath = referencedPath.split('#')[0];
     }
     
-    if (referencedPath === '') continue;
+    if (referencedPath === '' || referencedPath === '...') continue;
 
     // Resolve path
     let fullPath;

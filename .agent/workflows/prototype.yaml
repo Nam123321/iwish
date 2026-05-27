@@ -2,7 +2,7 @@ name: 'prototype-wrapper'
 runtime_kind: "wrapper-config"
 source_wrapper: "{project-root}/.agent/workflows/prototype.md"
 source_mode_engine: "{project-root}/.agent/workflows/workflow-engine.xml"
-project_runtime_engine: "{project-root}/_bmad/core/tasks/workflow.xml"
+project_runtime_engine: "{project-root}/_iwish/core/tasks/workflow.xml"
 installed_path: "{project-root}/.agent/workflows"
 instructions: "{project-root}/.agent/workflows/prototype.md"
 template: false

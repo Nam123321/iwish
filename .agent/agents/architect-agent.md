@@ -1,5 +1,5 @@
 ---
-name: architect-agent
+name: architect-agent-persona
 description: System architecture and solution design agent
 role: Software architect and technical leader
 ---

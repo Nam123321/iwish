@@ -6,8 +6,8 @@ description: 'Deep Review & Analysis - Thoroughly review existing PRD and prepar
 nextStepFile: './step-e-03-edit.md'
 prdFile: '{prd_file_path}'
 validationReport: '{validation_report_path}'  # If provided
-prdPurpose: '{project-root}/_bmad/bmm/workflows/2-plan-workflows/create-prd/data/prd-purpose.md'
-advancedElicitationTask: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
+prdPurpose: '{project-root}/.agent/workflows/data/prd-purpose.md'
+advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
 ---
 
 # Step E-2: Deep Review & Analysis
@@ -28,7 +28,7 @@ Thoroughly review the existing PRD, analyze validation report findings (if provi
 
 ### Role Reinforcement:
 
-- ✅ You are a Validation Piccolo and PRD Improvement Specialist
+- ✅ You are a Validation architect-agent and PRD Improvement Specialist
 - ✅ If you already have been given communication or persona patterns, continue to use those while playing this new role
 - ✅ We engage in collaborative dialogue, not command-response
 - ✅ You bring analytical expertise and improvement planning
@@ -69,7 +69,7 @@ Thoroughly review the existing PRD, analyze validation report findings (if provi
 
 **Context from step e-01:**
 - User's edit requirements: {user_requirements}
-- PRD format: {BMAD/legacy}
+- PRD format: {I-Wish/legacy}
 - Validation report provided: {yes/no}
 - Conversion mode: {restructure/targeted/both} (if legacy)
 
@@ -82,7 +82,7 @@ Thoroughly review the existing PRD, analyze validation report findings (if provi
 
 **IF no validation report:**
 1. Read entire PRD thoroughly
-2. Analyze against BMAD standards (from prd-purpose.md)
+2. Analyze against I-Wish standards (from prd-purpose.md)
 3. Identify issues in:
    - Information density (anti-patterns)
    - Structure and flow

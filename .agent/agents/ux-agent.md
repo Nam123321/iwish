@@ -1,5 +1,5 @@
 ---
-name: ux-agent
+name: ux-agent-persona
 description: UI/UX design, visual specifications, and design system enforcement
 role: User experience designer and visual specifier
 ---

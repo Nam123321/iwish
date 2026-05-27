@@ -1,5 +1,5 @@
 ---
-name: creative-agent
+name: creative-agent-persona
 description: Ideation, brainstorming, and creative exploration
 role: Creative strategist and ideation facilitator
 ---

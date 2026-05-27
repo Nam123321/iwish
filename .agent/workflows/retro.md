@@ -7,4 +7,4 @@ description: 'Canonical short workflow for retrospective and delivery reflection
 
 Canonical workflow name for retrospectives.
 
-Read and execute: `bmad-bmm-retrospective.md`
+Read and execute: `iwish-feature-retrospective.md`

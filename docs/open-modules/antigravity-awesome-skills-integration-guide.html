@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integration Guide: antigravity-awesome-skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: rgba(17, 24, 39, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --accent-sky: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --gradient-accent: linear-gradient(135deg, var(--accent-sky), var(--accent-indigo));
+      --gradient-purple: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-accent);
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent-sky);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      margin-top: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    section:hover {
+      border-color: rgba(99, 102, 241, 0.25);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    h2 span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Grid Layout */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--accent-sky);
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--accent-indigo);
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      color: var(--accent-sky);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    td {
+      font-size: 0.95rem;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* Custom Alerts */
+    .alert {
+      padding: 1.25rem;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid;
+    }
+
+    .alert-warning {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: #f59e0b;
+      color: #fef3c7;
+    }
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: #ef4444;
+      color: #fee2e2;
+    }
+
+    .alert-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    code {
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: #f43f5e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Adoption Review Pack</h1>
+      <div class="subtitle">Integration Guide for <code>antigravity-awesome-skills</code></div>
+      <span class="badge">State: Draft Review</span>
+    </header>
+
+    <section id="what-why">
+      <h2><span>01.</span> Overview & Placement</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">What is it?</div>
+          <p>A reference module pack aggregating over 1,470+ unique agentic skills (4,570+ file instances) from official and community sources, equipped with path-filtering and safety checkers.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Placement</div>
+          <p>Classified as a <strong>supportive-registry</strong>. Placed primarily in the <code>orchestration</code> and <code>validate</code> stages to assist with system-wide skill validation and RAG-based context lookup.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="use-cases">
+      <h2><span>02.</span> Core Use Cases</h2>
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-title">Adopt: Skill Quality Linting (SYSTEM_SKILL)</div>
+        <p>Integrate their schema validation and frontmatter checker scripts directly into I-Wish's <code>/create-skill</code> workflow. This ensures any custom skill generated meets strict formatting standards.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Selective: Specialized Playbooks</div>
+        <p>Deploy outstanding developer guidelines (e.g., <code>andrej-karpathy-skills</code>) to enhance dev-agent coding accuracy and testing discipline.</p>
+      </div>
+    </section>
+
+    <section id="risks">
+      <h2><span>03.</span> Risks & Constraints</h2>
+      <div class="alert alert-warning">
+        <div class="alert-title">⚠️ Token & Context Poisoning</div>
+        <div>Loading all 1,470+ skills directly into the agent folder will immediately exhaust LLM context windows (Gemini Issue #215). Strict selective extraction is mandatory.</div>
+      </div>
+      <div class="alert alert-danger">
+        <div class="alert-title">❌ Global Installer Execution</div>
+        <div>The CLI installer scripts write files outside the workspace (e.g. <code>~/.agents</code>). To maintain sandbox isolation, global installer hooks must be <strong>SKIPPED</strong>.</div>
+      </div>
+    </section>
+
+    <section id="decisions">
+      <h2><span>04.</span> Actionable Decisions for User</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Component Group</th>
+            <th>Pros</th>
+            <th>Cons</th>
+            <th>Proposed Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Skill Linter CI</strong></td>
+            <td>Auto-validates tags, categories, headers.</td>
+            <td>Requires python/node environment.</td>
+            <td><strong>ADOPT</strong> (as SYSTEM_SKILL)</td>
+          </tr>
+          <tr>
+            <td><strong>CLI Installer</strong></td>
+            <td>One-click deployment.</td>
+            <td>Escapes sandbox folder boundaries.</td>
+            <td><strong>SKIP</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Skill Registry</strong></td>
+            <td>Massive 4,500+ library.</td>
+            <td>High noise, dilutes model context.</td>
+            <td><strong>SELECTIVE</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="review-prompts">
+      <h2><span>05.</span> User Feedback Required</h2>
+      <p style="margin-bottom: 1rem; color: var(--text-secondary);">Please review the guide and answer the following questions to proceed to Phase 6 (Integrate & Classify):</p>
+      <ul>
+        <li>Do you approve the integration of the automated <code>skill-linter</code>?</li>
+        <li>Should we promotion-register selected skills like <code>andrej-karpathy-skills</code> as system skills?</li>
+        <li>Are you comfortable skipping the installer scripts to enforce sandbox boundaries?</li>
+      </ul>
+      <div class="btn-group">
+        <div class="btn btn-primary" onclick="alert('Thank you! Please submit your approval in the chat window.')">Approve Plan</div>
+        <div class="btn btn-secondary" onclick="alert('Please specify your changes in the chat window.')">Request Edits</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

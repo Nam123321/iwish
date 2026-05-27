@@ -21,9 +21,12 @@ import {
   registerModule,
   scaffoldSolutionResearchArtifacts,
   selectToolProfile,
+  ingestPlatformSkills,
+  detectPlatformCapabilities,
 } from './runtime';
-import { SUPPORTED_INSTALL_TARGETS } from './constants';
+import { SUPPORTED_INSTALL_TARGETS, getPlatformMode, PlatformMode } from './constants';
 import { routeRequest } from './routing';
+import { extractGraphData, extractSprintData, extractAgentTrace } from './graph-parser';
 import { getReconciliationStatus, queueReconciliation } from './reconciliation';
 import { loadSourceOfTruth } from './source-of-truth';
 import { buildPlatformInventory } from './inventory';
@@ -87,42 +90,109 @@ async function promptGraphToolSelection(projectRoot: string): Promise<void> {
   }
 
   const rl = createInterface({ input, output });
+  const platform = getPlatformMode();
+  const recommendedOverride = platform === 'AG_MAO' ? 'antigravity-memory' : graphPrompt.recommended;
+
   try {
     console.log('');
-    console.log(chalk.yellow('Graph setup is required for Orch brain surfaces.'));
-    console.log(chalk.blue('Choose a graph solution now, or press Enter to configure it later.'));
-    graphPrompt.options.forEach((option: { id: string; description: string }, index: number) => {
-      const recommended = option.id === graphPrompt.recommended ? ' (recommended)' : '';
-      console.log(`${index + 1}. ${option.id}${recommended}`);
-      if (option.description) {
-        console.log(`   ${option.description}`);
+    console.log(chalk.blue('=============================================='));
+    console.log(chalk.yellow('📊 MANDATORY GRAPH SETUP'));
+    console.log(chalk.blue('A graph solution is required for I-Wish execution.'));
+    if (platform === 'AG_MAO') {
+      console.log(chalk.green('Google Antigravity 2.0 runtime detected! Recommended: antigravity-memory'));
+    }
+    console.log(chalk.blue('=============================================='));
+
+    while (true) {
+      graphPrompt.options.forEach((option: { id: string; description: string }, index: number) => {
+        const recommended = option.id === recommendedOverride ? ' (recommended)' : '';
+        console.log(`${index + 1}. ${option.id}${recommended}`);
+        if (option.description) {
+          console.log(`   ${option.description}`);
+        }
+      });
+      console.log(`${graphPrompt.options.length + 1}. other / custom (custom-adapter)`);
+      console.log('----------------------------------------------');
+
+      const answer = (await rl.question('Select a graph solution (enter number or name): ')).trim();
+      if (!answer) {
+        console.log(chalk.red('Graph setup is mandatory. Please make a selection to continue.'));
+        continue;
       }
-      console.log(`   Command: iwish select-tool graph ${option.id}`);
+
+      const numeric = Number(answer);
+      let selected = '';
+      if (Number.isInteger(numeric) && numeric >= 1 && numeric <= graphPrompt.options.length) {
+        selected = graphPrompt.options[numeric - 1].id;
+      } else if (Number.isInteger(numeric) && numeric === graphPrompt.options.length + 1) {
+        selected = 'custom-adapter';
+      } else {
+        // Check if matching by id directly
+        const matched = graphPrompt.options.find((opt) => opt.id.toLowerCase() === answer.toLowerCase());
+        if (matched) {
+          selected = matched.id;
+        } else if (answer.toLowerCase() === 'custom-adapter') {
+          selected = 'custom-adapter';
+        }
+      }
+
+      if (selected) {
+        await selectToolProfile(projectRoot, 'graph', selected);
+        console.log(chalk.green(`Selected ${selected} for tool group graph`));
+        if (selected === 'custom-adapter') {
+          console.log('Next: define the custom graph adapter contract and usage pack before using graph-backed workflows.');
+        }
+        break;
+      } else {
+        console.log(chalk.red('Invalid selection. Please try again.'));
+      }
+    }
+  } finally {
+    rl.close();
+  }
+}
+
+async function promptPlatformIngestion(projectRoot: string, targets: string[]): Promise<string[]> {
+  const capabilities = await detectPlatformCapabilities(projectRoot, targets);
+  if (capabilities.length === 0) {
+    return [];
+  }
+
+  const rl = createInterface({ input, output });
+  try {
+    console.log('');
+    console.log(chalk.blue('=============================================='));
+    console.log(chalk.yellow('🔌 PLATFORM SKILL & MCP INGESTION'));
+    console.log('Detected the following platform-native capabilities:');
+    capabilities.forEach((cap, index) => {
+      console.log(`${index + 1}. [${cap.type.toUpperCase()}] ${cap.name} (ID: ${cap.id})`);
     });
-    console.log(`${graphPrompt.options.length + 1}. other / custom`);
-    console.log('   Command: iwish select-tool graph custom-adapter');
-    console.log('   Note: if you choose another graph tool, create or register its usage pack before relying on it in workflows.');
+    console.log('----------------------------------------------');
+    console.log('Choices:');
+    console.log('1. Ingest all detected platform capabilities (recommended)');
+    console.log('2. Skip all (Keep I-Wish completely pure)');
+    console.log('3. Select specific capabilities to ingest');
+    console.log(chalk.blue('=============================================='));
 
-    const answer = (await rl.question('Graph adapter to use now: ')).trim();
-    if (!answer) {
-      console.log(chalk.yellow('Skipped graph setup for now.'));
-      console.log(`Run later: iwish select-tool graph ${graphPrompt.recommended || '<adapter>'}`);
-      return;
+    const choice = (await rl.question('Select an option (1/2/3, default: 1): ')).trim();
+    if (choice === '' || choice === '1') {
+      return capabilities.map(cap => cap.id);
+    }
+    if (choice === '2') {
+      return [];
+    }
+    if (choice === '3') {
+      console.log('');
+      console.log('Enter numbers of the capabilities to ingest, separated by commas (e.g. 1,3,4):');
+      const selection = (await rl.question('Selection: ')).trim();
+      if (!selection) {
+        return [];
+      }
+      const indices = selection.split(',').map(entry => Number(entry.trim()) - 1).filter(idx => idx >= 0 && idx < capabilities.length);
+      return indices.map(idx => capabilities[idx].id);
     }
 
-    const numeric = Number(answer);
-    const selected =
-      Number.isInteger(numeric) && numeric >= 1 && numeric <= graphPrompt.options.length
-        ? graphPrompt.options[numeric - 1].id
-        : Number.isInteger(numeric) && numeric === graphPrompt.options.length + 1
-          ? 'custom-adapter'
-          : answer;
-
-    await selectToolProfile(projectRoot, 'graph', selected);
-    console.log(chalk.green(`Selected ${selected} for tool group graph`));
-    if (selected === 'custom-adapter') {
-      console.log('Next: define the custom graph adapter contract and usage pack before using graph-backed workflows.');
-    }
+    return capabilities.map(cap => cap.id);
   } finally {
     rl.close();
   }
@@ -143,7 +213,8 @@ export async function runCli(): Promise<void> {
       .description('Scaffold the canonical I-Wish runtime substrate in a project')
       .option('-p, --platform <target...>', 'Install target(s). If omitted, the CLI will ask you to choose.')
       .option('--skip-tool-setup', 'Skip interactive baseline tool setup prompts after install')
-      .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean }) => {
+      .option('--skip-platform-ingest', 'Skip interactive platform skill ingestion and run in pure I-Wish mode')
+      .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean; skipPlatformIngest?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'install');
@@ -154,6 +225,14 @@ export async function runCli(): Promise<void> {
           console.log(chalk.yellow('Skipped baseline tool setup.'));
           console.log('Run later: iwish tool-setup-status');
         }
+
+        let selectedIds: string[] = [];
+        if (options.skipPlatformIngest) {
+          console.log(chalk.yellow('Skipped platform skill ingestion flag detected.'));
+        } else {
+          selectedIds = await promptPlatformIngestion(projectRoot, targets);
+        }
+        await ingestPlatformSkills(projectRoot, targets, selectedIds);
       }),
   );
 
@@ -163,7 +242,8 @@ export async function runCli(): Promise<void> {
       .description('Refresh the I-Wish runtime manifest without overwriting customizations')
       .option('-p, --platform <target...>', 'Install target(s). If omitted, the CLI will ask you to choose.')
       .option('--skip-tool-setup', 'Skip interactive baseline tool setup prompts after update')
-      .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean }) => {
+      .option('--skip-platform-ingest', 'Skip interactive platform skill ingestion and run in pure I-Wish mode')
+      .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean; skipPlatformIngest?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'update');
@@ -174,6 +254,14 @@ export async function runCli(): Promise<void> {
           console.log(chalk.yellow('Skipped baseline tool setup.'));
           console.log('Run later: iwish tool-setup-status');
         }
+
+        let selectedIds: string[] = [];
+        if (options.skipPlatformIngest) {
+          console.log(chalk.yellow('Skipped platform skill ingestion flag detected.'));
+        } else {
+          selectedIds = await promptPlatformIngestion(projectRoot, targets);
+        }
+        await ingestPlatformSkills(projectRoot, targets, selectedIds);
       }),
   );
 
@@ -398,8 +486,13 @@ export async function runCli(): Promise<void> {
       .command('route')
       .description('Route a natural-language request or slash command through the Orch routing layer')
       .argument('<request>', 'User request, slash command, or repository URL')
-      .action(async (request: string, options: { directory: string }) => {
+      .option('--json', 'Output raw JSON route decision')
+      .action(async (request: string, options: { directory: string; json?: boolean }) => {
         const decision = await routeRequest(getProjectRoot(options.directory), request);
+        if (options.json) {
+          console.log(JSON.stringify(decision, null, 2));
+          return;
+        }
         console.log(chalk.blue(`canonical route: ${decision.canonicalCommand}`));
         console.log(`target agent: ${decision.targetAgent}`);
         console.log(`reason: ${decision.routeReason}`);
@@ -452,6 +545,51 @@ export async function runCli(): Promise<void> {
         if (decision.canonicalCommand === '/research-solution-sources') {
           console.log(chalk.blue('next artifact scaffold'));
           console.log('run: iwish scaffold-solution-research --name "<research-name>" --problem "<problem summary>"');
+        }
+      }),
+  );
+
+  addSharedDirectoryOption(
+    program
+      .command('show-graph')
+      .description('Expose the extracted Knowledge Graph structure in standard JSON')
+      .action((options: { directory: string }) => {
+        const result = extractGraphData(getProjectRoot(options.directory));
+        console.log(JSON.stringify(result, null, 2));
+      }),
+  );
+
+  addSharedDirectoryOption(
+    program
+      .command('gen-dashboard')
+      .description('Compile and export the interactive Knowledge Graph dashboard')
+      .action(async (options: { directory: string }) => {
+        const projectRoot = getProjectRoot(options.directory);
+        const templatePath = require('path').join(projectRoot, 'templates', 'iwish', 'dashboard.html');
+        const outputPath = require('path').join(projectRoot, '_iwish-output', 'dashboard.html');
+
+        if (!require('fs-extra').existsSync(templatePath)) {
+          console.error(chalk.red(`Template file not found at ${templatePath}`));
+          return;
+        }
+
+        try {
+          const templateContent = await require('fs-extra').readFile(templatePath, 'utf8');
+          const graphData = extractGraphData(projectRoot);
+          const sprintData = extractSprintData(projectRoot);
+          const agentTrace = extractAgentTrace(projectRoot);
+
+          let finalHtml = templateContent
+            .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
+            .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
+            .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'));
+
+          await require('fs-extra').ensureDir(require('path').dirname(outputPath));
+          await require('fs-extra').writeFile(outputPath, finalHtml, 'utf8');
+          console.log(chalk.green(`Interactive dashboard successfully compiled!`));
+          console.log(`Open in browser: file://${outputPath}`);
+        } catch (error: any) {
+          console.error(chalk.red(`Failed to generate dashboard: ${error.message}`));
         }
       }),
   );

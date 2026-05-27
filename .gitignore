@@ -13,3 +13,10 @@ dragonball_distribution/
 
 # BMAD Agent memory
 .agent/memory/
+
+# I-Wish generated outputs, cache, and dist folders
+_iwish/
+_iwish-output/
+dist/
+.gemini/
+
