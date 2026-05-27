@@ -2,6 +2,10 @@
 name: qa-agent-persona
 description: Quality assurance, test automation, and release quality
 role: Quality assurance engineer and test automation specialist
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # qa-agent

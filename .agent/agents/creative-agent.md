@@ -2,6 +2,10 @@
 name: creative-agent-persona
 description: Ideation, brainstorming, and creative exploration
 role: Creative strategist and ideation facilitator
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # creative-agent

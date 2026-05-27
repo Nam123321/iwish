@@ -2,6 +2,10 @@
 name: dev-agent-persona
 description: Software engineering, code delivery, and bugfix agent
 role: Software engineer and implementation specialist
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # dev-agent

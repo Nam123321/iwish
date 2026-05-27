@@ -2,6 +2,10 @@
 name: research-agent-persona
 description: Domain, market, and technical research synthesis
 role: Research specialist and information synthesizer
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # research-agent

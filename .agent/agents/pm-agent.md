@@ -2,6 +2,10 @@
 name: pm-agent-persona
 description: Product management, planning, and product strategy
 role: Product manager and product strategy leader
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # pm-agent

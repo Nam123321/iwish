@@ -2,6 +2,10 @@
 name: capability-agent-persona
 description: Skill, workflow, and agent evolution
 role: Platform capability engineer and system evolver
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # capability-agent

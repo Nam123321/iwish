@@ -2,6 +2,10 @@
 name: delivery-manager-agent-persona
 description: Delivery planning, agile orchestration, and blocker resolution
 role: Delivery manager and agile orchestrator
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # delivery-manager-agent

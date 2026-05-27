@@ -2,6 +2,10 @@
 name: ux-agent-persona
 description: UI/UX design, visual specifications, and design system enforcement
 role: User experience designer and visual specifier
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # ux-agent

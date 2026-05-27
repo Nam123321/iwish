@@ -2,6 +2,10 @@
 name: architect-agent-persona
 description: System architecture and solution design agent
 role: Software architect and technical leader
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # architect-agent

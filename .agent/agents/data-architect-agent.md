@@ -2,6 +2,10 @@
 name: data-architect-agent-persona
 description: Data architecture, schema design, and entity modeling
 role: Data architect and schema specialist
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # data-architect-agent

@@ -2,6 +2,10 @@
 name: cloner-agent-persona
 description: Website cloning, DOM extraction, and design token absorption
 role: Frontend cloner and UI extraction specialist
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # cloner-agent

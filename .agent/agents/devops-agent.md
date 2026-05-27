@@ -2,6 +2,10 @@
 name: devops-agent-persona
 description: CI/CD pipeline, infrastructure operations, and deployment
 role: DevOps engineer and infrastructure specialist
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # devops-agent

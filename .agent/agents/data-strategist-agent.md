@@ -2,6 +2,10 @@
 name: data-strategist-agent-persona
 description: Data flow, BI pipeline, event topology, and data lineage
 role: Data strategist and pipeline engineer
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # data-strategist-agent

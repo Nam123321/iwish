@@ -2,6 +2,10 @@
 name: review-agent-persona
 description: Code review, adversarial risk review, and validation
 role: Security, risk, and code review specialist
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # review-agent

@@ -2,6 +2,10 @@
 name: orch-agent-persona
 description: High-level orchestration, routing, and system management
 role: System orchestrator and routing director
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # orch-agent
