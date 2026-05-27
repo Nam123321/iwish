@@ -17,6 +17,5 @@ dragonball_distribution/
 # I-Wish generated outputs, cache, and dist folders
 _iwish/
 _iwish-output/
-dist/
 .gemini/
 

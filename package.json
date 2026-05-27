@@ -44,7 +44,6 @@
     "guard:magic": "node .agent/scripts/magic-hunter.js",
     "guard:leak": "node .agent/scripts/context-leak-detector.js",
     "guard:registry": "node .agent/scripts/check-registry.js",
-    "prepare": "npm run build && node scripts/prepare-husky.js",
     "prepublishOnly": "npm run build"
   },
   "lint-staged": {
