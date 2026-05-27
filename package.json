@@ -36,7 +36,7 @@
     "bmad-db": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && (chmod +x dist/index.js || true)",
     "start": "ts-node src/index.ts",
     "dev": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts,.tsx",
@@ -44,7 +44,7 @@
     "guard:magic": "node .agent/scripts/magic-hunter.js",
     "guard:leak": "node .agent/scripts/context-leak-detector.js",
     "guard:registry": "node .agent/scripts/check-registry.js",
-    "prepare": "node scripts/prepare-husky.js",
+    "prepare": "npm run build && node scripts/prepare-husky.js",
     "prepublishOnly": "npm run build"
   },
   "lint-staged": {
