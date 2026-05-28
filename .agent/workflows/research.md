@@ -13,6 +13,8 @@ If the ask is domain-oriented, read and execute: `iwish-feature-domain-research.
 
 If the ask is technical-oriented, read and execute: `iwish-feature-technical-research.md`
 
+If the ask is competitor-oriented, read and execute: `iwish-feature-competitor-research.md`
+
 If `/research` is being called as part of an `idea-challenge` chain, feed the evidence back into:
 
 - `idea-challenge-{project}.md`

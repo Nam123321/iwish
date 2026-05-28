@@ -334,10 +334,12 @@ async function compileUserGuideDashboard(projectRoot) {
     const graphData = (0, graph_parser_1.extractGraphData)(projectRoot);
     const sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
     const agentTrace = (0, graph_parser_1.extractAgentTrace)(projectRoot);
+    const ideaToPrdData = (0, graph_parser_1.extractIdeaToPrdData)(projectRoot);
     const finalHtml = templateContent
         .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
-        .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'));
+        .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('{IDEA_TO_PRD_DATA_PLACEHOLDER}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'));
     await fs.ensureDir(path.dirname(outputPath));
     await fs.writeFile(outputPath, finalHtml, 'utf8');
     return outputPath;

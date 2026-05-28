@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>I-Wish Multi-Agent User Guide & Dashboard</title>
   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-  <script src="https://unpkg.com/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -123,6 +123,7 @@
       flex: 1;
       height: 100%;
       position: relative;
+      min-width: 0;
     }
 
     .tab-content.active {
@@ -134,11 +135,13 @@
       flex: 1;
       height: 100%;
       background: radial-gradient(circle at center, #fbfaf5 0%, var(--bg-color) 100%);
+      min-width: 0;
     }
 
     /* Sidebar Glassmorphism */
     .sidebar {
       width: 400px;
+      flex-shrink: 0;
       height: 100%;
       background: var(--panel-bg);
       backdrop-filter: blur(20px);
@@ -214,12 +217,35 @@
 
     /* Kanban Board Styles */
     .kanban-board {
-      flex: 1;
+      width: 80%;
+      min-width: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
       display: flex;
       gap: 20px;
       padding: 30px;
       overflow-x: auto;
       background: var(--bg-color);
+    }
+
+    /* Kanban Sidebar Details Panel */
+    .kanban-sidebar-panel {
+      width: 20%;
+      min-width: 280px;
+      flex-grow: 0;
+      flex-shrink: 1;
+      height: 100%;
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border-color);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 10;
+      box-shadow: -10px 0 30px rgba(31, 41, 55, 0.03);
+      overflow-y: auto;
     }
 
     .kanban-column {
@@ -312,6 +338,74 @@
     .readiness-medium { background-color: var(--warning); box-shadow: 0 0 6px var(--warning); }
     .readiness-low { background-color: var(--error); box-shadow: 0 0 6px var(--error); }
 
+    /* Story details markdown styling */
+    .story-markdown-body h1, .story-markdown-body h2, .story-markdown-body h3 {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 4px;
+    }
+    .story-markdown-body p {
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .story-markdown-body ul, .story-markdown-body ol {
+      margin-left: 18px;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .story-markdown-body li {
+      margin-bottom: 4px;
+    }
+    .story-markdown-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: rgba(31, 41, 55, 0.04);
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    .story-markdown-body pre {
+      background: rgba(31, 41, 55, 0.04);
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 10px;
+    }
+    .story-markdown-body pre code {
+      padding: 0;
+      background: transparent;
+      color: var(--text-color);
+    }
+    .story-markdown-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-size: 12px;
+    }
+    .story-markdown-body th, .story-markdown-body td {
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      text-align: left;
+    }
+    .story-markdown-body th {
+      background: rgba(31, 41, 55, 0.03);
+      font-weight: 600;
+    }
+    .story-markdown-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      margin: 10px 0;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
     /* Integration Guide Panel */
     .guide-panel {
       flex: 1;
@@ -376,6 +470,7 @@
 
     .guide-sidebar {
       width: 260px;
+      flex-shrink: 0;
       border-right: 1px solid var(--border-color);
       background: var(--panel-bg);
       backdrop-filter: blur(10px);
@@ -757,6 +852,610 @@
       color: var(--text-muted);
       line-height: 1.5;
     }
+
+    /* Idea To PRD Slide Presentation Styles */
+    .presentation-layout {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 10% 20%, rgba(240, 244, 248, 0.4) 0%, var(--bg-color) 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .presentation-sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border-color);
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      padding: 30px 20px;
+      z-index: 10;
+      box-shadow: 10px 0 30px rgba(31, 41, 55, 0.02);
+      overflow-y: auto;
+    }
+
+    .project-header-card {
+      padding: 16px;
+      background: var(--gradient);
+      border-radius: 16px;
+      color: white;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px var(--primary-glow);
+    }
+
+    .project-header-card h3 {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .project-header-card span {
+      font-size: 11px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .timeline-phase {
+      margin-bottom: 20px;
+    }
+
+    .phase-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      border-left: 2px solid var(--primary);
+    }
+
+    .timeline-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: left;
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step-nav-btn:hover {
+      background: rgba(31, 41, 55, 0.04);
+      color: var(--text-color);
+    }
+
+    .step-nav-btn.active-step {
+      background: var(--primary-glow);
+      border-color: rgba(15, 118, 110, 0.2);
+      color: var(--primary);
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.05);
+    }
+
+    .step-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .step-status-dot.completed {
+      background-color: var(--success);
+      box-shadow: 0 0 6px var(--success);
+    }
+    .step-status-dot.pending {
+      background-color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    .presentation-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .presentation-viewport {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .slide-container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(31, 41, 55, 0.05);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-height: 520px;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    }
+
+    .slide-header-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+    }
+
+    .slide-phase-badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(29, 78, 216, 0.08);
+      padding: 6px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .slide-title-group h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-color);
+      margin-top: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .slide-path {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      background: rgba(31, 41, 55, 0.04);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .slide-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 30px;
+      flex: 1;
+    }
+
+    .slide-details-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .slide-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .slide-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-left: 20px;
+    }
+
+    .slide-bullets li {
+      font-size: 15px;
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .slide-causality-card {
+      background: linear-gradient(135deg, rgba(29, 78, 216, 0.02) 0%, rgba(15, 118, 110, 0.02) 100%);
+      border: 1px dashed rgba(15, 118, 110, 0.25);
+      border-radius: 16px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .slide-causality-card::before {
+      content: '🔗 NHÂN QUẢ / TẠI SAO?';
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background: white;
+      padding: 0 8px;
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+    }
+
+    .slide-causality-text {
+      font-size: 13.5px;
+      color: var(--primary);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .slide-visual-pane {
+      display: flex;
+      flex-direction: column;
+      background: rgba(31, 41, 55, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 20px;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 280px;
+    }
+
+    /* Generative UI Components Mock Visuals */
+    .gen-visual {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    /* Mindmap visual */
+    .mm-node {
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .mm-core {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      font-size: 14px;
+      padding: 12px 20px;
+      font-weight: 700;
+    }
+
+    /* PRFAQ visual */
+    .prfaq-mock {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      width: 90%;
+      padding: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+      font-family: 'Inter', sans-serif;
+    }
+    .prfaq-mock-header {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+    .prfaq-mock-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .prfaq-mock-body {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Moat evaluation visual */
+    .moat-visual-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .moat-bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .moat-bar-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    .moat-bar-outer {
+      height: 8px;
+      background: rgba(31, 41, 55, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .moat-bar-inner {
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 4px;
+      width: 0;
+      transition: width 1s ease-out;
+    }
+
+    /* Research Table */
+    .research-grid-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+    .research-grid-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .research-grid-card h4 {
+      font-size: 12px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .research-grid-card p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Context Particles */
+    .context-rule-card {
+      background: #1e1e2e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      color: #cdd6f4;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      width: 95%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    /* Metric Meter */
+    .metric-meter-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      width: 100%;
+    }
+    .metric-dial {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) var(--percentage, 0%), rgba(0,0,0,0.05) var(--percentage, 0%));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .metric-dial-inner {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .metric-dial-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-color);
+    }
+    .metric-dial-lbl {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    /* User journey visual */
+    .journey-nodes {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .journey-node {
+      background: white;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      z-index: 2;
+      box-shadow: 0 4px 10px rgba(29, 78, 216, 0.1);
+    }
+    .journey-line {
+      height: 2px;
+      background: var(--border-color);
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Block schema visual */
+    .arch-blocks {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+      width: 100%;
+    }
+    .arch-layer {
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* Tree backlog */
+    .backlog-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .backlog-branch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-color);
+    }
+
+    /* Connection Footer */
+    .slide-io-footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      margin-top: auto;
+      gap: 20px;
+    }
+
+    .io-port {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .io-port.in {
+      align-items: flex-start;
+    }
+    .io-port.out {
+      align-items: flex-end;
+    }
+
+    .io-port-header {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .io-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .io-tag {
+      font-size: 11px;
+      background: rgba(31, 41, 55, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      border-radius: 6px;
+      color: var(--text-color);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .presentation-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--border-color);
+      z-index: 10;
+    }
+
+    .control-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: var(--primary-glow);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .slide-progress-bar-container {
+      height: 4px;
+      background: rgba(31, 41, 55, 0.06);
+      width: 200px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .slide-progress-bar {
+      height: 100%;
+      background: var(--gradient);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Missing Alert in Slide */
+    .slide-missing-banner {
+      background: rgba(220, 38, 38, 0.05);
+      border: 1px solid rgba(220, 38, 38, 0.15);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--error);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -766,7 +1465,8 @@
       <h1>I-Wish Workspace</h1>
     </div>
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('idea')">Idea tree</button>
+      <button class="tab-btn active" onclick="switchTab('idea-to-prd')">Idea To PRD</button>
+      <button class="tab-btn" onclick="switchTab('idea')">Epic & story map</button>
       <button class="tab-btn" onclick="switchTab('features')">Feature graph</button>
       <button class="tab-btn" onclick="switchTab('sprint')">Sprint Kanban</button>
       <button class="tab-btn" onclick="switchTab('orchestration')">Orchestration Graph</button>
@@ -775,15 +1475,74 @@
   </header>
 
   <div class="container">
-    <!-- Tab 1: Idea Tree -->
-    <div id="tab-idea" class="tab-content active">
+    <!-- Tab 1: Idea Tree (Epic & story map) -->
+    <div id="tab-idea" class="tab-content">
       <div id="idea-canvas" class="canvas-panel"></div>
       <div class="sidebar">
-        <h2>Idea Tree Details</h2>
+        <h2>Epic & Story Map Details</h2>
         <div class="card" id="idea-details">
           <h3 id="idea-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Node Selected</h3>
           <div id="idea-node-desc" style="font-size: 14px; color: var(--text-muted);">
-            Click on any Node (Idea, Epic, or Story) to inspect hierarchy links.
+            Click on any Node (Epic or Story) to inspect hierarchy links.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 1.5: Idea To PRD slide presentation -->
+    <div id="tab-idea-to-prd" class="tab-content active">
+      <div class="presentation-layout">
+        <!-- Sidebar Navigation -->
+        <div class="presentation-sidebar">
+          <div class="project-header-card">
+            <span id="pres-proj-type">COMMERCIAL PRODUCT</span>
+            <h3 id="pres-proj-name">Project Vision</h3>
+          </div>
+          
+          <div class="timeline-phase">
+            <div class="phase-title">Phase 1: Concept & Grounding</div>
+            <div class="timeline-steps" id="steps-phase-1">
+              <!-- Steps loaded dynamically -->
+            </div>
+          </div>
+
+          <div class="timeline-phase">
+            <div class="phase-title">Phase 2: Product & UX Specs</div>
+            <div class="timeline-steps" id="steps-phase-2">
+              <!-- Steps loaded dynamically -->
+            </div>
+          </div>
+
+          <div class="timeline-phase">
+            <div class="phase-title">Phase 3: Solution & Backlog</div>
+            <div class="timeline-steps" id="steps-phase-3">
+              <!-- Steps loaded dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Slide Presentation Pane -->
+        <div class="presentation-main">
+          <div class="presentation-viewport">
+            <div class="slide-container" id="slide-viewer-card">
+              <!-- Slide details rendered here dynamically -->
+            </div>
+          </div>
+
+          <!-- Controls Footer -->
+          <div class="presentation-controls">
+            <button class="control-btn" id="prev-slide-btn" onclick="navigateSlide(-1)">
+              ← Previous
+            </button>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+              <span id="slide-index-counter" style="font-size: 12px; font-weight:700; color:var(--text-muted);">Slide 1 of 9</span>
+              <div class="slide-progress-bar-container">
+                <div class="slide-progress-bar" id="slide-progress"></div>
+              </div>
+            </div>
+            <button class="control-btn" id="next-slide-btn" onclick="navigateSlide(1)">
+              Next →
+            </button>
           </div>
         </div>
       </div>
@@ -842,7 +1601,7 @@
           <div class="kanban-cards" id="cards-done"></div>
         </div>
       </div>
-      <div class="sidebar">
+      <div class="kanban-sidebar-panel">
         <h2>Story Details</h2>
         <div class="card" id="sprint-details">
           <h3 id="sprint-story-title" style="margin-bottom: 10px; color: var(--text-color);">No Story Selected</h3>
@@ -1005,6 +1764,23 @@
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
                         <span class="meta-val">Thực hiện rà soát thông tin thị trường, luật lệ hoặc thư viện kỹ thuật thực tế thông qua truy cập web.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/competitor-research</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/competitor-research', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>competitor-&lt;name&gt;-research-&lt;date&gt;.md</code> (Báo cáo phân tích đối thủ cạnh tranh chi tiết).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Thực hiện phân tích đối thủ cạnh tranh toàn diện (History, Tech Stack, GTM, Social Footprint, Health Indicators, UX Teardown, Gap Matrix và Attack Vectors).</span>
                       </div>
                     </div>
                   </div>
@@ -1717,6 +2493,418 @@
     const nodesEdgesData = {NODES_EDGES_PLACEHOLDER};
     const sprintData = {SPRINT_DATA_PLACEHOLDER};
     const orchestrationData = {ORCHESTRATION_DATA_PLACEHOLDER};
+    const ideaToPrdData = {IDEA_TO_PRD_DATA_PLACEHOLDER};
+
+    let currentSlideIndex = 0;
+
+    // Generative UI Customizer: Hash project name to compute harmonized color scheme
+    function applyGenerativeTheme(name, type) {
+      // Calculate a numeric hash from the name
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      
+      // Determine Hue based on hash
+      const h1 = Math.abs(hash) % 360;
+      // Secondary color is offset by 210 degrees for complementary/triadic balance
+      const h2 = (h1 + 210) % 360;
+      
+      // Select styling rules based on project type
+      let typeLabel = 'Commercial Product';
+      let gradient = `linear-gradient(135deg, hsl(${h1}, 75%, 25%) 0%, hsl(${h2}, 70%, 40%) 100%)`;
+      let primaryGlow = `rgba(15, 118, 110, 0.08)`;
+      let primaryColor = `hsl(${h1}, 75%, 25%)`;
+      let accentColor = `hsl(${h2}, 70%, 40%)`;
+
+      if (type === 'internal-tool') {
+        typeLabel = '🛠️ Internal Developer Tool';
+        gradient = `linear-gradient(135deg, #1e1e2e 0%, #313244 100%)`;
+        primaryGlow = `rgba(137, 180, 250, 0.08)`;
+        primaryColor = `#89b4fa`;
+        accentColor = `#b4befe`;
+      } else if (type === 'open-source-project') {
+        typeLabel = '🌐 Open Source Library';
+        gradient = `linear-gradient(135deg, hsl(${h1}, 65%, 35%) 0%, hsl(${h2}, 60%, 50%) 100%)`;
+        primaryColor = `hsl(${h1}, 65%, 35%)`;
+        accentColor = `hsl(${h2}, 60%, 50%)`;
+        primaryGlow = `rgba(29, 78, 216, 0.08)`;
+      } else if (type === 'community-nonprofit') {
+        typeLabel = '🤝 Community Initiative';
+        gradient = `linear-gradient(135deg, hsl(${h1}, 70%, 45%) 0%, hsl(${h2}, 75%, 60%) 100%)`;
+        primaryColor = `hsl(${h1}, 70%, 45%)`;
+        accentColor = `hsl(${h2}, 75%, 60%)`;
+        primaryGlow = `rgba(22, 163, 74, 0.08)`;
+      }
+
+      document.getElementById('pres-proj-type').innerText = typeLabel.toUpperCase();
+      document.getElementById('pres-proj-name').innerText = name;
+
+      // Update CSS variables specifically on the presentation node
+      const prLayout = document.querySelector('.presentation-layout');
+      if (prLayout) {
+        prLayout.style.setProperty('--primary', primaryColor);
+        prLayout.style.setProperty('--accent', accentColor);
+        prLayout.style.setProperty('--gradient', gradient);
+        prLayout.style.setProperty('--primary-glow', primaryGlow);
+      }
+    }
+
+    function renderSlide(index) {
+      if (!ideaToPrdData || !ideaToPrdData.slides || ideaToPrdData.slides.length === 0) return;
+      
+      // Boundary check
+      if (index < 0) index = 0;
+      if (index >= ideaToPrdData.slides.length) index = ideaToPrdData.slides.length - 1;
+      currentSlideIndex = index;
+
+      const slide = ideaToPrdData.slides[index];
+
+      // Update active class on nav steps
+      document.querySelectorAll('.step-nav-btn').forEach(btn => btn.classList.remove('active-step'));
+      const activeBtn = document.getElementById(`nav-step-${slide.id}`);
+      if (activeBtn) activeBtn.classList.add('active-step');
+
+      // Update counter and progress bar
+      document.getElementById('slide-index-counter').innerText = `Slide ${index + 1} of ${ideaToPrdData.slides.length}`;
+      const progress = ((index + 1) / ideaToPrdData.slides.length) * 100;
+      document.getElementById('slide-progress').style.width = `${progress}%`;
+
+      // Enable/disable buttons
+      document.getElementById('prev-slide-btn').disabled = index === 0;
+      document.getElementById('next-slide-btn').disabled = index === ideaToPrdData.slides.length - 1;
+
+      // Render slide viewer card
+      const viewer = document.getElementById('slide-viewer-card');
+      
+      // Animate transition
+      viewer.style.opacity = 0;
+      viewer.style.transform = 'scale(0.98) translateY(10px)';
+
+      setTimeout(() => {
+        let pathEl = '';
+        let missingBanner = '';
+        if (slide.exists) {
+          pathEl = `<div class="slide-path">📄 ${slide.path}</div>`;
+        } else {
+          missingBanner = `
+            <div class="slide-missing-banner">
+              <span>⚠️</span>
+              <div>Tài liệu chưa được tạo. Chạy lệnh thích hợp (ví dụ: <code>/create-prd</code> hoặc <code>/idea-challenge</code>) để khởi tạo tài liệu này.</div>
+            </div>
+          `;
+        }
+
+        const bulletsHtml = slide.summary.map(item => `<li>${item}</li>`).join('');
+        const inputsHtml = slide.inputs.map(item => `<span class="io-tag">${item}</span>`).join('');
+        const outputsHtml = slide.outputs.map(item => `<span class="io-tag">${item}</span>`).join('');
+
+        // Generate the custom visual based on the step's visualType
+        const visualHtml = generateStepVisual(slide.visualType, slide.title, slide.exists);
+
+        viewer.innerHTML = `
+          <div class="slide-header-group">
+            <div class="slide-title-group">
+              <span class="slide-phase-badge">${slide.phase}</span>
+              <h2>${slide.title}</h2>
+              ${pathEl}
+            </div>
+            <span class="badge ${slide.exists ? 'badge-epic' : 'badge-status'}">${slide.status.toUpperCase()}</span>
+          </div>
+
+          ${missingBanner}
+
+          <div class="slide-grid">
+            <div class="slide-details-pane">
+              <div>
+                <div class="slide-section-title">Nội dung tóm tắt / Ý chính</div>
+                <ul class="slide-bullets">
+                  ${bulletsHtml}
+                </ul>
+              </div>
+
+              <div class="slide-causality-card">
+                <div class="slide-causality-text">
+                  ${slide.causality}
+                </div>
+              </div>
+            </div>
+
+            <div class="slide-visual-pane">
+              <div class="slide-section-title" style="position:absolute; top:12px; left:15px;">Mô hình Trực quan (Generative UI)</div>
+              ${visualHtml}
+            </div>
+          </div>
+
+          <div class="slide-io-footer">
+            <div class="io-port in">
+              <div class="io-port-header">📥 Đầu vào (Inputs)</div>
+              <div class="io-tags">
+                ${inputsHtml || '<span style="font-size:11px; color:var(--text-muted);">Không có</span>'}
+              </div>
+            </div>
+            <div style="font-size:18px; align-self:center; color:var(--text-muted);">➔</div>
+            <div class="io-port out">
+              <div class="io-port-header">📤 Đầu ra (Outputs)</div>
+              <div class="io-tags">
+                ${outputsHtml || '<span style="font-size:11px; color:var(--text-muted);">Không có</span>'}
+              </div>
+            </div>
+          </div>
+        `;
+
+        viewer.style.opacity = 1;
+        viewer.style.transform = 'scale(1) translateY(0)';
+      }, 150);
+    }
+
+    function generateStepVisual(type, title, exists) {
+      if (!exists) {
+        return `
+          <div style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">
+            <div style="font-size:28px; margin-bottom:10px;">🚧</div>
+            <div>Chưa có dữ liệu visual để hiển thị cho dự án này. Hãy tạo tài liệu tương ứng trước.</div>
+          </div>
+        `;
+      }
+
+      switch (type) {
+        case 'mindmap':
+          return `
+            <div class="gen-visual">
+              <div class="mm-node mm-core">${title}</div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                <div class="mm-node">💡 Bài toán cốt lõi</div>
+                <div class="mm-node">🎯 Mục tiêu lớn</div>
+                <div class="mm-node">🔥 Nỗi đau thị trường</div>
+              </div>
+            </div>
+          `;
+        case 'prfaq':
+          return `
+            <div class="gen-visual">
+              <div class="prfaq-mock">
+                <div class="prfaq-mock-header">PRESS RELEASE (THÔNG CÁO BÁO CHÍ)</div>
+                <div class="prfaq-mock-title">Ra mắt ${ideaToPrdData.projectName} giải quyết triệt để nhu cầu người dùng</div>
+                <div class="prfaq-mock-body">
+                  "Hôm nay, chúng tôi giới thiệu một giải pháp đột phá giúp loại bỏ hoàn toàn các rào cản kỹ thuật truyền thống và cung cấp giao diện trực quan thế hệ mới..."
+                </div>
+              </div>
+            </div>
+          `;
+        case 'moat':
+          return `
+            <div class="gen-visual" style="width:90%;">
+              <div class="moat-visual-container">
+                <div class="moat-bar-row">
+                  <div class="moat-bar-label">Lợi thế công nghệ độc quyền (Tech Moat)</div>
+                  <div class="moat-bar-outer"><div class="moat-bar-inner" style="width:85%;"></div></div>
+                </div>
+                <div class="moat-bar-row">
+                  <div class="moat-bar-label">Hiệu ứng mạng lưới & Hệ sinh thái (Network Effect)</div>
+                  <div class="moat-bar-outer"><div class="moat-bar-inner" style="width:70%;"></div></div>
+                </div>
+                <div class="moat-bar-row">
+                  <div class="moat-bar-label">Độ khóa chân khách hàng (Lock-in Strength)</div>
+                  <div class="moat-bar-outer"><div class="moat-bar-inner" style="width:75%;"></div></div>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'market-research':
+          return `
+            <div class="gen-visual" style="width:95%;">
+              <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; width: 90%; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                <div style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:10px;">📊 Quy mô thị trường & CAGR</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                  <span style="font-size:11px; color:var(--text-muted);">Total Addressable Market (TAM)</span>
+                  <span style="font-size:13px; font-weight:700; color:var(--text-color);">$15B+</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                  <span style="font-size:11px; color:var(--text-muted);">Compound Growth Rate (CAGR)</span>
+                  <span style="font-size:13px; font-weight:700; color:var(--success);">+18.4%</span>
+                </div>
+                <div style="font-size:10px; color:var(--text-muted); border-top: 1px solid var(--border-color); padding-top:8px; margin-top:8px;">
+                  Nguồn dữ liệu khảo sát và dự báo tăng trưởng dài hạn.
+                </div>
+              </div>
+            </div>
+          `;
+        case 'competitor-research':
+          return `
+            <div class="gen-visual" style="width:95%;">
+              <div class="research-grid-visual">
+                <div class="research-grid-card">
+                  <h4 style="color:var(--error);">⚠️ Đối thủ cạnh tranh</h4>
+                  <p style="font-size:10px;">Lướt qua các điểm yếu trong UX và tính nhất quán.</p>
+                </div>
+                <div class="research-grid-card" style="border-color:var(--success);">
+                  <h4 style="color:var(--success);">🚀 Hướng Tấn công</h4>
+                  <p style="font-size:10px;">Định hình tính năng độc quyền (Economic Moats).</p>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'domain-research':
+          return `
+            <div class="gen-visual" style="width:95%;">
+              <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; width: 90%; box-shadow: 0 4px 15px rgba(0,0,0,0.02); font-family: 'JetBrains Mono', monospace; font-size:11px;">
+                <div style="font-weight:700; color:var(--accent); margin-bottom:8px; font-family:'Inter';">📚 Thuật ngữ & Nghiệp vụ</div>
+                <div style="margin-bottom:6px;"><span style="color:var(--primary); font-weight:700;">[SOT]</span> Source of Truth</div>
+                <div style="margin-bottom:6px;"><span style="color:var(--primary); font-weight:700;">[MAO]</span> Multi-Agent Orchestration</div>
+                <div><span style="color:var(--primary); font-weight:700;">[ADR]</span> Arch Decision Record</div>
+              </div>
+            </div>
+          `;
+        case 'technical-research':
+          return `
+            <div class="gen-visual" style="width:95%;">
+              <div class="research-grid-visual">
+                <div class="research-grid-card">
+                  <h4>⚙️ Kiến trúc Công nghệ</h4>
+                  <p style="font-size:10px;">Quyết định TypeScript, clean architecture & graph index.</p>
+                </div>
+                <div class="research-grid-card">
+                  <h4>🧪 Thử nghiệm PoC</h4>
+                  <p style="font-size:10px;">Đồng bộ thiết kế Stitch và benchmark hiệu năng Vis.js.</p>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'context':
+          return `
+            <div class="gen-visual" style="width:95%;">
+              <div class="context-rule-card">
+                <span style="color:#a6e3a1">// project-context.md directives</span><br>
+                <span style="color:#f38ba8">rules:</span><br>
+                &nbsp;&nbsp;- enforce clean architecture<br>
+                &nbsp;&nbsp;- unit testing coverage > 80%<br>
+                &nbsp;&nbsp;- visual fidelity gating active<br>
+                <span style="color:#89b4fa">framework:</span> TypeScript
+              </div>
+            </div>
+          `;
+        case 'prd':
+          return `
+            <div class="gen-visual">
+              <div class="metric-meter-container">
+                <div class="metric-dial" style="--percentage: 85%">
+                  <div class="metric-dial-inner">
+                    <span class="metric-dial-val">85%</span>
+                    <span class="metric-dial-lbl">Đo lường</span>
+                  </div>
+                </div>
+                <div class="metric-dial" style="--percentage: 90%">
+                  <div class="metric-dial-inner">
+                    <span class="metric-dial-val">90%</span>
+                    <span class="metric-dial-lbl">SMART</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        case 'ux':
+          return `
+            <div class="gen-visual" style="width:90%;">
+              <div class="journey-nodes">
+                <div class="journey-node">👤</div>
+                <div class="journey-line"></div>
+                <div class="journey-node">💻</div>
+                <div class="journey-line"></div>
+                <div class="journey-node">🎉</div>
+              </div>
+              <div style="font-size:11px; color:var(--text-muted); display:flex; justify-content:space-between; width:100%; padding:0 5px;">
+                <span>1. Khởi tạo</span>
+                <span>2. Trải nghiệm</span>
+                <span>3. Thành công</span>
+              </div>
+            </div>
+          `;
+        case 'architecture':
+          return `
+            <div class="gen-visual" style="width:90%;">
+              <div class="arch-blocks">
+                <div class="arch-layer" style="background:#eff6ff; border-color:#1d4ed8; color:#1d4ed8;">Presentation / UI Layer</div>
+                <div class="arch-layer" style="background:#f0fdf4; border-color:#16a34a; color:#16a34a;">Core Domain Logic (ADR Decided)</div>
+                <div class="arch-layer" style="background:#fffbeb; border-color:#d97706; color:#d97706;">Data Infrastructure & Connectors</div>
+              </div>
+            </div>
+          `;
+        case 'backlog':
+          return `
+            <div class="gen-visual" style="width:95%;">
+              <div class="backlog-tree">
+                <div class="backlog-branch">📂 Epic Backlog (sprint-status.yaml)</div>
+                <div class="backlog-branch">&nbsp;├── 📄 Story 1.1: Platform Integration</div>
+                <div class="backlog-branch">&nbsp;├── 📄 Story 1.2: Generative Layout</div>
+                <div class="backlog-branch">&nbsp;└── 📄 Story 2.1: Visual Verification</div>
+              </div>
+            </div>
+          `;
+        default:
+          return `<div style="font-size:13px; color:var(--text-muted);">Slide Visualization</div>`;
+      }
+    }
+
+    function initIdeaToPrdPresentation() {
+      if (!ideaToPrdData || !ideaToPrdData.slides) return;
+      
+      // Apply the generated theme based on project metadata
+      applyGenerativeTheme(ideaToPrdData.projectName, ideaToPrdData.projectType);
+
+      // Render step nav buttons in the sidebar
+      const phase1 = document.getElementById('steps-phase-1');
+      const phase2 = document.getElementById('steps-phase-2');
+      const phase3 = document.getElementById('steps-phase-3');
+
+      phase1.innerHTML = '';
+      phase2.innerHTML = '';
+      phase3.innerHTML = '';
+
+      ideaToPrdData.slides.forEach((slide, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `step-nav-btn ${idx === currentSlideIndex ? 'active-step' : ''}`;
+        btn.id = `nav-step-${slide.id}`;
+        btn.onclick = () => renderSlide(idx);
+        btn.innerHTML = `
+          <span>${slide.title}</span>
+          <div class="step-status-dot ${slide.status}"></div>
+        `;
+
+        if (slide.phase.includes('Phase 1')) {
+          phase1.appendChild(btn);
+        } else if (slide.phase.includes('Phase 2')) {
+          phase2.appendChild(btn);
+        } else if (slide.phase.includes('Phase 3')) {
+          phase3.appendChild(btn);
+        }
+      });
+
+      // Show initial slide
+      renderSlide(0);
+    }
+
+    function navigateSlide(direction) {
+      if (!ideaToPrdData || !ideaToPrdData.slides) return;
+      const target = currentSlideIndex + direction;
+      if (target >= 0 && target < ideaToPrdData.slides.length) {
+        renderSlide(target);
+      }
+    }
+
+    // Connect keyboard arrow keys for convenient slide transition when active
+    window.addEventListener('keydown', (e) => {
+      const activeTab = document.querySelector('.tab-content.active');
+      if (activeTab && activeTab.id === 'tab-idea-to-prd') {
+        if (e.key === 'ArrowRight' || e.key === 'Space') {
+          navigateSlide(1);
+          e.preventDefault();
+        } else if (e.key === 'ArrowLeft') {
+          navigateSlide(-1);
+          e.preventDefault();
+        }
+      }
+    });
 
     // Tab Switching
     function switchTab(tabId) {
@@ -1731,6 +2919,20 @@
       
       const contentEl = document.getElementById(`tab-${tabId}`);
       if (contentEl) contentEl.classList.add('active');
+
+      // Stabilize/Redraw vis.js networks since display was none
+      setTimeout(() => {
+        if (tabId === 'idea' && window.ideaNetwork) {
+          window.ideaNetwork.redraw();
+          window.ideaNetwork.fit();
+        } else if (tabId === 'features' && window.featuresNetwork) {
+          window.featuresNetwork.redraw();
+          window.featuresNetwork.fit();
+        } else if (tabId === 'orchestration' && window.orchestrationNetwork) {
+          window.orchestrationNetwork.redraw();
+          window.orchestrationNetwork.fit();
+        }
+      }, 50);
     }
 
     // Guide section scrolling
@@ -1807,8 +3009,8 @@
           story: { color: { background: 'rgba(29, 78, 216, 0.08)', border: '#1d4ed8', font: { color: '#1d4ed8' } } }
         }
       };
-      const network = new vis.Network(container, data, options);
-      network.on("selectNode", function (params) {
+      window.ideaNetwork = new vis.Network(container, data, options);
+      window.ideaNetwork.on("selectNode", function (params) {
         const id = params.nodes[0];
         const node = data.nodes.get(id);
         if (node) {
@@ -1851,8 +3053,8 @@
           story: { color: { background: 'rgba(29, 78, 216, 0.08)', border: '#1d4ed8', font: { color: '#1d4ed8' } } }
         }
       };
-      const network = new vis.Network(container, data, options);
-      network.on("selectNode", function (params) {
+      window.featuresNetwork = new vis.Network(container, data, options);
+      window.featuresNetwork.on("selectNode", function (params) {
         const id = params.nodes[0];
         const node = data.nodes.get(id);
         if (node) {
@@ -1933,6 +3135,10 @@
 
     function selectSprintStory(story) {
       document.getElementById('sprint-story-title').innerText = story.id;
+      
+      const cleanContent = story.content ? story.content.replace(/^---[\s\S]*?---\n?/, '') : '';
+      const renderedHtml = cleanContent ? marked.parse(cleanContent) : '<p style="color: var(--text-muted); font-size:14px;">Không có nội dung đặc tả chi tiết.</p>';
+
       document.getElementById('sprint-story-desc').innerHTML = `
         <div class="detail-row">
           <div class="detail-label">Status</div>
@@ -1946,7 +3152,7 @@
           <div class="detail-label">Readiness</div>
           <div class="detail-value" style="display:flex; align-items:center; gap: 8px;">
             <div class="readiness-dot readiness-${story.readiness}"></div>
-            <span style="text-transform: uppercase; font-weight:700;">${story.readiness}</span>
+            <span style="text-transform: uppercase; font-weight:700; font-size:12px;">${story.readiness}</span>
           </div>
         </div>
         <div class="detail-row">
@@ -1956,6 +3162,12 @@
         <div class="detail-row">
           <div class="detail-label">Task Breakdown</div>
           <div class="detail-value">${story.hasTaskBreakdown ? '✅ Present' : '❌ Missing'}</div>
+        </div>
+        <div style="border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
+          <div class="detail-label" style="margin-bottom: 10px;">Nội dung chi tiết (Markdown)</div>
+          <div class="story-markdown-body" style="font-size:13px; line-height:1.6; color:var(--text-color);">
+            ${renderedHtml}
+          </div>
         </div>
       `;
     }
@@ -2013,8 +3225,8 @@
         }
       };
 
-      const network = new vis.Network(container, data, options);
-      network.on("selectNode", function (params) {
+      window.orchestrationNetwork = new vis.Network(container, data, options);
+      window.orchestrationNetwork.on("selectNode", function (params) {
         const id = params.nodes[0];
         const node = data.nodes.get(id);
         if (node && node.traceData) {
@@ -2050,6 +3262,7 @@
       renderFeatureGraph();
       renderSprintDashboard();
       renderOrchestrationGraph();
+      initIdeaToPrdPresentation();
     };
   </script>
 </body>

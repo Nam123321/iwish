@@ -37,7 +37,7 @@ const textFiles = allFiles.filter(f => f.endsWith('.md') || f.endsWith('.yaml'))
 
 const commandRegistry = new Map(); // name -> filePath
 
-console.log('--- BMAD Registry Consistency Check ---');
+console.log('--- I-Wish Registry Consistency Check ---');
 
 // Phase 1: Collect registered commands
 textFiles.forEach(file => {
