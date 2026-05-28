@@ -99,6 +99,33 @@ Group FRs by logical capability areas (NOT by technology or layer):
 
 **Target 5-8 Capability Areas** for typical projects.
 
+### 3.5. Force Baseline & Platform Infrastructure Capabilities (CRITICAL PROTECTION)
+
+To prevent the common mistake of only generating "key highlight" features while omitting basic platform requirements, you MUST explicitly evaluate and include the following baseline capability areas in the final FR list, unless the project is a simple standalone library or throwaway utility:
+
+#### A. Identity, Authentication & User Accounts (IAM)
+- **IAM Baseline**: Verify if capabilities exist for: user registration, secure login/logout, password reset/recovery, user profile management (edit details, change password, upload avatar, delete account).
+- **Access Control (RBAC/ABAC)**: Define standard user roles (e.g., Owner, Admin, Member, Guest) and how permissions are managed.
+
+#### B. Tenant & Membership Management (Mandatory for SaaS / Multi-tenant products)
+- **Workspace/Tenant Operations**: Workspace creation, renaming, and deletion.
+- **Member Invitations**: Inviting new users to a tenant/workspace and managing their active status, roles, and access rights within that tenant context.
+- **Tenant Boundaries**: Data isolation check (ensuring users can only see data belonging to their active workspace/tenant) and switching between workspaces.
+
+#### C. Billing, Payments & Subscriptions (Mandatory for Commercial/SaaS products)
+- **Subscription Lifecycle**: Selecting subscription plans (Free vs Premium/Tiered), upgrading/downgrading, canceling, and managing trial periods.
+- **Payment Processing**: Checkout page, payment gateway integration (e.g., Stripe, PayPal), and secure payment method management.
+- **Invoices & Receipts**: View, download, and receive copies of invoices and billing history.
+
+#### D. Notifications & System Alerts
+- **Delivery Channels**: Email notifications, push notifications, in-app messaging, or SMS.
+- **Preference Management**: Users can customize their notification preferences (e.g., opting in/out of specific notification categories).
+
+#### E. Telemetry, Usage Metrics & System Auditing
+- **Usage Metering**: Measuring key user actions (e.g., API calls, storage used, projects created) to enforce plan limits.
+- **System Audit Logs**: Logging administrator actions, critical security events (login attempts, permission changes) for security and compliance.
+- **Admin Analytics Dashboard**: System-level metrics and usage trends visible to admins.
+
 ### 4. Generate Comprehensive FR List
 
 Create complete functional requirements using this format:
@@ -129,6 +156,7 @@ Before presenting to user, validate the FR list:
 4. "Could a UX designer read ONLY the FRs and know what to design?"
 5. "Could an architect-agent read ONLY the FRs and know what to support?"
 6. "Are there any user actions or system behaviors we discussed that have no FR?"
+7. "CRITICAL: Did I include the fundamental baseline requirements (IAM, Tenant Management, Billing, Notifications, Metrics/Auditing) appropriate for this product type as detailed in Step 3.5?"
 
 **Altitude Check:**
 
@@ -227,6 +255,7 @@ When user selects 'C', append the content directly to the document using the str
 
 ## FAILURE MODES:
 
+❌ Missing fundamental baseline requirements (Authentication, Tenant management, Billing, Notifications, usage metrics) for SaaS/Commercial products.
 ❌ Missing capabilities from previous discovery sections
 ❌ Organizing FRs by technology instead of capability areas
 ❌ Including implementation details or UI specifics in FRs

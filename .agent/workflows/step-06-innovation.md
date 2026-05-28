@@ -7,7 +7,7 @@ nextStepFile: './step-07-project-type.md'
 outputFile: '{planning_artifacts}/prd.md'
 
 # Data Files
-projectTypesCSV: '../data/project-types.csv'
+projectTypesCSV: './project-types.csv'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

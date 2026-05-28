@@ -7,7 +7,7 @@ nextStepFile: './step-v-10-smart-validation.md'
 prdFile: '{prd_file_path}'
 prdFrontmatter: '{prd_frontmatter}'
 validationReportPath: '{validation_report_path}'
-projectTypesData: '../data/project-types.csv'
+projectTypesData: './project-types.csv'
 ---
 
 # Step 9: Project-Type Compliance Validation
@@ -128,6 +128,10 @@ These MUST NOT be present in the PRD
 **desktop_app:**
 - Required: Desktop UX, Platform specifics (Windows/Mac/Linux)
 - Excluded: Mobile-specific sections
+
+**saas:**
+- Required: Tenant Isolation Model, RBAC Roles and Permissions, Billing and Subscriptions, Notification Delivery Channels, Usage Metrics and Feature Gates, Audit Logging and Admin Dashboard
+- Excluded: Device permissions, hardware interfaces
 
 **data_pipeline:**
 - Required: Data Sources, Data Transformation, Data Sinks, Error Handling
