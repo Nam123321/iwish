@@ -204,6 +204,39 @@ async function promptPlatformIngestion(projectRoot, targets) {
         rl.close();
     }
 }
+async function printInstallationSummary(projectRoot, mode) {
+    try {
+        const dashboardPath = await (0, runtime_1.compileUserGuideDashboard)(projectRoot);
+        const absoluteDashboardUrl = `file://${dashboardPath}`;
+        const relativeDashboardPath = path.relative(process.cwd(), dashboardPath);
+        console.log('');
+        console.log(chalk_1.default.green.bold('======================================================================'));
+        console.log(chalk_1.default.green.bold(`🎉 I-WISH RUNTIME ${mode === 'install' ? 'INSTALLATION' : 'UPDATE'} COMPLETED SUCCESSFULLY!`));
+        console.log(chalk_1.default.green.bold('======================================================================'));
+        console.log('');
+        console.log(chalk_1.default.cyan.bold('📁 INTERACTIVE USER GUIDE & DASHBOARD'));
+        console.log(`An interactive dashboard has been generated at:`);
+        console.log(chalk_1.default.cyan(`👉 ${relativeDashboardPath}`));
+        console.log(chalk_1.default.gray(`Absolute URL: ${absoluteDashboardUrl}`));
+        console.log('');
+        console.log(chalk_1.default.blue('Open this file in any web browser to view:'));
+        console.log(`  - 🧭 ${chalk_1.default.bold('Interactive Codebase Knowledge Graph')} for dependencies and impact analysis.`);
+        console.log(`  - 📋 ${chalk_1.default.bold('Active Sprint Backlog Kanban')} to track user stories and tasks.`);
+        console.log(`  - 🤖 ${chalk_1.default.bold('Multi-Agent Trace logs')} showing orchestrations, agent status, and runs.`);
+        console.log(`  - 📖 ${chalk_1.default.bold('Comprehensive Slash Command & Workflow User Guide')} for all I-Wish tools.`);
+        console.log('');
+        console.log(chalk_1.default.yellow.bold('🚀 CORE CLI COMMANDS'));
+        console.log(`  - ${chalk_1.default.cyan('iwish status')}          Show the current I-Wish runtime, tool selections, and active modules.`);
+        console.log(`  - ${chalk_1.default.cyan('iwish doctor')}          Run diagnostics to verify runtime environment health.`);
+        console.log(`  - ${chalk_1.default.cyan('iwish route "<prompt>"')} Route any request (e.g. iwish route "research on github...")`);
+        console.log(`  - ${chalk_1.default.cyan('iwish gen-dashboard')}   Recompile and update the interactive dashboard.`);
+        console.log(chalk_1.default.green.bold('======================================================================'));
+        console.log('');
+    }
+    catch (error) {
+        console.error(chalk_1.default.red(`Failed to compile User Guide & Dashboard: ${error.message}`));
+    }
+}
 async function runCli() {
     const invocation = getInvocationName();
     const program = new commander_1.Command();
@@ -237,6 +270,7 @@ async function runCli() {
             selectedIds = await promptPlatformIngestion(projectRoot, targets);
         }
         await (0, runtime_1.ingestPlatformSkills)(projectRoot, targets, selectedIds);
+        await printInstallationSummary(projectRoot, 'install');
     }));
     addSharedDirectoryOption(program
         .command('update')
@@ -264,6 +298,7 @@ async function runCli() {
             selectedIds = await promptPlatformIngestion(projectRoot, targets);
         }
         await (0, runtime_1.ingestPlatformSkills)(projectRoot, targets, selectedIds);
+        await printInstallationSummary(projectRoot, 'update');
     }));
     addSharedDirectoryOption(program
         .command('status')

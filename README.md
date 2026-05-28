@@ -12,17 +12,17 @@ It is designed to help teams move from idea to delivery through a structured but
 
 ## Install
 
-Current GitHub install:
+Current GitHub install (recommended to use the tarball to bypass npm global git installation bugs):
 
 ```bash
-npm install -g github:Nam123321/iwish
+npm install -g https://github.com/Nam123321/iwish/tarball/main
 iwish install
 ```
 
 One-off usage from GitHub:
 
 ```bash
-npx --yes github:Nam123321/iwish install
+npx --yes https://github.com/Nam123321/iwish/tarball/main install
 ```
 
 After the package is published to npm, the shorter registry form will be:

@@ -160,11 +160,11 @@ Suggested topics:
   - `npx iwish`
   - legacy `bmad-db` alias still resolves
 
-Until Phase 4 is complete, installation docs should point to the GitHub package spec:
+Until Phase 4 is complete, installation docs should point to the GitHub tarball URL to prevent global git-dependency npm bugs:
 
 ```bash
-npm install -g github:Nam123321/iwish
-npx --yes github:Nam123321/iwish install
+npm install -g https://github.com/Nam123321/iwish/tarball/main
+npx --yes https://github.com/Nam123321/iwish/tarball/main install
 ```
 
 ## Known Risks
