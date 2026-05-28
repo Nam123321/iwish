@@ -6,7 +6,7 @@ const directoriesToScan = [
   path.join(process.cwd(), '.agent', 'agents'),
   path.join(process.cwd(), '.agent', 'workflows'),
   path.join(process.cwd(), '.agent', 'skills'),
-  path.join(process.cwd(), '_bmad')
+  path.join(process.cwd(), '_iwish')
 ];
 
 let hasErrors = false;
@@ -111,6 +111,7 @@ textFiles.forEach(file => {
       try {
         const doc = yaml.parse(content);
         if (doc && doc.name) {
+          if (doc.runtime_kind === 'wrapper-config') return;
           const cmdName = doc.name;
           if (commandRegistry.has(cmdName)) {
             console.error(`[ERROR] Duplicate command name '${cmdName}' found in:`);

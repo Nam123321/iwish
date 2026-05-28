@@ -1,5 +1,5 @@
 ---
-name: create-ui-spec
+legacy_name: create-ui-spec
 description: Generate per-story UI spec with component hierarchy, responsive
   layout, and design tokens. UX Designer agent review gate before development.
 disable-model-invocation: true

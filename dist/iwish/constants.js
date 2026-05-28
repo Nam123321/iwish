@@ -129,6 +129,23 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/domain-research': '/research',
     '/technical-research': '/research',
     '/retrospective': '/retro',
+    '/create-data-spec': '/make-data-spec',
+    '/create-prd': '/plan',
+    '/create-epics-and-stories': '/make-story',
+    '/create-product-brief': '/plan',
+    '/edit-prd': '/plan',
+    '/validate-prd': '/plan',
+    '/check-implementation-readiness': '/plan',
+    '/create-ux-design': '/make-ui-spec',
+    '/enrich-ux': '/make-ui-spec',
+    '/sync-stitch-design': '/make-ui-spec',
+    '/sprint-planning': '/plan',
+    '/sprint-status': '/status',
+    '/qa-automate': '/review',
+    '/quick-dev': '/code',
+    '/quick-spec': '/make-story',
+    '/document-project': '/bootstrap-existing-project',
+    '/generate-project-context': '/bootstrap-existing-project',
 };
 function getCanonicalHome() {
     return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');

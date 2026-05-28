@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
+import * as path from 'path';
 import { createInterface } from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
@@ -23,6 +24,7 @@ import {
   selectToolProfile,
   ingestPlatformSkills,
   detectPlatformCapabilities,
+  compileUserGuideDashboard,
 } from './runtime';
 import { SUPPORTED_INSTALL_TARGETS, getPlatformMode, PlatformMode } from './constants';
 import { routeRequest } from './routing';
@@ -38,7 +40,7 @@ function getInvocationName(): string {
 }
 
 function getProjectRoot(directory?: string): string {
-  return directory ? require('path').resolve(directory) : process.cwd();
+  return directory ? path.resolve(directory) : process.cwd();
 }
 
 function addSharedDirectoryOption(command: Command): Command {
@@ -433,9 +435,9 @@ export async function runCli(): Promise<void> {
           },
         ) => {
           const projectRoot = getProjectRoot(options.directory);
-          const targetPath = require('path').isAbsolute(options.target)
+          const targetPath = path.isAbsolute(options.target)
             ? options.target
-            : require('path').join(projectRoot, options.target);
+            : path.join(projectRoot, options.target);
           const result = await generateRoutingProfile(projectRoot, {
             name: options.name,
             kind: options.kind,
@@ -562,34 +564,15 @@ export async function runCli(): Promise<void> {
   addSharedDirectoryOption(
     program
       .command('gen-dashboard')
-      .description('Compile and export the interactive Knowledge Graph dashboard')
+      .description('Compile and export the interactive User Guide & Knowledge Graph dashboard')
       .action(async (options: { directory: string }) => {
         const projectRoot = getProjectRoot(options.directory);
-        const templatePath = require('path').join(projectRoot, 'templates', 'iwish', 'dashboard.html');
-        const outputPath = require('path').join(projectRoot, '_iwish-output', 'dashboard.html');
-
-        if (!require('fs-extra').existsSync(templatePath)) {
-          console.error(chalk.red(`Template file not found at ${templatePath}`));
-          return;
-        }
-
         try {
-          const templateContent = await require('fs-extra').readFile(templatePath, 'utf8');
-          const graphData = extractGraphData(projectRoot);
-          const sprintData = extractSprintData(projectRoot);
-          const agentTrace = extractAgentTrace(projectRoot);
-
-          let finalHtml = templateContent
-            .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
-            .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
-            .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'));
-
-          await require('fs-extra').ensureDir(require('path').dirname(outputPath));
-          await require('fs-extra').writeFile(outputPath, finalHtml, 'utf8');
-          console.log(chalk.green(`Interactive dashboard successfully compiled!`));
+          const outputPath = await compileUserGuideDashboard(projectRoot);
+          console.log(chalk.green(`Interactive User Guide & Dashboard successfully compiled!`));
           console.log(`Open in browser: file://${outputPath}`);
         } catch (error: any) {
-          console.error(chalk.red(`Failed to generate dashboard: ${error.message}`));
+          console.error(chalk.red(`Failed to generate User Guide & Dashboard: ${error.message}`));
         }
       }),
   );

@@ -9,6 +9,9 @@ IWISH_RUNTIME_MAPPINGS=(
   "_iwish/delivery/workflows/4-implementation/status/workflow.yaml|.agent/workflows/iwish-feature-sprint-status.md|workflow config|manifest:status"
   "_iwish/delivery/workflows/4-implementation/correct-course/workflow.yaml|.agent/workflows/iwish-feature-correct-course.md|workflow config|manifest:correct-course"
   "_iwish/delivery/workflows/4-implementation/retro/workflow.yaml|.agent/workflows/iwish-feature-retrospective.md|workflow config|manifest:retro"
+  "_iwish/delivery/workflows/4-implementation/make-data-spec/workflow.yaml|.agent/workflows/make-data-spec.md|workflow config|manifest:make-data-spec"
+  "_iwish/delivery/workflows/4-implementation/make-ui-spec/workflow.yaml|.agent/workflows/make-ui-spec.md|workflow config|manifest:make-ui-spec"
+  "_iwish/delivery/workflows/4-implementation/canary/workflow.yaml|.agent/workflows/canary.md|workflow config|manifest:canary"
 )
 
 LEGACY_BMAD_RUNTIME_MAPPINGS=(

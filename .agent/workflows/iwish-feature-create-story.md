@@ -1,5 +1,5 @@
 ---
-name: 'create-story'
+legacy_name: 'create-story'
 description: 'Create the next user story from epics+stories with enhanced context analysis and direct ready-for-dev-agent marking'
 disable-model-invocation: true
 ---
@@ -22,4 +22,8 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 5.7. CRITICAL — PROJECT MEMORY GATE. Before drafting story context or Dev Notes, check for `@{project-root}/.agent/memory/PROJECT.md`. If present, load only the sections relevant to the current epic/story and treat them as the primary persistent project memory. Check `@{project-root}/.agent/memory/USER.md` only for stable collaboration preferences. `USER.md` MUST NOT override project constraints, approved architecture, story ACs, workflow instructions, or the current user request. If memory conflicts, resolve in this order: system/safety rules → project instructions/artifacts → workflow/story instructions → current user request → user preferences → historical session notes.
 5.8. CRITICAL — CONTEXT BUDGET FOR MEMORY. Do not paste full memory files into the story by default. Summarize only the relevant project memory as citable Dev Notes, and prefer fresh PRD/architecture/epic artifacts over stale memory.
 6. CRITICAL — QA SIMULATOR GUARDIAN AUDIT. Before finalizing the user story, you MUST execute the Fat-Guardian Simulator mental run. Load the skill from `@{project-root}/.agent/skills/qa-simulator-guardian.md`. Calculate the EXACT 7-row Hybrid Scorecard (6 Core Axes + 1 UX Empathy). Embed the Scorecard directly at the bottom of the story document. `TOTAL AVERAGE` MUST be `>= 8.5/10`. If it fails, HALT workflow and rewrite the story to fix logic gaps.
+7. SMART NAVIGATION MENU (OPTION B). At the very end of story creation, analyze the generated story content. If the story is tagged with `[UI]` (Frontend) or `[DATA]` (Database/Schema), print a clear Next Steps Navigation Menu in the chat:
+   - Explain what design files are needed based on the story tags.
+   - Present clickable shortcuts for the user to trigger: `/make-ui-spec` (if UI tagged), `/make-data-spec` (if DATA tagged), or `/code` to skip design and proceed directly to coding.
+   - Emphasize that resolving these specifications first ensures synchronicity between Frontend and Backend.
 </steps>

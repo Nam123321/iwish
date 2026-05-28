@@ -21,7 +21,7 @@ When invoking this skill, you must specify the `mode` parameter.
 
 | Mode | Trigger Point | Focus / What to Grill |
 |---|---|---|
-| `discovery` | Gate 0: `/brainstorming`, `/create-prd`, `/create-architecture` | Strategy, MVP scope, tech stack choice. Why this? Why now? Simplest version? Trade-offs? |
+| `discovery` | Gate 0: `/brainstorm`, `/create-prd`, `/create-architecture` | Strategy, MVP scope, tech stack choice. Why this? Why now? Simplest version? Trade-offs? |
 | `business` | Gate 1: `/create-story` | UX flow, AC completeness, **Tracer Bullet (Vertical Slice)** identification, and persona coverage. |
 | `technical` | Gate 2: `/dev-agent-story` (Before Implementation Plan) | DB schema, API contracts, **Module Depth (Deletion Test)**, performance, security, and state management. |
 | `drift` | Gate 3: Implementation Plan creation (e.g. `/fix-bug`) | Feature Drift detection. If the fix/plan introduces new logic, grill the user on backward syncing to the PRD. |

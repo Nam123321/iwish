@@ -68,6 +68,12 @@ const CANONICAL_COMMANDS: Array<{ command: string; description: string; tags: st
   { command: '/research-solution-sources', description: 'Research internal and external solution sources before create/enhance decisions', tags: ['command', 'research', 'capability'] },
   { command: '/register-skill-pack', description: 'Register an external skill pack, workflow pack, or open customization module', tags: ['command', 'capability', 'open-module'] },
   { command: '/absorb-repo', description: 'Open-module ingestion and repository absorption flow', tags: ['command', 'absorption'] },
+  { command: '/canary', description: 'Canary deployment protocol and traffic gating flow', tags: ['command', 'deploy', 'release'] },
+  { command: '/unique-advantage-evaluator', description: 'Evaluate competitive advantage, business moats, and strategic defensibility', tags: ['command', 'strategy', 'business'] },
+  { command: '/make-data-spec', description: 'Database and data-schema specification flow', tags: ['command', 'data'] },
+  { command: '/simulate-user', description: 'Simulate business persona user behavior and UX flows', tags: ['command', 'ux', 'testing'] },
+  { command: '/fix-bug', description: '8-step hotfix and bug resolution process', tags: ['command', 'dev', 'maintenance'] },
+  { command: '/codebase-health', description: 'Scan codebase structure for complexity, duplicates, and nops', tags: ['command', 'architecture', 'refactor'] },
 ];
 
 function readYaml<T>(filePath: string): T {

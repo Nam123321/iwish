@@ -11,7 +11,7 @@ nextStepFile: './step-05-epic-quality-review.md'
 outputFile: '{planning_artifacts}/epics.md'
 
 # Agent References
-kiraAgent: '{project-root}/.agent/agents/data-architect.md'
+kiraAgent: '{project-root}/.agent/agents/data-architect-agent.md'
 shinjiAgent: '{project-root}/.agent/agents/data-strategist-agent.md'
 
 # Task References

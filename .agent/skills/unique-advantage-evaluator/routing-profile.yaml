@@ -6,6 +6,7 @@ role: supportive
 phases: [discover, plan, implement]
 stages: [idea-forging, strategic-evaluation, plan-pivot]
 triggers:
+  - /unique-advantage-evaluator
   - unique advantage
   - business advantage
   - strategic advantage

@@ -65,16 +65,28 @@ Planned adapter expansion:
 
 Canonical user-facing workflows include:
 
+- `/absorb-repo`
+- `/bootstrap-existing-project`
+- `/canary`
+- `/code`
+- `/codebase-health`
+- `/create-skill`
+- `/enhance-skill`
+- `/fix-bug`
 - `/idea-challenge`
-- `/plan`
+- `/make-data-spec`
 - `/make-story`
 - `/make-ui-spec`
-- `/code`
-- `/review`
-- `/research`
 - `/pivot-project`
-- `/bootstrap-existing-project`
+- `/plan`
+- `/register-skill-pack`
+- `/research`
 - `/research-solution-sources`
+- `/retro`
+- `/review`
+- `/simulate-user`
+- `/status`
+- `/unique-advantage-evaluator`
 
 ## Packaging Model
 

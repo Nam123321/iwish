@@ -22,6 +22,6 @@ Designs database schemas, entity-relationship models, and overall data architect
 
 ## Menu
 - [DD] Data Dependency Map — data-dependency-map.md
-- [DS] Create Data Spec — create-data-spec.md
+- [DS] Make Data Spec — make-data-spec.md
 - [SD] Schema Design — design or review database tables
 - [MI] Migration Planning — plan database schema changes

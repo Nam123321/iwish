@@ -1,5 +1,5 @@
 ---
-name: 'brainstorming'
+name: 'brainstorm'
 description: 'Use when the user wants to generate new ideas, explore product directions, or structure a brainstorming session.'
 disable-model-invocation: true
 ---

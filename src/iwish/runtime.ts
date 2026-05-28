@@ -19,11 +19,13 @@ import {
   RuntimeNamespace,
   SUPPORTED_INSTALL_TARGETS,
   getPlatformMode,
+  TEMPLATES_ROOT,
 } from './constants';
 import { getReconciliationStatus } from './reconciliation';
 import { generateReviewPack, ReviewPackKind, ReviewPackRole } from './review-pack';
 import { generateRoutingProfile } from './routing-profile';
 import { buildToolSetupPrompts, ToolSetupPrompt } from './tooling';
+import { extractGraphData, extractSprintData, extractAgentTrace } from './graph-parser';
 
 type InstallMode = 'install' | 'update';
 type MaterializeStatus = 'created' | 'kept' | 'updated';
@@ -422,6 +424,29 @@ async function materializeInstallTargetDirs(projectRoot: string, installTargets:
   }
 }
 
+export async function compileUserGuideDashboard(projectRoot: string): Promise<string> {
+  const templatePath = path.join(TEMPLATES_ROOT, 'user-guide-dashboard.html');
+  const outputPath = path.join(projectRoot, '_iwish-output', 'user-guide-dashboard.html');
+
+  if (!fs.existsSync(templatePath)) {
+    throw new Error(`Template file not found at ${templatePath}`);
+  }
+
+  const templateContent = await fs.readFile(templatePath, 'utf8');
+  const graphData = extractGraphData(projectRoot);
+  const sprintData = extractSprintData(projectRoot);
+  const agentTrace = extractAgentTrace(projectRoot);
+
+  const finalHtml = templateContent
+    .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'));
+
+  await fs.ensureDir(path.dirname(outputPath));
+  await fs.writeFile(outputPath, finalHtml, 'utf8');
+  return outputPath;
+}
+
 export async function installRuntime(projectRoot: string, installTargets: string[], mode: InstallMode): Promise<void> {
   const existing = loadExistingManifest(projectRoot);
   const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'install' ? false : false);
@@ -432,6 +457,14 @@ export async function installRuntime(projectRoot: string, installTargets: string
   const manifest = buildManifest(projectRoot, installTargets, existing);
   await fs.ensureDir(path.dirname(getManifestPath(projectRoot)));
   await fs.writeJson(getManifestPath(projectRoot), manifest, { spaces: 2 });
+
+  try {
+    const dashboardPath = await compileUserGuideDashboard(projectRoot);
+    console.log(chalk.cyan(`[User Guide & Dashboard] Generated at: ${path.relative(projectRoot, dashboardPath)}`));
+    console.log(chalk.gray(`- Purpose: Open this file in your browser to view the interactive codebase knowledge graph, track active Sprint backlog Kanbans, inspect multi-agent orchestration traces, and read the developer slash command reference guide.`));
+  } catch (error: any) {
+    console.warn(chalk.yellow(`[Warning] Could not compile User Guide & Dashboard: ${error.message}`));
+  }
 
   console.log(chalk.green(`${mode === 'install' ? 'Installed' : 'Updated'} I-Wish runtime in ${getRuntimeRoot(projectRoot, 'iwish')}`));
   const created = templateResults.filter((entry) => entry.status === 'created').length;

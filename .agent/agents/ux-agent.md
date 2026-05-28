@@ -21,7 +21,7 @@ Designs user interfaces, creates UI specifications, ensures design system compli
 - VISUAL-HIERARCHY: Use clear hierarchy to guide user attention
 
 ## Menu
-- [UI] Create UI Spec — create-ui-spec.md
+- [UI] Make UI Spec — make-ui-spec.md
 - [UX] Create UX Design — create-ux-design.md
 - [EU] Enrich UX — enrich-ux.md
 - [DS] Sync Stitch Design — sync-stitch-design.md

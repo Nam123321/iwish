@@ -426,37 +426,42 @@ Ví dụ:
 
 ### Canonical workflows
 
-Canonical short-form workflows hiện có `11`:
+Canonical short-form workflows hiện có `21`:
 
+- `absorb-repo`
+- `bootstrap-existing-project`
+- `canary`
 - `code`
+- `codebase-health`
 - `create-skill`
 - `enhance-skill`
+- `fix-bug`
+- `idea-challenge`
+- `make-data-spec`
 - `make-story`
 - `make-ui-spec`
+- `pivot-project`
 - `plan`
 - `register-skill-pack`
 - `research`
+- `research-solution-sources`
 - `retro`
 - `review`
+- `simulate-user`
 - `status`
 
 ### Active non-canonical workflows
 
-Hiện có thêm `13` workflow hỗ trợ quan trọng:
+Hiện có thêm `8` workflow hỗ trợ quan trọng:
 
-- `absorb-repo`
 - `analyze-codebase`
 - `audit-ux-patterns`
-- `codebase-health`
 - `create-data-overview`
-- `create-data-spec`
 - `data-dependency-map`
-- `fix-bug`
 - `impact-analysis`
 - `mkt-capture-pipeline`
 - `prd-purpose`
 - `research-project-modules`
-- `simulate-user`
 
 ### Legacy workflow layer
 
@@ -489,13 +494,29 @@ Trong tương lai gần, đây nên là surface chính để user không phải 
 
 Ví dụ:
 
+- `/idea-challenge`
 - `/plan`
 - `/make-story`
 - `/make-ui-spec`
+- `/make-data-spec`
 - `/code`
 - `/review`
 - `/research`
+- `/pivot-project`
+- `/bootstrap-existing-project`
+- `/retro`
+- `/status`
+- `/create-skill`
+- `/enhance-skill`
+- `/research-solution-sources`
 - `/register-skill-pack`
+- `/absorb-repo`
+- `/canary`
+- `/unique-advantage-evaluator`
+- `/simulate-user`
+- `/fix-bug`
+- `/codebase-health`
+- `/orch-agent`
 
 ### Cách 3: Add module mở
 

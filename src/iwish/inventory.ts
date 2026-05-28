@@ -47,6 +47,7 @@ const CANONICAL_WORKFLOW_NAMES = new Set([
   'idea-challenge',
   'make-story',
   'make-ui-spec',
+  'make-data-spec',
   'review',
   'plan',
   'research',
@@ -59,6 +60,10 @@ const CANONICAL_WORKFLOW_NAMES = new Set([
   'research-solution-sources',
   'register-skill-pack',
   'absorb-repo',
+  'canary',
+  'simulate-user',
+  'fix-bug',
+  'codebase-health',
 ]);
 
 const TRANSITIONAL_FUNCTION_AGENT_NAMES = new Set(['data-architect', 'data-strategist']);

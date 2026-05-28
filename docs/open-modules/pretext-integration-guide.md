@@ -67,7 +67,7 @@
 
 ## 7. Agent / Workflow / Skill coordination
 - **Agents**: `dev-agent` (integrating pretext into user-facing layout code), `ux-agent` (validating text layout rules).
-- **Workflows**: `/create-ui-spec` (specifying rendering constraints).
+- **Workflows**: `/make-ui-spec` (specifying rendering constraints).
 - **Usage**: Used directly in the user-space project client code.
 
 ---

@@ -1,18 +1,18 @@
-id: workflow-create-data-spec
-name: create-data-spec
+id: workflow-make-data-spec
+name: make-data-spec
 kind: workflow
 shape: workflow
 role: process-primary
 phases: [solution]
 stages: [data-spec, schema-definition, validation-rules]
-triggers: [create data spec, data requirements, schema for story]
+triggers: [make data spec, create data spec, data requirements, schema for story]
 anti_triggers: [marketing-storytelling]
 primary_agents: [data-architect-agent, architect-agent]
-primary_workflows: [create-data-spec]
+primary_workflows: [make-data-spec]
 supportive_skills: []
 tool_dependencies: [graph]
 constraints:
   - Must not silently infer no dependency when FeatureGraph support is unavailable.
-source_path: /.agent/workflows/create-data-spec.md
+source_path: /.agent/workflows/make-data-spec.md
 story_refs: [story-1.9]
-tags: [active-noncanonical, data, graph]
+tags: [data, graph, canonical]

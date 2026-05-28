@@ -1,5 +1,5 @@
 ---
-name: 'dev-agent-story'
+legacy_name: 'dev-agent-story'
 description: 'Execute a story by implementing tasks/subtasks, writing tests, validating, and updating the story file per acceptance criteria'
 disable-model-invocation: true
 ---
@@ -18,6 +18,7 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow-config @{project-root}/_iwish/bmm/workflows/4-implementation/dev-agent-story/workflow.yaml
 3. Pass the yaml path @{project-root}/_iwish/bmm/workflows/4-implementation/dev-agent-story/workflow.yaml as 'workflow-config' parameter to the workflow.xml instructions
 4. Follow workflow.xml instructions EXACTLY as written to process and follow the specific workflow config and its instructions
+4.4b. CRITICAL — DATA-SPEC INTEGRITY GATE. Before generating the implementation plan or writing code, check if the story contains database or data-layer changes (marked with `[DATA]` tag or database-specific tasks). If yes, verify if the Data Specification document `{planning_artifacts}/data-specs/{story_id}-data-spec.md` or equivalent exists. If it is missing, you MUST HALT and prompt the user: "⚠️ Story này yêu cầu thay đổi cơ sở dữ liệu/Schema nhưng chưa có Data Specification. Vui lòng chạy `/make-data-spec` trước để thiết kế schema và DTO nhằm đảm bảo đồng bộ giữa FE và BE, hoặc gõ `SKIP_DATA_SPEC` để tiếp tục code trực tiếp."
 4.5. CRITICAL — SOCRATIC REVIEW GATE 2. Before generating any Implementation Plan output, you MUST execute the Socratic Review Mode (Gate 2: `technical`). Load `.agent/skills/socratic-review/SKILL.md` to stress-test the architectural impact, database migrations, and backward compatibility. You are FORBIDDEN from generating the Implementation Plan until the user has completed the Socratic loop and explicitly approved the Synthesis.
 4.6. CRITICAL — SOCRATIC REVIEW GATE 3 (DRIFT). After drafting the Implementation Plan, you MUST execute the Socratic Review Mode (Gate 3: `drift`) to calculate the Drift Score.
    - **Stage 1 (FeatureGraph Gate):** Does the plan touch core DataEntities/Events? If NOT found in FeatureGraph, add +10 to score. If found, proceed to Stage 2.

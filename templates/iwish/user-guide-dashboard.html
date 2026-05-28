@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>I-Wish Multi-Agent Orchestration & Sprint Dashboard</title>
+  <title>I-Wish Multi-Agent User Guide & Dashboard</title>
   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
   <script src="https://unpkg.com/marked/marked.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -700,6 +700,63 @@
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
+
+    /* Inline command design */
+    .command-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 15px;
+      grid-column: span 2; /* Span full width since we combine columns */
+    }
+
+    .command-item {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .command-item:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: var(--primary);
+      box-shadow: 0 4px 15px var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    .command-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13.5px;
+      border-top: 1px solid rgba(31, 41, 55, 0.05);
+      padding-top: 10px;
+    }
+
+    .meta-line {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .meta-label {
+      font-weight: 700;
+      color: var(--text-color);
+      min-width: 85px;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-top: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-val {
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -817,6 +874,7 @@
         <div class="guide-sidebar">
           <h3>Guide Navigation</h3>
           <a onclick="scrollToSection('pipeline-section')" class="sidebar-link active-link">🚀 Main Pipeline</a>
+          <a onclick="scrollToSection('orch-section')" class="sidebar-link">🤖 Orch Agent Routing</a>
           <a onclick="scrollToSection('skills-section')" class="sidebar-link">🛠️ Supportive Skills</a>
           <a onclick="scrollToSection('usecases-section')" class="sidebar-link">💡 Key Use Cases</a>
         </div>
@@ -826,9 +884,46 @@
           <div id="pipeline-section" class="guide-section">
             <h2>🚀 Trục Phát Triển Chính (Main Pipeline)</h2>
             <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px;">
-              Quy trình phát triển phần mềm trong I-Wish được thiết kế theo mô hình <strong>AI-Native Factory</strong> gồm 6 giai đoạn rõ ràng từ ý tưởng đến phân phối sản phẩm.
+              Quy trình phát triển phần mềm trong I-Wish được thiết kế theo mô hình <strong>AI-Native Factory</strong> gồm 7 giai đoạn từ ý tưởng, phát triển đến vận hành & bảo trì sản phẩm.
             </p>
             <div class="pipeline-timeline">
+              <!-- Step 0 -->
+              <div class="pipeline-step" style="border-color: var(--accent); background: rgba(29, 78, 216, 0.03);">
+                <div class="step-number" style="border-color: var(--accent); color: var(--accent);">0</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4 style="color: var(--accent);">Bootstrap (Tích Hợp Giữa Chừng)</h4>
+                    <div class="step-focus">Mục tiêu: Đưa I-Wish vào tiếp quản một dự án đang phát triển (Brownfield Bootstrapping).</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge" style="background: rgba(16, 185, 129, 0.1); color: var(--success); border-color: rgba(16, 185, 129, 0.25);">🚀 SỬ DỤNG NGAY - DỰ ÁN CÓ SẴN</span>
+                    <span class="agent-badge" style="background: rgba(29, 78, 216, 0.08); color: var(--accent); border-color: rgba(29, 78, 216, 0.2);">devops-agent</span>
+                    <span class="agent-badge" style="background: rgba(29, 78, 216, 0.08); color: var(--accent); border-color: rgba(29, 78, 216, 0.2);">research-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  <strong>Dành cho dự án brownfield (đã có code sẵn):</strong> Chạy lệnh này ngay từ đầu để I-Wish tự động quét mã nguồn, lập bản đồ phụ thuộc và thiết lập bối cảnh dự án mà không cần đi qua luồng Discover/Plan từ số 0.
+                </p>
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/bootstrap-existing-project</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/bootstrap-existing-project', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">Thiết lập 📄 <code>project-context.md</code>, index đồ thị mã nguồn, tạo backlog Story/Epic tối thiểu.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Tự động chuẩn hóa bối cảnh dự án hiện tại trước khi chuyển giao sang luồng phát triển chính. Có thể dùng các alias như <code>/document-project</code> hoặc <code>/generate-project-context</code>.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Step 1 -->
               <div class="pipeline-step">
                 <div class="step-number">1</div>
@@ -843,26 +938,128 @@
                   </div>
                 </div>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-                  Giai đoạn đầu tiên tập trung vào việc nghiên cứu thị trường, domain kĩ thuật và thách thức các điểm yếu của ý tưởng sản phẩm.
+                  Giai đoạn đầu tiên tập trung vào việc nghiên cứu thị trường, bối cảnh kỹ thuật và thử thách điểm yếu của ý tưởng sản phẩm.
                 </p>
-                <div class="step-details">
-                  <div class="detail-block">
-                    <h5>Lệnh chạy đầu tiên</h5>
-                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/brainstorm</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/brainstorm', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">Ý tưởng phác thảo sơ bộ, chỉ số Complexity Score (CS 1-5).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Thực hiện đầu tiên để định hình ý tưởng và phân loại độ phức tạp kỹ thuật/UI/Rủi ro.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
                       <span class="cli-cmd">/idea-challenge</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/idea-challenge', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>docs/idea-distillate.md</code> (chứa bản Press Release & Customer FAQ).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Thách thức ý tưởng theo phương thức Working Backwards của Amazon nhằm tìm ra giá trị cốt lõi.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/unique-advantage-evaluator</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/unique-advantage-evaluator', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">Bản đánh giá lợi thế cạnh tranh bền vững (Moat Evaluator).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Kích hoạt sau khi làm sắc nét ý tưởng để tìm ra các lợi thế kinh doanh độc quyền.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
                     <div class="cli-box">
                       <span class="cli-cmd">/research</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/research', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>research_notes.md</code> (Báo cáo nghiên cứu thị trường, domain hoặc kỹ thuật).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Thực hiện rà soát thông tin thị trường, luật lệ hoặc thư viện kỹ thuật thực tế thông qua truy cập web.</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="detail-block">
-                    <h5>Output nhận được</h5>
-                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
-                      📄 <code>docs/idea-distillate.md</code> (chứa press release & customer FAQ)<br>
-                      📄 <code>research_notes.md</code> (báo cáo nghiên cứu thị trường/technical)
-                    </p>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/generate-project-context</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/generate-project-context', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>project-context.md</code> (Chứa quy tắc phát triển, mẫu thiết kế đặc thù).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Tạo chỉ dẫn cốt lõi để các Agent tham chiếu và tuân thủ tuyệt đối trong suốt dự án.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Dev Bypass -->
+              <div class="pipeline-step" style="border-color: var(--warning); background: rgba(217, 119, 6, 0.03); border-style: dashed;">
+                <div class="step-number" style="border-color: var(--warning); color: var(--warning); border-style: dashed;">⚡</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4 style="color: var(--warning);">Quick Dev Mode (Lối Đi Nhanh - Bỏ Qua Plan)</h4>
+                    <div class="step-focus">Mục tiêu: Lập trình nhanh các tính năng nhỏ không cần qua PRD/Planning.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge" style="background: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: rgba(245, 158, 11, 0.25);">⚡ SỬ DỤNG NGAY - LẬP TRÌNH NHANH</span>
+                    <span class="agent-badge" style="background: rgba(217, 119, 6, 0.08); color: var(--warning); border-color: rgba(217, 119, 6, 0.2);">quick-dev-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  <strong>Lối tắt bỏ qua quy trình:</strong> Dành cho lập trình viên muốn thực thi code khẩn cấp, sửa lỗi nhanh hoặc lập trình tính năng nhỏ trực tiếp từ Tech-Spec/chỉ thị mà không muốn đi qua PRD/Planning cồng kềnh. Sử dụng ngay khi cần tăng tối đa tốc độ phát triển.
+                </p>
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/quick-dev-agent</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/quick-dev-agent', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">Mã nguồn được sửa đổi trực tiếp theo yêu cầu mà không sinh tài liệu cồng kềnh.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Hệ thống sẽ tự động phát hiện chế độ, bỏ qua các cổng kiểm tra an toàn nghiêm ngặt để tăng tối đa tốc độ code.</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -881,21 +1078,41 @@
                   </div>
                 </div>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-                  Lớp kế hoạch tạo ra Product Requirements Document (PRD) hoàn chỉnh với Success Metrics, Technical Stack và phân chia chức năng rõ ràng.
+                  Giai đoạn lập kế hoạch chi tiết, xây dựng tài liệu yêu cầu sản phẩm hoàn chỉnh với mục tiêu đo lường rõ ràng.
                 </p>
-                <div class="step-details">
-                  <div class="detail-block">
-                    <h5>Lệnh tiếp theo</h5>
-                    <div class="cli-box" style="margin-top: 5px;">
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
                       <span class="cli-cmd">/create-prd</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/create-prd', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>docs/PRD.md</code> (Bản Product Requirements Document đạt chuẩn SMART).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Chứa Success Metrics, Technical Stack, các yêu cầu chức năng (FR) và phi chức năng (NFR).</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="detail-block">
-                    <h5>Output nhận được</h5>
-                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
-                      📄 <code>docs/PRD.md</code> (Bản PRD chi tiết đạt chuẩn SMART)
-                    </p>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/create-ux-design</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/create-ux-design', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">Bản kế hoạch hành trình người dùng (User Journeys) và đặc tả UX.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Kích hoạt sau khi PRD hoàn tất để định hình cấu trúc giao diện và trải nghiệm.</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -905,35 +1122,67 @@
                 <div class="step-number">3</div>
                 <div class="step-header">
                   <div class="step-title-group">
-                    <h4>Solution (Kiến Trúc & Đặc Tả UI UX)</h4>
-                    <div class="step-focus">Mục tiêu: Bản vẽ kiến trúc, thiết kế UI UX và bẻ nhỏ Epic & User Story.</div>
+                    <h4>Solution (Kiến Trúc & Lập Backlog)</h4>
+                    <div class="step-focus">Mục tiêu: Thiết lập bản vẽ kỹ thuật kiến trúc, bẻ nhỏ Epics & Stories, và khởi tạo Sprint.</div>
                   </div>
                   <div class="step-agents">
                     <span class="agent-badge">architect-agent</span>
-                    <span class="agent-badge">ux-agent</span>
+                    <span class="agent-badge">pm-agent</span>
                   </div>
                 </div>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-                  Chuyển đổi PRD thành kiến trúc kỹ thuật chi tiết (ADR), sơ đồ cơ sở dữ liệu, các Epic & Story sẵn sàng code và các bản đặc tả UI/UX.
+                  Thiết kế cấu trúc giải pháp kỹ thuật lớn, lập danh sách hạng mục câu chuyện của người dùng (Backlog) và lên kế hoạch chạy Sprint.
                 </p>
-                <div class="step-details">
-                  <div class="detail-block">
-                    <h5>Lệnh tiếp theo</h5>
-                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
                       <span class="cli-cmd">/create-architecture</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/create-architecture', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>docs/architecture.md</code> (Tài liệu quyết định thiết kế kiến trúc - ADR).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Xác định cơ sở dữ liệu, sơ đồ ERD, API contracts và phân chia cấu trúc thư mục.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
                     <div class="cli-box">
                       <span class="cli-cmd">/create-epics-and-stories</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/create-epics-and-stories', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>docs/epics_list.md</code> & các bộ khung User Story sẵn có.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Phân rã PRD thành các Epic và User Story độc lập mang lại giá trị cho người dùng.</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="detail-block">
-                    <h5>Output nhận được</h5>
-                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
-                      📄 <code>docs/architecture.md</code> (Ghi nhận quyết định kiến trúc - ADR)<br>
-                      📄 <code>docs/epics_list.md</code> & các file <code>story_*.md</code> sẵn sàng để dev-agent nhận việc.
-                    </p>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/sprint-planning</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/sprint-planning', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>sprint-status.yaml</code> (Cấu hình khởi tạo tiến độ của sprint hiện tại).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Lập kế hoạch phân bổ công việc chạy Sprint Agile dựa trên backlog stories đã tạo.</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -943,34 +1192,84 @@
                 <div class="step-number">4</div>
                 <div class="step-header">
                   <div class="step-title-group">
-                    <h4>Implement (Thực Thi & Viết Code)</h4>
-                    <div class="step-focus">Mục tiêu: Code logic tính năng và viết unit test cho từng Story.</div>
+                    <h4>Implement (Đặc Tả Chi Tiết & Viết Code)</h4>
+                    <div class="step-focus">Mục tiêu: Đặc tả chi tiết từng câu chuyện (Micro-loop) và thực thi code logic hoàn chỉnh.</div>
                   </div>
                   <div class="step-agents">
+                    <span class="agent-badge">ux-agent</span>
                     <span class="agent-badge">dev-agent</span>
                   </div>
                 </div>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-                  Bắt đầu lập kế hoạch sprint và giao việc cho Coding Agent viết code. Các file story được update liên tục trạng thái sang ready, in-progress, review, done.
+                  Vòng lặp phát triển cho mỗi Story: Tạo câu chuyện chi tiết -> Đặc tả UI/UX -> Đặc tả dữ liệu -> Thực thi lập trình mã nguồn.
                 </p>
-                <div class="step-details">
-                  <div class="detail-block">
-                    <h5>Lệnh tiếp theo</h5>
-                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
-                      <span class="cli-cmd">/sprint-planning</span>
-                      <button class="cli-copy-btn" onclick="copyCommand('/sprint-planning', this)">COPY</button>
-                    </div>
+                <div class="command-list">
+                  <div class="command-item">
                     <div class="cli-box">
-                      <span class="cli-cmd">/dev-agent-story</span>
-                      <button class="cli-copy-btn" onclick="copyCommand('/dev-agent-story', this)">COPY</button>
+                      <span class="cli-cmd">/make-story</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/make-story', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 Chi tiết file <code>story_*.md</code> sẵn sàng để đưa vào phát triển.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Đặc tả Acceptance Criteria, bối cảnh sử dụng của story cụ thể.</span>
+                      </div>
                     </div>
                   </div>
-                  <div class="detail-block">
-                    <h5>Output nhận được</h5>
-                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
-                      💻 Source Code sạch chuẩn Clean Architecture.<br>
-                      🧪 Unit Tests tự động hoàn thành (coverage > 80%).
-                    </p>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/make-ui-spec</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/make-ui-spec', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>*_ui-spec.md</code> (Đặc tả thiết kế chi diện).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Đồng bộ hoá thiết kế và tạo mockup trên Stitch, Figma, Claude Design... do người dùng chọn.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/make-data-spec</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/make-data-spec', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>*_data-spec.md</code> (Đặc tả thực thể/lược đồ dữ liệu).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">⚠️ <strong>Tự động kích hoạt:</strong> Lược đồ này được kiểm tra và sinh tự động nếu story có yêu cầu cập nhật DB trước khi code.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/code</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/code', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">💻 Mã nguồn chất lượng chuẩn Clean Architecture và Unit Tests (coverage > 80%).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Lệnh canonical chính thức để dev-agent bắt đầu viết code logic. Tự động kiểm tra tính nhất quán với Data Spec.</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -981,7 +1280,7 @@
                 <div class="step-header">
                   <div class="step-title-group">
                     <h4>Validate (Cổng Đảm Bảo Chất Lượng)</h4>
-                    <div class="step-focus">Mục tiêu: Đánh giá chất lượng code, giả lập người dùng, quét bảo mật.</div>
+                    <div class="step-focus">Mục tiêu: Đánh giá chất lượng code, kiểm soát kiến trúc và phát hiện lỗi thụ động.</div>
                   </div>
                   <div class="step-agents">
                     <span class="agent-badge">review-agent</span>
@@ -989,25 +1288,41 @@
                   </div>
                 </div>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-                  Chạy kiểm thử tự động, review mã nguồn, phân tích rủi ro tương thích ngược và chạy giả lập người dùng để tìm lỗi logic nghiệp vụ.
+                  Rà soát mã nguồn tự động, phân tích rủi ro tương thích ngược và đánh giá sức khỏe cấu trúc tổng thể của codebase.
                 </p>
-                <div class="step-details">
-                  <div class="detail-block">
-                    <h5>Lệnh tiếp theo</h5>
-                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
-                      <span class="cli-cmd">/code-review-internal</span>
-                      <button class="cli-copy-btn" onclick="copyCommand('/code-review-internal', this)">COPY</button>
-                    </div>
+                <div class="command-list">
+                  <div class="command-item">
                     <div class="cli-box">
-                      <span class="cli-cmd">/simulate-user</span>
-                      <button class="cli-copy-btn" onclick="copyCommand('/simulate-user', this)">COPY</button>
+                      <span class="cli-cmd">/review</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/review', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 Báo cáo review chi tiết, log quét bảo mật (SAST), và điểm chất lượng Hybrid QA Scorecard.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Đảm bảo chất lượng code và an toàn bảo mật trước khi bàn giao mã nguồn.</span>
+                      </div>
                     </div>
                   </div>
-                  <div class="detail-block">
-                    <h5>Output nhận được</h5>
-                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
-                      📄 Báo cáo review chi tiết, log quét bảo mật (SAST), và điểm chất lượng Hybrid QA Scorecard.
-                    </p>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/codebase-health</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/codebase-health', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 Báo cáo sức khỏe codebase (dead code, circular dependencies, orphan files).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Chạy định kỳ theo chu kỳ để giữ cho cấu trúc mã nguồn luôn sạch sẽ, kiểm soát nợ kỹ thuật.</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1017,35 +1332,134 @@
                 <div class="step-number">6</div>
                 <div class="step-header">
                   <div class="step-title-group">
-                    <h4>Deliver & Evolve (Bàn Giao & Tiến Hóa Tri Thức)</h4>
-                    <div class="step-focus">Mục tiêu: Handoff sản phẩm, cập nhật bối cảnh tri thức, tổng hợp dashboard.</div>
+                    <h4>Deliver & Release (Bàn Giao & Phát Hành)</h4>
+                    <div class="step-focus">Mục tiêu: Handoff sản phẩm, cấu hình CI/CD và thực hiện release an toàn.</div>
                   </div>
                   <div class="step-agents">
                     <span class="agent-badge">delivery-manager-agent</span>
+                    <span class="agent-badge">devops-agent</span>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
+                  Khi tính năng hoàn tất và sẵn sàng triển khai, tiến hành cấu hình hạ tầng CI/CD, phân luồng traffic và phát hành sản phẩm.
+                </p>
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/canary</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/canary', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">Kịch bản rollout canary, cấu hình an toàn cho traffic gating trên staging/production.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Thực thi quy trình triển khai từng phần để kiểm soát rủi ro phát hành.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 7 -->
+              <div class="pipeline-step">
+                <div class="step-number">7</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Operate, Maintain & Evolve (Vận Hành, Bảo Trì & Tiến Hóa)</h4>
+                    <div class="step-focus">Mục tiêu: Thu hoạch tri thức thực tế, xử lý lỗi phát sinh (hotfixes), và tối ưu vận hành.</div>
+                  </div>
+                  <div class="step-agents">
+                    <span class="agent-badge">devops-agent</span>
                     <span class="agent-badge">capability-agent</span>
                   </div>
                 </div>
                 <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 12px;">
-                  Khi sprint kết thúc, tiến hành họp cải tiến (Retro) để thu hoạch "Knowledge Delta" nạp lại vào Corporate Brain. Biên dịch dashboard để cập nhật trạng thái làm việc.
+                  Giai đoạn sau khi release, thực hiện bảo trì định kỳ, sửa đổi khẩn cấp khi có lỗi và đúc kết tri thức tiến hóa cho dự án.
                 </p>
-                <div class="step-details">
-                  <div class="detail-block">
-                    <h5>Lệnh tiếp theo</h5>
-                    <div class="cli-box" style="margin-top: 5px; margin-bottom: 10px;">
+                <div class="command-list">
+                  <div class="command-item">
+                    <div class="cli-box">
                       <span class="cli-cmd">/retro</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/retro', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>docs/KNOWLEDGE_DELTA.md</code> (Báo cáo tổng hợp bài học kinh nghiệm và kiến thức mới).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Thu hoạch tri thức thực tế (Knowledge Delta) nạp lại vào Corporate Brain sau mỗi sprint để tiến hóa hệ thống.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/fix-bug</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/fix-bug', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 Báo cáo sửa lỗi SBRP, mã nguồn được vá an toàn và kiểm thử hồi quy thành công.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Kích hoạt ngay khi có sự cố phát sinh ở môi trường staging/production. Quy trình sửa lỗi nghiêm ngặt 8 bước.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
                     <div class="cli-box">
                       <span class="cli-cmd">iwish gen-dashboard</span>
                       <button class="cli-copy-btn" onclick="copyCommand('iwish gen-dashboard', this)">COPY</button>
                     </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">🖥️ Giao diện Dashboard I-Wish Workspace tương tác được cập nhật mới nhất.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val">Biên dịch các siêu dữ liệu sprint, sơ đồ liên kết ý tưởng để người dùng và tác nhân cùng theo dõi tiến độ.</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="detail-block">
-                    <h5>Output nhận được</h5>
-                    <p style="font-size: 13px; color: var(--text-color); margin-top: 5px;">
-                      📄 <code>docs/KNOWLEDGE_DELTA.md</code> (báo cáo tri thức thu hoạch)<br>
-                      🖥️ Dashboard I-Wish Workspace tương tác được cập nhật mới nhất.
-                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1.5: Orch Agent Routing (Điều phối thông minh) -->
+          <div id="orch-section" class="guide-section" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; margin-top: 10px;">
+            <h2>🤖 Điều Phối Thông Minh (Smart Orchestration Routing)</h2>
+            
+            <div style="background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+              <p style="font-size: 14.5px; color: var(--text-color); margin: 0; line-height: 1.6;">
+                💡 <strong>Bạn cảm thấy choáng ngợp với hàng tá quy trình và câu lệnh khác nhau?</strong><br>
+                Đừng lo lắng! Quy trình Main Pipeline phía trên giúp bạn nắm rõ bản chất hoạt động. Trong thực tế, bạn không cần phải thực thi thủ công từng lệnh phức tạp. Hãy gọi <strong>Orch Agent</strong> - bộ não điều phối tối cao của I-Wish - hệ thống sẽ tự động phân tích bối cảnh, định tuyến thông minh và ủy thác công việc đến đúng Agent phù hợp!
+              </p>
+            </div>
+
+            <div class="command-list">
+              <div class="command-item">
+                <div class="cli-box">
+                  <span class="cli-cmd">/orch-agent</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/orch-agent', this)">COPY</button>
+                </div>
+                <div class="command-meta">
+                  <div class="meta-line">
+                    <span class="meta-label">Output:</span>
+                    <span class="meta-val">Giao diện điều phối tương tác, tự động ủy thác công việc cho các tác nhân chuyên biệt.</span>
+                  </div>
+                  <div class="meta-line">
+                    <span class="meta-label">Ghi chú:</span>
+                    <span class="meta-val">Lệnh vạn năng khởi động Tác nhân Điều phối (Orchestrator). Nhận diện bối cảnh và tự chọn routing phù hợp nhất để giảm tải thao tác thủ công cho nhà phát triển.</span>
                   </div>
                 </div>
               </div>
@@ -1105,7 +1519,7 @@
                   <span class="skill-type type-foundational">Foundational</span>
                 </div>
                 <p class="skill-desc">
-                  Sử dụng tư duy 1st-Principle giả lập hành vi của các Persona người dùng doanh nghiệp khác nhau để test tính mạch lạc của luồng UX.
+                  Sử dụng tư duy 1st-Principle giả lập hành vi của các Persona người dùng doanh nghiệp khác nhau để test tính mạch lạc của luồng UX (chạy qua <code>/simulate-user</code>).
                 </p>
               </div>
 
@@ -1136,6 +1550,46 @@
                 </div>
                 <p class="skill-desc">
                   Mô phỏng quy trình kiểm thử toàn diện, tính toán bảng điểm chất lượng Hybrid Scorecard giúp đánh giá độ sẵn sàng ship code.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">creative-agent</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Tác nhân hỗ trợ sáng tạo: đề xuất 2-3 phương án thiết kế UI/UX, hỗ trợ vẽ mockups HTML/Mermaid và tích hợp thiết kế Stitch.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">ai-engineer-agent</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Tác nhân lập trình AI/LLM: tối ưu prompt template, quản lý token budget, bảo vệ prompt injection và phân bổ model tier.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">data-architect-agent</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Tác nhân quản trị dữ liệu: thiết kế schema DB, đồng bộ hóa migrations (Prisma) và kiểm tra tính toàn vẹn của Data Specs.
+                </p>
+              </div>
+
+              <div class="skill-card">
+                <div class="skill-header">
+                  <span class="skill-name">data-strategist-agent</span>
+                  <span class="skill-type type-supportive">Supportive</span>
+                </div>
+                <p class="skill-desc">
+                  Tác nhân chiến lược dữ liệu: hoạch định phân tích tích hợp dữ liệu, kiểm soát tương thích ngược và lập mô hình thông tin dự án.
                 </p>
               </div>
             </div>
@@ -1187,12 +1641,12 @@
                   Khi bạn thiết kế UI và muốn đồng bộ hoá file <code>DESIGN.md</code> của bạn với server Stitch để tạo và tối ưu giao diện.
                 </p>
                 <ul class="usecase-steps">
-                  <li><strong>Cách thức hoạt động:</strong> Đầu tiên, chạy <code>/create-ux-design</code> và <code>/create-ui-spec</code> để lập spec thiết kế. Sử dụng workflow <code>/sync-stitch-design</code> để đẩy thiết kế lên máy chủ Stitch. Cuối cùng, <code>visual-fidelity-gate</code> sẽ audit tự động xem code frontend có khớp pixel với nguồn thiết kế không.</li>
+                  <li><strong>Cách thức hoạt động:</strong> Đầu tiên, chạy <code>/create-ux-design</code> và <code>/make-ui-spec</code> để lập spec thiết kế. Sử dụng workflow <code>/sync-stitch-design</code> để đẩy thiết kế lên máy chủ Stitch. Cuối cùng, <code>visual-fidelity-gate</code> sẽ audit tự động xem code frontend có khớp pixel với nguồn thiết kế không.</li>
                   <li><strong>Lệnh slash command:</strong></li>
                 </ul>
                 <div class="cli-box" style="margin-bottom: 10px;">
-                  <span class="cli-cmd">/create-ui-spec</span>
-                  <button class="cli-copy-btn" onclick="copyCommand('/create-ui-spec', this)">COPY</button>
+                  <span class="cli-cmd">/make-ui-spec</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/make-ui-spec', this)">COPY</button>
                 </div>
                 <div class="cli-box">
                   <span class="cli-cmd">/sync-stitch-design</span>
@@ -1218,7 +1672,23 @@
 
               <!-- Use case 5 -->
               <div class="usecase-card">
-                <div class="usecase-title">🖥️ 5. Biên dịch & Xem Dashboard I-Wish Workspace</div>
+                <div class="usecase-title">🚀 5. Triển khai Canary Release & Kiểm chứng thực tế</div>
+                <p class="usecase-desc">
+                  Để triển khai thử nghiệm tính năng mới trên một nhóm nhỏ người dùng hoặc môi trường cô lập trước khi tung ra bản cập nhật chính thức.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Khởi động quy trình Canary Deployment bằng lệnh <code>/canary</code>. Hệ thống sẽ tự động cấu hình kiểm chứng thực tế, theo dõi metrics và kiểm soát traffic gating an toàn.</li>
+                  <li><strong>Lệnh slash command:</strong></li>
+                </ul>
+                <div class="cli-box">
+                  <span class="cli-cmd">/canary</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/canary', this)">COPY</button>
+                </div>
+              </div>
+
+              <!-- Use case 6 -->
+              <div class="usecase-card">
+                <div class="usecase-title">🖥️ 6. Biên dịch & Xem Dashboard I-Wish Workspace</div>
                 <p class="usecase-desc">
                   Để tạo ra trang HTML Dashboard tương tác mà bạn đang xem, tổng hợp toàn bộ cây ý tưởng, biểu đồ thực thi và Kanban sprint.
                 </p>
@@ -1233,6 +1703,8 @@
               </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>

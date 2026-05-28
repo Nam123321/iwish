@@ -6,7 +6,7 @@
 This skill is a mandatory "Post-Step Hook" for all Phase 1 (Ideation & Analysis) workflows.
 
 ### 1. Trigger Conditions
-- After completing a `brainstorming` session.
+- After completing a `brainstorm` session.
 - After completing an `idea-challenge` flow or updating `idea-challenge`, `distillate`, or `biz-stack` artifacts.
 - After completing `market-research`, `domain-research`, or `technical-research`.
 - After finalizing a `product-brief` or `prd`.

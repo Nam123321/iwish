@@ -20,12 +20,12 @@ This workflow generates a cross-epic data architecture overview — running **on
 
 ## Activation
 
-1. Load the Kira++ Data Architect agent from `{project-root}/.agent/agents/data-architect.md`
+1. Load the Kira++ Data Architect agent from `{project-root}/.agent/agents/data-architect-agent.md`
 2. Load the Shinji Data Strategist agent from `{project-root}/.agent/agents/data-strategist-agent.md`
-3. Load config from `{project-root}/_iwish/bmm/config.yaml`
+3. Load config from the project configuration.
 4. Execute the full Tier 2 analysis: `{project-root}/.agent/workflows/step-04b-data-and-test-spec.md`
 
 ## Relationship to Per-Story Data Spec
 - This workflow = **macro** (architectural blueprint, cross-epic dependencies)
-- `/create-data-spec` = **micro** (detailed per-story schema, runs in Phase 4)
+- `/make-data-spec` = **micro** (detailed per-story schema, runs in Phase 4)
 - Per-story data-spec MUST reference this cross-epic map to detect conflicts

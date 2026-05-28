@@ -86,6 +86,12 @@ Risks:
   - `/research-solution-sources`
   - `/bootstrap-existing-project`
   - `/pivot-project`
+  - `/canary`
+  - `/make-data-spec`
+  - `/simulate-user`
+  - `/fix-bug`
+  - `/codebase-health`
+  - `/unique-advantage-evaluator`
 - smoke test install targets:
   - `local-terminal`
   - `cursor`
