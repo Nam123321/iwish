@@ -1610,11 +1610,11 @@
                 </p>
                 <ul class="usecase-steps">
                   <li><strong>Cách thức hoạt động:</strong> Hệ thống kích hoạt quy trình Repo Absorption (RAP). Đầu tiên <code>security-guardian</code> sẽ quét mã độc, sau đó <code>repo-absorption</code> clone và index toàn bộ repo để trích xuất API/Specs, sinh tài liệu <code>integration-guide.md</code>, và đăng ký định tuyến routing cho Orch Agent.</li>
-                  <li><strong>Lệnh CLI để thực hiện:</strong></li>
+                  <li><strong>Lệnh slash command:</strong></li>
                 </ul>
                 <div class="cli-box">
-                  <span class="cli-cmd">iwish register-module https://github.com/sickn33/antigravity-awesome-skills</span>
-                  <button class="cli-copy-btn" onclick="copyCommand('iwish register-module https://github.com/sickn33/antigravity-awesome-skills', this)">COPY</button>
+                  <span class="cli-cmd">/absorb-repo</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/absorb-repo', this)">COPY</button>
                 </div>
               </div>
 
@@ -1662,11 +1662,11 @@
                 </p>
                 <ul class="usecase-steps">
                   <li><strong>Cách thức hoạt động:</strong> Công cụ quét toàn bộ source code của bạn, trích xuất import statements, các hàm gọi và ánh xạ chúng vào Feature Graph. Dữ liệu này được hiển thị trực tiếp trên tab "Feature graph" của Dashboard.</li>
-                  <li><strong>Lệnh CLI chạy trên terminal:</strong></li>
+                  <li><strong>Lệnh slash command:</strong></li>
                 </ul>
                 <div class="cli-box">
-                  <span class="cli-cmd">iwish analyze-codebase</span>
-                  <button class="cli-copy-btn" onclick="copyCommand('iwish analyze-codebase', this)">COPY</button>
+                  <span class="cli-cmd">/codebase-health</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/codebase-health', this)">COPY</button>
                 </div>
               </div>
 
@@ -1688,17 +1688,17 @@
 
               <!-- Use case 6 -->
               <div class="usecase-card">
-                <div class="usecase-title">🖥️ 6. Biên dịch & Xem Dashboard I-Wish Workspace</div>
+                <div class="usecase-title">🛠️ 6. Sửa lỗi nóng & Bảo trì sản phẩm (Hotfix & Bug Resolution)</div>
                 <p class="usecase-desc">
-                  Để tạo ra trang HTML Dashboard tương tác mà bạn đang xem, tổng hợp toàn bộ cây ý tưởng, biểu đồ thực thi và Kanban sprint.
+                  Khi phát hiện lỗi vận hành hoặc bug phát sinh và muốn kích hoạt quy trình tự sửa lỗi 8 bước an toàn.
                 </p>
                 <ul class="usecase-steps">
-                  <li><strong>Cách thức hoạt động:</strong> Lệnh đọc các file metadata trong <code>_iwish-output/</code> và build thành file HTML tĩnh <code>_iwish-output/dashboard.html</code>. Bạn có thể mở trực tiếp trong trình duyệt để giám sát tiến độ thực tế của AI Agents.</li>
-                  <li><strong>Lệnh CLI biên dịch:</strong></li>
+                  <li><strong>Cách thức hoạt động:</strong> Gọi lệnh <code>/fix-bug</code>. Agent chuyên trách sẽ chẩn đoán nguyên nhân gốc (RCA), lập phương án sửa đổi, chạy thử nghiệm kiểm chứng và tự động áp dụng bản vá mà không làm gãy hệ thống.</li>
+                  <li><strong>Lệnh slash command:</strong></li>
                 </ul>
                 <div class="cli-box">
-                  <span class="cli-cmd">iwish gen-dashboard</span>
-                  <button class="cli-copy-btn" onclick="copyCommand('iwish gen-dashboard', this)">COPY</button>
+                  <span class="cli-cmd">/fix-bug</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/fix-bug', this)">COPY</button>
                 </div>
               </div>
             </div>
