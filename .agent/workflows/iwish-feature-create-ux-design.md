@@ -4,4 +4,4 @@ description: 'Work with a peer UX Design expert to plan your applications UX pat
 disable-model-invocation: true
 ---
 
-IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/.agent/workflows/step-02-discovery.md, READ its entire contents and follow its directions exactly!
+IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/.agent/workflows/step-00-visual-research.md, READ its entire contents and follow its directions exactly!

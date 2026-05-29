@@ -89,4 +89,5 @@ Present analysis summary to user:
 
 ## NEXT STEP:
 
-After user selects [C], load `./step-03-generate.md`.
+After user selects [C], load `./step-03-generate-data-spec.md`.
+

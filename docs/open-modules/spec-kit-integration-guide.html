@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Module Integration Guide: spec-kit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #161e31;
+            --accent-color: #3b82f6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: #24324f;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-top: 35px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            border-radius: 4px 12px 12px 4px;
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background-color: #07090e;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #38bdf8;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Open Module Integration Guide: spec-kit</h1>
+        <p>This integration guide defines the strategy for adopting, adapting, or referencing components of the <code>spec-kit</code> repository into the I-Wish ecosystem.</p>
+
+        <div class="highlight-box">
+            <strong>System Placement:</strong> Ported components will reside in <code>.agent/skills/editor-compatibility/</code> as a <code>SYSTEM_SKILL</code>.
+        </div>
+
+        <h2>1. Classification & System Placement</h2>
+        <ul>
+            <li><strong>Shape & Role:</strong> Utility and integration adapter (<code>SYSTEM_SKILL</code> path).</li>
+            <li><strong>Core Role:</strong> Translates and registers I-Wish behavioral tokens, checklists, and guides into agent directories of third-party IDE editors (e.g. Claude Code, Copilot, Goose, Roo).</li>
+        </ul>
+
+        <h2>2. Core Use Cases</h2>
+        <ul>
+            <li><strong>Multi-IDE Workspace Compatibility:</strong> Allows users working in editors like Claude Code or Cursor (Roo) to export and run I-Wish checklists and prompt configurations natively.</li>
+            <li><strong>Path Integrity Shield:</strong> Uses the path traversal guard helper (<code>_ensure_inside</code>) to secure all local files writes against directory escape vulnerabilities.</li>
+        </ul>
+
+        <h2>3. Operational Constraints</h2>
+        <ul>
+            <li><strong>Scope Limit:</strong> Do <strong>not</strong> adopt the shell runner engine or templates from <code>spec-kit</code>. I-Wish has a more mature workflow and verification engine.</li>
+            <li><strong>Python Dependency:</strong> The ported utilities must be written in Python to integrate natively with I-Wish backend services.</li>
+        </ul>
+
+        <h2>4. Agent & Workflow Coordination</h2>
+        <ul>
+            <li><strong><code>orch-agent</code> Routing Hints:</strong> If the user specifies working in Cursor, Windsurf, or Copilot, <code>orch-agent</code> should offer to execute skill publishes.</li>
+            <li><strong><code>dev-agent</code> Rules:</strong> Must validate all file write commands through the <code>_ensure_inside</code> path validator.</li>
+        </ul>
+
+        <h2>5. YAML Frontmatter Specification for Ported Skills</h2>
+        <div class="code-block">
+name: iwish-path-security
+description: Normalizes and verifies that file operations remain inside the workspace.
+inputs: [target_path, base_path]
+outputs: [is_safe, normalized_path]
+mcp_tools_required: []
+subagent_triggers: []
+        </div>
+
+        <h2>6. Review Questions for the User</h2>
+        <ol>
+            <li>Do you actively use editors like Roo, Copilot, or Goose alongside I-Wish, and do you want I-Wish skills exported to them?</li>
+            <li>Should we proceed with creating the <code>editor-compatibility</code> skill to port the path traversal shield and format conversion helpers?</li>
+        </ol>
+
+        <div class="footer">
+            I-Wish Ecosystem • Repo Absorption Protocol
+        </div>
+    </div>
+</body>
+</html>

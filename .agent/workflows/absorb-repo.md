@@ -115,9 +115,26 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
 - **Gate:** All 11 sections addressed (no empty sections). Symlink verified with `ls -la`.
 - **Output:** Single runtime `{repo-name}-dna.md` at `${IWISH_HOME}/repo-dna/` with symlink in sandbox.
 
+### Phase 4.5: COMMUNITY AUDIT & RECENT UPDATES 🌐 (Agent: research-agent / analyst-agent) — NEW
+- **Action:** Research and collect empirical user feedback (praises, criticisms, suggestions) and recent updates (past 3-6 months) to provide real-world context on the repository.
+- **Steps:**
+  1. **Web Search & Issue Scan:**
+     - Query search engines, developer forums, and social spaces for real user feedback: `{repo-name} feedback`, `{repo-name} pros cons`, `{repo-name} issues`.
+     - Scan the repository's GitHub Issues, Discussions, and Pull Requests from the past 3-6 months.
+     - Extract major updates, release notes, and community discussions.
+  2. **Deep Dive on praises (Pros):**
+     - For features/mechanisms users highly praise: deep dive into the code and architecture blueprints to identify *why* it works well and how it benefits the users.
+  3. **Contrast on Criticisms (Cons):**
+     - For user complaints, bugs, and performance bottlenecks: cross-reference and match them with our technical analysis from Phase 3 & 4. Verify if technical findings match community pain points, and identify hidden risks/limitations.
+  4. **Evaluate Recent Developments:**
+     - Detail what was recently added in the last 3-6 months and *why* these updates were introduced (what roles they play).
+     - Assess if the system should deeply research these new enhancements, and if they fit within I-Wish design principles.
+- **Gate:** Praises, criticisms, and recent updates documented with source links.
+- **Output:** `${IWISH_HOME}/absorbed-repos/{repo-name}/community-report.md`.
+
 ### Phase 5: COMPARE & CONTRAST ⚖️ (Agent: architect-agent)
 - **Action:** Gap Analysis and Comparison Matrix against existing I-Wish assets.
-- **Pre-requisite:** Invoke `.agent/fragments/anti-sycophancy-guard.md` to perform an adversarial review of the generated DNA.
+- **Pre-requisite:** Invoke `.agent/fragments/anti-sycophancy-guard.md` to perform an adversarial review of the generated DNA. Also, load the **Community Audit Report** from `${IWISH_HOME}/absorbed-repos/{repo-name}/community-report.md` as contextual input for praises and criticisms.
 - **Steps:**
   1. Load Section 10 of the generated DNA (Reusable Patterns).
   2. **Synthesize Operational DNA:** Deeply analyze Section 10 to extract the core **Operational & Execution Mechanisms** of the target repository:
@@ -127,36 +144,37 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
   3. **Adversarial Stress-Test:** Identify at least 3 architectural risks or "bloat" patterns that should NOT be absorbed.
   4. Scan I-Wish `.agent/` directories for overlapping functionality.
   5. **Categorize and Classify Assets:** Group the external repository's features/components into logical Functional Groups (e.g., Tooling Skills, Custom Rules/Checklists, Coordination Workflows, Installer/Sync Scripts, Utility Modules).
-  6. **Safety Isolation Check:** Proactively scan all repository files for configuration, setup, or installer scripts (e.g., `install.sh`, `sync-skills.sh`, Python/JS install hooks) that attempt to write to or configure directories outside the workspace (e.g., `$HOME/.claude/` or system-wide directories). Automatically classify these as `SKIP` to enforce strict project isolation.
-  7. **Generate Comparison Report:** Create a structured bilingual (Vietnamese/English) comparison matrix saved as `{repo-name}-comparison.md`. The matrix MUST contain:
-     - **Bảng So sánh Tính năng / Feature Comparison Table**: A strict 5-column table format comparing feature groups:
+  6. **I-Wish Classification Funnel Audit (Shape & Role Axes):**
+     - Load and read the Classification Matrix & Funnel Criteria from `.agent/IWISH-ARCHITECTURE.md` Section 1.
+     - For each identified component or functional group, run it through the Classification Funnel by evaluating 3 criteria:
+       - *Scope & Autonomy*: Simple rule / passive knowledge / active tool / end-to-end process.
+       - *Execution Context*: Always on / injected when needed / called on demand / followed step-by-step.
+       - *Reusability*: Scoped to specific tasks / shared globally.
+     - Assign classifications on 2 axes:
+       - **Shape Axis**: `dynamic-context` | `fragment` | `skill` | `workflow` | `agent` | `compound` | `skill-attachment` | `workflow-patch`.
+       - **Role Axis**: `process-primary` | `supportive` | `foundational`.
+  7. **Safety Isolation Check:** Proactively scan all repository files for configuration, setup, or installer scripts (e.g., `install.sh`, `sync-skills.sh`, Python/JS install hooks) that attempt to write to or configure directories outside the workspace (e.g., `$HOME/.claude/` or system-wide directories). Automatically classify these as `SKIP` to enforce strict project isolation.
+  8. **Generate Comparison Report:** Create a structured bilingual (Vietnamese/English) comparison matrix saved as `{repo-name}-comparison.md`. The matrix MUST contain:
+     - **Bảng So sánh & Phễu Phân loại / Feature Comparison & Classification Funnel Table**: A strict 7-column table format comparing feature groups:
        - *Nhóm Tính năng / Feature Group*: Logical categorized component/module.
-       - *Ưu điểm / Pros*: Unique strengths, optimizations, or capabilities.
-       - *Nhược điểm / Cons*: Weaknesses, token overhead, maintenance cost, or limitations.
+       - *Phân loại (Hình dạng / Vai trò) / Classification (Shape / Role)*: Shape axis and Role axis classification (e.g., `skill-attachment / supportive`).
+       - *Ưu điểm (gồm feedback thực tế) / Pros (incl. user feedback)*: Unique strengths, praises from community report deep-dived, or optimizations.
+       - *Nhược điểm (đối chiếu feedback) / Cons (incl. user complaints)*: Weaknesses, token overhead, maintenance cost, user criticisms matched against technical analysis, or limitations.
        - *Khoảng cách & Trùng lặp / Gap & Overlaps*: Precise overlap or delta compared to existing I-Wish assets.
        - *Phương án & Nơi tích hợp / Proposed Action & Target*: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
+       - *Tiêu chí Phễu / Funnel Criteria*: Justification details based on the 3 funnel criteria (Scope & Autonomy, Execution Context, Reusability).
      - **Phân tích Cơ chế Vận hành / Operational Mechanisms Analysis**: A dedicated section comparing the execution model, orchestrator flows, prompt loading methods, and state flow of the target repository versus I-Wish. Highlight which operational patterns should be adopted or avoided.
-  8. **Create Detailed Integration Plan:** Following the matrix, provide concrete, actionable integration steps for each group marked for adoption/merging:
-     - Target destination directories under `.agent/` (e.g., `.agent/skills/white-hacker/rules/`).
-     - Standardized YAML frontmatter schema to be used for newly created files:
-       ```yaml
-       name: name-of-skill
-       description: Clear role/purpose
-       inputs: [input_vars]
-       outputs: [output_vars]
-       mcp_tools_required: [mcp_tools]
-       subagent_triggers: [triggers]
-       ```
-     - Execution and routing mechanisms (how host agents load, RAG-inject, or trigger the skill/workflow based on the synthesized operational model).
-  9. **Compound Check:** Determine if the repo contains >3 independent modules (e.g., a monorepo).
+  9. **Create Detailed Integration Plan:** Following the matrix, provide concrete, actionable integration steps for each group marked for adoption/merging (e.g., target destination directories, frontmatter schemas, routing triggers).
+  10. **Compound Check:** Determine if the repo contains >3 independent modules (e.g., a monorepo).
 - **Output:** 
   - Save Gap Analysis report to: `${IWISH_HOME}/gap-analysis/{repo-name}-gap-analysis.md`
   - Save Comparison report to: `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`
   - Create symlink in the absorbed repo directory: `ln -sf ${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md ${IWISH_HOME}/absorbed-repos/{repo-name}/comparison.md`
-- 🛑 **HUMAN CHECKPOINT 1:** Present `gap-analysis.md` and the newly structured bilingual `comparison.md` (featuring both Feature Comparison and Operational DNA Analysis) to the user.
+- 🛑 **HUMAN CHECKPOINT 1:** Present `gap-analysis.md` and the newly structured bilingual `comparison.md` (featuring both Feature Comparison, Classification Funnel Audit, and Operational DNA Analysis) to the user.
   - **Wait for Input:** User must [Approve All], [Edit specific], [Reject All], or [Abort].
   - *Track Selection:* User MUST confirm if the absorption targets `SYSTEM_SKILL` or `USER_SPACE`.
   - *If Compound detected:* Explicitly ask user if they want to integrate as a `BUNDLE` or selectively extract modules.
+
 
 ### Phase 5.5: ADOPTION REVIEW PACK 🧭 (Agent: orch-agent / capability-agent)
 - **Action:** Build a human-readable and Orch-readable adoption review pack before integration.

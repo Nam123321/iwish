@@ -67,9 +67,10 @@ Final comprehensive completeness check - validate no template variables remain, 
 
 "Perform completeness validation on this PRD - final gate check:
 
-**1. Template Completeness:**
+**1. Template & Clarification Completeness:**
 - Scan PRD for any remaining template variables
 - Look for: {variable}, {{variable}}, {placeholder}, [placeholder], etc.
+- Scan for unresolved clarification markers: `[NEEDS CLARIFICATION: ...]`
 - List any found with line numbers
 
 **2. Content Completeness:**
@@ -97,15 +98,15 @@ For each section: Is required content present? (Yes/No/Partial)
 Return completeness matrix with status for each check."
 
 **Graceful degradation (if no Task tool):**
-- Manually scan for template variables
+- Manually scan for template variables and `[NEEDS CLARIFICATION: ...]` markers
 - Manually check each section for required content
 - Manually verify frontmatter fields
 - Build completeness matrix
 
 ### 2. Build Completeness Matrix
 
-**Template Completeness:**
-- Template variables found: count
+**Template & Clarification Completeness:**
+- Template variables or `[NEEDS CLARIFICATION` markers found: count
 - List if any found
 
 **Content Completeness by Section:**
@@ -140,11 +141,11 @@ Append to validation report:
 ```markdown
 ## Completeness Validation
 
-### Template Completeness
+### Template & Clarification Completeness
 
-**Template Variables Found:** {count}
-{If count > 0, list variables with line numbers}
-{If count = 0, note: No template variables remaining ✓}
+**Template Variables or Clarification Markers Found:** {count}
+{If count > 0, list variables/markers with line numbers}
+{If count = 0, note: No template variables or [NEEDS CLARIFICATION] markers remaining ✓}
 
 ### Content Completeness by Section
 

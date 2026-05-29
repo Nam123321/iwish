@@ -129,3 +129,34 @@ After finalizing a Story's ACs, Agent MUST generate this mapping table:
 2. **Every Task MUST trace back to an AC.** Tasks without an AC parent are flagged as `⚠️ ORPHAN TASK` — they add scope without adding value. Remove or justify.
 3. **Sub-tasks are optional** but recommended for Tasks touching > 1 file or requiring both backend and frontend work.
 4. **Status column** is updated by dev-agent during execution: `☐` → `🔄` → `✅`.
+
+---
+
+## Part E: Architectural & Constitutional Gates
+
+Whenever a plan or tech-spec is drafted, evaluate the proposed changes against the following 5 Constitutional Gates:
+
+1. **Library-First:** Is the implementation structured as a standalone, decoupled library/module before integrating with the application or CLI?
+2. **CLI Interface:** Does the module expose a clean text-based CLI (input/output/arguments) interface for scriptability and testability?
+3. **Test-First:** Is there a planned test suite or dry-run validation protocol to verify the feature's core logic before it is deployed?
+4. **Simplicity Gate:** Does the feature avoid unnecessary modular sprawl (strictly ≤ 3 sub-projects/directories created)?
+5. **Anti-Abstraction:** Does the code use direct framework/platform features instead of custom wrappers or abstraction layers?
+
+### Complexity Tracking & Justification Table
+
+If any gate is violated, you MUST document it by filling in the table below:
+
+```markdown
+### Complexity & Gate Justification
+| Gate Violated | Rationale for Violation | Simpler Alternative Rejected Because |
+|---|---|---|
+| [Gate Name] | [Explain why this violation is architectural required] | [Explain what simpler option was considered and why it failed] |
+```
+
+If the plan fully complies with all 5 gates without any violations, output exactly:
+
+```markdown
+### Complexity & Gate Justification
+No Violations — Compliant with Constitution
+```
+

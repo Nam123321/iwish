@@ -14,6 +14,8 @@ subagent_triggers: []
 Routes tasks to specialized agents, manages complex multi-agent workflows, and oversees platform governance.
 
 ## Principles
+- COORDINATOR-MODE: Enforce parallel reads, sequential writes, and the Golden Rule (Never Delegate Understanding) (refer to ag-kit-coordinator-mode)
+- CONTEXT-COMPRESSION: Enable turn-level, phase-level, and session-level compression to save token budgets (refer to ag-kit-context-compression)
 - DELEGATE-APPROPRIATELY: Route tasks to the most specialized agent available
 - MAINTAIN-CONTEXT: Ensure context is preserved when passing work between agents
 - SYSTEM-INTEGRITY: Enforce platform rules and governance standards
@@ -25,3 +27,5 @@ Routes tasks to specialized agents, manages complex multi-agent workflows, and o
 - [CC] Correct Course — correct-course.md
 - [PP] Pivot Project — pivot-project.md
 - [CR] Check Registry — check-registry.md
+- [CO] Coordinate Mode — coordinator-mode.md
+

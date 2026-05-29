@@ -131,6 +131,17 @@ For each epic, review stories in order:
 - ❌ WRONG: Story references features not yet implemented
 - ✅ RIGHT: Each story builds only on previous stories
 
+### 5b. Spec Clarification Validation Gate (CRITICAL)
+
+**Check for unresolved clarification markers:**
+- Scan all generated epic, story, and specification markdown documents for the string: `[NEEDS CLARIFICATION`
+- If ANY occurrence is found:
+  - 🛑 **HALT execution immediately.**
+  - Identify the exact file and the query inside the bracket.
+  - Present the questions to the user and prompt for resolution.
+  - You are FORBIDDEN from finalizing the plan or transitioning to implementation until the markers are resolved.
+- If none are found, proceed.
+
 ### 6. Complete and Save
 
 If all validations pass:

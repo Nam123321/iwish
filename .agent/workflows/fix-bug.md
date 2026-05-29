@@ -68,6 +68,10 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 
 ## Phase 2: CONTEXT (Bối cảnh)
 
+> **MANDATORY COGNITIVE LOADING:**
+> 1. Load `.agent/skills/ag-kit-guides/context-compression.md` to optimize tokens.
+> 2. Load `.agent/skills/ag-kit-guides/sbrp-coordinator-rules.md` to enable parallel reads.
+
 // turbo-all
 
 5. **Đọc Story requirement:**
@@ -275,6 +279,8 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 > **Context Refresh (Resume):** Upon returning, first read `task.md` to recover your SBRP phase state. Then run `git stash pop`, resolve conflicts, and CRITICALLY use `git diff --name-only stash@{0}^!` or `git status` to deterministically identify and `view_file` the updated files, ensuring the LLM Context Window is synchronized before proceeding.
 
 15. **Fix theo spec, không shortcut:**
+    - **GOLDEN RULE (Never Delegate Understanding):** Coordinator/Orchestrator must write explicit, line-specific prompt instructions for worker agents. Do not delegate understanding.
+    - **SEQUENTIAL WRITES:** If fixing multiple files, apply edits sequentially one-by-one.
     - Code fix PHẢI tuân thủ Story AC
     - Code fix PHẢI tuân thủ DIG rules
     - **CRITICAL ANTI-HALLUCINATION**: Không đoán mò import paths. Bắt buộc dùng CodeGraphContext (find_symbol) hoặc FeatureGraph để xác minh đường dẫn trước khi import.
@@ -436,6 +442,13 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
          ```
        - Áp dụng cho TỪNG file trong danh sách files đã sửa.
        - Đảm bảo code graph phản ánh trạng thái mới sau fix.
+
+25c. **🔄 Auto-Decant & Spec Sync Engine (MANDATORY INTEGRATION):**
+     - Load `.agent/skills/ag-kit-guides/context-compression-decant.md`.
+     - Extract the Context Delta Block at the end of the session.
+     - If the fix resolved a new edge case (`resolved_edge_cases`) not in the story's Acceptance Criteria (AC), **automatically update** `_iwish-output/stories/[epic]/[story].md` by appending the new AC with a `[EDGE-CASE] [BUG-XXXX]` label.
+     - Automatically update progress counts and defect ratios in `_iwish-output/epics.md`.
+     - Check Why #4 (Process) and Why #5 (Systemic) from RCA. If systemic issues are repeated (e.g. >= 2 similar checkpoints), trigger an immune system update by creating or enhancing skills/workflows.
 
 ---
 

@@ -847,3 +847,86 @@ nodes:
   - review
   - docs
   depends_on: []
+- id: skill-ag-kit-nextjs-react
+  type: skill
+  path: /.agent/skills/ag-kit-guides/nextjs-react/SKILL.md
+  description: Hướng dẫn chuyên sâu về tối ưu hiệu năng Next.js và React
+  tags:
+  - nextjs
+  - react
+  - performance
+  - optimization
+  depends_on: []
+- id: skill-ag-kit-frontend-design
+  type: skill
+  path: /.agent/skills/ag-kit-guides/frontend-design/SKILL.md
+  description: Hướng dẫn chuyên sâu về tư duy thiết kế web UI/UX
+  tags:
+  - frontend
+  - design
+  - ui
+  - ux
+  depends_on: []
+- id: skill-ag-kit-mobile-design
+  type: skill
+  path: /.agent/skills/ag-kit-guides/mobile-design/SKILL.md
+  description: Hướng dẫn chuyên sâu về tư duy và kỹ thuật thiết kế giao diện Mobile
+  tags:
+  - mobile
+  - design
+  - iOS
+  - Android
+  depends_on: []
+- id: skill-ag-kit-context-compression
+  type: skill
+  path: /.agent/skills/ag-kit-guides/context-compression.md
+  description: Bộ quy tắc nhận thức nén ngữ cảnh 3 cấp độ giúp tối ưu hóa token
+  tags:
+  - context
+  - compression
+  - cognitive
+  - optimization
+  depends_on: []
+- id: skill-ag-kit-coordinator-mode
+  type: skill
+  path: /.agent/skills/ag-kit-guides/coordinator-mode.md
+  description: Cơ chế điều phối 4 pha với quy tắc song song/tuần tự và Golden Rule prompt
+  tags:
+  - coordinator
+  - orchestration
+  - parallel
+  - synthesis
+  depends_on: []
+- id: skill-ag-kit-context-compression-decant
+  type: skill
+  path: /.agent/skills/ag-kit-guides/context-compression-decant.md
+  description: Cơ chế gạn lọc tri thức và nén ngữ cảnh trong quá trình kết thúc sửa lỗi (Bug Decanting)
+  tags:
+  - decant
+  - compression
+  - sync
+  - bug
+  depends_on: []
+- id: skill-ag-kit-sbrp-coordinator-rules
+  type: skill
+  path: /.agent/skills/ag-kit-guides/sbrp-coordinator-rules.md
+  description: Quy tắc điều phối song song và tuần tự dành riêng cho quy trình sửa lỗi SBRP
+  tags:
+  - sbrp
+  - coordinator
+  - debugging
+  - fix
+  depends_on: []
+- id: script-auto-sync-sbrp
+  type: script
+  path: /.agent/scripts/auto-sync-sbrp.js
+  description: Script tự động đồng bộ hóa đặc tả story/epic và đồ thị tri thức cho SBRP
+  tags:
+  - script
+  - sync
+  - sbrp
+  - specs
+  depends_on: []
+
+
+

@@ -307,4 +307,4 @@ IF NOT → BLOCK with message:
 
 ## NEXT STEP:
 
-After user selects 'C', load `./step-01-init.md` to begin the standard UX design workflow (now with Design System as foundation).
+After user selects 'C', load `./step-02-discovery.md` to begin the standard UX design workflow (now with Design System as foundation).
