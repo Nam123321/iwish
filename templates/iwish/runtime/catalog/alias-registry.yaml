@@ -25,6 +25,7 @@ commands:
   /enhance-capability: /enhance-skill
   /retrospective: /retro
   /market-research: /research
+  /competitor-research: /research
   /domain-research: /research
   /technical-research: /research
   /bmad-help: /status

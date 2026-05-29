@@ -23,5 +23,6 @@ Conducts deep research on technical topics, market trends, and domain-specific k
 ## Menu
 - [TR] Technical Research — technical-research.md
 - [MR] Market Research — market-research.md
+- [CR] Competitor Research — competitor-research.md
 - [DR] Domain Research — domain-research.md
 - [DP] Deep Dive — conduct in-depth analysis on a specific topic

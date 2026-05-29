@@ -126,6 +126,7 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/create-capability': '/create-skill',
     '/enhance-capability': '/enhance-skill',
     '/market-research': '/research',
+    '/competitor-research': '/research',
     '/domain-research': '/research',
     '/technical-research': '/research',
     '/retrospective': '/retro',

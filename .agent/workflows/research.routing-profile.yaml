@@ -4,8 +4,8 @@ kind: workflow
 shape: workflow
 role: process-primary
 phases: [discover]
-stages: [market-research, domain-research, technical-research]
-triggers: [research, analyze, market, domain, technical]
+stages: [market-research, competitor-research, domain-research, technical-research]
+triggers: [research, analyze, market, competitor, domain, technical]
 anti_triggers: [final-code-patch]
 primary_agents: [research-agent, orch-agent]
 primary_workflows: [research]
