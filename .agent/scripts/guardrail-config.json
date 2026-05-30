@@ -1,5 +1,6 @@
 {
   "ignorePatterns": [
+    "_iwish-output",
     ".husky",
     "node_modules",
     "dist",
