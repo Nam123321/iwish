@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruflo Integration & Adoption Review Pack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --text-color: #cbd5e1;
+            --accent-color: #0ea5e9;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --border-color: rgba(51, 65, 85, 0.5);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.03) 0px, transparent 50%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 50px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, #ffffff 40%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            font-size: 0.8rem;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 45px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 1.8rem;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: #ffffff;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgba(15, 23, 42, 0.6);
+            color: #f43f5e;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        pre {
+            background-color: #070a13;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        pre code {
+            color: #38bdf8;
+            background: none;
+            padding: 0;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .warning-box {
+            border-left: 4px solid var(--warning-color);
+            background-color: rgba(245, 158, 11, 0.03);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.1);
+            border-left-width: 4px;
+        }
+
+        .warning-box strong {
+            color: var(--warning-color);
+        }
+
+        .danger-box {
+            border-left: 4px solid var(--danger-color);
+            background-color: rgba(239, 68, 68, 0.03);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            border-left-width: 4px;
+        }
+
+        .danger-box strong {
+            color: var(--danger-color);
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .question-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.15rem;
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        .question-card p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧭 Ruflo Selective Integration Guide</h1>
+            <p style="margin: 0; color: #64748b; font-size: 1.1rem;">Bản hướng dẫn trích xuất chọn lọc các thành phần của Ruflo vào I-Wish làm SYSTEM_SKILL</p>
+            <div class="badge-container">
+                <span class="badge">SYSTEM_SKILL</span>
+                <span class="badge">Selective Extraction</span>
+                <span class="badge">Bilingual</span>
+            </div>
+        </header>
+
+        <h2>1. Tổng quan & Phân loại / What is it</h2>
+        <div class="card">
+            <ul>
+                <li><strong>Tên thư viện / Repo name:</strong> Ruflo (trước đây là Claude Flow)</li>
+                <li><strong>Nguồn / Source:</strong> <code>https://github.com/ruvnet/ruflo</code></li>
+                <li><strong>Trạng thái đăng ký / Registration state:</strong> Phê duyệt trích xuất chọn lọc làm <code>SYSTEM_SKILL</code>.</li>
+                <li><strong>Phân loại Hình dạng / Shape:</strong> <code>compound</code> (tệp phức hợp chứa các module con).</li>
+                <li><strong>Phân loại Vai trò / Role:</strong> <code>supportive</code> (hỗ trợ quy trình tối ưu hóa và chống lỗi).</li>
+            </ul>
+        </div>
+
+        <h2>2. Lý do Tích hợp / Why it exists</h2>
+        <div class="card">
+            <p>Tích hợp Ruflo nhằm giải quyết ba lỗ hổng hiệu năng và quy trình chính trong I-Wish:</p>
+            <ul>
+                <li><strong>Bypass LLM:</strong> Giảm thời gian chờ và chi phí gọi API đối với các chỉnh sửa định dạng mã nguồn đơn giản.</li>
+                <li><strong>Tự động phục hồi:</strong> Giảm công sức dọn dẹp thủ công bằng cách rollback tự động các tệp tin sửa đổi nếu Story bị compile error giữa chừng.</li>
+                <li><strong>Định tuyến linh hoạt:</strong> Cân đối hiệu năng và hóa đơn API LLM dựa trên học máy tăng cường thay vì cấu hình tĩnh.</li>
+            </ul>
+        </div>
+
+        <h2>3. Vị trí trong Khung phân phối / Framework Placement</h2>
+        <div class="card">
+            <ul>
+                <li><strong>Phần chặng phục vụ / Phases:</strong> Nằm ở quy trình phát triển mã <code>/code</code>, quy trình Story <code>/iwish-feature-dev-story</code> và định tuyến gọi mô hình ở <code>orch-agent</code>.</li>
+                <li><strong>Vai trò / Role:</strong> <code>supportive</code>. Hoạt động ngầm làm tấm chắn bảo vệ và tối ưu hóa trước khi LLM chính xử lý tác vụ.</li>
+            </ul>
+        </div>
+
+        <h2>4. Mô hình Dữ liệu: Vào -> Xử lý -> Ra / Input -> Process -> Output</h2>
+        <div class="grid">
+            <div>
+                <h3>Agent Booster (LLM Bypass)</h3>
+                <div class="card">
+                    <p><strong>Input:</strong> Mã nguồn đích + Ý định sửa đổi.</p>
+                    <p><strong>Process:</strong> So khớp các mẫu biểu thức chính quy (regex) cục bộ qua WASM.</p>
+                    <p><strong>Output:</strong> File đã sửa đổi (nếu khớp regex) hoặc chuyển giao cho LLM.</p>
+                </div>
+            </div>
+            <div>
+                <h3>Topological Rollback</h3>
+                <div class="card">
+                    <p><strong>Input:</strong> Danh sách sub-tasks đã chạy thành công + Các hook rollback tương ứng.</p>
+                    <p><strong>Process:</strong> Khi bước chạy test/build thất bại, gọi hàm rollback theo thứ tự đảo ngược.</p>
+                    <p><strong>Output:</strong> Hoàn trả mã nguồn về trạng thái commit sạch ban đầu.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>5. Các Kịch bản Sử dụng / Use Cases</h2>
+        <div class="card">
+            <h3>Kịch bản Cốt lõi / Core Use Cases</h3>
+            <ul>
+                <li><strong>Formatting & Trivial Edits:</strong> Tự động bọc try-catch, định dạng mã, JSDoc comments mà không tốn token.</li>
+                <li><strong>Auto-Cleanup on Test Failure:</strong> Revert các file nguồn về commit gần nhất khi Story chạy test lỗi.</li>
+                <li><strong>Adaptive LLM Routing:</strong> Phân phối task nhẹ sang model rẻ và task nặng sang model cao cấp.</li>
+            </ul>
+
+            <h3>Trường hợp Cấm sử dụng / Do-Not-Use Cases</h3>
+            <div class="danger-box">
+                <p><strong>1. Codebase Search:</strong> Tuyệt đối <strong>KHÔNG</strong> dùng HNSW/SQLite WAL của Ruflo. I-Wish đã tích hợp thành công <strong>Semble</strong> (giảm 98% token tìm kiếm thông qua <code>/code-search</code>) với hiệu năng vượt trội.</p>
+                <p><strong>2. Setup Scripts:</strong> Tuyệt đối <strong>CẤM</strong> chạy các file cài đặt <code>install.sh</code> hoặc <code>sync-skills.sh</code> của Ruflo để bảo vệ an toàn Project Isolation.</p>
+            </div>
+        </div>
+
+        <h2>6. Các Trường hợp Biên & Hạn chế / Edge Cases & Constraints</h2>
+        <div class="grid">
+            <div>
+                <div class="card" style="border-left: 4px solid var(--danger-color);">
+                    <p><strong>Regex CPU Spike (ReDoS):</strong> Có thể bị treo CPU khi chạy regex phức tạp.</p>
+                    <p style="margin: 0; font-size: 0.95rem;"><em>Biện pháp:</em> Cài đặt timeout tối đa 100ms cho Agent Booster.</p>
+                </div>
+            </div>
+            <div>
+                <div class="card" style="border-left: 4px solid var(--warning-color);">
+                    <p><strong>Thompson Router Vendor Lock-in:</strong> Nguyên bản của Ruflo chỉ hỗ trợ Claude.</p>
+                    <p style="margin: 0; font-size: 0.95rem;"><em>Biện pháp:</em> Thiết kế mở rộng động để lấy danh sách các model khả dụng từ biến môi trường của I-Wish.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>7. Phối hợp & Chỉ dẫn Định tuyến / Coordination & Routing Hints</h2>
+        <div class="card">
+            <p><strong>Từ khóa kích hoạt (Trigger words):</strong> <code>định dạng mã</code>, <code>thêm try-catch</code>, <code>rollback tác vụ</code>, <code>định tuyến model</code>.</p>
+            <p><strong>Từ khóa chặn (Anti-triggers):</strong> <code>tìm kiếm code</code> (chuyển hướng sang Semble), <code>cài đặt ruflo</code> (bỏ qua).</p>
+            <p>Được đề xuất tự động (auto-proposed) bởi Trình điều phối chính dưới dạng một lớp đệm tối ưu hóa trong luồng chạy.</p>
+        </div>
+
+        <h2>8. Câu hỏi Đánh giá dành cho Người dùng / Review Questions</h2>
+        <div class="question-card">
+            <h4>1. Phê duyệt các mẫu Regex của Agent Booster</h4>
+            <p>Bạn có muốn quy định cụ thể các loại định dạng code nào được phép bypass LLM để tránh các thay đổi ngoài ý muốn không?</p>
+        </div>
+        <div class="question-card">
+            <h4>2. Xác nhận cơ chế Rollback tự động</h4>
+            <p>I-Wish có nên tự động revert mã nguồn 100% khi chạy test lỗi, hay cần hỏi ý kiến bạn trước khi thực hiện hành động revert?</p>
+        </div>
+        <div class="question-card">
+            <h4>3. Hạn mức Model Router</h4>
+            <p>Thompson Sampling Router có được phép gọi tất cả các model khả dụng được tìm thấy trong tệp cấu hình của bạn hay không?</p>
+        </div>
+    </div>
+</body>
+</html>

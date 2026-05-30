@@ -1,0 +1,30 @@
+nodes:
+- id: skill-agent-booster
+  type: skill
+  path: /.agent/skills/agent-booster/SKILL.md
+  description: Bypasses LLM for simple code modifications using local regex and WASM rules.
+  tags:
+  - booster
+  - LLM-bypass
+  - regex
+  - WASM
+  - optimize
+- id: skill-workflow-rollback
+  type: skill
+  path: /.agent/skills/workflow-rollback/SKILL.md
+  description: Manages step execution history and performs reverse-order topological rollback on task failure.
+  tags:
+  - rollback
+  - recovery
+  - task
+  - workflow
+- id: skill-thompson-router
+  type: skill
+  path: /.agent/skills/thompson-router/SKILL.md
+  description: Adaptive model selection using Thompson Sampling, dynamically scaling across active environment LLM providers.
+  tags:
+  - routing
+  - model
+  - multi-provider
+  - thompson-sampling
+  - Beta-distribution

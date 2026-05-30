@@ -927,6 +927,23 @@ nodes:
   - sbrp
   - specs
   depends_on: []
-
-
-
+- id: skill-code-search
+  type: skill
+  path: /.agent/skills/code-search/SKILL.md
+  description: Local hybrid semantic+lexical code search using Semble (Model2Vec + BM25 + RRF).
+  tags:
+  - code
+  - search
+  - semantic
+  - hybrid
+  depends_on: []
+- id: workflow-code-search
+  type: workflow
+  path: /.agent/workflows/code-search.md
+  description: Local hybrid semantic+lexical code search slash command.
+  tags:
+  - search
+  - code
+  - semantic
+  depends_on:
+  - skill-code-search

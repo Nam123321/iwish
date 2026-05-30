@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semble Integration & Adoption Review Pack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --accent-color: #38bdf8;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --success-color: #4ade80;
+            --warning-color: #facc15;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .badge {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 25px;
+        }
+
+        p, li {
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 25px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-color);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0f172a;
+            color: #f472b6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        pre {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            color: #38bdf8;
+            background: none;
+            padding: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .question {
+            border-left: 4px solid var(--warning-color);
+            background-color: rgba(250, 204, 21, 0.05);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 15px;
+        }
+
+        .question strong {
+            color: var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧭 Semble Integration & Adoption Review Pack <span class="badge">SYSTEM_SKILL</span></h1>
+        <p>This integration guide defines how the <strong>Semble</strong> local hybrid search tool will be adopted into the I-Wish system architecture.</p>
+
+        <h2>1. Classification & Framework Placement</h2>
+        <div class="card">
+            <ul>
+                <li><strong>Shape Classification</strong>: <code>workflow-patch</code> & <code>skill</code></li>
+                <li><strong>Role Classification</strong>: <code>process-primary</code> & <code>supportive</code></li>
+                <li><strong>Framework Placement</strong>: Integrated directly into the I-Wish routing core (<code>orch-agent</code>) and exposed as a core utility skill (<code>code-search</code>) available to all agents.</li>
+            </ul>
+        </div>
+
+        <h2>2. Use Cases Analysis</h2>
+        
+        <h3>Core Use Cases</h3>
+        <div class="card">
+            <ul>
+                <li><strong>Semantic Code Chunk Retrieval</strong>: AI agents fetch precise code snippets for query tasks, bypassing raw <code>grep</code> or parsing full files.</li>
+                <li><strong>Zero-Config Workspace Indexing</strong>: Instantly index codebases on CPU without needing a Docker container running FalkorDB.</li>
+            </ul>
+        </div>
+
+        <h3>Adjacent Use Cases</h3>
+        <div class="card">
+            <ul>
+                <li><strong>Multi-Agent Parallel Orchestration (Story Resolution)</strong>: Parallel agents use Semble to scan and extract required code blocks relevant to their specific User Story.</li>
+                <li><strong>Cross-Story Dependency Checking</strong>: The orchestrator maps overlapping file hits returned by parallel agent searches to flag potential concept conflicts before coding begins.</li>
+                <li><strong>Semantic Merge Conflict Resolution</strong>: Performs concept-matching scans across branch modifications before merge, ensuring no stale references or broken interfaces remain in call-sites.</li>
+            </ul>
+        </div>
+
+        <div class="grid">
+            <div>
+                <h3>Edge & Stress Cases</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Air-Gapped Environments (Edge)</strong>: Downloading the <code>potion-code-16M</code> embedding model will fail if internet access is blocked. <em>Remediation:</em> I-Wish will bundle or allow pre-downloading models.</li>
+                        <li><strong>Monorepo RAM Overhead (Stress)</strong>: In-memory LRU cache eviction thresholds must be configured dynamically to prevent OOM when indexing multi-gigabyte codebases.</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <h3>Constraints & Dependencies</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Engine</strong>: Python 3.9+ and <code>uv</code>/<code>uvx</code>.</li>
+                        <li><strong>Precision Trade-off</strong>: Uses static embeddings (<code>model2vec</code>), which may lose contextual details compared to full-scale transformer models but operates with 200x faster indexing.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>3. Agent, Workflow & Skill Coordination</h2>
+        <div class="card">
+            <pre><code>             [orch-agent]
+                  │
+        ┌─────────┴─────────┐
+        ▼                   ▼
+  [/plan /sprint]     [/code /review]
+        │                   │
+  (semble search)      (semble audit)
+        │                   │
+  [Cross-Story Dep]   [Pre-merge Audit]</code></pre>
+            <ul>
+                <li><strong>Plan/Sprint Workflows</strong>: Resolve story dependencies by scanning target concepts.</li>
+                <li><strong>Code/Review Workflows</strong>: Verify call-site changes before merging branches.</li>
+            </ul>
+        </div>
+
+        <h2>4. Orch Routing Hints</h2>
+        <div class="card">
+            <p><em>Rule:</em> If the query involves "finding where X is implemented" or "getting context on how Y works" and FalkorDB is offline, immediately route retrieval through <code>code-search</code> instead of falling back to raw directory list.</p>
+        </div>
+
+        <h2>5. Review Questions for the User</h2>
+        <div class="question">
+            <p><strong>1. Fallback Automation:</strong> Should I-Wish automatically fallback to Semble when FalkorDB is offline during <code>/analyze-codebase</code>?</p>
+        </div>
+        <div class="question">
+            <p><strong>2. Pre-Merge Gate:</strong> Should the Semantic Merge Audit be a blocking gate in <code>/review</code> or simply issue a warnings report?</p>
+        </div>
+    </div>
+</body>
+</html>

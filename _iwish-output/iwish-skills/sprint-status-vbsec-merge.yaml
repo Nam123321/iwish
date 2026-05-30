@@ -1,0 +1,16 @@
+sprint:
+  name: "vbsec rules integration"
+  status: "active"
+  stories:
+    - id: "story-1.1"
+      title: "Standardize Generic Rules"
+      status: "READY-FOR-DEV"
+    - id: "story-1.2"
+      title: "Standardize Language Overlays"
+      status: "READY-FOR-DEV"
+    - id: "story-2.1"
+      title: "Implement L1-L4 Taint Analysis guideline"
+      status: "READY-FOR-DEV"
+    - id: "story-3.1"
+      title: "Register rules and update knowledge graph"
+      status: "READY-FOR-DEV"
