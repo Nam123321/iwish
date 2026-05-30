@@ -37,6 +37,7 @@ exports.extractGraphData = extractGraphData;
 exports.extractSprintData = extractSprintData;
 exports.extractAgentTrace = extractAgentTrace;
 exports.extractIdeaToPrdData = extractIdeaToPrdData;
+exports.extractCodeGraphData = extractCodeGraphData;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
 const source_of_truth_1 = require("./source-of-truth");
@@ -581,4 +582,22 @@ function extractIdeaToPrdData(projectRoot) {
         projectType,
         slides
     };
+}
+function extractCodeGraphData(projectRoot) {
+    const codeGraphPath = path.join(projectRoot, '.iwish', 'cache', 'iwish-code-graph.json');
+    if (!fs.existsSync(codeGraphPath)) {
+        return null;
+    }
+    try {
+        const data = fs.readJsonSync(codeGraphPath);
+        if (!data.nodes || !data.edges) {
+            console.warn('Code graph JSON exists but has invalid structure.');
+            return null;
+        }
+        return data;
+    }
+    catch (error) {
+        console.warn('Error reading code graph JSON:', error);
+        return null;
+    }
 }

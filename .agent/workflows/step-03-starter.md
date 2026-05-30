@@ -119,6 +119,14 @@ Based on project context analysis and technical preferences, identify the primar
 - **Full-stack** → Look for T3, RedwoodJS, Blitz, Next.js starters
 - **Desktop** → Look for Electron, Tauri starters
 
+### 1.5 Scaffold Architecture Blueprint for Known System Patterns
+
+Identify if the project matches a known system design pattern (e.g. Chat app, E-commerce, URL Shortener) by reviewing requirements in `project-context.md` or PRD.
+- If a match is found:
+  - Load the corresponding blueprint from `templates/iwish/architecture-blueprints/chat-app.md` or `url-shortener.md`.
+  - Include the blueprint diagram and high-level design as the starting skeleton in `architecture.md`.
+  - Inform the user: *"Matched system design blueprint for {{blueprint_name}}. We will scaffold this as our architectural starting point."*
+
 ### 2. UX Requirements Consideration
 
 If UX specification was loaded, consider UX requirements when selecting starter:
@@ -229,6 +237,12 @@ Prepare the content to append to the document:
 ### Primary Technology Domain
 
 {{identified_domain}} based on project requirements analysis
+
+{{#if blueprint_scaffolded}}
+### System Design Blueprint: {{blueprint_name}}
+
+{{scaffolded_blueprint_content}}
+{{/if}}
 
 ### Starter Options Considered
 

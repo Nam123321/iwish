@@ -58,9 +58,17 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
    ```
    ☐ **Seed Data:** If SeedData nodes exist → verify seed script matches `sd.values`.
 
-   **10d. Deviation Detection:**
-   ☐ Does the code introduce ANY model, field, enum, or event NOT declared in FeatureGraph?
-   If deviations are detected → flag as 🛑 **DATA-SPEC DEVIATION** finding (CRITICAL severity).
+    **10d. Deviation Detection:**
+    ☐ Does the code introduce ANY model, field, enum, or event NOT declared in FeatureGraph?
+    If deviations are detected → flag as 🛑 **DATA-SPEC DEVIATION** finding (CRITICAL severity).
+
+    **10e. System Design Drift & Efficiency Checks:**
+    ☐ **Database Queries:** Scan all newly introduced or modified database queries (e.g. Prisma, raw SQL). Verify they do not perform unindexed lookups or trigger N+1 query patterns.
+    ☐ **Caching Integration:** Scan all repetitive database read calls in high-scale paths. Verify if they are wrapped with caching logic (e.g. Redis, memory cache) where appropriate.
+    ☐ **API Idempotency:** Scan newly added API write routes (POST/PUT/PATCH). Verify if they implement or accept idempotency key validations.
+    If violations are detected:
+    - If the developer has provided an explicit inline/commit comment justification: log the warning and justification to `bug-tracker.yaml` and allow the build/review to pass.
+    - Otherwise, flag as 🛑 **SYSTEM DESIGN DRIFT** finding (CRITICAL severity) and block story approval.
 
 11. CRITICAL — BACKWARD UPDATE BLOCKER via FeatureGraph (ADR-002): If step 10 detected any DATA-SPEC DEVIATION:
    - Story review is BLOCKED — do NOT mark as approved

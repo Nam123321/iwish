@@ -206,6 +206,12 @@ Which approach makes the most sense for our project?"
 - Loading state persistence
 - Loading UI patterns
 
+**Resiliency & Distributed Patterns:**
+
+- Circuit Breaker configurations on external integrations
+- Retry policies with Exponential Backoff and Jitter
+- Rate limiting configurations for public API write endpoints
+
 ### 4. Generate Patterns Content
 
 Prepare the content to append to the document:
@@ -262,6 +268,9 @@ Prepare the content to append to the document:
 
 **Loading State Patterns:**
 {{loading_state_management_rules}}
+
+**Resiliency & Distributed Patterns:**
+{{resiliency_and_distributed_patterns_rules}}
 
 ### Enforcement Guidelines
 

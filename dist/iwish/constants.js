@@ -147,6 +147,7 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/quick-spec': '/make-story',
     '/document-project': '/bootstrap-existing-project',
     '/generate-project-context': '/bootstrap-existing-project',
+    '/iwish-code-graph': '/code-graph',
 };
 function getCanonicalHome() {
     return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');

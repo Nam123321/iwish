@@ -611,3 +611,45 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   };
 }
 
+export type CodeGraphData = {
+  nodes: Array<{
+    id: string;
+    label: string;
+    group: string;
+    layer: string;
+    summary: string | null;
+    complexity: string;
+    tags: string[];
+  }>;
+  edges: Array<{
+    from: string;
+    to: string;
+    type: string;
+    label: string;
+  }>;
+  metadata: {
+    generatedAt: string;
+    adapterUsed: string;
+    nodeCount: number;
+    edgeCount: number;
+  };
+};
+
+export function extractCodeGraphData(projectRoot: string): CodeGraphData | null {
+  const codeGraphPath = path.join(projectRoot, '.iwish', 'cache', 'iwish-code-graph.json');
+  if (!fs.existsSync(codeGraphPath)) {
+    return null;
+  }
+
+  try {
+    const data = fs.readJsonSync(codeGraphPath) as CodeGraphData;
+    if (!data.nodes || !data.edges) {
+      console.warn('Code graph JSON exists but has invalid structure.');
+      return null;
+    }
+    return data;
+  } catch (error) {
+    console.warn('Error reading code graph JSON:', error);
+    return null;
+  }
+}

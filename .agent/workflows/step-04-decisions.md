@@ -66,8 +66,14 @@ Facilitate collaborative architectural decision making, leveraging existing tech
 **Project Context Technical Rules:**
 {{project_context_technical_rules}}"
 
+**Determine Scale & Load Requirements:**
+Analyze the project context and requirements:
+- Search `project-context.md` or PRD for load estimates: Expected Concurrent Users (CCU), Queries Per Second (QPS), or `high_scale: true` flag.
+- Set `high_scale = true` if CCU > 10,000, QPS > 1,000, or explicitly flagged. Otherwise, `high_scale = false`.
+- If scale requirements are not explicitly documented, ask: *"Is this project expected to handle high concurrency (>10k CCU) or throughput (>1k QPS) requiring distributed systems/scaling choices? (y/n)"*
+
 **Identify Remaining Decisions:**
-Based on technical preferences, starter template choice, and project context, identify remaining critical decisions:
+Based on technical preferences, starter template choice, scale check, and project context, identify remaining critical decisions:
 
 **Already Decided (Don't re-decide these):**
 
@@ -88,6 +94,9 @@ Based on technical preferences, starter template choice, and project context, id
 - Data validation strategy
 - Migration approach
 - Caching strategy
+- **[High-Scale Only]** CAP Theorem positioning (AP vs CP alignment)
+- **[High-Scale Only]** Advanced Caching & CDN setup (Cache-Aside, Write-Through, LRU/LFU eviction)
+- **[High-Scale Only]** Database Scaling & Partitioning (Read Replicas, Sharding key strategies)
 
 #### Category 2: Authentication & Security
 
@@ -99,11 +108,13 @@ Based on technical preferences, starter template choice, and project context, id
 
 #### Category 3: API & Communication
 
-- API design patterns (REST, GraphQL, etc.)
+- API design patterns (REST, GraphQL, gRPC, etc.)
 - API documentation approach
 - Error handling standards
 - Rate limiting strategy
-- Communication between services
+- Communication between services (HTTP, gRPC, WebSockets)
+- **[High-Scale Only]** Rate Limiting Algorithms (Token Bucket, Leaky Bucket, Sliding Window) & Idempotency Key design
+- **[High-Scale Only]** Decoupled Asynchronous Communication (Pub/Sub, Message Queues - RabbitMQ, Kafka, SQS)
 
 #### Category 4: Frontend Architecture (if applicable)
 
@@ -207,6 +218,8 @@ After facilitating all decision categories, prepare the content to append:
 
 ### Decision Priority Analysis
 
+**Project Scale Classification:** {{scale_classification}} (Expected CCU: {{expected_ccu}}, Expected QPS: {{expected_qps}})
+
 **Critical Decisions (Block Implementation):**
 {{critical_decisions_made}}
 
@@ -219,6 +232,12 @@ After facilitating all decision categories, prepare the content to append:
 ### Data Architecture
 
 {{data_related_decisions_with_versions_and_rationale}}
+{{#if high_scale}}
+**Distributed Data Patterns (High-Scale):**
+- CAP Theorem positioning: {{cap_theorem_alignment}}
+- Caching strategy & CDN: {{advanced_caching_and_cdn_setup}}
+- DB sharding & partitioning: {{database_sharding_and_scaling_setup}}
+{{/if}}
 
 ### Authentication & Security
 
@@ -227,6 +246,11 @@ After facilitating all decision categories, prepare the content to append:
 ### API & Communication Patterns
 
 {{api_related_decisions_with_versions_and_rationale}}
+{{#if high_scale}}
+**Distributed API & Communication Patterns (High-Scale):**
+- Rate Limiting algorithm & Idempotency key design: {{rate_limiting_algorithm_and_idempotency_setup}}
+- Decoupled asynchronous communication (Pub/Sub, Message Queues): {{message_queue_setup}}
+{{/if}}
 
 ### Frontend Architecture
 

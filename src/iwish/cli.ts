@@ -28,7 +28,8 @@ import {
 } from './runtime';
 import { SUPPORTED_INSTALL_TARGETS, getPlatformMode, PlatformMode } from './constants';
 import { routeRequest } from './routing';
-import { extractGraphData, extractSprintData, extractAgentTrace } from './graph-parser';
+import { extractGraphData, extractSprintData, extractAgentTrace, extractCodeGraphData } from './graph-parser';
+import { mergeGraphs } from '../code-intel/graph-merger';
 import { getReconciliationStatus, queueReconciliation } from './reconciliation';
 import { loadSourceOfTruth } from './source-of-truth';
 import { buildPlatformInventory } from './inventory';
@@ -609,6 +610,66 @@ export async function runCli(): Promise<void> {
           console.log(`Open in browser: file://${outputPath}`);
         } catch (error: any) {
           console.error(chalk.red(`Failed to generate User Guide & Dashboard: ${error.message}`));
+        }
+      }),
+  );
+
+  addSharedDirectoryOption(
+    program
+      .command('code-graph')
+      .description('Run the Semantic Code Intelligence pipeline: scan files, analyze with LLM, merge graph, and update dashboard')
+      .option('--scan-only', 'Only run the file scanner without LLM analysis')
+      .option('--batch-size <size>', 'Number of files per LLM analysis batch', '10')
+      .action(async (options: { directory: string; scanOnly?: boolean; batchSize: string }) => {
+        const projectRoot = getProjectRoot(options.directory);
+        console.log(chalk.blue('\n🔬 I-Wish Semantic Code Intelligence Pipeline'));
+        console.log(chalk.gray('━'.repeat(50)));
+
+        try {
+          // Step 1: File scanning
+          console.log(chalk.cyan('\n📁 Step 1: Scanning files for changes...'));
+          const { scanFiles, createBatches } = await import('../code-intel/file-scanner');
+          const scanResult = await scanFiles(projectRoot);
+          console.log(chalk.green(`  ✓ Scanned ${scanResult.totalFiles} files`));
+          console.log(`    Added: ${scanResult.added.length}, Modified: ${scanResult.modified.length}, Deleted: ${scanResult.deleted.length}, Renamed: ${scanResult.renamed.length}`);
+
+          if (options.scanOnly) {
+            console.log(chalk.yellow('\n⏸ Scan-only mode. Skipping LLM analysis and merge.'));
+            return;
+          }
+
+          const changedFiles = [...scanResult.added, ...scanResult.modified];
+          if (changedFiles.length === 0) {
+            console.log(chalk.green('\n✨ No changed files to analyze. Running merge with existing data...'));
+          } else {
+            // Step 2: Semantic analysis
+            console.log(chalk.cyan(`\n🧠 Step 2: Analyzing ${changedFiles.length} changed files...`));
+            const batchSize = parseInt(options.batchSize, 10) || 10;
+            const batches = createBatches(changedFiles, batchSize);
+            const { analyzeBatch } = await import('../code-intel/semantic-analyzer');
+            for (const batch of batches) {
+              console.log(chalk.gray(`  Processing batch ${batch.batchIndex + 1}/${batch.totalBatches} (${batch.files.length} files)...`));
+              await analyzeBatch(projectRoot, batch.files);
+            }
+            console.log(chalk.green(`  ✓ Semantic analysis complete`));
+          }
+
+          // Step 3: Graph merge
+          console.log(chalk.cyan('\n🔀 Step 3: Merging technical graph with semantic metadata...'));
+          const graph = await mergeGraphs(projectRoot);
+          console.log(chalk.green(`  ✓ Hybrid graph generated: ${graph.metadata.nodeCount} nodes, ${graph.metadata.edgeCount} edges`));
+          console.log(`    Adapter: ${graph.metadata.adapterUsed}`);
+
+          // Step 4: Update dashboard
+          console.log(chalk.cyan('\n📊 Step 4: Updating dashboard...'));
+          const dashboardPath = await compileUserGuideDashboard(projectRoot);
+          console.log(chalk.green(`  ✓ Dashboard updated: file://${dashboardPath}`));
+
+          console.log(chalk.green.bold('\n✅ Code Intelligence pipeline completed successfully!'));
+          console.log(chalk.gray(`   Graph saved to: .iwish/cache/iwish-code-graph.json`));
+        } catch (error: any) {
+          console.error(chalk.red(`\n❌ Pipeline failed: ${error.message}`));
+          process.exit(1);
         }
       }),
   );

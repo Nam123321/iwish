@@ -1456,6 +1456,37 @@
       gap: 10px;
       font-weight: 500;
     }
+
+    /* Code Graph Tab */
+    #code-graph-canvas {
+      background: radial-gradient(circle at 30% 40%, rgba(15, 118, 110, 0.03) 0%, transparent 60%);
+    }
+    .code-graph-filter-btn {
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--panel-bg);
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .code-graph-filter-btn:hover,
+    .code-graph-filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .code-graph-stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .code-graph-stat:last-child { border-bottom: none; }
+    .code-graph-stat .label { color: var(--text-muted); }
+    .code-graph-stat .value { font-weight: 600; color: var(--text-color); }
   </style>
 </head>
 <body>
@@ -1471,6 +1502,7 @@
       <button class="tab-btn" onclick="switchTab('sprint')">Sprint Kanban</button>
       <button class="tab-btn" onclick="switchTab('orchestration')">Orchestration Graph</button>
       <button class="tab-btn" onclick="switchTab('iwish-guide')">I-Wish Guide</button>
+      <button class="tab-btn" onclick="switchTab('code-graph')">Code Graph</button>
     </div>
   </header>
 
@@ -2485,6 +2517,36 @@
       </div>
     </div>
 
+    <!-- Tab 6: Code Graph -->
+    <div id="tab-code-graph" class="tab-content">
+      <!-- Placeholder when no data -->
+      <div id="code-graph-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <div class="card" style="max-width:480px;text-align:center;padding:40px;">
+          <div style="font-size:48px;margin-bottom:16px;">🔗</div>
+          <h2 style="margin-bottom:8px;">Code Graph Not Available</h2>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.6;">Run the code-graph generation command to visualise your project's architecture as an interactive dependency graph.</p>
+          <div class="cli-box" style="margin-top:20px;">
+            <span class="cli-cmd">/generate-code-graph</span>
+          </div>
+        </div>
+      </div>
+      <!-- Active graph view (hidden until data is injected) -->
+      <div id="code-graph-active" style="display:none;flex:1;height:100%;">
+        <div id="code-graph-canvas" class="canvas-panel"></div>
+      </div>
+      <div id="code-graph-sidebar" class="sidebar" style="display:none;">
+        <input type="text" id="code-graph-search" placeholder="Search nodes by name or tag..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-family:inherit;font-size:14px;margin-bottom:16px;background:var(--panel-bg);">
+        <div id="code-graph-filters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;"></div>
+        <div class="card" id="code-graph-details">
+          <h3 style="color:var(--text-muted);font-size:14px;">Click a node to inspect</h3>
+        </div>
+        <div class="card">
+          <h2>Graph Stats</h2>
+          <div id="code-graph-stats"></div>
+        </div>
+      </div>
+    </div>
+
 
   </div>
 
@@ -2931,6 +2993,9 @@
         } else if (tabId === 'orchestration' && window.orchestrationNetwork) {
           window.orchestrationNetwork.redraw();
           window.orchestrationNetwork.fit();
+        } else if (tabId === 'code-graph' && window.codeGraphNetwork) {
+          window.codeGraphNetwork.redraw();
+          window.codeGraphNetwork.fit();
         }
       }, 50);
     }
@@ -3264,6 +3329,144 @@
       renderOrchestrationGraph();
       initIdeaToPrdPresentation();
     };
+
+    // ===== CODE GRAPH TAB =====
+    (function initCodeGraph() {
+      const codeGraphData = /*CODE_GRAPH_DATA*/ null;
+      if (!codeGraphData) return;
+
+      // Show active view, hide placeholder
+      document.getElementById('code-graph-placeholder').style.display = 'none';
+      var activeView = document.getElementById('code-graph-active');
+      activeView.style.display = 'flex';
+      document.getElementById('code-graph-sidebar').style.display = 'flex';
+
+      var layerColors = {
+        presentation: { background: '#6366f1', border: '#4f46e5', font: { color: '#fff' } },
+        business:     { background: '#0ea5e9', border: '#0284c7', font: { color: '#fff' } },
+        data:         { background: '#f59e0b', border: '#d97706', font: { color: '#fff' } },
+        infrastructure: { background: '#10b981', border: '#059669', font: { color: '#fff' } },
+        config:       { background: '#8b5cf6', border: '#7c3aed', font: { color: '#fff' } },
+        unclassified: { background: '#94a3b8', border: '#64748b', font: { color: '#fff' } },
+        unknown:      { background: '#94a3b8', border: '#64748b', font: { color: '#fff' } }
+      };
+
+      var nodes = new vis.DataSet(codeGraphData.nodes.map(function(n) {
+        return {
+          id: n.id,
+          label: n.label.split('/').pop() || n.label,
+          title: '<b>' + n.label + '</b><br>' + (n.summary || 'No summary') + '<br>Layer: ' + n.layer + '<br>Complexity: ' + n.complexity + '<br>Tags: ' + ((n.tags || []).join(', ') || 'none'),
+          group: n.layer || 'unknown',
+          color: layerColors[n.layer] || layerColors.unknown,
+          font: { size: 12, face: 'Inter' },
+          shape: 'dot',
+          size: n.complexity === 'high' ? 20 : n.complexity === 'medium' ? 14 : 10,
+          _meta: n
+        };
+      }));
+
+      var edges = new vis.DataSet(codeGraphData.edges.map(function(e, i) {
+        return {
+          id: 'cg-edge-' + i,
+          from: e.from,
+          to: e.to,
+          label: e.type || '',
+          arrows: 'to',
+          color: { color: 'rgba(100,116,139,0.3)', highlight: 'var(--primary)' },
+          font: { size: 9, color: '#94a3b8', face: 'Inter' },
+          smooth: { type: 'cubicBezier', forceDirection: 'horizontal', roundness: 0.4 }
+        };
+      }));
+
+      var container = document.getElementById('code-graph-canvas');
+      var options = {
+        physics: {
+          stabilization: { enabled: true, iterations: 200, fit: true },
+          barnesHut: { gravitationalConstant: -3000, centralGravity: 0.1, springLength: 150 }
+        },
+        interaction: { hover: true, tooltipDelay: 200, zoomView: true, dragView: true },
+        layout: { improvedLayout: true }
+      };
+
+      var network = new vis.Network(container, { nodes: nodes, edges: edges }, options);
+      window.codeGraphNetwork = network;
+
+      // Disable physics after stabilization to prevent thread lock
+      network.once('stabilizationIterationsDone', function() {
+        network.setOptions({ physics: { enabled: false } });
+      });
+
+      // Node click handler
+      network.on('click', function(params) {
+        var detailsEl = document.getElementById('code-graph-details');
+        if (params.nodes.length > 0) {
+          var nodeId = params.nodes[0];
+          var node = nodes.get(nodeId);
+          if (node && node._meta) {
+            var m = node._meta;
+            detailsEl.innerHTML =
+              '<h3 style="margin-bottom:8px;font-size:15px;color:var(--text-color);word-break:break-all;">' + (m.label || m.id) + '</h3>' +
+              '<p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">' + (m.summary || 'No semantic analysis available.') + '</p>' +
+              '<div class="code-graph-stat"><span class="label">Layer</span><span class="value">' + (m.layer || 'unknown') + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Complexity</span><span class="value">' + (m.complexity || 'unknown') + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Tags</span><span class="value">' + ((m.tags || []).join(', ') || 'none') + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Group</span><span class="value">' + (m.group || 'file') + '</span></div>';
+          }
+        } else {
+          detailsEl.innerHTML = '<h3 style="color:var(--text-muted);font-size:14px;">Click a node to inspect</h3>';
+        }
+      });
+
+      // Search
+      var searchInput = document.getElementById('code-graph-search');
+      searchInput.addEventListener('input', function() {
+        var query = searchInput.value.toLowerCase().trim();
+        if (!query) {
+          nodes.forEach(function(n) { nodes.update({ id: n.id, opacity: 1 }); });
+          return;
+        }
+        nodes.forEach(function(n) {
+          var m = n._meta;
+          var match = (m.label || '').toLowerCase().indexOf(query) !== -1 || (m.tags || []).some(function(t) { return t.toLowerCase().indexOf(query) !== -1; });
+          nodes.update({ id: n.id, opacity: match ? 1 : 0.15 });
+        });
+      });
+
+      // Layer filter buttons
+      var filterContainer = document.getElementById('code-graph-filters');
+      var layerSet = {};
+      codeGraphData.nodes.forEach(function(n) { layerSet[n.layer || 'unknown'] = true; });
+      var layers = Object.keys(layerSet);
+      layers.forEach(function(layer) {
+        var btn = document.createElement('button');
+        btn.className = 'code-graph-filter-btn';
+        btn.textContent = layer;
+        btn.style.borderLeftColor = (layerColors[layer] || layerColors.unknown).background;
+        btn.style.borderLeftWidth = '3px';
+        btn.addEventListener('click', function() {
+          btn.classList.toggle('active');
+          var activeFilters = Array.from(filterContainer.querySelectorAll('.active')).map(function(b) { return b.textContent; });
+          if (activeFilters.length === 0) {
+            nodes.forEach(function(n) { nodes.update({ id: n.id, hidden: false }); });
+          } else {
+            nodes.forEach(function(n) {
+              var nodeLayer = n._meta.layer || 'unknown';
+              nodes.update({ id: n.id, hidden: activeFilters.indexOf(nodeLayer) === -1 });
+            });
+          }
+        });
+        filterContainer.appendChild(btn);
+      });
+
+      // Stats
+      var statsEl = document.getElementById('code-graph-stats');
+      var meta = codeGraphData.metadata || {};
+      statsEl.innerHTML =
+        '<div class="code-graph-stat"><span class="label">Nodes</span><span class="value">' + (meta.nodeCount || codeGraphData.nodes.length) + '</span></div>' +
+        '<div class="code-graph-stat"><span class="label">Edges</span><span class="value">' + (meta.edgeCount || codeGraphData.edges.length) + '</span></div>' +
+        '<div class="code-graph-stat"><span class="label">Adapter</span><span class="value">' + (meta.adapterUsed || 'unknown') + '</span></div>' +
+        '<div class="code-graph-stat"><span class="label">Generated</span><span class="value">' + (meta.generatedAt ? new Date(meta.generatedAt).toLocaleDateString() : 'N/A') + '</span></div>';
+    })();
   </script>
 </body>
 </html>

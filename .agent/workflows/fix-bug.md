@@ -42,7 +42,7 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 2. **Classification:**
    - Bug thuộc **Epic** nào? → ghi epic ID
    - Bug thuộc **Story** nào? → ghi story ID (tra cứu trong `_iwish-output/stories/`)
-   - Bug thuộc loại: `UI` | `Logic` | `Data` | `API` | `State` | `Integration` | `Performance` | `Security`
+   - Bug thuộc loại: `UI` | `Logic` | `Data` | `API` | `State` | `Integration` | `Performance` | `Security` | `SystemDesignBug` (ví dụ: quá tải CPU, nghẽn database, chậm kết nối, rò rỉ bộ nhớ, hoặc phản hồi chậm dưới tải cao)
 
 3. **FMEA Score:**
    - **Severity (S):** 1=Cosmetic, 2=Minor, 3=Moderate, 4=Major, 5=Critical
@@ -170,6 +170,14 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
    Why #5 (Systemic): Tại sao process cho phép điều này xảy ra?
    → [Systemic issue: thiếu workflow? thiếu skill? thiếu guard?]
    ```
+
+9c. **⚙️ System Design Root Cause Analysis (BẮT BUỘC cho `SystemDesignBug`):**
+    - Nếu bug phân loại là `SystemDesignBug`, thực hiện phân tích kiến trúc chuyên sâu:
+      - *Nghẽn cổ chai DB:* Có query nào chạy chậm do thiếu index hoặc quét toàn bộ bảng không? Có bị deadlock hay cạn connection pool không?
+      - *Caching/CDN:* Dữ liệu lặp lại có bị cache miss liên tục không? Có hiện tượng cache stampede không?
+      - *Rate Limiting / Idempotency:* Có thiếu giới hạn tốc độ hoặc khóa giao dịch trùng lặp không?
+      - *Asynchronous / Queue:* Hàng đợi có bị nghẽn (backpressure) hoặc mất thông điệp không?
+    - **Tối ưu hóa (AC3):** Nếu là bug logic hoặc UI đơn giản (không phải `SystemDesignBug`), BẮT BUỘC bỏ qua bước này để tối ưu hóa tokens.
 
 9b. **🔍 CGC Call-Chain Trace (nếu CGC MCP server đang chạy):**
     - Dùng `find_call_chain` để trace từ buggy symbol (tìm root cause sâu hơn):

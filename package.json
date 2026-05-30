@@ -44,7 +44,10 @@
     "guard:magic": "node .agent/scripts/magic-hunter.js",
     "guard:leak": "node .agent/scripts/context-leak-detector.js",
     "guard:registry": "node .agent/scripts/check-registry.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -80,7 +83,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.7"
   },
   "engines": {
     "node": ">=18"

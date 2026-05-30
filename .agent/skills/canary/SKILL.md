@@ -25,6 +25,7 @@ Before any code leaves the development branch, verify:
 | **Dependency Audit** | No new critical/high CVEs introduced | 🔴 YES |
 | **Bundle Size** | No increase > 5% without justification | 🟡 WARN |
 | **Feature Flags** | New features behind feature flags if applicable | 🟡 WARN |
+| **Resiliency Check** | All external integrations use Circuit Breakers and retries, APIs have Rate Limiting | 🔴 YES |
 
 ### Phase 2: Staging Deploy
 
