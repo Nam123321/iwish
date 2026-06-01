@@ -120,20 +120,40 @@ function readFrontmatterValue(content, key) {
     const value = frontmatter[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
     return value ? value[1].trim() : null;
 }
-function repairMissingAgentDescription(destinationContent, sourceContent) {
-    if (!destinationContent.startsWith('---\n') || readFrontmatterValue(destinationContent, 'description')) {
+function migrateAgentFrontmatter(destinationContent, sourceContent) {
+    const destMatch = destinationContent.match(/^---\n([\s\S]*?)\n---/);
+    const srcMatch = sourceContent.match(/^---\n([\s\S]*?)\n---/);
+    if (!destMatch || !srcMatch) {
         return null;
     }
-    const description = readFrontmatterValue(sourceContent, 'description');
-    if (!description) {
+    try {
+        const destYaml = yaml_1.default.parse(destMatch[1]) || {};
+        const srcYaml = yaml_1.default.parse(srcMatch[1]) || {};
+        let modified = false;
+        // Migrate description if missing
+        if (destYaml.description === undefined && srcYaml.description !== undefined) {
+            destYaml.description = srcYaml.description;
+            modified = true;
+        }
+        // Migrate required array fields if missing
+        const requiredArrays = ['inputs', 'outputs', 'mcp_tools_required', 'subagent_triggers'];
+        for (const field of requiredArrays) {
+            if (destYaml[field] === undefined && srcYaml[field] !== undefined) {
+                destYaml[field] = srcYaml[field];
+                modified = true;
+            }
+        }
+        if (modified) {
+            const updatedFrontmatter = yaml_1.default.stringify(destYaml).trim();
+            const bodyText = destinationContent.substring(destMatch[0].length);
+            return `---\n${updatedFrontmatter}\n---${bodyText}`;
+        }
+    }
+    catch (error) {
+        // Fail-safe: if YAML parsing fails, return null to avoid breaking the install process
         return null;
     }
-    const nameLine = destinationContent.match(/^name:\s*.+$/m);
-    if (!nameLine || nameLine.index === undefined) {
-        return null;
-    }
-    const insertAt = nameLine.index + nameLine[0].length;
-    return `${destinationContent.slice(0, insertAt)}\ndescription: ${description}${destinationContent.slice(insertAt)}`;
+    return null;
 }
 function getPlanningArtifactsRoot(projectRoot) {
     return path.join(projectRoot, '_bmad-output', 'planning');
@@ -235,7 +255,7 @@ async function materializeAgentAssets(projectRoot, overwrite = false) {
         else if (relative.startsWith('agents/') && relative.endsWith('.md')) {
             const destinationContent = await fs.readFile(destination, 'utf8');
             const sourceContent = content.toString('utf8');
-            const repairedContent = repairMissingAgentDescription(destinationContent, sourceContent);
+            const repairedContent = migrateAgentFrontmatter(destinationContent, sourceContent);
             if (repairedContent) {
                 await fs.writeFile(destination, repairedContent, 'utf8');
                 status = 'updated';
