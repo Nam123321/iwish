@@ -4,7 +4,7 @@ description: 'Explore domain-specific requirements for complex domains (optional
 
 # File References
 nextStepFile: './step-06-innovation.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 domainComplexityCSV: '../data/domain-complexity.csv'
 
 # Task References

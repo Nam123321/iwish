@@ -4,7 +4,7 @@ description: 'Optimize and polish the complete PRD document for flow, coherence,
 
 # File References
 nextStepFile: './step-12-complete.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 purposeFile: '../data/prd-purpose.md'
 
 # Task References

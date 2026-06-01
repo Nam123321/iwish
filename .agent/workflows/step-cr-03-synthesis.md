@@ -27,7 +27,7 @@ Ensure proper citation formatting for all web sources.
 ### 2. Save Final Document
 
 Save the completed file to:
-`{planning_artifacts}/research/competitor-{{competitor_name}}-research-{{date}}.md`
+`{planning_artifacts}/1. Idea Discovery/1.4. research/competitor-research.md`
 
 ### 3. Sync Navigator
 
@@ -39,7 +39,7 @@ Run the synchronization script to ensure the new competitor research is indexed:
 Report back to the user:
 "I have successfully synthesized and saved the **Competitor Research Report** for **{{competitor_name}}**!
 
-- **Output File**: `[competitor-{{competitor_name}}-research-{{date}}.md](file:///{{planning_artifacts}}/research/competitor-{{competitor_name}}-research-{{date}}.md)`
+- **Output File**: `[competitor-research.md](file:///{{planning_artifacts}}/1.%20Idea%20Discovery/1.4.%20research/competitor-research.md)`
 - **Navigator Sync**: Executed `navigator-guardian.sh` successfully.
 
 **Key Actionable Takeaways:**

@@ -3,7 +3,7 @@ name: 'step-12-complete'
 description: 'Complete the PRD workflow, update status files, and suggest next steps including validation'
 
 # File References
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 validationFlow: './step-v-01-discovery.md'
 ---
 

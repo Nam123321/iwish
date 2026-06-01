@@ -6,8 +6,27 @@
 
 ## 1. Cấu trúc Thư mục Chuẩn (Standard Directory Tree)
 
-Tất cả các tài liệu lập kế hoạch, nghiên cứu và báo cáo sẽ được lưu trữ dưới thư mục đầu ra của dự án (mặc định là `_iwish-output/` hoặc `docs/planning/` tùy cấu hình dự án) theo cấu trúc phân lớp sau:
+Tất cả các tài liệu lập kế hoạch, nghiên cứu và báo cáo sẽ được lưu trữ dưới thư mục đầu ra của dự án (mặc định là `_iwish-output/` hoặc `docs/planning/` tùy cấu hình dự án) theo cấu trúc phân lớp dưới đây.
 
+> [!IMPORTANT]
+> **CẢNH BÁO QUAN TRỌNG VỀ SỰ KHÁC BIỆT GIỮA PHASE VÀ FOLDER NUMBER:**
+> Cấm tuyệt đối các Agent tự ý dịch "Phase X" thành thư mục `X. ...`.
+> Ví dụ:
+> - Khi thực hiện **Phase 2 (Research)**, các tài liệu nghiên cứu bắt buộc phải lưu trong thư mục `1. Idea Discovery/1.4. research/` chứ **KHÔNG** được tạo thư mục `2. Research` hay `2. Domain & Technical Research`.
+> - Khi thực hiện **Phase 3 (Product Planning)**, các tài liệu bắt buộc phải lưu trong thư mục `2. Product Planning/` chứ **KHÔNG** được tạo thư mục `3. Product Requirements` hay `3. Product Planning`.
+> 
+> Bảng ánh xạ chuẩn bắt buộc phải tuân theo:
+> 
+> | Giai đoạn quy trình (Phase) | Thư mục lưu trữ chuẩn trên đĩa | Lệnh slash command tương ứng | Outputs chính |
+| :--- | :--- | :--- | :--- |
+| **Phase 1: Idea Discovery** | `_iwish-output/1. Idea Discovery/` | `/idea-discover`, `/brainstorm`, `/idea-challenge` | `1.1. idea-discovery.md`, `1.2. idea-bank.md`, `1.3. idea-challenge.md` |
+| **Phase 2: Research** | `_iwish-output/1. Idea Discovery/1.4. research/` | `/research` (market, competitor, domain, tech) | các file nghiên cứu `competitor-research.md`..., `project-context.md` |
+| **Phase 3: Product Planning** | `_iwish-output/2. Product Planning/` | `/plan`, `/make-ui-spec` (UX Design) | `2.1. product-brief-or-prd.md`, `2.2. database-spec.md`, `2.3. ui-ux-spec.md`, `2.4. epics-and-stories.md`, master `DESIGN.md` |
+| **Phase 4: Development** | `_iwish-output/3. Development/` | `/make-story`, `/make-ui-spec` (Story), `/make-data-spec`, `/code` | Cấu trúc cây `1. Epic & Story/...`, `2. Bug Report/...`, `sprint-status.yaml`, `PER-[name].md` |
+| **Phase 5: Verification & Release** | `_iwish-output/4. Verification & Release/` | `/review`, `/canary`, `/retro` | `4.1. walkthrough.md`, `4.2. merge-report.json`, `4.3. retrospective.md` |
+> 
+> Sơ đồ cây thư mục chi tiết:
+> 
 ```text
 _iwish-output/
 ├── 1. Idea Discovery/

@@ -5,6 +5,7 @@ You are developing the **I-Wish framework** which will be published as an open-s
 ### 🚨 Critical Guideline: Strict Directory Isolation
 To keep the public framework clean and independent:
 1. **Core Framework Code** (Public): All source code, templates, official docs, and runtime workflows go to `src/`, `dist/`, `.agent/workflows/`, `templates/`, and `docs/`.
-2. **Internal SDLC Artifacts** (Private/Gitignored): All internal PRDs, epics, stories, task checklists, and debug run outputs must go to `_iwish-output/` or `_iwish-output/`. Never place them in the root directory or in `src/`.
+2. **Internal SDLC Artifacts** (Private/Gitignored): All internal PRDs, epics, stories, task checklists, and debug run outputs must go to `_iwish-output/` according to the standard folders. Never place them in the root directory or in `src/`.
+3. **Phase-to-Folder Mapping**: Strictly adhere to the mapping table in project-context.md. Never create ad-hoc folder names like "2. Domain & Technical Research" or "3. Product Requirements" when executing Phases. Write files exactly into the mapped paths.
 
 Always read [project-context.md](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/project-context.md) for full context, structure guidelines, and specific agent instructions before writing any code.

@@ -8,7 +8,7 @@ workflow_path: '{project-root}/.agent/workflows'
 # File References
 thisStepFile: './step-04-final-validation.md'
 workflowFile: '{workflow_path}/workflow.md'
-outputFile: '{planning_artifacts}/epics.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

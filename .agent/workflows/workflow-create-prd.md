@@ -3,7 +3,7 @@ legacy_name: create-prd-legacy
 description: Create a comprehensive PRD (Product Requirements Document) through
   structured workflow facilitation
 main_config: "{project-root}/_iwish/bmm/config.yaml"
-nextStep: ./step-01-init.md
+nextStep: ./step-03-success.md
 ---
 
 # PRD Create Workflow
@@ -61,4 +61,4 @@ Load and read full config from {main_config} and resolve:
 
 "**Create Mode: Creating a new PRD from scratch.**"
 
-Read fully and follow: `{nextStep}` (./step-01-init.md)
+Read fully and follow: `{nextStep}` (./step-03-success.md)

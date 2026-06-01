@@ -8,7 +8,7 @@ workflow_path: '{project-root}/.agent/workflows'
 # File References
 thisStepFile: './step-04b-data-and-test-spec.md'
 nextStepFile: './step-05-epic-quality-review.md'
-outputFile: '{planning_artifacts}/epics.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 
 # Agent References
 kiraAgent: '{project-root}/.agent/agents/data-architect-agent.md'

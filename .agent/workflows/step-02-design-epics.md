@@ -9,7 +9,7 @@ workflow_path: '{project-root}/.agent/workflows'
 thisStepFile: './step-02-design-epics.md'
 nextStepFile: './step-03-create-stories.md'
 workflowFile: '{workflow_path}/workflow.md'
-outputFile: '{planning_artifacts}/epics.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

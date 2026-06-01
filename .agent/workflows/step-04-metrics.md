@@ -4,7 +4,7 @@ description: 'Define comprehensive success metrics that include user success, bu
 
 # File References
 nextStepFile: './step-05-scope.md'
-outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

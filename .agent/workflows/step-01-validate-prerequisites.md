@@ -9,7 +9,7 @@ workflow_path: '{project-root}/.agent/workflows'
 thisStepFile: './step-01-validate-prerequisites.md'
 nextStepFile: './step-02-design-epics.md'
 workflowFile: '{workflow_path}/workflow.md'
-outputFile: '{planning_artifacts}/epics.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 epicsTemplate: '{workflow_path}/templates/epics-template.md'
 
 # Task References

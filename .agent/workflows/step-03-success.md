@@ -4,7 +4,7 @@ description: 'Define comprehensive success criteria covering user, business, and
 
 # File References
 nextStepFile: './step-04-journeys.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

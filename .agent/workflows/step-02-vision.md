@@ -4,7 +4,7 @@ description: 'Discover and define the core product vision, problem statement, an
 
 # File References
 nextStepFile: './step-03-users.md'
-outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

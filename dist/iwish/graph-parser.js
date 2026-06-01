@@ -244,8 +244,32 @@ function extractIdeaToPrdData(projectRoot) {
         }
         catch (e) { }
     }
+    // 0. Idea Discovery
+    const discoverCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.1. idea-discovery.md'),
+        path.join(projectRoot, 'docs', 'idea-discovery.md')
+    ];
+    let discoverPath = discoverCandidates.find(p => fs.existsSync(p)) || null;
+    const discoverInfo = discoverPath
+        ? parseMarkdownFile(discoverPath, ['Làm rõ ý tưởng thô ban đầu', 'Mom Test & JTBD validation', 'Xác định bối cảnh và nỗi đau người dùng'])
+        : { title: 'Làm rõ Ý tưởng (Idea Discovery)', summary: ['Sử dụng bộ khung 5 thấu kính để phỏng vấn khách hàng.', 'Áp dụng Mom Test & JTBD loại bỏ các giả định mơ hồ.', 'Thiết lập tiền đề và nỗi đau cốt lõi trước khi brainstorm.'], extra: {} };
+    slides.push({
+        id: 'idea-discover',
+        title: discoverInfo.title,
+        phase: 'Phase 1: Concept & Grounding',
+        path: discoverPath ? path.relative(projectRoot, discoverPath) : null,
+        exists: discoverPath !== null,
+        summary: discoverInfo.summary,
+        causality: 'Xác định chính xác nỗi đau và đối tượng mục tiêu, làm gốc rễ cho toàn bộ các bước tiếp theo.',
+        inputs: ['Ý tưởng thô ban đầu / Đề xuất thô từ người dùng'],
+        outputs: ['Tài liệu idea-discovery.md (Mom Test & JTBD)'],
+        visualType: 'mindmap',
+        status: discoverPath ? 'completed' : 'pending',
+        extra: discoverInfo.extra
+    });
     // 1. Brainstorming
     const brainstormCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.2. idea-bank.md'),
         path.join(projectRoot, 'docs', 'brainstorm.md'),
         path.join(projectRoot, 'docs', 'brainstorming.md')
     ];
@@ -268,8 +292,12 @@ function extractIdeaToPrdData(projectRoot) {
         extra: brainstormInfo.extra
     });
     // 2. Idea Challenge
-    const challengePath = ideaChallengeDistillatePath || path.join(projectRoot, 'docs', 'idea-challenge.md');
-    const challengeExists = fs.existsSync(challengePath);
+    const challengeCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.3. idea-challenge.md'),
+        path.join(projectRoot, 'docs', 'idea-challenge.md')
+    ];
+    const challengePath = ideaChallengeDistillatePath || challengeCandidates.find(p => fs.existsSync(p)) || null;
+    const challengeExists = challengePath !== null && fs.existsSync(challengePath);
     const challengeInfo = challengeExists
         ? parseMarkdownFile(challengePath, ['Working Backwards distillate', 'Thông cáo báo chí (Press Release)', 'Câu hỏi thường gặp từ khách hàng (Customer FAQ)'])
         : { title: 'Working Backwards (Idea Challenge)', summary: ['Thách thức ý tưởng bằng phương pháp Working Backwards của Amazon.', 'Tập trung viết Press Release và Customer FAQ giả tưởng để thấu hiểu khách hàng.', 'Lọc ra các giá trị cốt lõi và bỏ qua các tính năng không thiết thực.'], extra: {} };
@@ -288,8 +316,12 @@ function extractIdeaToPrdData(projectRoot) {
         extra: challengeInfo.extra
     });
     // 3. Moat Challenge
-    const moatFile = bizStackPath || path.join(projectRoot, 'docs', 'biz-stack.md');
-    const moatExists = fs.existsSync(moatFile);
+    const moatCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.3. idea-challenge.md'),
+        path.join(projectRoot, 'docs', 'biz-stack.md')
+    ];
+    const moatFile = bizStackPath || moatCandidates.find(p => fs.existsSync(p)) || null;
+    const moatExists = moatFile !== null && fs.existsSync(moatFile);
     const moatInfo = moatExists
         ? parseMarkdownFile(moatFile, ['Core advantage source', 'Business model evaluation', 'Pricing logic & locking factors'])
         : { title: 'Moat Challenge & Lợi thế Cạnh tranh', summary: ['Đánh giá các rào cản phòng thủ kinh doanh (Economic Moats) của sản phẩm.', 'Định hình mô hình kinh doanh (Business Model) và logic định giá.', 'Phân tích các yếu tố khóa chân khách hàng (Lock-in) và rủi ro xói mòn lợi thế.'], extra: {} };
@@ -309,6 +341,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 4a. Market Research
     const marketCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'market-research.md'),
         path.join(projectRoot, 'docs', 'market-research.md'),
         path.join(projectRoot, 'docs', 'market_research.md'),
         path.join(projectRoot, 'market-research.md')
@@ -332,12 +365,12 @@ function extractIdeaToPrdData(projectRoot) {
         extra: marketInfo.extra
     });
     // 4b. Competitor Research
-    let competitorPath = null;
     const competitorCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'competitor-research.md'),
         path.join(projectRoot, 'docs', 'competitor-research.md'),
         path.join(projectRoot, 'docs', 'competitor_research.md')
     ];
-    competitorPath = competitorCandidates.find(p => fs.existsSync(p)) || null;
+    let competitorPath = competitorCandidates.find(p => fs.existsSync(p)) || null;
     if (!competitorPath) {
         try {
             const docsDir = path.join(projectRoot, 'docs');
@@ -368,6 +401,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 4c. Domain Research
     const domainCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'domain-research.md'),
         path.join(projectRoot, 'docs', 'domain-research.md'),
         path.join(projectRoot, 'docs', 'domain_research.md'),
         path.join(projectRoot, 'domain-research.md')
@@ -392,6 +426,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 4d. Technical Research
     const techCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'technical-research.md'),
         path.join(projectRoot, 'docs', 'technical-research.md'),
         path.join(projectRoot, 'docs', 'technical_research.md'),
         path.join(projectRoot, 'docs', 'research_notes.md'),
@@ -429,6 +464,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 5. Project Context
     const contextCandidates = [
+        path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'project-context.md'),
         path.join(projectRoot, 'project-context.md'),
         path.join(projectRoot, '.agent', 'project-context.md')
     ];
@@ -452,6 +488,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 6. PRD
     const prdCandidates = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.1. product-brief-or-prd.md'),
         path.join(projectRoot, 'docs', 'PRD.md'),
         path.join(projectRoot, 'docs', 'prd.md'),
         path.join(projectRoot, 'PRD.md')
@@ -488,6 +525,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 7. UX Design
     const uxCandidates = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.3. ui-ux-spec.md'),
         path.join(projectRoot, 'docs', 'ux_spec.md'),
         path.join(projectRoot, 'docs', 'design.md'),
         path.join(projectRoot, 'docs', 'ui-ux-integration', 'implementation-plan.md')
@@ -512,6 +550,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 8. Architecture
     const archCandidates = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.2. database-spec.md'),
         path.join(projectRoot, 'docs', 'architecture.md'),
         path.join(projectRoot, 'docs', 'decisions', 'ADR-001-data-workflow-architecture.md')
     ];
@@ -546,6 +585,7 @@ function extractIdeaToPrdData(projectRoot) {
     });
     // 9. Epics & Stories
     const epicsCandidates = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
         path.join(projectRoot, 'docs', 'epics_list.md'),
         path.join(projectRoot, '_iwish-output', 'epics.md'),
         path.join(projectRoot, 'docs', 'ui-ux-integration', 'epics.md')

@@ -4,7 +4,7 @@ description: 'Conduct project-type specific discovery using CSV-driven guidance'
 
 # File References
 nextStepFile: './step-08-scoping.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Data Files
 projectTypesCSV: './project-types.csv'

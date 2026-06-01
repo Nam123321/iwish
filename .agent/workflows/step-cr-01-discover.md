@@ -39,7 +39,7 @@ Once the user provides the competitor target:
 - Set `competitor_name = [discovered competitor name]`
 - Set `research_scope = "quick"` or `"deep"`
 - Set `target_market = [discovered target market]`
-- Create the starter output file: `{planning_artifacts}/research/competitor-{{competitor_name}}-research-{{date}}.md` using `.agent/workflows/competitor-research.template.md` as the template.
+- Create the starter output file: `{planning_artifacts}/1. Idea Discovery/1.4. research/competitor-research.md` using `.agent/workflows/competitor-research.template.md` as the template.
 - Update frontmatter `stepsCompleted: [1]`
 
 ### 3. Complete and Transition
