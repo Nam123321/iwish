@@ -68,6 +68,7 @@ function getTargetAgent(canonicalCommand) {
         case '/make-ui-spec':
             return 'ux-agent';
         case '/research':
+        case '/idea-discover':
             return 'research-agent';
         case '/pivot-project':
             return 'orch-agent';
@@ -113,6 +114,15 @@ function detectCommand(normalizedRequest) {
             legacyAliasMatched: null,
             targetAgent: 'orch-agent',
             routeReason: 'Existing-project or brownfield bootstrap intent detected',
+        };
+    }
+    if (/\b(idea-discover|idea discover|discover idea|mom test|jtbd|start idea|new idea)\b/.test(normalizedRequest) ||
+        /phỏng vấn ý tưởng|làm rõ ý tưởng|khám phá ý tưởng/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/idea-discover',
+            legacyAliasMatched: null,
+            targetAgent: 'research-agent',
+            routeReason: 'Initial idea discovery or elicitation intent detected',
         };
     }
     if (/\b(prfaq|working backwards|working-backwards|press release first|customer faq|internal faq|idea challenge|stress-test (this )?idea|validate (this )?(idea|concept)|product concept)\b/.test(normalizedRequest) ||

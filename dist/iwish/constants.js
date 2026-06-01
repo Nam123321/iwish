@@ -150,6 +150,7 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/iwish-code-graph': '/code-graph',
     '/per': '/project-expansion-review',
     '/feature-expansion-review': '/project-expansion-review',
+    '/idea-discovery': '/idea-discover',
 };
 function getCanonicalHome() {
     return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');

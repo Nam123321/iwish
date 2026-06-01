@@ -48,4 +48,5 @@ commands:
   /quick-spec: /make-story
   /per: /project-expansion-review
   /feature-expansion-review: /project-expansion-review
+  /idea-discovery: /idea-discover
 

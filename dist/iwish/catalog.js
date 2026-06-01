@@ -48,6 +48,7 @@ const inventory_1 = require("./inventory");
 const routing_profile_1 = require("./routing-profile");
 const CANONICAL_COMMANDS = [
     { command: '/code', description: 'Implementation, bugfix, patch, and code change flow', tags: ['command', 'dev'] },
+    { command: '/idea-discover', description: 'Discover-phase idea elicitation via the 5 Lenses framework', tags: ['command', 'discover', 'strategy', 'idea'] },
     { command: '/idea-challenge', description: 'Discover-phase concept challenge and Working Backwards flow', tags: ['command', 'discover', 'strategy', 'idea'] },
     { command: '/plan', description: 'Product planning, PRD, roadmap, and strategy flow', tags: ['command', 'planning', 'product'] },
     { command: '/make-story', description: 'Story and spec creation flow', tags: ['command', 'planning'] },

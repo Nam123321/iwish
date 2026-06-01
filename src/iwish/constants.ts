@@ -127,6 +127,7 @@ export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
   '/iwish-code-graph': '/code-graph',
   '/per': '/project-expansion-review',
   '/feature-expansion-review': '/project-expansion-review',
+  '/idea-discovery': '/idea-discover',
 };
 
 export function getCanonicalHome(): string {

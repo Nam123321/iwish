@@ -1039,5 +1039,16 @@ nodes:
   - feature-expansion
   depends_on:
   - fragment-project-expansion-review
+- id: workflow-idea-discover
+  type: workflow
+  path: /.agent/workflows/idea-discover.md
+  description: Làm rõ ý tưởng thô ban đầu sử dụng bộ khung 5 Lăng Kính (Mom Test & JTBD) để xác định bối cảnh và nỗi đau người dùng trước khi brainstorm.
+  tags:
+  - discover
+  - idea
+  - framework
+  - product-discovery
+  depends_on:
+  - fragment-idea-discovery-framework
 
 
