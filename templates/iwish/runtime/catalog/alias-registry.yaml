@@ -46,3 +46,6 @@ commands:
   /qa-automate: /review
   /quick-dev: /code
   /quick-spec: /make-story
+  /per: /project-expansion-review
+  /feature-expansion-review: /project-expansion-review
+

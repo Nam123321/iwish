@@ -76,6 +76,7 @@ function getTargetAgent(canonicalCommand: string): string {
     case '/idea-challenge':
       return 'pm-agent';
     case '/plan':
+    case '/project-expansion-review':
       return 'pm-agent';
     case '/review':
       return 'review-agent';
@@ -152,6 +153,18 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
       legacyAliasMatched: null,
       targetAgent: /\b(pivot|re-route|reroute|scope drift|mid sprint|mid-sprint)\b/.test(normalizedRequest) ? 'orch-agent' : 'pm-agent',
       routeReason: 'Strategic advantage or business differentiation intent detected',
+    };
+  }
+
+  if (
+    /\b(project expansion|feature expansion|expansion review|evaluate expansion|project-expansion-review|per review)\b/.test(normalizedRequest) ||
+    /đánh giá mở rộng|đánh giá tác động mở rộng|review mở rộng/.test(normalizedRequest)
+  ) {
+    return {
+      canonicalCommand: '/project-expansion-review',
+      legacyAliasMatched: null,
+      targetAgent: 'pm-agent',
+      routeReason: 'Project expansion or impact evaluation intent detected',
     };
   }
 

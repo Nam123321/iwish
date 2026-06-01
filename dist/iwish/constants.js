@@ -148,6 +148,8 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/document-project': '/bootstrap-existing-project',
     '/generate-project-context': '/bootstrap-existing-project',
     '/iwish-code-graph': '/code-graph',
+    '/per': '/project-expansion-review',
+    '/feature-expansion-review': '/project-expansion-review',
 };
 function getCanonicalHome() {
     return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');

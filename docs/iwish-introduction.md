@@ -510,6 +510,7 @@ Ví dụ:
 - `/review`
 - `/research`
 - `/pivot-project`
+- `/project-expansion-review`
 - `/bootstrap-existing-project`
 - `/retro`
 - `/status`

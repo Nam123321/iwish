@@ -1027,4 +1027,17 @@ nodes:
   - guide
   - navigator
   depends_on: []
+- id: workflow-project-expansion-review
+  type: workflow
+  path: /.agent/workflows/project-expansion-review.md
+  description: Analyze the impact of a new feature or project expansion during development, classify pivot risks, and route back to correct planning/discovery funnel.
+  tags:
+  - planning
+  - per
+  - pivot
+  - scope
+  - feature-expansion
+  depends_on:
+  - fragment-project-expansion-review
+
 
