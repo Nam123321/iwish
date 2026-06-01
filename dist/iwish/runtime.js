@@ -393,9 +393,6 @@ async function installRuntime(projectRoot, installTargets, mode) {
     const keptAgentAssets = agentAssetResults.filter((entry) => entry.status === 'kept').length;
     const updatedAgentAssets = agentAssetResults.filter((entry) => entry.status === 'updated').length;
     console.log(chalk_1.default.blue(`Agent assets: ${createdAgentAssets} created, ${updatedAgentAssets} updated, ${keptAgentAssets} preserved`));
-    if (manifest.legacyRuntimeDetected) {
-        console.log(chalk_1.default.yellow('Legacy _bmad runtime detected. Compatibility shim is active.'));
-    }
 }
 function getStatus(projectRoot) {
     const manifest = loadExistingManifest(projectRoot);
