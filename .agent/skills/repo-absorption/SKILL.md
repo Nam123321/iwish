@@ -15,6 +15,7 @@ Use this skill when you need to deeply understand, analyze, and map a cloned rep
 1. The target repository MUST have been successfully vetted by the `security-guardian` skill.
 2. The repository MUST be cloned into the sandbox: `${IWISH_HOME}/sandbox/{repo-name}/`.
 3. Runtime output directories MUST exist under `${IWISH_HOME:-~/.iwish}`. Reports go to `${IWISH_HOME}/absorbed-repos/{repo-name}/`; generated capability drafts go to `${IWISH_HOME}/generated-*`.
+4. For Phase 1 `.repomixignore` setup and Phase 3 file traversal, reference `@.agent/fragments/scout-rules.md` for the canonical exclusion patterns.
 
 ---
 

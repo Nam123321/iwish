@@ -147,7 +147,7 @@
     <action>Use enhanced story context to inform implementation decisions and approaches</action>
 
     <!-- Dual-Track: Load UI spec if available -->
-    <action>Check for UI spec file at {implementation_artifacts}/ui-specs/{{story_key}}-ui-spec.md</action>
+    <action>Check for UI spec file at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ui-ux-spec.md (derive {{epic_id}} from the first digit of {{story_key}}, e.g. story-1.1 -> Epic-1)</action>
     <check if="UI spec file exists">
       <action>Load COMPLETE UI spec file as frontend design context</action>
       <action>Extract: screen inventory, component hierarchy, responsive breakpoints, design tokens, interactions, data contracts</action>
@@ -175,7 +175,7 @@
         
         <check if="UI spec has 'Stitch-to-Dev Handoff' section">
           <action>Load the Stitch-to-Dev Handoff section: Screen Registry, Component-to-Code Mapping, Key Visual Rules, Icon Assignment</action>
-          <action>Check for existing Stitch CSS mapping at {implementation_artifacts}/ui-specs/{{story_key}}-stitch-css-mapping.md</action>
+          <action>Check for existing Stitch CSS mapping at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/stitch-css-mapping.md (derive {{epic_id}} from the first digit of {{story_key}})</action>
           <check if="Stitch CSS mapping file exists">
             <action>Load the CSS mapping file as AUTHORITATIVE visual reference for FE coding</action>
           </check>
@@ -217,7 +217,7 @@
       <output>🚨 **UI SPEC GATE — BLOCKED**
 
         This story has [FE] (frontend) tasks but NO UI Spec was found at:
-        `{implementation_artifacts}/ui-specs/{{story_key}}-ui-spec.md`
+        `{implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ui-ux-spec.md` (derive {{epic_id}} from the first digit of {{story_key}})
 
         **The `create-ui-spec` workflow MUST be run before `dev-story` for stories with frontend tasks.**
         This ensures:
@@ -274,7 +274,7 @@
 
     <!-- 🐉 Songoku AI Context: Load AI spec if story involves AI features -->
     <check if="story involves AI features (check for: prompt templates, LLM calls, RAG pipeline, AI module, Cognee, embeddings in tasks/ACs)">
-      <action>Check for AI spec at {implementation_artifacts}/ai-specs/{{story_key}}-ai-spec.md</action>
+      <action>Check for AI spec at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ai-spec.md (derive {{epic_id}} from the first digit of {{story_key}})</action>
       <check if="AI spec file exists">
         <action>Load COMPLETE AI spec: prompt designs, model selection, cost estimates, eval criteria</action>
         <action>Set {{ai_spec_loaded}} = true</action>

@@ -73,6 +73,8 @@ Canonical user-facing workflows include:
 - `/create-skill`
 - `/enhance-skill`
 - `/fix-bug`
+- `/gen-dashboard`
+- `/idea-discover`
 - `/idea-challenge`
 - `/make-data-spec`
 - `/make-story`

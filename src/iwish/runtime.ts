@@ -25,7 +25,7 @@ import { getReconciliationStatus } from './reconciliation';
 import { generateReviewPack, ReviewPackKind, ReviewPackRole } from './review-pack';
 import { generateRoutingProfile } from './routing-profile';
 import { buildToolSetupPrompts, ToolSetupPrompt } from './tooling';
-import { extractGraphData, extractSprintData, extractAgentTrace, extractIdeaToPrdData, extractCodeGraphData } from './graph-parser';
+import { extractGraphData, extractSprintData, extractAgentTrace, extractIdeaToPrdData, extractCodeGraphData, extractEvolverData } from './graph-parser';
 
 type InstallMode = 'install' | 'update';
 type MaterializeStatus = 'created' | 'kept' | 'updated';
@@ -438,12 +438,14 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
   const agentTrace = extractAgentTrace(projectRoot);
   const ideaToPrdData = extractIdeaToPrdData(projectRoot);
   const codeGraphData = extractCodeGraphData(projectRoot);
+  const evolverData = extractEvolverData(projectRoot);
 
   const finalHtml = templateContent
     .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{IDEA_TO_PRD_DATA_PLACEHOLDER}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('{EVOLVER_DATA_PLACEHOLDER}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
 
   await fs.ensureDir(path.dirname(outputPath));

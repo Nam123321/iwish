@@ -273,6 +273,15 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
     };
   }
 
+  if (/\b(gen-dashboard|gen dashboard|generate dashboard|idea navigator)\b/.test(normalizedRequest)) {
+    return {
+      canonicalCommand: '/gen-dashboard',
+      legacyAliasMatched: null,
+      targetAgent: 'orch-agent',
+      routeReason: 'Dashboard generation intent detected',
+    };
+  }
+
   if (/\b(status|sprint|progress|blocker|blockers|release note|summary|weekly update|report)\b/.test(normalizedRequest)) {
     return {
       canonicalCommand: '/status',

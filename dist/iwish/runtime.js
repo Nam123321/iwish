@@ -336,11 +336,13 @@ async function compileUserGuideDashboard(projectRoot) {
     const agentTrace = (0, graph_parser_1.extractAgentTrace)(projectRoot);
     const ideaToPrdData = (0, graph_parser_1.extractIdeaToPrdData)(projectRoot);
     const codeGraphData = (0, graph_parser_1.extractCodeGraphData)(projectRoot);
+    const evolverData = (0, graph_parser_1.extractEvolverData)(projectRoot);
     const finalHtml = templateContent
         .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{IDEA_TO_PRD_DATA_PLACEHOLDER}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('{EVOLVER_DATA_PLACEHOLDER}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
     await fs.ensureDir(path.dirname(outputPath));
     await fs.writeFile(outputPath, finalHtml, 'utf8');

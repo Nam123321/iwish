@@ -60,6 +60,10 @@ Conduct comprehensive product vision discovery to define the core problem, solut
 
 ### 1. Begin Vision Discovery
 
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> Before asking the user about the vision, you MUST load and read `/.agent/fragments/idea-discovery-framework.md`. You must structure the vision elicitation and customer conversation around its **5 Lenses of Idea Discovery** to ensure rigorous, multi-dimensional clarification.
+
 **Opening Conversation:**
 "As your pm-agent peer, I'm excited to help you shape the vision for {{project_name}}. Let's start with the foundation.
 

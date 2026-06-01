@@ -232,16 +232,21 @@ Ví dụ với design tools:
 
 ### Phase 1: Discover
 
-User đang tìm hiểu vấn đề, thị trường, domain, technical context.
+User đang tìm hiểu và làm rõ ý tưởng, nghiên cứu thị trường, đối thủ, nghiệp vụ và bối cảnh kỹ thuật codebase.
+
+*Luồng bắt buộc:*
+1. **Làm rõ Ý tưởng (`/idea-discover`)**: Đây là bước **tiên quyết** đầu tiên trước khi brainstorm. Agent sử dụng bộ khung 5 Thấu Kính (Mom Test & JTBD) để đặt câu hỏi làm rõ các bối cảnh, rủi ro, nỗi đau của người dùng và loại bỏ các giả định mơ hồ. Output: `1.1. idea-discovery.md`.
+2. **Brainstorming (`/brainstorm`)**: Tìm các hướng giải pháp tiềm năng và MVP scope. Output: `1.2. idea-bank.md`.
+3. **Idea Challenge (`/idea-challenge`)**: Tranh biện và phản biện ý tưởng (PRFAQ stress-test). Output: `1.3. idea-challenge.md`.
+4. **Nghiên cứu bối cảnh (`/research`)**: Quét thị trường (`market-research.md`), đối thủ/giải pháp thay thế (`competitor-research.md`), nghiệp vụ (`domain-research.md`), kỹ thuật (`technical-research.md`), và bối cảnh dự án (`project-context.md`).
 
 Các workflow tiêu biểu:
 
+- `idea-discover`
+- `brainstorm`
+- `idea-challenge`
 - `research`
 - `analyze-codebase`
-- `bmad-brainstorming`
-- `bmad-bmm-market-research`
-- `bmad-bmm-domain-research`
-- `bmad-bmm-technical-research`
 
 Agent tiêu biểu:
 
@@ -269,16 +274,15 @@ Agent tiêu biểu:
 
 ### Phase 3: Solution
 
-User chuyển từ plan sang giải pháp buildable.
+User chuyển từ plan sang giải pháp có thể build được (buildable specifications).
 
 Các workflow tiêu biểu:
 
-- `make-story`
-- `make-ui-spec`
+- `make-story` (tạo `story.md`)
+- `make-ui-spec` (tạo `ui-ux-spec.md` thay vì `ui-spec.md` cũ)
+- `make-data-spec` (tạo `database-spec.md` riêng lẻ cho Story)
 - `bmad-bmm-create-architecture`
 - `bmad-bmm-create-epics-and-stories`
-- `bmad-bmm-create-ui-spec`
-- `bmad-bmm-create-ux-design`
 - `bmad-bmm-check-implementation-readiness`
 
 Agent tiêu biểu:
@@ -426,7 +430,7 @@ Ví dụ:
 
 ### Canonical workflows
 
-Canonical short-form workflows hiện có `21`:
+Canonical short-form workflows hiện có `23`:
 
 - `absorb-repo`
 - `bootstrap-existing-project`
@@ -436,6 +440,8 @@ Canonical short-form workflows hiện có `21`:
 - `create-skill`
 - `enhance-skill`
 - `fix-bug`
+- `gen-dashboard`
+- `idea-discover`
 - `idea-challenge`
 - `make-data-spec`
 - `make-story`
@@ -494,6 +500,7 @@ Trong tương lai gần, đây nên là surface chính để user không phải 
 
 Ví dụ:
 
+- `/idea-discover`
 - `/idea-challenge`
 - `/plan`
 - `/make-story`
@@ -516,6 +523,7 @@ Ví dụ:
 - `/simulate-user`
 - `/fix-bug`
 - `/codebase-health`
+- `/gen-dashboard`
 - `/orch-agent`
 
 ### Cách 3: Add module mở
@@ -537,17 +545,21 @@ Ví dụ:
 
 ## 9. Use case tiêu biểu
 
-### Use case 1: Xây sản phẩm từ idea
+### Use case 1: Xây sản phẩm từ ý tưởng (Raw Idea)
 
 Flow:
 
-- `research`
-- `plan`
-- `make-story`
-- `make-ui-spec`
-- `code`
-- `review`
-- `status`
+- `idea-discover` (làm rõ ý tưởng bằng Mom Test)
+- `brainstorm` (brainstorm ý tưởng)
+- `idea-challenge` (thử thách ý tưởng)
+- `research` (nghiên cứu bối cảnh)
+- `plan` (lập PRD & Plan)
+- `make-story` (tạo Story)
+- `make-ui-spec` (thiết kế UI Spec)
+- `make-data-spec` (thiết kế Data Spec)
+- `code` (code / dev story)
+- `review` (code review)
+- `status` (theo dõi tiến độ & gen dashboard)
 
 ### Use case 2: Brownfield project cần hiểu codebase
 
@@ -666,26 +678,91 @@ Nó đi theo hướng:
 - sprint-aware context
 - capability-aware evolution
 
-## 12. User nên bắt đầu từ đâu
+## 12. Cấu trúc Thư mục Tài liệu Đầu ra Chuẩn (Standardized Output Directory Tree)
+
+Iwish quản lý tất cả tài liệu lập kế hoạch, đặc tả và báo cáo dưới một cấu trúc thư mục chuẩn nhằm đảm bảo tính truy vết (traceability) và kế thừa dữ liệu giữa các giai đoạn:
+
+```text
+_iwish-output/
+├── 1. Idea Discovery/
+│   ├── 1.1. idea-discovery.md           # Làm rõ ý tưởng ban đầu (Mom Test & JTBD)
+│   ├── 1.2. idea-bank.md                # Brainstorm giải pháp & MVP scope
+│   ├── 1.3. idea-challenge.md           # Thử thách ý tưởng (PRFAQ stress-test)
+│   └── 1.4. research/
+│       ├── market-research.md           # Nghiên cứu thị trường
+│       ├── competitor-research.md       # Nghiên cứu đối thủ hoặc quy trình thay thế
+│       ├── domain-research.md           # Nghiên cứu nghiệp vụ chuyên môn
+│       ├── technical-research.md        # Khảo sát khả thi kỹ thuật
+│       └── project-context.md           # Bối cảnh & quy tắc phát triển dự án
+│
+├── 2. Product Planning/
+│   ├── 2.1. product-brief-or-prd.md     # Tài liệu PRD chính
+│   ├── 2.2. database-spec.md            # Thiết kế Schema dữ liệu tổng thể
+│   ├── 2.3. ui-ux-spec.md               # Tiêu chuẩn thiết kế giao diện tổng thể (UX Spec & User Journeys)
+│   ├── 2.4. epics-and-stories.md        # Danh sách Epics và Stories phân rã từ PRD
+│   └── design-system/
+│       └── {portal-slug}/
+│           └── DESIGN.md                # Design System Master (Base Tokens, Colors, Typography)
+│
+├── 3. Development/
+│   ├── 1. Epic & Story/                 # Quản lý phát triển theo cấu trúc thư mục cây
+│   │   └── Epic-[ID]/                   # Thư mục cho từng Epic (Ví dụ: Epic-POC)
+│   │       ├── epic-spec.md             # Đặc tả kỹ thuật hoặc thiết kế của Epic
+│   │       └── Story-[ID]/              # Thư mục cho từng Story thuộc Epic
+│   │           ├── story.md             # File Story chính (AC, Tasks, QA Scorecard)
+│   │           ├── ui-ux-spec.md        # Thiết kế giao diện riêng cho Story này
+│   │           └── database-spec.md     # Thiết kế dữ liệu riêng cho Story này
+│   ├── 2. Bug Report/                   # Thư mục chứa danh sách báo cáo lỗi phát sinh
+│   │   └── Bug-[ID].md                  # Chi tiết báo cáo lỗi
+│   ├── sprint-status.yaml               # Trạng thái Sprint hiện tại
+│   └── project-expansion-review/
+│       └── PER-[feature-name].md        # Báo cáo đánh giá tác động mở rộng dự án
+│
+└── 4. Verification & Release/
+    ├── 4.1. walkthrough.md              # Báo cáo kết quả kiểm thử và nghiệm thu
+    ├── 4.2. merge-report.json           # Báo cáo sáp nhập code và kiểm tra xung đột
+    └── 4.3. retrospective.md            # Rút kinh nghiệm sau mỗi epic/sprint
+```
+
+## 13. Quy trình Đánh giá Mở rộng Dự án (Project Expansion Review - PER)
+
+Khi dự án đang chạy (in-flight) và có yêu cầu bổ sung thêm tính năng hoặc module mới, hệ thống bắt buộc kích hoạt quy trình **PER** nhằm đánh giá mức độ ảnh hưởng và xác định xem dự án có cần **Pivot** không. PER phân loại tác động thành 3 mức với các hướng định tuyến (routing) khác nhau:
+
+- **🟢 Mức 1: Tác động THẤP (Low Impact)**
+  - *Định nghĩa:* Tính năng bổ sung nhỏ, không đổi luồng chính, không đổi DB schema lớn.
+  - *Định tuyến:* Cho phép tiếp tục tạo Story (`/make-story`) và triển khai.
+  - *Outputs cập nhật:* `story.md`, `sprint-status.yaml`, `task.md`.
+  
+- **🟡 Mức 2: Tác động TRUNG BÌNH (Medium Impact)**
+  - *Định nghĩa:* Module lớn, ảnh hưởng đến database schema nghiệp vụ chính hoặc thay đổi luồng chính nhưng giữ nguyên tệp khách hàng.
+  - *Định tuyến:* Dừng tạo story. Quay lại bước `/plan` để cập nhật PRD, thiết kế database spec tổng thể, và phân rã lại Epic.
+  - *Outputs cập nhật:* `PRD.md`, `epics-and-stories.md`, `database-spec.md`, `sprint-status.yaml`.
+  
+- **🔴 Mức 3: Tác động CAO (High Impact / Pivot)**
+  - *Định nghĩa:* Thay đổi mô hình giá trị sản phẩm (Zoom-In/Zoom-Out Pivot), đổi đối tượng người dùng, hoặc đổi công nghệ cốt lõi.
+  - *Định tuyến:* Đóng băng tiến độ cũ. Quay lại `/idea-challenge` để stress-test lại ý tưởng, tiến hành thêm `/research` mới, rồi mới cập nhật PRD tại `/plan`.
+  - *Outputs cập nhật:* `idea-challenge.md`, các file `research/`, `architecture.md` (nếu có), `PRD.md`, `epics/` & `stories/` cũ được lưu trữ (archive).
+
+## 14. User nên bắt đầu từ đâu
 
 Nếu là user mới, thứ tự học tốt nhất là:
 
 1. Hiểu `Main delivery framework`
 2. Dùng `orch-agent` cho các yêu cầu tự nhiên
-3. Học `11 canonical workflows`
+3. Học các `canonical workflows` chính
 4. Chỉ sau đó mới mở rộng sang:
    - supportive workflows
    - external modules
    - capability creation/evolution
 
-## 13. Tài liệu nên đọc tiếp
+## 15. Tài liệu nên đọc tiếp
 
 - [I-Wish Capability System Framework](iwish-capability-system-framework.md)
 - [I-Wish Routing Profile Standard](iwish-routing-profile-standard.md)
 - [I-Wish Adoption Review Pack Standard](iwish-adoption-review-pack-standard.md)
 - [I-Wish Skill Graph and Orch Routing Analysis](iwish-skill-graph-routing-analysis.md)
 
-## 14. Bottom line
+## 16. Bottom line
 
 I-Wish nên được hiểu là:
 
@@ -699,3 +776,4 @@ I-Wish nên được hiểu là:
 Nếu user chỉ nhớ một điều, hãy nhớ điều này:
 
 `I-Wish không phải là một list command. I-Wish là một hệ thống để đi từ ý tưởng đến delivery, với Orch điều phối và capability mở rộng theo ngữ cảnh.`
+

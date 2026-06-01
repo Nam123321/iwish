@@ -69,6 +69,7 @@ const CANONICAL_COMMANDS = [
     { command: '/simulate-user', description: 'Simulate business persona user behavior and UX flows', tags: ['command', 'ux', 'testing'] },
     { command: '/fix-bug', description: '8-step hotfix and bug resolution process', tags: ['command', 'dev', 'maintenance'] },
     { command: '/codebase-health', description: 'Scan codebase structure for complexity, duplicates, and nops', tags: ['command', 'architecture', 'refactor'] },
+    { command: '/gen-dashboard', description: 'Synchronize the Idea Navigator and generate HTML user guide/dashboard', tags: ['command', 'tool', 'dashboard'] },
 ];
 function readYaml(filePath) {
     return yaml_1.default.parse(fs.readFileSync(filePath, 'utf8'));

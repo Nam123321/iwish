@@ -23,6 +23,10 @@ This skill provides **high-precision, local, hybrid code search** for I-Wish age
 
 All processing runs **locally on CPU** with no external API calls required.
 
+### Context Efficiency
+- This skill ASSUMES the agent has the `@.agent/fragments/scout-rules.md` fragment injected.
+- Apply exclusion patterns from `scout-rules.md` when indexing and searching to avoid wasting tokens on `node_modules/`, `dist/`, `*.lock`, binary files, and other non-code artifacts.
+
 ---
 
 ## 🛠️ Usage Guidelines

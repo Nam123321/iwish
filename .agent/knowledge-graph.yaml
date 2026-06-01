@@ -177,6 +177,36 @@ nodes:
   - validation
   - user-simulation
   depends_on: []
+- id: fragment-idea-discovery-framework
+  type: fragment
+  path: /.agent/fragments/idea-discovery-framework.md
+  description: Structured questionnaire framework for startup and product idea discovery.
+  tags:
+  - idea
+  - discovery
+  - framework
+  - questionnaire
+  depends_on: []
+- id: fragment-project-expansion-review
+  type: fragment
+  path: /.agent/fragments/project-expansion-review.md
+  description: Evaluation and suitability review protocol for new project expansions and features to prevent drift, manage pivots, and route back to planning funnel.
+  tags:
+  - project-expansion
+  - alignment
+  - review
+  - pivot
+  depends_on: []
+- id: fragment-document-traceability-standards
+  type: fragment
+  path: /.agent/fragments/document-traceability-standards.md
+  description: Document traceability and folder standards for storing outputs and defining inheritance rules across steps.
+  tags:
+  - documentation
+  - traceability
+  - folders
+  - inheritance
+  depends_on: []
 - id: fragment-quality-criteria
   type: fragment
   path: /.agent/fragments/quality-criteria.md
@@ -947,3 +977,54 @@ nodes:
   - semantic
   depends_on:
   - skill-code-search
+- id: skill-autoresearch
+  type: skill
+  path: /.agent/skills/autoresearch/SKILL.md
+  description: 'Autonomous iterative optimization loop for measurable metrics (coverage,
+    performance, bundle size, lint errors). Git-tracked experiments with 8-phase protocol
+    and stuck detection. Adapted from vibecode-pro-max-kit vc:autoresearch (MIT).'
+  tags:
+  - autoresearch
+  - optimization
+  - loop
+  - coverage
+  - performance
+  - metrics
+  - autonomous
+  depends_on: []
+- id: fragment-predict-personas
+  type: fragment
+  path: /.agent/fragments/predict-personas.md
+  description: '5-Persona Debate Protocol (Architect, Security, Performance, UX, Devil''s
+    Advocate) for multi-persona pre-analysis before implementation. Injected by socratic-review.
+    Adapted from vibecode-pro-max-kit vc:predict (MIT).'
+  tags:
+  - predict
+  - personas
+  - debate
+  - review
+  - analysis
+  depends_on: []
+- id: fragment-scout-rules
+  type: fragment
+  path: /.agent/fragments/scout-rules.md
+  description: 'File/directory exclusion rules for context-efficient code scanning
+    and analysis. Prevents token waste on binaries, lock files, and build artifacts.
+    Adapted from vibecode-pro-max-kit scout-block patterns.'
+  tags:
+  - scout
+  - exclusion
+  - rules
+  - context
+  - token-saving
+  depends_on: []
+- id: workflow-gen-dashboard
+  type: workflow
+  path: /.agent/workflows/gen-dashboard.md
+  description: Compile and export the interactive User Guide & Knowledge Graph dashboard.
+  tags:
+  - dashboard
+  - guide
+  - navigator
+  depends_on: []
+

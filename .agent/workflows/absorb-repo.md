@@ -115,21 +115,62 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
 - **Gate:** All 11 sections addressed (no empty sections). Symlink verified with `ls -la`.
 - **Output:** Single runtime `{repo-name}-dna.md` at `${IWISH_HOME}/repo-dna/` with symlink in sandbox.
 
-### Phase 4.5: COMMUNITY AUDIT & RECENT UPDATES 🌐 (Agent: research-agent / analyst-agent) — NEW
-- **Action:** Research and collect empirical user feedback (praises, criticisms, suggestions) and recent updates (past 3-6 months) to provide real-world context on the repository.
+### Phase 4.5: COMMUNITY AUDIT & RECENT UPDATES 🌐 (Agent: research-agent / analyst-agent) — UPGRADED
+- **Action:** Research and collect empirical user feedback (praises, criticisms, suggestions), structured release history analysis, GitHub comment quality metrics, and repository health signals to provide real-world context on the repository.
 - **Steps:**
   1. **Web Search & Issue Scan:**
      - Query search engines, developer forums, and social spaces for real user feedback: `{repo-name} feedback`, `{repo-name} pros cons`, `{repo-name} issues`.
      - Scan the repository's GitHub Issues, Discussions, and Pull Requests from the past 3-6 months.
-     - Extract major updates, release notes, and community discussions.
-  2. **Deep Dive on praises (Pros):**
+     - Extract community discussions and sentiment trends.
+  2. **Release History & Changelog Analysis (NEW):**
+     - **Fetch all tags/releases** via GitHub API: `https://api.github.com/repos/{owner}/{repo}/releases` and `https://api.github.com/repos/{owner}/{repo}/tags`.
+     - **Build Release Timeline Table** with columns: Version, Date, Type (Major/Minor/Patch/Pre-release), Highlights, Breaking Changes.
+     - **Analyze Versioning Strategy:** Is the repo following SemVer? Are there frequent breaking changes? What is the average release cadence (days between releases)?
+     - **Identify Deprecations & Migration Patterns:** Scan release notes and CHANGELOG.md (if exists) for deprecated features, migration guides, and upgrade paths.
+     - **Assess Stability:** Calculate the ratio of major vs patch releases. High major-release frequency signals instability.
+     - **Output:** A structured "Release History" section in the report with the timeline table and analysis.
+  3. **GitHub Comment & Engagement Analysis (NEW):**
+     - **Issue Response Time:** Sample the 20 most recent Issues. For each, measure time from creation to first maintainer response. Calculate median response time.
+     - **Comment Quality Metrics:**
+       - Average comments per Issue/PR (engagement depth).
+       - Ratio of maintainer comments vs community comments (maintainer involvement).
+       - Presence of structured responses (code snippets, reproduction steps, workarounds) vs. one-liners.
+     - **PR Review Quality:** Sample 10 recent merged PRs. Assess:
+       - Review depth (inline comments, change requests, approval patterns).
+       - Time from PR open to merge (velocity).
+       - Number of reviewers per PR.
+     - **Discussion Health:** If GitHub Discussions is enabled, scan for:
+       - Unanswered questions (stale discussions).
+       - Most discussed topics (feature requests vs. bugs vs. how-to).
+     - **Output:** A structured "Comment & Engagement Analysis" section with metrics table.
+  4. **Repository Health Signals (NEW):**
+     - **Commit Frequency:** Fetch commit activity via `https://api.github.com/repos/{owner}/{repo}/stats/commit_activity`. Calculate weekly average commits over past 3 months.
+     - **Contributor Diversity:** Fetch contributors via `https://api.github.com/repos/{owner}/{repo}/contributors`. Calculate:
+       - Total contributor count.
+       - **Bus Factor:** Number of contributors responsible for ≥80% of commits. Bus factor = 1 is HIGH RISK.
+       - Active contributors (committed in past 3 months) vs. total.
+     - **Stale Ratio:** Calculate `stale_issues / total_open_issues` and `stale_prs / total_open_prs` (stale = no activity for >30 days).
+     - **Star/Fork Trend:** Compare current stars/forks with GitHub traffic data if available. Note if growth is accelerating, flat, or declining.
+     - **Health Verdict:**
+       - 🟢 **Healthy**: Weekly commits >3, bus factor >2, median response <48h, stale ratio <30%
+       - 🟡 **Moderate**: Weekly commits 1-3, bus factor 1-2, median response 48h-7d, stale ratio 30-60%
+       - 🔴 **At Risk**: Weekly commits <1, bus factor 1, median response >7d, stale ratio >60%
+     - **Output:** A structured "Repository Health Signals" section with the verdict and metrics.
+  5. **Deep Dive on Praises (Pros):**
      - For features/mechanisms users highly praise: deep dive into the code and architecture blueprints to identify *why* it works well and how it benefits the users.
-  3. **Contrast on Criticisms (Cons):**
+  6. **Contrast on Criticisms (Cons):**
      - For user complaints, bugs, and performance bottlenecks: cross-reference and match them with our technical analysis from Phase 3 & 4. Verify if technical findings match community pain points, and identify hidden risks/limitations.
-  4. **Evaluate Recent Developments:**
+  7. **Evaluate Recent Developments (from Release History):**
+     - Cross-reference the Release Timeline (Step 2) with the community feedback (Steps 5-6).
      - Detail what was recently added in the last 3-6 months and *why* these updates were introduced (what roles they play).
      - Assess if the system should deeply research these new enhancements, and if they fit within I-Wish design principles.
-- **Gate:** Praises, criticisms, and recent updates documented with source links.
+- **Gate:** ALL of the following must be documented:
+  - Release History Timeline Table (≥3 entries or explicit "No releases found" with tag analysis)
+  - Comment & Engagement Metrics (with at least median response time and PR review depth)
+  - Repository Health Verdict (🟢/🟡/🔴 with supporting data)
+  - Praises with code deep-dive
+  - Criticisms with technical cross-reference
+  - Source links for all claims
 - **Output:** `${IWISH_HOME}/absorbed-repos/{repo-name}/community-report.md`.
 
 ### Phase 5: COMPARE & CONTRAST ⚖️ (Agent: architect-agent)

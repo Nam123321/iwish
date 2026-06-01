@@ -1503,6 +1503,7 @@
       <button class="tab-btn" onclick="switchTab('orchestration')">Orchestration Graph</button>
       <button class="tab-btn" onclick="switchTab('iwish-guide')">I-Wish Guide</button>
       <button class="tab-btn" onclick="switchTab('code-graph')">Code Graph</button>
+      <button class="tab-btn" onclick="switchTab('evolver')">Evolved Skills</button>
     </div>
   </header>
 
@@ -1665,6 +1666,8 @@
         <div class="guide-sidebar">
           <h3>Guide Navigation</h3>
           <a onclick="scrollToSection('pipeline-section')" class="sidebar-link active-link">🚀 Main Pipeline</a>
+          <a onclick="scrollToSection('directory-section')" class="sidebar-link">📁 Output Structure</a>
+          <a onclick="scrollToSection('per-section')" class="sidebar-link">🔄 Expansion Review (PER)</a>
           <a onclick="scrollToSection('orch-section')" class="sidebar-link">🤖 Orch Agent Routing</a>
           <a onclick="scrollToSection('skills-section')" class="sidebar-link">🛠️ Supportive Skills</a>
           <a onclick="scrollToSection('usecases-section')" class="sidebar-link">💡 Key Use Cases</a>
@@ -1704,7 +1707,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">Thiết lập 📄 <code>project-context.md</code>, index đồ thị mã nguồn, tạo backlog Story/Epic tối thiểu.</span>
+                        <span class="meta-val">Thiết lập 📄 <code>1. Idea Discovery/1.4. research/project-context.md</code>, index đồ thị mã nguồn, tạo backlog Story/Epic tối thiểu.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1734,17 +1737,34 @@
                 <div class="command-list">
                   <div class="command-item">
                     <div class="cli-box">
+                      <span class="cli-cmd">/idea-discover</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/idea-discover', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label">Output:</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.1. idea-discovery.md</code> (Mom Test & JTBD).</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-val"><strong>Bước tiên quyết đầu tiên:</strong> Làm rõ ý tưởng và nỗi đau của người dùng trước khi brainstorm.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
                       <span class="cli-cmd">/brainstorm</span>
                       <button class="cli-copy-btn" onclick="copyCommand('/brainstorm', this)">COPY</button>
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">Ý tưởng phác thảo sơ bộ, chỉ số Complexity Score (CS 1-5).</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.2. idea-bank.md</code> (Ý tưởng phác thảo sơ bộ, Complexity Score CS 1-5).</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
-                        <span class="meta-val">Thực hiện đầu tiên để định hình ý tưởng và phân loại độ phức tạp kỹ thuật/UI/Rủi ro.</span>
+                        <span class="meta-val">Brainstorm giải pháp chi tiết và MVP scope sau khi đã làm rõ bối cảnh ở bước discover.</span>
                       </div>
                     </div>
                   </div>
@@ -1757,7 +1777,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>docs/idea-distillate.md</code> (chứa bản Press Release & Customer FAQ).</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.3. idea-challenge.md</code> (chứa bản Press Release & Customer FAQ).</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1791,7 +1811,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>research_notes.md</code> (Báo cáo nghiên cứu thị trường, domain hoặc kỹ thuật).</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/market-research.md</code> hoặc <code>domain-research.md</code> / <code>technical-research.md</code>.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1808,11 +1828,11 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>competitor-&lt;name&gt;-research-&lt;date&gt;.md</code> (Báo cáo phân tích đối thủ cạnh tranh chi tiết).</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/competitor-research.md</code>.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
-                        <span class="meta-val">Thực hiện phân tích đối thủ cạnh tranh toàn diện (History, Tech Stack, GTM, Social Footprint, Health Indicators, UX Teardown, Gap Matrix và Attack Vectors).</span>
+                        <span class="meta-val">Phân tích đối thủ hoặc giải pháp thay thế đang có để reconfirm sự không hài lòng với giải pháp hiện tại.</span>
                       </div>
                     </div>
                   </div>
@@ -1825,7 +1845,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>project-context.md</code> (Chứa quy tắc phát triển, mẫu thiết kế đặc thù).</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/project-context.md</code>.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1897,7 +1917,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>docs/PRD.md</code> (Bản Product Requirements Document đạt chuẩn SMART).</span>
+                        <span class="meta-val">📄 <code>2. Product Planning/2.1. product-brief-or-prd.md</code> (Bản Product Requirements Document đạt chuẩn SMART).</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1914,7 +1934,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">Bản kế hoạch hành trình người dùng (User Journeys) và đặc tả UX.</span>
+                        <span class="meta-val">📄 <code>2. Product Planning/2.3. ui-ux-spec.md</code> (Bản kế hoạch hành trình người dùng và đặc tả UX tổng thể).</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1950,7 +1970,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>docs/architecture.md</code> (Tài liệu quyết định thiết kế kiến trúc - ADR).</span>
+                        <span class="meta-val">📄 <code>docs/architecture.md</code> (ADR) & <code>2. Product Planning/2.2. database-spec.md</code>.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -1967,35 +1987,14 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>docs/epics_list.md</code> & các bộ khung User Story sẵn có.</span>
+                        <span class="meta-val">📄 <code>2. Product Planning/2.4. epics-and-stories.md</code> & các bộ khung User Story sẵn có.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
                         <span class="meta-val">Phân rã PRD thành các Epic và User Story độc lập mang lại giá trị cho người dùng.</span>
                       </div>
                     </div>
-                  </div>
-
-                  <div class="command-item">
-                    <div class="cli-box">
-                      <span class="cli-cmd">/sprint-planning</span>
-                      <button class="cli-copy-btn" onclick="copyCommand('/sprint-planning', this)">COPY</button>
-                    </div>
-                    <div class="command-meta">
-                      <div class="meta-line">
-                        <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>sprint-status.yaml</code> (Cấu hình khởi tạo tiến độ của sprint hiện tại).</span>
-                      </div>
-                      <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
-                        <span class="meta-val">Lập kế hoạch phân bổ công việc chạy Sprint Agile dựa trên backlog stories đã tạo.</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Step 4 -->
+                           <!-- Step 4 -->
               <div class="pipeline-step">
                 <div class="step-number">4</div>
                 <div class="step-header">
@@ -2020,7 +2019,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 Chi tiết file <code>story_*.md</code> sẵn sàng để đưa vào phát triển.</span>
+                        <span class="meta-val">📄 Chi tiết file <code>3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/story.md</code> sẵn sàng để đưa vào phát triển.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -2037,7 +2036,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>*_ui-spec.md</code> (Đặc tả thiết kế chi diện).</span>
+                        <span class="meta-val">📄 <code>3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/ui-ux-spec.md</code> (Đặc tả thiết kế giao diện chi tiết).</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -2054,7 +2053,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>*_data-spec.md</code> (Đặc tả thực thể/lược đồ dữ liệu).</span>
+                        <span class="meta-val">📄 <code>3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/database-spec.md</code>.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -2080,7 +2079,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+
 
               <!-- Step 5 -->
               <div class="pipeline-step">
@@ -2196,7 +2195,7 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>docs/KNOWLEDGE_DELTA.md</code> (Báo cáo tổng hợp bài học kinh nghiệm và kiến thức mới).</span>
+                        <span class="meta-val">📄 <code>4. Verification & Release/4.3. retrospective.md</code>.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
@@ -2213,19 +2212,19 @@
                     <div class="command-meta">
                       <div class="meta-line">
                         <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 Báo cáo sửa lỗi SBRP, mã nguồn được vá an toàn và kiểm thử hồi quy thành công.</span>
+                        <span class="meta-val">📄 Báo cáo sửa lỗi trong <code>3. Development/2. Bug Report/</code>, mã nguồn được vá an toàn.</span>
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
-                        <span class="meta-val">Kích hoạt ngay khi có sự cố phát sinh ở môi trường staging/production. Quy trình sửa lỗi nghiêm ngặt 8 bước.</span>
+                        <span class="meta-val">Kích hoạt ngay khi có sự cố phát sinh. Tạo file báo cáo lỗi theo cấu trúc chuẩn.</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="command-item">
                     <div class="cli-box">
-                      <span class="cli-cmd">iwish gen-dashboard</span>
-                      <button class="cli-copy-btn" onclick="copyCommand('iwish gen-dashboard', this)">COPY</button>
+                      <span class="cli-cmd">/gen-dashboard</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/gen-dashboard', this)">COPY</button>
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
@@ -2234,7 +2233,7 @@
                       </div>
                       <div class="meta-line">
                         <span class="meta-label">Ghi chú:</span>
-                        <span class="meta-val">Biên dịch các siêu dữ liệu sprint, sơ đồ liên kết ý tưởng để người dùng và tác nhân cùng theo dõi tiến độ.</span>
+                        <span class="meta-val">Biên dịch các siêu dữ liệu sprint, sơ đồ liên kết ý tưởng để người dùng và tác nhân cùng theo dõi tiến độ. Có thể sử dụng lệnh CLI <code>iwish gen-dashboard</code>.</span>
                       </div>
                     </div>
                   </div>
@@ -2242,6 +2241,91 @@
               </div>
             </div>
           </div>
+
+          <!-- Section 1.2: Standardized Output Directory Structure -->
+          <div id="directory-section" class="guide-section" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; margin-top: 10px;">
+            <h2>📁 Cấu Trúc Thư Mục Tài Liệu Đầu Ra Chuẩn</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px;">
+              I-Wish quản lý tất cả tài liệu lập kế hoạch, đặc tả và báo cáo dưới một cấu trúc thư mục chuẩn nhằm đảm bảo tính truy vết (traceability) và kế thừa dữ liệu giữa các giai đoạn:
+            </p>
+            <div style="background: rgba(31, 41, 55, 0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; color: var(--text-color); overflow-x: auto;">
+              _iwish-output/<br>
+              ├── 1. Idea Discovery/<br>
+              │   ├── 1.1. idea-discovery.md           # Làm rõ ý tưởng ban đầu (Mom Test & JTBD)<br>
+              │   ├── 1.2. idea-bank.md                # Brainstorm giải pháp & MVP scope<br>
+              │   ├── 1.3. idea-challenge.md           # Thử thách ý tưởng (PRFAQ stress-test)<br>
+              │   └── 1.4. research/<br>
+              │       ├── market-research.md           # Nghiên cứu thị trường<br>
+              │       ├── competitor-research.md       # Nghiên cứu đối thủ hoặc giải pháp thay thế<br>
+              │       ├── domain-research.md           # Nghiên cứu nghiệp vụ chuyên môn<br>
+              │       ├── technical-research.md        # Khảo sát khả thi kỹ thuật<br>
+              │       └── project-context.md           # Bối cảnh & quy tắc phát triển dự án<br>
+              │<br>
+              ├── 2. Product Planning/<br>
+              │   ├── 2.1. product-brief-or-prd.md     # Tài liệu PRD chính<br>
+              │   ├── 2.2. database-spec.md            # Thiết kế Schema dữ liệu tổng thể<br>
+              │   ├── 2.3. ui-ux-spec.md               # Tiêu chuẩn thiết kế giao diện tổng thể (UX Spec & User Journeys)<br>
+              │   ├── 2.4. epics-and-stories.md        # Danh sách Epics và Stories phân rã từ PRD<br>
+              │   └── design-system/<br>
+              │       └── {portal-slug}/<br>
+              │           └── DESIGN.md                # Design System Master (Base Tokens, Colors, Typography)<br>
+              │<br>
+              ├── 3. Development/<br>
+              │   ├── 1. Epic & Story/                 # Quản lý phát triển theo cấu trúc thư mục cây<br>
+              │   │   └── Epic-[ID]/                   # Thư mục cho từng Epic (Ví dụ: Epic-POC)<br>
+              │   │       ├── epic-spec.md             # Đặc tả kỹ thuật hoặc thiết kế của Epic<br>
+              │   │       └── Story-[ID]/              # Thư mục cho từng Story thuộc Epic<br>
+              │   │           ├── story.md             # File Story chính (AC, Tasks, QA Scorecard)<br>
+              │   │           ├── ui-ux-spec.md        # Thiết kế giao diện riêng cho Story này<br>
+              │   │           └── database-spec.md     # Thiết kế dữ liệu riêng cho Story này<br>
+              │   ├── 2. Bug Report/                   # Thư mục chứa báo cáo lỗi phát sinh<br>
+              │   │   └── Bug-[ID].md                  # Chi tiết báo cáo lỗi<br>
+              │   ├── sprint-status.yaml               # Trạng thái Sprint hiện tại<br>
+              │   └── project-expansion-review/<br>
+              │       └── PER-[feature-name].md        # Báo cáo đánh giá tác động mở rộng dự án<br>
+              │<br>
+              └── 4. Verification & Release/<br>
+                  ├── 4.1. walkthrough.md              # Báo cáo kết quả kiểm thử và nghiệm thu<br>
+                  ├── 4.2. merge-report.json           # Báo cáo sáp nhập code và kiểm tra xung đột<br>
+                  └── 4.3. retrospective.md            # Rút kinh nghiệm sau mỗi epic/sprint
+            </div>
+          </div>
+
+          <!-- Section 1.3: Project Expansion Review (PER) -->
+          <div id="per-section" class="guide-section" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; margin-top: 10px;">
+            <h2>🔄 Quy Trình Đánh Giá Mở Rộng Dự Án (Project Expansion Review - PER)</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px;">
+              Khi dự án đang chạy (in-flight) và có yêu cầu bổ sung thêm tính năng hoặc module mới, hệ thống bắt buộc kích hoạt quy trình <strong>PER</strong> nhằm đánh giá mức độ ảnh hưởng và xác định xem dự án có cần <strong>Pivot</strong> không. PER phân loại tác động thành 3 mức:
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+              <div style="border-left: 4px solid var(--success); background: rgba(22, 163, 74, 0.03); padding: 15px; border-radius: 0 8px 8px 0;">
+                <h4 style="color: var(--success); margin-bottom: 8px;">🟢 Mức 1: Tác động THẤP (Low Impact)</h4>
+                <p style="font-size: 13.5px; line-height: 1.5; margin: 0;">
+                  <strong>Định nghĩa:</strong> Tính năng bổ sung nhỏ, không đổi luồng chính, không đổi DB schema lớn.<br>
+                  <strong>Định tuyến:</strong> Cho phép tiếp tục tạo Story (<code>/make-story</code>) và triển khai.<br>
+                  <strong>Outputs cập nhật:</strong> <code>story.md</code>, <code>sprint-status.yaml</code>, <code>task.md</code>.
+                </p>
+              </div>
+
+              <div style="border-left: 4px solid var(--warning); background: rgba(217, 119, 6, 0.03); padding: 15px; border-radius: 0 8px 8px 0;">
+                <h4 style="color: var(--warning); margin-bottom: 8px;">🟡 Mức 2: Tác động TRUNG BÌNH (Medium Impact)</h4>
+                <p style="font-size: 13.5px; line-height: 1.5; margin: 0;">
+                  <strong>Định nghĩa:</strong> Module lớn, ảnh hưởng đến database schema nghiệp vụ chính hoặc thay đổi luồng chính nhưng giữ nguyên tệp khách hàng.<br>
+                  <strong>Định tuyến:</strong> Dừng tạo story. Quay lại bước <code>/plan</code> để cập nhật PRD, thiết kế database spec tổng thể, và phân rã lại Epic.<br>
+                  <strong>Outputs cập nhật:</strong> <code>PRD.md</code>, <code>epics-and-stories.md</code>, <code>database-spec.md</code>, <code>sprint-status.yaml</code>.
+                </p>
+              </div>
+
+              <div style="border-left: 4px solid var(--error); background: rgba(220, 38, 38, 0.03); padding: 15px; border-radius: 0 8px 8px 0;">
+                <h4 style="color: var(--error); margin-bottom: 8px;">🔴 Mức 3: Tác động CAO (High Impact / Pivot)</h4>
+                <p style="font-size: 13.5px; line-height: 1.5; margin: 0;">
+                  <strong>Định nghĩa:</strong> Thay đổi mô hình giá trị sản phẩm, đổi đối tượng người dùng, hoặc đổi công nghệ cốt lõi.<br>
+                  <strong>Định tuyến:</strong> Đóng băng tiến độ cũ. Quay lại <code>/idea-challenge</code> để stress-test lại ý tưởng, tiến hành thêm <code>/research</code> mới, rồi mới cập nhật PRD tại <code>/plan</code>.<br>
+                  <strong>Outputs cập nhật:</strong> <code>idea-challenge.md</code>, các file <code>research/</code>, <code>architecture.md</code> (nếu có), <code>PRD.md</code>, <code>epics/</code> & <code>stories/</code> cũ được lưu trữ (archive).
+                </p>
+              </div>
+            </div>
 
           <!-- Section 1.5: Orch Agent Routing (Điều phối thông minh) -->
           <div id="orch-section" class="guide-section" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; margin-top: 10px;">
@@ -2446,10 +2530,10 @@
               <div class="usecase-card">
                 <div class="usecase-title">🎨 3. Thiết kế & Đồng bộ giao diện (UI UX Pro Max / Stitch)</div>
                 <p class="usecase-desc">
-                  Khi bạn thiết kế UI và muốn đồng bộ hoá file <code>DESIGN.md</code> của bạn với server Stitch để tạo và tối ưu giao diện.
+                  Khi bạn thiết kế UI và muốn đồng bộ hoá đặc tả thiết kế với server Stitch để tạo và tối ưu giao diện.
                 </p>
                 <ul class="usecase-steps">
-                  <li><strong>Cách thức hoạt động:</strong> Đầu tiên, chạy <code>/create-ux-design</code> và <code>/make-ui-spec</code> để lập spec thiết kế. Sử dụng workflow <code>/sync-stitch-design</code> để đẩy thiết kế lên máy chủ Stitch. Cuối cùng, <code>visual-fidelity-gate</code> sẽ audit tự động xem code frontend có khớp pixel với nguồn thiết kế không.</li>
+                  <li><strong>Cách thức hoạt động:</strong> Đầu tiên, chạy <code>/create-ux-design</code> và <code>/make-ui-spec</code> để lập spec thiết kế (tạo <code>ui-ux-spec.md</code>). Sử dụng workflow <code>/sync-stitch-design</code> để đẩy thiết kế lên máy chủ Stitch. Cuối cùng, <code>visual-fidelity-gate</code> sẽ audit tự động xem code frontend có khớp pixel với nguồn thiết kế không.</li>
                   <li><strong>Lệnh slash command:</strong></li>
                 </ul>
                 <div class="cli-box" style="margin-bottom: 10px;">
@@ -2547,6 +2631,56 @@
       </div>
     </div>
 
+    <!-- Tab 7: Evolved Skills -->
+    <div id="tab-evolver" class="tab-content">
+      <!-- Placeholder when no data -->
+      <div id="evolver-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <div class="card" style="max-width:480px;text-align:center;padding:40px;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:20px;">
+          <div style="font-size:48px;margin-bottom:16px;">🧬</div>
+          <h2 style="margin-bottom:8px;">No Evolved Skills Found</h2>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.6;">Run I-Wish Evolver (e.g. lineage-sync tracking) to log skill mutation lineages and display ancestry DAG trees here.</p>
+        </div>
+      </div>
+      <!-- Active graph view -->
+      <div id="evolver-active" style="display:none;flex:1;flex-direction:row;height:100%;min-width:0;width:100%;">
+        <div id="evolver-canvas" class="canvas-panel" style="flex:1;height:100%;"></div>
+        <div class="sidebar" style="width:400px;flex-shrink:0;height:100%;overflow-y:auto;">
+          <h2>Evolved Skills Manager</h2>
+          
+          <div class="card" style="margin-bottom:16px;">
+            <label for="evolver-skill-select" style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:8px;">Select Evolved Skill</label>
+            <select id="evolver-skill-select" style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-family:inherit;font-size:14px;background:var(--panel-bg);color:var(--text-color);outline:none;cursor:pointer;" onchange="loadEvolverSkill(this.value)">
+              <!-- Options injected dynamically -->
+            </select>
+          </div>
+
+          <div class="card" id="evolver-skill-stats" style="margin-bottom:16px;display:none;">
+            <h3>Skill Evolution Stats</h3>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+              <div class="code-graph-stat">
+                <span class="label">Total Mutations</span>
+                <span class="value" id="evolver-stat-mutations">0</span>
+              </div>
+              <div class="code-graph-stat">
+                <span class="label">Average Latency</span>
+                <span class="value" id="evolver-stat-latency">N/A</span>
+              </div>
+              <div class="code-graph-stat">
+                <span class="label">Average Success Rate</span>
+                <span class="value" id="evolver-stat-success-rate">N/A</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" id="evolver-details">
+            <h3 id="evolver-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Version Selected</h3>
+            <div id="evolver-node-desc" style="font-size: 14px; color: var(--text-muted);">
+              Click on any mutation version node in the tree to inspect performance latency, success metrics, and timestamps.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -2556,6 +2690,7 @@
     const sprintData = {SPRINT_DATA_PLACEHOLDER};
     const orchestrationData = {ORCHESTRATION_DATA_PLACEHOLDER};
     const ideaToPrdData = {IDEA_TO_PRD_DATA_PLACEHOLDER};
+    const evolverData = {EVOLVER_DATA_PLACEHOLDER};
 
     let currentSlideIndex = 0;
 
@@ -2996,6 +3131,9 @@
         } else if (tabId === 'code-graph' && window.codeGraphNetwork) {
           window.codeGraphNetwork.redraw();
           window.codeGraphNetwork.fit();
+        } else if (tabId === 'evolver' && window.evolverNetwork) {
+          window.evolverNetwork.redraw();
+          window.evolverNetwork.fit();
         }
       }, 50);
     }
@@ -3466,6 +3604,211 @@
         '<div class="code-graph-stat"><span class="label">Edges</span><span class="value">' + (meta.edgeCount || codeGraphData.edges.length) + '</span></div>' +
         '<div class="code-graph-stat"><span class="label">Adapter</span><span class="value">' + (meta.adapterUsed || 'unknown') + '</span></div>' +
         '<div class="code-graph-stat"><span class="label">Generated</span><span class="value">' + (meta.generatedAt ? new Date(meta.generatedAt).toLocaleDateString() : 'N/A') + '</span></div>';
+    })();
+
+    // ===== EVOLVED SKILLS TAB =====
+    (function initEvolver() {
+      if (!evolverData || Object.keys(evolverData).length === 0) {
+        return;
+      }
+
+      // Hide placeholder, show active view
+      document.getElementById('evolver-placeholder').style.display = 'none';
+      document.getElementById('evolver-active').style.display = 'flex';
+
+      const selectEl = document.getElementById('evolver-skill-select');
+      selectEl.innerHTML = '';
+      
+      const skillIds = Object.keys(evolverData);
+      skillIds.forEach((skillId) => {
+        const opt = document.createElement('option');
+        opt.value = skillId;
+        opt.textContent = skillId;
+        selectEl.appendChild(opt);
+      });
+
+      window.loadEvolverSkill = function(skillId) {
+        const tree = evolverData[skillId];
+        if (!tree) return;
+
+        // Display stats card
+        document.getElementById('evolver-skill-stats').style.display = 'block';
+        
+        // Calculate stats
+        const nodeHashes = Object.keys(tree.nodes);
+        const totalMutations = nodeHashes.length;
+        
+        let totalLatency = 0;
+        let latencyCount = 0;
+        let totalSuccessRate = 0;
+        let successCount = 0;
+
+        nodeHashes.forEach(h => {
+          const n = tree.nodes[h];
+          if (n.latency !== null && n.latency !== undefined) {
+            totalLatency += n.latency;
+            latencyCount++;
+          }
+          if (n.success_rate !== null && n.success_rate !== undefined) {
+            totalSuccessRate += n.success_rate;
+            successCount++;
+          }
+        });
+
+        const avgLatency = latencyCount > 0 ? (totalLatency / latencyCount).toFixed(3) + 's' : 'N/A';
+        const avgSuccessRate = successCount > 0 ? (totalSuccessRate / successCount * 100).toFixed(1) + '%' : 'N/A';
+
+        document.getElementById('evolver-stat-mutations').textContent = totalMutations;
+        document.getElementById('evolver-stat-latency').textContent = avgLatency;
+        document.getElementById('evolver-stat-success-rate').textContent = avgSuccessRate;
+
+        // Map to vis.js nodes and edges
+        const visNodesArray = [];
+        const visEdgesArray = [];
+        const addedNodes = new Set();
+
+        const childHashes = new Set(tree.edges.map(e => e.child));
+
+        nodeHashes.forEach(h => {
+          const n = tree.nodes[h];
+          const isRoot = !childHashes.has(h);
+          const success = n.success;
+          
+          let background = '#eff6ff';
+          let border = '#3b82f6';
+          let textColor = '#1e3a8a';
+
+          if (isRoot) {
+            background = '#fef3c7';
+            border = '#d97706';
+            textColor = '#78350f';
+          } else if (success === true) {
+            background = '#d1fae5';
+            border = '#10b981';
+            textColor = '#065f46';
+          } else if (success === false) {
+            background = '#fee2e2';
+            border = '#ef4444';
+            textColor = '#991b1b';
+          }
+
+          visNodesArray.push({
+            id: h,
+            label: h.length > 8 ? h.substring(0, 8) + '...' : h,
+            title: '<b>Version:</b> ' + h + '<br><b>Created:</b> ' + (n.created_at || 'N/A') + '<br><b>Success:</b> ' + success + '<br><b>Latency:</b> ' + (n.latency !== null ? n.latency.toFixed(3) + 's' : 'N/A') + '<br><b>Success Rate:</b> ' + (n.success_rate !== null ? (n.success_rate * 100).toFixed(1) + '%' : 'N/A'),
+            shape: 'box',
+            margin: 10,
+            color: { background: background, border: border, highlight: { background: background, border: border } },
+            font: { color: textColor, face: 'Inter', size: 12, bold: true },
+            borderWidth: isRoot ? 3 : 2,
+            _meta: { hash: h, metrics: n, isRoot: isRoot }
+          });
+          addedNodes.add(h);
+        });
+
+        // Add any nodes mentioned in edges but not in nodes dict
+        tree.edges.forEach(e => {
+          if (e.parent && !addedNodes.has(e.parent)) {
+            visNodesArray.push({
+              id: e.parent,
+              label: e.parent.length > 8 ? e.parent.substring(0, 8) + '...' : e.parent,
+              shape: 'box',
+              margin: 10,
+              color: { background: '#f3f4f6', border: '#9ca3af' },
+              font: { color: '#374151', face: 'Inter', size: 12 },
+              borderWidth: 1,
+              _meta: { hash: e.parent, metrics: {}, isRoot: false }
+            });
+            addedNodes.add(e.parent);
+          }
+          if (e.child && !addedNodes.has(e.child)) {
+            visNodesArray.push({
+              id: e.child,
+              label: e.child.length > 8 ? e.child.substring(0, 8) + '...' : e.child,
+              shape: 'box',
+              margin: 10,
+              color: { background: '#f3f4f6', border: '#9ca3af' },
+              font: { color: '#374151', face: 'Inter', size: 12 },
+              borderWidth: 1,
+              _meta: { hash: e.child, metrics: {}, isRoot: false }
+            });
+            addedNodes.add(e.child);
+          }
+
+          if (e.child) {
+            visEdgesArray.push({
+              from: e.parent || '',
+              to: e.child,
+              arrows: 'to',
+              color: { color: 'rgba(15, 118, 110, 0.4)', highlight: 'var(--primary)' },
+              width: 2
+            });
+          }
+        });
+
+        const container = document.getElementById('evolver-canvas');
+        const data = {
+          nodes: new vis.DataSet(visNodesArray),
+          edges: new vis.DataSet(visEdgesArray)
+        };
+
+        const options = {
+          layout: {
+            hierarchical: {
+              direction: 'UD',
+              sortMethod: 'directed',
+              nodeSpacing: 180,
+              levelSeparation: 100
+            }
+          },
+          physics: {
+            hierarchicalRepulsion: {
+              nodeDistance: 150
+            }
+          },
+          interaction: { hover: true, tooltipDelay: 100 }
+        };
+
+        if (window.evolverNetwork) {
+          window.evolverNetwork.destroy();
+        }
+
+        window.evolverNetwork = new vis.Network(container, data, options);
+
+        window.evolverNetwork.on('click', function(params) {
+          const detailsEl = document.getElementById('evolver-details');
+          if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = data.nodes.get(nodeId);
+            if (node && node._meta) {
+              const m = node._meta;
+              const met = m.metrics || {};
+              const dateStr = met.created_at ? new Date(met.created_at.replace(' ', 'T')).toLocaleString() : 'N/A';
+              
+              detailsEl.innerHTML = 
+                '<h3 style="margin-bottom:12px;font-size:15px;color:var(--text-color);word-break:break-all;">Version Details</h3>' +
+                '<div class="code-graph-stat"><span class="label">Version Hash</span><span class="value mono" style="font-size:11px;">' + m.hash + '</span></div>' +
+                '<div class="code-graph-stat"><span class="label">Status</span><span class="value" style="color: ' + (met.success ? 'var(--success)' : met.success === false ? 'var(--error)' : 'var(--text-muted)') + '">' +
+                  (met.success ? '✓ SUCCESS' : met.success === false ? '✗ FAILED' : 'UNKNOWN') +
+                '</span></div>' +
+                '<div class="code-graph-stat"><span class="label">Latency</span><span class="value">' + (met.latency !== undefined && met.latency !== null ? met.latency.toFixed(3) + 's' : 'N/A') + '</span></div>' +
+                '<div class="code-graph-stat"><span class="label">Success Rate</span><span class="value">' + (met.success_rate !== undefined && met.success_rate !== null ? (met.success_rate * 100).toFixed(1) + '%' : 'N/A') + '</span></div>' +
+                '<div class="code-graph-stat"><span class="label">Created At</span><span class="value" style="font-size:12px;">' + dateStr + '</span></div>';
+            }
+          } else {
+            detailsEl.innerHTML = 
+              '<h3 id="evolver-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Version Selected</h3>' +
+              '<div id="evolver-node-desc" style="font-size: 14px; color: var(--text-muted);">' +
+                'Click on any mutation version node in the tree to inspect performance latency, success metrics, and timestamps.' +
+              '</div>';
+          }
+        });
+      };
+
+      // Load initial skill
+      if (skillIds.length > 0) {
+        loadEvolverSkill(skillIds[0]);
+      }
     })();
   </script>
 </body>

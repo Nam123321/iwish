@@ -75,6 +75,9 @@ When running `/idea-challenge`, Orch or the owning agent should attach:
      - competitor
      - technical feasibility
 
+4. `fragment-idea-discovery-framework`
+   - load and use to structure the raw idea clarification and pushback conversation
+
 ## Runtime Role
 
 `idea-challenge` is the mainline Discover workflow.

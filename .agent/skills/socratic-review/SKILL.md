@@ -13,8 +13,10 @@ The Socratic Review Mode is a 4-Gate Quality System that forces users to clarify
 
 ## 2. Prerequisites
 - This skill ASSUMES the agent has the `@.agent/fragments/anti-sycophancy.md` fragment injected.
+- This skill ASSUMES the agent has the `@.agent/fragments/predict-personas.md` fragment injected for Multi-Persona Pre-Analysis.
 - `anti-sycophancy.md` provides the **adversarial posture** (Constructive Skepticism).
-- `socratic-review` provides the **structured interview protocol** that operationalizes that posture into an interactive loop.
+- `predict-personas.md` provides the **5-Persona Debate Protocol** (Architect, Security, Performance, UX, Devil's Advocate).
+- `socratic-review` provides the **structured interview protocol** that operationalizes both postures into an interactive loop.
 
 ## 3. Modes (The 4 Gates)
 When invoking this skill, you must specify the `mode` parameter.
@@ -85,8 +87,27 @@ Feature **[X]** có vẻ vượt quá MVP scope. Bạn chắc chắn cần nó n
 - **Escalation Trigger:** If the agents cannot reach a context-backed consensus in exactly one round, or if the documentation is ambiguous/conflicting, you MUST escalate the question to the user. Include a brief summary of why the agents conflicted.
 - **Decisions Log:** At the end of the Socratic Review session, output a "Decisions Log" summarizing any questions that were auto-resolved by the agents so the user retains visibility.
 
+### Rule 8: Multi-Persona Prediction Gate (Predict Protocol)
+- **Trigger:** Automatically activated for stories with **CS ≥ 3** at Gate 2 (Technical) or when explicitly invoked.
+- **Protocol:** Execute the full 7-step Debate Protocol defined in `@.agent/fragments/predict-personas.md`:
+  1. Read the proposed change from context
+  2. Read relevant code (use `code-search` or `grep_search`)
+  3. Each of the 5 personas (Architect, Security, Performance, UX, Devil's Advocate) analyzes independently
+  4. Identify agreements (4+ personas align)
+  5. Identify conflicts (meaningful disagreements)
+  6. Weigh tradeoffs using the risk matrix
+  7. Produce verdict: **GO** / **CAUTION** / **STOP**
+- **Verdict Handling:**
+  - **GO** → Proceed with implementation, attach agreements as validation context
+  - **CAUTION** → Proceed with mitigations added as AC items to the story
+  - **STOP** → Halt implementation, escalate to user with the Prediction Report
+- **Output:** Append the Prediction Report (defined in `predict-personas.md`) to the Synthesis Summary when exiting the Socratic loop.
+- **Integration:** The Prediction Report output replaces the need for a separate `/predict` invocation — it is embedded in the Socratic Review flow.
+
 ### Gate 0: Discovery Loop (The "Stop & Think" Phase)
-Before proposing any solution, you MUST answer the following questions based on the **Complexity Score (CS)**:
+Before proposing any solution, you MUST load and execute the `/.agent/fragments/idea-discovery-framework.md` fragment to structure the elicitation and challenge loop, ensuring all 5 Lenses of Idea Discovery are fully answered.
+
+Additionally, answer the following questions based on the **Complexity Score (CS)**:
 
 ### 🔹 For CS = 3 (Medium Complexity)
 - **Core Purpose:** What problem are we *really* solving? (Root cause analysis)

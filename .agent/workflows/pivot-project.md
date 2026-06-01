@@ -75,10 +75,16 @@ Typical follow-up:
 - `bootstrap-existing-project` if context is weak
 - `reconcile-change`
 
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> If the pivot or rescope is triggered by a **new feature, feature group, or project expansion**, you MUST load and read `/.agent/fragments/project-expansion-review.md` and conduct the full **Project Expansion Review (PER)** before deciding severity or updating source-of-truth.
+
 ## Required Sequence
 
 1. Identify the trigger and affected execution surface.
+   - *Check:* If it is a new feature or feature group, perform the **Project Expansion Review (PER)** using `/.agent/fragments/project-expansion-review.md` first.
 2. Determine whether the issue is `local`, `story`, `epic`, or `plan`.
+   - *Note:* If PER indicates a medium or high impact (Medium/High Pivot Risk), escalate severity to `epic` or `plan` and follow the Funnel Routing Protocol to update the PRD/research first.
 3. Determine whether current context is still strong enough:
    - if yes, stay in `pivot-project`
    - if no, route into `bootstrap-existing-project`

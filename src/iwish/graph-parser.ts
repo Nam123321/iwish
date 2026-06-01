@@ -1,5 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { loadSourceOfTruth } from './source-of-truth';
 
 export type GraphNode = {
@@ -651,5 +652,23 @@ export function extractCodeGraphData(projectRoot: string): CodeGraphData | null 
   } catch (error) {
     console.warn('Error reading code graph JSON:', error);
     return null;
+  }
+}
+
+export function extractEvolverData(projectRoot: string): any {
+  const scriptPath = path.join(projectRoot, '.agent', 'skills', 'iwish-evolver', 'scripts', 'lineage-sync.py');
+  if (!fs.existsSync(scriptPath)) {
+    return {};
+  }
+
+  try {
+    const output = execSync(`python3 "${scriptPath}" query-all`, {
+      encoding: 'utf8',
+      env: process.env,
+    });
+    return JSON.parse(output);
+  } catch (error) {
+    console.warn('Error querying evolver data:', error);
+    return {};
   }
 }

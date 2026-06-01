@@ -180,8 +180,8 @@ Load config from `{project-root}/_iwish/bmm/config.yaml` and resolve:
 
 - `installed_path` = `{project-root}/.agent/workflows`
 - `template_path` = `{installed_path}/template.md`
-- `output_folder` = `{implementation_artifacts}/ui-specs`
-- `default_output_file` = `{output_folder}/{story_key}-ui-spec.md`
+- `output_folder` = `{implementation_artifacts}/1. Epic & Story/Epic-{epic_id}/{story_key}` (derive {epic_id} from the first digit of {story_key}, e.g. story-1.1 -> Epic-1)
+- `default_output_file` = `{output_folder}/ui-ux-spec.md`
 - `design_system_path` = `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md`
 - `page_override_path` = `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md`
 - `mkt_materials_dir` = `{output_folder_root}/mkt-materials/`

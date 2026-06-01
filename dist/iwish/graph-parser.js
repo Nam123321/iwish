@@ -38,8 +38,10 @@ exports.extractSprintData = extractSprintData;
 exports.extractAgentTrace = extractAgentTrace;
 exports.extractIdeaToPrdData = extractIdeaToPrdData;
 exports.extractCodeGraphData = extractCodeGraphData;
+exports.extractEvolverData = extractEvolverData;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
+const child_process_1 = require("child_process");
 const source_of_truth_1 = require("./source-of-truth");
 function extractGraphData(projectRoot) {
     const nodes = [];
@@ -599,5 +601,22 @@ function extractCodeGraphData(projectRoot) {
     catch (error) {
         console.warn('Error reading code graph JSON:', error);
         return null;
+    }
+}
+function extractEvolverData(projectRoot) {
+    const scriptPath = path.join(projectRoot, '.agent', 'skills', 'iwish-evolver', 'scripts', 'lineage-sync.py');
+    if (!fs.existsSync(scriptPath)) {
+        return {};
+    }
+    try {
+        const output = (0, child_process_1.execSync)(`python3 "${scriptPath}" query-all`, {
+            encoding: 'utf8',
+            env: process.env,
+        });
+        return JSON.parse(output);
+    }
+    catch (error) {
+        console.warn('Error querying evolver data:', error);
+        return {};
     }
 }

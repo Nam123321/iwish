@@ -4,13 +4,18 @@
 
 Get the raw concept onto the table and make sure the workflow is solving a real problem, not just polishing vague ambition.
 
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> Before proceeding, you MUST use the `view_file` tool to load and read `/.agent/fragments/idea-discovery-framework.md`. You must structure the customer conversation around its **5 Lenses of Idea Discovery** to clarify the idea and push back on broad/vague assumptions.
+
 ## Inputs to Capture
 
-- target user/persona
-- concrete problem
-- stakes and urgency
-- current workaround
-- rough solution direction
+Structure your questionnaire using `/.agent/fragments/idea-discovery-framework.md` to elicit:
+- target user/persona (specifically defined)
+- concrete problem & pain point
+- stakes and urgency (emotional/financial cost)
+- current workarounds (how they solve it today)
+- rough solution direction & primary value proposition
 - why now
 - concept type: commercial, internal tool, OSS, or community/nonprofit
 
@@ -18,6 +23,7 @@ Get the raw concept onto the table and make sure the workflow is solving a real 
 
 - `idea-hardening` for 2-3 options and YAGNI pressure
 - `socratic-review` in `discovery` mode for hard questions
+- `/.agent/fragments/idea-discovery-framework.md` for structured elicitation
 
 ## Exit Criteria
 
