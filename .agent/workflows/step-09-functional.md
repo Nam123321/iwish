@@ -126,6 +126,54 @@ To prevent the common mistake of only generating "key highlight" features while 
 - **System Audit Logs**: Logging administrator actions, critical security events (login attempts, permission changes) for security and compliance.
 - **Admin Analytics Dashboard**: System-level metrics and usage trends visible to admins.
 
+### 3.6. Force Platform & Infrastructure Capabilities (CONDITIONAL — Platform Products Only)
+
+If the product is classified as Platform or Enterprise Platform (per Step 4 above), you MUST
+also evaluate and include these additional baseline capability areas:
+
+#### F. AI/ML Infrastructure (Mandatory for AI-powered platforms)
+- **Model Management**: Model routing, provider switching, cost tracking per model
+- **Agent Orchestration**: Agent creation, configuration, execution, monitoring
+- **Fine-tuning Pipeline**: Data preparation, training triggers, model deployment
+- **Guardrails & Safety**: Input/output filtering, prompt injection prevention, content policy
+
+#### G. Plugin & Extension System (Mandatory for extensible platforms)
+- **Plugin Lifecycle**: Install, configure, enable/disable, uninstall plugins
+- **Plugin Isolation**: Sandboxed execution environment for third-party code
+- **Plugin Marketplace**: Discovery, review, publishing pipeline
+- **Extension SDK**: APIs and developer documentation for plugin authors
+
+#### H. Integration & Connectivity (Mandatory for integration platforms)
+- **Protocol Adapters**: MCP, REST, GraphQL, WebSocket connector framework
+- **Third-party Integrations**: Chat platforms (Slack, Lark), project tools, CRM
+- **Webhook Management**: Inbound/outbound webhook configuration and monitoring
+- **OAuth/API Key Management**: Secure credential storage for external services
+
+#### I. DevOps & Infrastructure (Mandatory for self-hosted/hybrid platforms)
+- **Environment Management**: Dev/staging/production environment configuration
+- **Sandbox/Secure Execution**: Isolated code execution environment for AI agents
+- **Deployment Pipelines**: CI/CD integration, canary deploys, rollback
+- **Observability**: Logging, tracing, metrics dashboards for platform operators
+
+#### J. Self-Learning & Optimization (For AI-native platforms)
+- **Pattern Recognition**: Detect repeating tasks across tenants
+- **Auto-Plugin Generation**: Suggest or auto-create plugins for common patterns
+- **Cost Optimization**: Token usage tracking, SLM vs Cloud LLM routing
+- **Knowledge Accumulation**: Cross-tenant anonymized learning from workflows
+
+### 3.7. Cross-Journey FR Synthesis (MANDATORY for >3 Journeys)
+
+If the product has more than 3 user journeys defined in previous steps:
+
+1. **Build Journey × Capability Matrix**: Create a matrix mapping each journey to capability areas.
+   Ask: "Which journeys share the same underlying capability?"
+2. **Identify Shared Infrastructure FRs**: Extract capabilities that appear in 2+ journeys
+   but are not yet captured as explicit FRs (e.g., shared notification system, shared file management).
+3. **Identify Journey Intersection FRs**: Look for capabilities needed at the BOUNDARY between
+   journeys (e.g., HR onboarding → IT provisioning, Sales → Finance invoicing).
+4. **Validate No Orphan Journeys**: Ensure every journey has at least 3 supporting FRs.
+   If a journey has <3 FRs, probe deeper with the user.
+
 ### 4. Generate Comprehensive FR List
 
 Create complete functional requirements using this format:
@@ -134,7 +182,13 @@ Create complete functional requirements using this format:
 
 - FR#: [Actor] can [capability] [context/constraint if needed]
 - Number sequentially (FR1, FR2, FR3...)
-- Aim for 20-50 FRs for typical projects
+- Aim for FRs appropriate to product complexity class:
+  - **Simple App** (single-domain, 1-2 user types): 15-30 FRs
+  - **Standard App** (multi-domain, 3-5 user types): 30-60 FRs
+  - **Platform Product** (multi-tenant, infrastructure, extensible): 60-120 FRs
+  - **Enterprise Platform** (multi-tenant, multi-integration, self-service): 80-150+ FRs
+- If the product has >5 user journeys OR >3 integration domains, it is likely Platform-class.
+- NEVER cap FRs artificially — completeness > brevity for capability contracts.
 
 **Altitude Check:**
 Each FR should answer "WHAT capability exists?" NOT "HOW it's implemented?"
@@ -153,10 +207,13 @@ Before presenting to user, validate the FR list:
 1. "Did I cover EVERY capability mentioned in the MVP scope section?"
 2. "Did I include domain-specific requirements as FRs?"
 3. "Did I cover the project-type specific needs?"
-4. "Could a UX designer read ONLY the FRs and know what to design?"
-5. "Could an architect-agent read ONLY the FRs and know what to support?"
-6. "Are there any user actions or system behaviors we discussed that have no FR?"
-7. "CRITICAL: Did I include the fundamental baseline requirements (IAM, Tenant Management, Billing, Notifications, Metrics/Auditing) appropriate for this product type as detailed in Step 3.5?"
+4. "SaaS Readiness Check: Did I include capabilities for Onboarding, Trial billing, Credits lifecycle, and API management (Key rotation, Sandbox)?"
+5. "Compliance & Security Check: Did I include immutable Audit Logging, AES-256 data encryption controls, and rate-limiting limits?"
+6. "Ecosystem Integration Check: If target platforms include Shopify/Haravan, did I include OAuth install, GDPR mandatory webhooks, and App Proxy routing?"
+7. "Could a UX designer read ONLY the FRs and know what to design?"
+8. "Could an architect-agent read ONLY the FRs and know what to support?"
+9. "Are there any user actions or system behaviors we discussed that have no FR?"
+10. "CRITICAL: Did I include the fundamental baseline requirements (IAM, Tenant Management, Billing, Notifications, Metrics/Auditing) appropriate for this product type as detailed in Step 3.5?"
 
 **Altitude Check:**
 

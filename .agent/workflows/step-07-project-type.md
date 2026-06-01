@@ -96,6 +96,21 @@ Ask naturally:
 - "How will you handle authentication and authorization?"
 - "What data formats will you support for requests and responses?"
 
+### 2b. SaaS & Ecosystem Compliance Discovery (CRITICAL for SaaS/Apps)
+If the project is classified as SaaS, E-commerce App, or Developer tool, you MUST elicit:
+1. **Monetization Mechanics:**
+   - What is the trial strategy? (e.g., 14-day free trial, feature lockouts, upgrade triggers).
+   - How are usages/credits measured and enforced? (e.g., usage billing, monthly resets, threshold alerts).
+2. **Platform & API Integrations:**
+   - What are the external app marketplaces requirements? (e.g., Shopify App Store, Haravan App Store).
+   - How will OAuth install and session tokens be verified securely? (e.g., App Bridge JWT, cookie-less auth).
+   - Are GDPR compliance webhooks handled? (e.g., redact customer data, redact shop data).
+   - How is proxy networking handled for custom endpoints? (e.g., App Proxy mapping for /llms.txt).
+3. **Operations & Diagnostics:**
+   - How do administrators or merchant support inspect actions? (e.g., immutable audit logging, actor role tracking).
+   - How do developers test before going live? (e.g., Sandbox Mode toggle, widget preview iframe).
+   - How is merchant sensitive data protected at rest? (e.g., AES-256 encryption for client secrets).
+
 ### 3. Document Project-Type Specific Requirements
 
 Based on user answers to key_questions, synthesize comprehensive requirements:

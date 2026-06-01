@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adoption Review Pack - prd-taskmaster</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --panel-bg: rgba(17, 24, 39, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --accent-color: #8b5cf6;
+      --accent-gradient: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #6d28d9 100%);
+      --glass-glow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(109, 40, 217, 0.05) 0%, transparent 40%);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Premium Header */
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #c084fc;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      font-family: var(--font-display);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Dashboard Grid Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+
+    /* Glassmorphic Cards */
+    .card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: var(--glass-glow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--accent-gradient);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139, 92, 246, 0.2);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+    }
+
+    h2 span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Content Lists */
+    ul, ol {
+      list-style-position: inside;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    li strong {
+      color: #fff;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    .highlight-box {
+      background: rgba(139, 92, 246, 0.08);
+      border-left: 4px solid var(--accent-color);
+      padding: 16px 20px;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 20px;
+    }
+
+    .highlight-box p {
+      margin-bottom: 0;
+      color: #ddd;
+    }
+
+    /* Sidebar metadata panel */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .meta-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item:last-child {
+      border-bottom: none;
+    }
+
+    .meta-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .meta-value.accent {
+      color: #c084fc;
+      background: rgba(139, 92, 246, 0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    /* Questions Form */
+    .question-card {
+      background: linear-gradient(135deg, rgba(27, 20, 52, 0.7) 0%, rgba(15, 12, 35, 0.7) 100%);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #fff;
+      padding: 12px;
+      font-family: inherit;
+      resize: vertical;
+      transition: all 0.3s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+    }
+
+    button {
+      background: var(--accent-gradient);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--font-display);
+      width: 100%;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Interactive micro-animations */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(139, 92, 246, 0.1);
+      border-radius: 8px;
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">Adoption Review Pack</div>
+      <h1>prd-taskmaster Integration</h1>
+      <p class="subtitle">Tích hợp bộ lọc từ khóa mơ hồ và mô hình cooldown-throttled cập nhật vào hệ thống I-Wish</p>
+    </header>
+
+    <div class="dashboard-grid">
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="card" style="margin-bottom: 30px;">
+          <h2><span class="icon">🧭</span> Kế hoạch Tích hợp & Đóng gói</h2>
+          <p>Dựa trên phê duyệt của người dùng đối với hướng tiếp cận <strong>Selective Pattern Adoption</strong>, chúng ta sẽ trích xuất hai mẫu thiết kế tinh hoa từ <code>prd-taskmaster</code> và tích hợp trực tiếp vào hệ thống I-Wish.</p>
+          
+          <div class="highlight-box">
+            <p><strong>Phương án:</strong> Đóng gói các tính năng dưới dạng System Skill (<code>SYSTEM_SKILL</code>), nâng cấp quy trình validation spec tự động mà không bị phụ thuộc vào môi trường Taskmaster bên ngoài.</p>
+          </div>
+
+          <div style="margin-top: 30px;">
+            <h3 style="margin-bottom: 12px; color: #fff;">1. Bộ lọc từ mơ hồ (Vague Language Filter)</h3>
+            <p>Tích hợp bộ regex phân tích và phát hiện các cụm từ định lượng mơ hồ (e.g. "nhanh", "an toàn", "fast", "scalable") trong văn bản PRD, buộc tác nhân AI phải ghi nhận các chỉ số đo lường (SMART metrics) cụ thể.</p>
+            
+            <h3 style="margin-bottom: 12px; color: #fff;">2. Cơ chế Cooldown API (Throttled Update Checker)</h3>
+            <p>Áp dụng helper function sử dụng cache thời gian nhằm giới hạn số lần gọi các cổng API ngoài (HuggingFace, GitHub Releases, các dịch vụ ontology) để tránh bị khóa rate-limit trong các skill lập trình và nghiên cứu.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="icon">🛡️</span> Biên giới & Ràng buộc (Boundaries & Constraints)</h2>
+          <ul>
+            <li><strong>Vocabulary Scope:</strong> Một số cụm từ kiểm tra có thể trùng lặp với từ khóa hợp lệ trong phát biểu kỹ thuật (ví dụ: "secure SSL connection"). Logic regex sẽ cần lọc kỹ để tránh cảnh báo sai.</li>
+            <li><strong>Sandbox Isolation:</strong> Tất cả cache và file config của bộ đệm cooldown phải ghi vào thư mục brain an toàn của I-Wish (<code>~/.gemini/antigravity/brain/</code>), tuyệt đối không ghi ra ngoài workspace để giữ cô lập bảo mật.</li>
+            <li><strong>Performance:</strong> Đối với tài liệu spec cực lớn (>10,000 dòng), regex có thể chạy chậm. I-Wish sẽ tự động phân khúc văn bản theo heading để quét tuần tự nhằm tối ưu bộ nhớ.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="card">
+          <h2><span class="icon">📊</span> Metadata</h2>
+          <div class="meta-item">
+            <span class="meta-label">Asset:</span>
+            <span class="meta-value">prd-taskmaster</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Version:</span>
+            <span class="meta-value">3.0.0</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Shape Axis:</span>
+            <span class="meta-value accent">skill-attachment</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Role Axis:</span>
+            <span class="meta-value accent">supportive</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target:</span>
+            <span class="meta-value">SYSTEM_SKILL</span>
+          </div>
+        </div>
+
+        <!-- Question form for interactivity -->
+        <div class="card question-card">
+          <h2><span class="icon">❓</span> Review Questions</h2>
+          <form id="review-form">
+            <div class="form-group">
+              <label for="vague-words">1. Bạn có muốn thêm từ khóa tiếng Việt hay tiếng Anh nào vào bộ lọc tự động không?</label>
+              <textarea id="vague-words" placeholder="Ví dụ: nhanh, mượt, ổn định, optimal..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="cooldown-time">2. Bạn có đồng ý đặt thời gian cooldown mặc định của API check là 24h không?</label>
+              <textarea id="cooldown-time" placeholder="Đồng ý (24 giờ) hoặc đề xuất thời gian khác..."></textarea>
+            </div>
+
+            <button type="button" onclick="submitReview()">Gửi Ý Kiến Phản Hồi</button>
+          </form>
+          <div id="status-msg" style="margin-top: 15px; text-align: center; color: #a78bfa; font-weight: 600; display: none;">
+            Cảm ơn ý kiến của bạn! Tôi đã ghi nhận phản hồi.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function submitReview() {
+      document.getElementById('status-msg').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('status-msg').style.display = 'none';
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
