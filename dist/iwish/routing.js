@@ -214,7 +214,8 @@ function detectCommand(normalizedRequest) {
             routeReason: 'Capability evolution intent detected',
         };
     }
-    if (/\b(ui|ux|design|figma|stitch|layout|screen)\b/.test(normalizedRequest)) {
+    if (/\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
+        /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)) {
         return {
             canonicalCommand: '/make-ui-spec',
             legacyAliasMatched: null,
@@ -637,7 +638,16 @@ async function routeRequest(projectRoot, request) {
     const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics')) || countFiles(path.join(projectRoot, '_iwish-output', 'epics'));
     const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) || fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml'));
     const routeProfile = routingProfiles.find((profile) => profile.kind === 'workflow' && profile.name === route.canonicalCommand.replace(/^\//, ''));
-    const toolSetupPrompts = (0, tooling_1.buildToolSetupPrompts)(routeProfile?.tool_dependencies || [], status.selectedTools);
+    const toolDeps = new Set(routeProfile?.tool_dependencies || []);
+    if (route.targetAgent === 'ux-agent' ||
+        route.canonicalCommand === '/ux-agent' ||
+        route.canonicalCommand === '/create-ux-design' ||
+        route.canonicalCommand === '/make-ui-spec' ||
+        /\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
+        /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)) {
+        toolDeps.add('design');
+    }
+    const toolSetupPrompts = (0, tooling_1.buildToolSetupPrompts)(Array.from(toolDeps), status.selectedTools);
     const scoring = computeScoring(projectRoot, normalizedRequest, route.canonicalCommand, route.routeReason, truthMatches, sourceOfTruth, Boolean(routeProfile));
     const recommendations = buildRecommendations(route.canonicalCommand, normalizedRequest);
     const requiresReconciliation = route.canonicalCommand === '/code' ||

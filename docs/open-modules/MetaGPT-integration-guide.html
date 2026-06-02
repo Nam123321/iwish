@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaGPT Integration Guide & Adoption Pack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0b0d19 0%, #161930 100%);
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --glass-glow: rgba(138, 75, 245, 0.15);
+            --accent-primary: #8a4bf5;
+            --accent-primary-glow: rgba(138, 75, 245, 0.4);
+            --accent-secondary: #00f2fe;
+            --accent-secondary-glow: rgba(0, 242, 254, 0.4);
+            --text-main: #f1f3f9;
+            --text-muted: #9fa4b7;
+            --text-bright: #ffffff;
+            --danger-glow: rgba(255, 75, 75, 0.15);
+            --danger-color: #ff4b4b;
+            --success-color: #00e676;
+            --success-glow: rgba(0, 230, 118, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--glass-glow) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            filter: blur(20px);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #8a4bf5, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 850px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glassmorphism Panel */
+        .panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2.2rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px var(--glass-glow);
+        }
+
+        .panel:hover::before {
+            opacity: 1;
+        }
+
+        .panel-full {
+            grid-column: 1 / -1;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-bright);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2 span.icon {
+            background: rgba(255, 255, 255, 0.05);
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            border: 1px solid var(--glass-border);
+            color: var(--accent-secondary);
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+        }
+
+        li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+
+        li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--accent-secondary);
+            font-size: 0.9rem;
+            top: 1px;
+        }
+
+        /* Identity Cards Table */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        .info-table td {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-table td:first-child {
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 35%;
+        }
+
+        .info-table td:last-child {
+            color: var(--text-bright);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .badge-purple {
+            background: rgba(138, 75, 245, 0.15);
+            border-color: rgba(138, 75, 245, 0.3);
+            color: #b085ff;
+        }
+
+        .badge-cyan {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: rgba(0, 242, 254, 0.3);
+            color: #64ffda;
+        }
+
+        .badge-warning {
+            background: rgba(255, 171, 0, 0.1);
+            border-color: rgba(255, 171, 0, 0.3);
+            color: #ffd180;
+        }
+
+        /* Visual Pipeline Section */
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            position: relative;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .flow-step {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--accent-secondary);
+        }
+
+        .step-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .step-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-bright);
+        }
+
+        .flow-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+            .pipeline-flow {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .flow-arrow {
+                text-align: center;
+                transform: rotate(90deg);
+                margin: 0.25rem 0;
+            }
+        }
+
+        /* Use Cases Lists */
+        .use-case-box {
+            border-left: 3px solid transparent;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-box.core {
+            border-color: var(--accent-secondary);
+        }
+
+        .use-case-box.do-not {
+            border-color: var(--danger-color);
+        }
+
+        .use-case-title {
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .use-case-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Code Block */
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            padding: 1.2rem;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: #64ffda;
+        }
+
+        /* Security Table */
+        .sec-verdict {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: var(--danger-glow);
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            color: var(--danger-color);
+            margin-bottom: 1rem;
+        }
+
+        .sec-verdict.pass {
+            background: var(--success-glow);
+            border-color: rgba(0, 230, 118, 0.3);
+            color: var(--success-color);
+        }
+
+        /* Review Questions container */
+        .review-box {
+            background: rgba(138, 75, 245, 0.03);
+            border: 1px solid rgba(138, 75, 245, 0.15);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .q-item {
+            margin-bottom: 1.2rem;
+        }
+
+        .q-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .q-num {
+            font-weight: bold;
+            color: var(--accent-primary);
+            margin-right: 0.5rem;
+        }
+
+        .q-text {
+            color: var(--text-bright);
+            font-weight: 500;
+        }
+
+        .q-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            padding-left: 1.5rem;
+        }
+
+        /* Floating Glow Circles */
+        .glow-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -2;
+            opacity: 0.12;
+        }
+
+        .glow-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-primary);
+            top: 20%;
+            right: -100px;
+        }
+
+        .glow-2 {
+            width: 350px;
+            height: 350px;
+            background: var(--accent-secondary);
+            bottom: 10%;
+            left: -100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-circle glow-1"></div>
+    <div class="glow-circle glow-2"></div>
+
+    <div class="container">
+        <header>
+            <h1>I-Wish Adoption Review Pack</h1>
+            <div class="meta-subtitle">INTEGRATION & ADOPTION SPECIFICATION FOR METAGPT</div>
+        </header>
+
+        <div class="grid-layout">
+            <!-- 1. Identity & Card -->
+            <div class="panel">
+                <h2><span class="icon">📇</span> 1. Identity Card</h2>
+                <table class="info-table">
+                    <tr>
+                        <td>Capability</td>
+                        <td>MetaGPT (Selective Extraction)</td>
+                    </tr>
+                    <tr>
+                        <td>Source</td>
+                        <td><a href="https://github.com/FoundationAgents/MetaGPT" style="color: var(--accent-secondary); text-decoration: none;">GitHub Repository</a></td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td><span class="badge badge-warning">Draft (System Skill)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Shape Axis</td>
+                        <td><span class="badge badge-purple">compound / fragment</span></td>
+                    </tr>
+                    <tr>
+                        <td>Role Axis</td>
+                        <td><span class="badge badge-cyan">supportive</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tech Stack</td>
+                        <td>Python, Pydantic, Typer, LlamaIndex</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 2. Why it exists -->
+            <div class="panel">
+                <h2><span class="icon">🎯</span> 2. Purpose & Target</h2>
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-bright);">What job it solves:</strong> Coordinates multiple LLM agents sequentially using Standard Operating Procedures (SOP) to deliver software projects debate-free.
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-bright);">Why I-Wish wants it:</strong> To extract the <code>BY_ORDER</code> React loop execution model (eliminating agent deadlocks) and the recursive <code>ActionNode</code> XML parser.
+                </div>
+                <div>
+                    <strong style="color: var(--text-bright);">Gap filled:</strong> Solves chat loop volatility in multi-agent environments and enables structured hierarchical parsing of outputs.
+                </div>
+            </div>
+
+            <!-- 3. Delivery framework placement -->
+            <div class="panel panel-full">
+                <h2><span class="icon">⛓️</span> 3. Delivery Framework & Execution Flow</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Helps accelerate local coding via the <strong>quick-dev</strong> stage (during <code>implement</code> and <code>validate</code> phases).</p>
+                <div class="pipeline-flow">
+                    <div class="flow-step">
+                        <div class="step-num">Step 1</div>
+                        <div class="step-name">Input Idea</div>
+                    </div>
+                    <div class="flow-arrow">➔</div>
+                    <div class="flow-step">
+                        <div class="step-num">Step 2</div>
+                        <div class="step-name">Sequential Chain (SOP)</div>
+                    </div>
+                    <div class="flow-arrow">➔</div>
+                    <div class="flow-step">
+                        <div class="step-num">Step 3</div>
+                        <div class="step-name">Safe XML Parsing</div>
+                    </div>
+                    <div class="flow-arrow">➔</div>
+                    <div class="flow-step">
+                        <div class="step-num">Step 4</div>
+                        <div class="step-name">Self-Healing Compile</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Inputs -> Process -> Outputs -->
+            <div class="panel">
+                <h2><span class="icon">🔄</span> 4. Context Input & Output</h2>
+                <div style="margin-bottom: 1.2rem;">
+                    <strong style="color: var(--text-bright); display: block; margin-bottom: 0.4rem;">Expected Inputs:</strong>
+                    <ul>
+                        <li>High-level user requirements or feature idea.</li>
+                        <li>Target schema tags for XML output.</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong style="color: var(--text-bright); display: block; margin-bottom: 0.4rem;">Produced Outputs:</strong>
+                    <ul>
+                        <li>Recursively parsed Python lists & dictionaries.</li>
+                        <li>Self-healed, executable code codeblocks.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 5. Use cases -->
+            <div class="panel">
+                <h2><span class="icon">💼</span> 5. Use Case Suitability</h2>
+                <div class="use-case-box core">
+                    <div class="use-case-title">Core Use Cases</div>
+                    <div class="use-case-desc">Fast-Track Auto-Pilot Loop (zero-story execution), Safe XML extraction, Self-healing local compilation loops.</div>
+                </div>
+                <div class="use-case-box core" style="border-color: rgba(255,255,255,0.2);">
+                    <div class="use-case-title">Adjacent Use Cases</div>
+                    <div class="use-case-desc">Parallel code auditing where multiple reviews are done concurrently without turn blocks.</div>
+                </div>
+                <div class="use-case-box do-not">
+                    <div class="use-case-title">Do-Not-Use Cases</div>
+                    <div class="use-case-desc">Unstructured brainstorming or complex architectural changes needing deep consensus.</div>
+                </div>
+            </div>
+
+            <!-- 6. Edge cases & Constraints -->
+            <div class="panel">
+                <h2><span class="icon">⚠️</span> 6. Constraints & Safety Gates</h2>
+                <ul>
+                    <li><strong>Self-Healing Threshold:</strong> Limit automated compilation repair loops to exactly <strong>3 retries</strong> to prevent infinite token depletion.</li>
+                    <li><strong>AST XML Parser Mismatch:</strong> Regrade to standard regex blocks if the LLM output tags are broken.</li>
+                    <li><strong>No Dynamic Eval:</strong> Never execute raw <code>eval()</code>. Parse structures strictly with <code>ast.literal_eval()</code> or Pydantic.</li>
+                    <li><strong>Workspace Isolation:</strong> Restrict npm global installs; keep tool environments local to the workspace.</li>
+                </ul>
+            </div>
+
+            <!-- 7. Security Assessment -->
+            <div class="panel">
+                <h2><span class="icon">🛡️</span> 7. Security Audit Verdict</h2>
+                <div class="sec-verdict">
+                    <span>⚠️</span> WARNING_OVERRIDDEN
+                </div>
+                <div style="font-size: 0.95rem; color: var(--text-muted);">
+                    <p style="margin-bottom: 0.6rem;"><strong>Gitleaks:</strong> 2 findings overridden (Meilisearch test keys & variable param naming).</p>
+                    <p style="margin-bottom: 0.6rem;"><strong>CVEs:</strong> Pinned dependencies (aiohttp, gitpython) have open vulnerabilities. Requires version upgrades.</p>
+                    <p><strong>Behavioral:</strong> Suspicious eval/exec structures detected. Mitigation: Strict AST sanitization before import.</p>
+                </div>
+            </div>
+
+            <!-- 8. Orch Routing Hints -->
+            <div class="panel panel-full">
+                <h2><span class="icon">🧭</span> 8. Orch Routing & Trigger Hints</h2>
+                <div class="grid-layout" style="margin-bottom: 0; gap: 1rem;">
+                    <div>
+                        <strong style="color: var(--text-bright);">Trigger Phrases:</strong>
+                        <code style="display:block; margin-top: 0.25rem; font-family: monospace; color: var(--accent-secondary);">"phát triển nhanh", "code tự động không qua thiết kế", "self-healing compile"</code>
+                    </div>
+                    <div>
+                        <strong style="color: var(--text-bright);">Anti-Triggers:</strong>
+                        <code style="display:block; margin-top: 0.25rem; font-family: monospace; color: var(--danger-color);">"brainstorm ý tưởng", "thiết kế kiến trúc hệ thống lớn"</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Review Questions -->
+            <div class="panel panel-full" style="border-color: rgba(138, 75, 245, 0.3); background: rgba(138, 75, 245, 0.02);">
+                <h2><span class="icon" style="color: var(--accent-primary);">❓</span> 9. Critical User Review Questions</h2>
+                <div class="review-box">
+                    <div class="q-item">
+                        <span class="q-num">Q1.</span>
+                        <span class="q-text">Are you satisfied with capping the Self-Healing Compilation loop at exactly 3 attempts?</span>
+                        <div class="q-desc">Higher limits risk burning token budgets if the coding error is structural.</div>
+                    </div>
+                    <div class="q-item" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                        <span class="q-num">Q2.</span>
+                        <span class="q-text">Do you want Fast-Track Auto-Pilot (Zero-Story mode) to activate automatically for small edits under 3 files?</span>
+                        <div class="q-desc">This bypasses the formal PRD/Story planning check, accelerating minor code updates.</div>
+                    </div>
+                    <div class="q-item" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                        <span class="q-num">Q3.</span>
+                        <span class="q-text">Confirm approval to replace all instances of raw eval() with ast.literal_eval() for the extracted skills?</span>
+                        <div class="q-desc">This is required to close RCE vulnerability vectors in the action parser.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

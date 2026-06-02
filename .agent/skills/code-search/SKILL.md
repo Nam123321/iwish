@@ -1,5 +1,5 @@
 ---
-name: 'code-search'
+name: 'code-search-skill'
 description: 'Local hybrid semantic+lexical code search for agents using Semble (Model2Vec + BM25 + RRF). Provides search and find-related capabilities with 3-tier fallback: CLI → uvx → grep_search.'
 inputs:
   - query: 'Natural language or code query string'

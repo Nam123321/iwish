@@ -254,7 +254,10 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
     };
   }
 
-  if (/\b(ui|ux|design|figma|stitch|layout|screen)\b/.test(normalizedRequest)) {
+  if (
+    /\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
+    /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)
+  ) {
     return {
       canonicalCommand: '/make-ui-spec',
       legacyAliasMatched: null,
@@ -742,7 +745,20 @@ export async function routeRequest(projectRoot: string, request: string): Promis
   const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics')) || countFiles(path.join(projectRoot, '_iwish-output', 'epics'));
   const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) || fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml'));
   const routeProfile = routingProfiles.find((profile) => profile.kind === 'workflow' && profile.name === route.canonicalCommand.replace(/^\//, ''));
-  const toolSetupPrompts = buildToolSetupPrompts(routeProfile?.tool_dependencies || [], status.selectedTools);
+  
+  const toolDeps = new Set(routeProfile?.tool_dependencies || []);
+  if (
+    route.targetAgent === 'ux-agent' ||
+    route.canonicalCommand === '/ux-agent' ||
+    route.canonicalCommand === '/create-ux-design' ||
+    route.canonicalCommand === '/make-ui-spec' ||
+    /\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
+    /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)
+  ) {
+    toolDeps.add('design');
+  }
+
+  const toolSetupPrompts = buildToolSetupPrompts(Array.from(toolDeps), status.selectedTools);
   const scoring = computeScoring(
     projectRoot,
     normalizedRequest,
