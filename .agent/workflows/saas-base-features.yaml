@@ -97,6 +97,19 @@ categories:
           - "FR-LEG-4 [Tenant]: Users can request a self-service download of all personal data held by the platform (GDPR Data Portability)."
           - "FR-LEG-5 [Tenant]: Users can request permanent account and data deletion (GDPR Right to Be Forgotten)."
 
+      - area: "Settings & System Configurations"
+        portal: "General"
+        items:
+          - "FR-SET-1 [Tenant]: Workspace Admins can edit general workspace settings (workspace name, description, upload organization logo, or request workspace deletion)."
+          - "FR-SET-2 [Tenant]: Workspace Admins can configure security policies, such as enforcing Two-Factor Authentication (2FA) for all members and setting session idle timeout limits."
+          - "FR-SET-3 [Tenant]: Workspace Admins can configure integrations, including incoming/outgoing webhooks (Slack, Discord, custom URLs) and third-party service credentials."
+          - "FR-SET-4 [Tenant]: Users can manage their personal account settings (change email, modify display name, update avatar, select timezone/language, and toggle personal notification channels)."
+          - "FR-SET-5 [Superadmin]: Superadmins can configure global system settings, including toggle sign-up moderation (approval mode), maximum tenants limits, and default user roles."
+          - "FR-SET-6 [Superadmin]: Superadmins can manage system integrations, such as SMTP mail server keys, LLM API keys (OpenAI, Anthropic, Gemini), and object storage credentials."
+          - "FR-SET-7 [Superadmin]: Superadmins can manage billing definitions, including Stripe webhook secret keys, base currency settings, and toggle active tax calculations."
+          - "FR-SET-8 [Partner]: Partners can view and modify their business profile details, bank transfer/Stripe Connect payout methods, and contact configurations."
+          - "FR-SET-9 [Partner]: Partners can customize branding options for their sub-tenants (whitelabel settings: custom email template sender, partner sub-logo, support links)."
+
   b2c_consumer:
     name: "B2C Consumer SaaS"
     description: "Single-user subscription apps focusing on personal usage, social features, and consumer billing."
