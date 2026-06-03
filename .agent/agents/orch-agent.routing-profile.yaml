@@ -5,7 +5,7 @@ shape: agent
 role: process-primary
 phases: [discover, plan, solution, implement, validate, deliver, operate-learn]
 stages: [intent-triage, staged-planning, orchestration]
-triggers: [help, route, orchestrate, what should we do]
+triggers: [help, route, orchestrate, what should we do, phát triển epic và story theo quy trình, go ahead với story, dev story, deploy story, deploy epic]
 anti_triggers: []
 primary_agents: [orch-agent]
 primary_workflows: [status, plan, make-story, code, review, research, make-ui-spec]

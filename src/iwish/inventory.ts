@@ -65,6 +65,7 @@ const CANONICAL_WORKFLOW_NAMES = new Set([
   'simulate-user',
   'fix-bug',
   'codebase-health',
+  'flow',
 ]);
 
 const TRANSITIONAL_FUNCTION_AGENT_NAMES = new Set(['data-architect', 'data-strategist']);

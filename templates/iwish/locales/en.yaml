@@ -147,6 +147,9 @@ guide:
       coding logic."
     desc: "Development loop for each Story: Create story detail -> UI/UX Spec ->
       Data Spec -> Write source code."
+  step_4_flow:
+    output: "💡 Fast Command: /flow (Automated Epic/Story SDLC Pipeline)"
+    note: "Automates the entire flow: /make-story -> /make-ui-spec & /make-data-spec -> design scoring to decide screen mockup generation on configured platform (Stitch, Figma, Claude Design, Canva, etc.) -> wait for approval user gate -> /code -> /review. Advanced Tip: You can trigger /flow concurrently on non-dependent stories in an Epic for parallel sub-agent execution."
   step_4_story:
     output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/story.md ready
       for development.

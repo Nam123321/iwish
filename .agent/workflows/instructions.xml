@@ -140,7 +140,7 @@
     <action>Load {project_context} for coding standards and project-wide patterns (if exists)</action>
     <action>Load {master_debug_notes} for critical debugging learnings and known issues (if exists)</action>
     <action>Load {feature_hierarchy_file} for feature placement and structural context (if exists)</action>
-    <action>Load _bmad-output/planning-artifacts/stitch-first-playbook.md for UI development guidelines</action>
+    <action>Load standard design playbook (e.g. figma-first-playbook.md, stitch-first-playbook.md) for UI development guidelines</action>
     <action>Parse sections: Story, Acceptance Criteria, Tasks/Subtasks, Dev Notes, Dev Agent Record, File List, Change Log, Status</action>
     <action>Load comprehensive context from story file's Dev Notes section</action>
     <action>Extract developer guidance from Dev Notes: architecture requirements, previous learnings, technical specifications</action>
@@ -153,58 +153,58 @@
       <action>Extract: screen inventory, component hierarchy, responsive breakpoints, design tokens, interactions, data contracts</action>
       <action>Set {{ui_spec_loaded}} = true</action>
 
-      <!-- Verify UI Spec quality: Stitch screens and Design System GATE -->
-      <action>Search UI spec for "Stitch" references — verify story-specific Stitch screens exist (not just design system screens)</action>
+      <!-- Verify UI Spec quality: Design screens and Design System GATE -->
+      <action>Search UI spec for design references — verify story-specific mockups/screens exist (Stitch, Figma, Claude Design, Canva, etc.)</action>
       <action>Search UI spec for "Design System GATE" or "DESIGN.md" — verify Design System was cross-referenced</action>
-      <check if="UI spec has NO story-specific Stitch screens AND story has [FE] tasks">
-        <output>⚠️ **UI Spec Incomplete** — Missing Stitch screen references for this story.
+      <check if="UI spec has NO story-specific design screens AND story has [FE] tasks">
+        <output>⚠️ **UI Spec Incomplete** — Missing design screen/mockup references for this story.
 
           The UI spec exists but may not have been generated via the full `create-ui-spec` workflow.
-          Consider re-running `/create-ui-spec` to generate story-specific Stitch screens.
+          Consider re-running `/create-ui-spec` to generate story-specific design screens/mockups.
 
           **Continuing with available UI spec...**
         </output>
       </check>
 
-      <!-- 🎨 STITCH-FIRST GATE — delegates to /stitch-first-dev for scoring and orchestration -->
+      <!-- 🎨 DESIGN-FIRST GATE — delegates to figma-first-dev/stitch-first-dev/etc. for scoring and orchestration based on user setup -->
       <check if="story has [FE] tasks">
-        <critical>🎨 Stitch-First Gate — Run /stitch-first-dev workflow for scoring and design alignment</critical>
+        <critical>🎨 Design-First Gate — Run design-first workflow (e.g. /stitch-first-dev, /figma-first-dev) for scoring and design alignment based on configured design platform</critical>
         
-        <!-- Check if Stitch-to-Dev Handoff already exists in UI Spec (from previous /stitch-first-dev run) -->
-        <action>Search UI spec for "Stitch-to-Dev Handoff" section</action>
+        <!-- Check if Design Handoff already exists in UI Spec (from previous run) -->
+        <action>Search UI spec for "Design Handoff" or "Stitch-to-Dev Handoff" section</action>
         
-        <check if="UI spec has 'Stitch-to-Dev Handoff' section">
-          <action>Load the Stitch-to-Dev Handoff section: Screen Registry, Component-to-Code Mapping, Key Visual Rules, Icon Assignment</action>
-          <action>Check for existing Stitch CSS mapping at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/stitch-css-mapping.md (derive {{epic_id}} from the first digit of {{story_key}})</action>
-          <check if="Stitch CSS mapping file exists">
+        <check if="UI spec has 'Design Handoff' or 'Stitch-to-Dev Handoff' section">
+          <action>Load the Design Handoff section: Screen Registry, Component-to-Code Mapping, Key Visual Rules, Icon Assignment</action>
+          <action>Check for existing design CSS mapping at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/*css-mapping.md</action>
+          <check if="design CSS mapping file exists">
             <action>Load the CSS mapping file as AUTHORITATIVE visual reference for FE coding</action>
           </check>
           <action>Set {{stitch_css_mapping_loaded}} = true</action>
           <action>Set {{stitch_handoff_loaded}} = true</action>
-          <output>🎨 **Stitch-First Handoff Loaded** — Screen Registry + Component Mapping + Visual Rules ready for FE implementation</output>
+          <output>🎨 **Design Handoff Loaded** — Screen Registry + Component Mapping + Visual Rules ready for FE implementation</output>
         </check>
         
-        <check if="UI spec does NOT have 'Stitch-to-Dev Handoff' section">
-          <output>🎨 **Stitch-First Gate Required** — Story has [FE] tasks but no Stitch-to-Dev Handoff found.
+        <check if="UI spec does NOT have Design/Stitch Handoff section">
+          <output>🎨 **Design-First Gate Required** — Story has [FE] tasks but no Design/Stitch Handoff found.
 
-            The `/stitch-first-dev` workflow must run to:
-            1. Calculate Stitch Score (5 factors: Layout, Components, Impact, Gap, Coverage)
-            2. Create/update Stitch designs if score ≥ 4
-            3. Generate Stitch-to-Dev Handoff amendment in UI Spec
-            4. Extract CSS mapping via `/stitch-to-code`
+            The configured design-first workflow must run to:
+            1. Calculate Design Score (5 factors: Layout, Components, Impact, Gap, Coverage)
+            2. Create/update designs if score ≥ 4 on the user's configured design platform (Stitch, Figma, Claude Design, Canva, etc.)
+            3. Generate Design Handoff amendment in UI Spec
+            4. Extract CSS mapping
 
             **Options:**
-            1. Run `/stitch-first-dev` now (RECOMMENDED)
-            2. Continue WITHOUT Stitch-First process (⚠️ risk of design-to-code drift)
+            1. Run the design-first workflow (e.g. /stitch-first-dev or /figma-first-dev) now (RECOMMENDED)
+            2. Continue WITHOUT Design-First process (⚠️ risk of design-to-code drift)
           </output>
-          <ask>Choose [1] to run Stitch-First workflow (recommended) or [2] to continue without:</ask>
+          <ask>Choose [1] to run Design-First workflow (recommended) or [2] to continue without:</ask>
           <check if="user chooses '1'">
-            <action>HALT — Run /stitch-first-dev workflow for this story first, then resume /dev-story</action>
+            <action>HALT — Run configured design-first workflow for this story first, then resume /dev-story</action>
           </check>
           <check if="user chooses '2'">
             <action>Set {{stitch_css_mapping_loaded}} = false</action>
             <action>Set {{stitch_handoff_loaded}} = false</action>
-            <output>⚠️ Continuing without Stitch-First process. Design System GATE still enforced via DESIGN.md.</output>
+            <output>⚠️ Continuing without Design-First process. Design System GATE still enforced via DESIGN.md.</output>
           </check>
         </check>
       </check>
@@ -222,12 +222,12 @@
         **The `create-ui-spec` workflow MUST be run before `dev-story` for stories with frontend tasks.**
         This ensures:
         ✅ Design System GATE verified (DESIGN.md cross-referenced)
-        ✅ Stitch screens generated for visual reference
+        ✅ Design screens/mockups generated for visual reference
         ✅ Component hierarchy, design tokens, and interactions documented
         ✅ Dev agent has authoritative frontend implementation guide
 
         **Options:**
-        1. Run `/create-ui-spec` first (RECOMMENDED — generates Stitch screens + tokens)
+        1. Run `/create-ui-spec` first (RECOMMENDED — generates design screens + tokens)
         2. Continue WITHOUT UI spec (⚠️ frontend implementation will lack design guidance)
         3. Provide a custom UI spec file path
       </output>
@@ -455,15 +455,15 @@
       □ Nested resource routes include parent ID (:parentId/child/:childId)
     </action>
 
-    <!-- 🎨 STITCH VISUAL FIDELITY GATE (for [FE] tasks with Stitch-First handoff) -->
+    <!-- 🎨 DESIGN VISUAL FIDELITY GATE (for [FE] tasks with Design handoff) -->
     <check if="task is [FE] AND ({{stitch_css_mapping_loaded}} == true OR {{stitch_handoff_loaded}} == true)">
-      <critical>🎨 Visual Fidelity Gate — Compare coded output against Stitch approved design</critical>
+      <critical>🎨 Visual Fidelity Gate — Compare coded output against approved design mockup</critical>
       <action>Visual diff verification checklist:
         □ Run dev server and navigate to the implemented page
         □ Capture screenshot of the coded output using browser_subagent
-        □ Compare screenshot against Stitch approved screenshot:
-          - Color accuracy: CSS var values match Stitch CSS mapping table
-          - Layout accuracy: grid/flex structure matches Stitch layout
+        □ Compare screenshot against approved design screenshot:
+          - Color accuracy: CSS var values match design CSS mapping table
+          - Layout accuracy: grid/flex structure matches design layout
           - Spacing accuracy: gap/padding/margin values match mapping
           - Typography accuracy: font-size/weight/family match mapping
           - Border/shadow accuracy: border-radius/box-shadow match mapping
@@ -471,15 +471,15 @@
         □ Document any INTENTIONAL deviations (e.g. using CSS var instead of hex)
       </action>
       <check if="{{stitch_handoff_loaded}} == true">
-        <action>Verify ALL Key Visual Rules from Stitch-to-Dev Handoff section are satisfied:
+        <action>Verify ALL Key Visual Rules from Design Handoff section are satisfied:
           □ Each rule checkbox in UI Spec Amendment is checkable and validated
-          □ Component-to-Code Mapping matches: correct antd/custom components used
+          □ Component-to-Code Mapping matches: correct components used
           □ Icon Assignment matches: correct library per location
           □ New CSS Variables (if any) are defined in the portal's CSS
         </action>
       </check>
       <check if="visual diff reveals significant discrepancies">
-        <action>Fix CSS values to match Stitch CSS mapping table and Key Visual Rules</action>
+        <action>Fix CSS values to match design CSS mapping table and Key Visual Rules</action>
         <action>Re-screenshot and verify again before marking complete</action>
       </check>
     </check>

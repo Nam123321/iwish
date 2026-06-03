@@ -87,6 +87,8 @@ function getTargetAgent(canonicalCommand) {
             return 'capability-agent';
         case '/brand':
             return 'creative-agent';
+        case '/flow':
+            return 'orch-agent';
         default:
             return 'orch-agent';
     }
@@ -232,6 +234,15 @@ function detectCommand(normalizedRequest) {
             legacyAliasMatched: null,
             targetAgent: 'ux-agent',
             routeReason: 'UI/design intent detected',
+        };
+    }
+    if (/\b(dev-pipeline|flow workflow|sdlc pipeline|sequenc(e|tial) flow)\b/.test(normalizedRequest) ||
+        /phát triển epic và story theo quy trình|go ahead với story|go ahead story|dev story|deploy story|deploy epic|quy trình|phát triển.*quy trình|chạy story.*quy trình|phát triển epic.*quy trình/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/flow',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Sequential SDLC flow / pipeline intent detected',
         };
     }
     if (/\b(plan|prd|brief|roadmap|priorit(y|ize)|product strategy|product plan)\b/.test(normalizedRequest)) {

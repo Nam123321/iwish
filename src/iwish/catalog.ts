@@ -79,6 +79,7 @@ const CANONICAL_COMMANDS: Array<{ command: string; description: string; tags: st
   { command: '/project-expansion-review', description: 'Evaluate impact of new features or project expansions during development', tags: ['command', 'planning', 'review', 'change-navigation'] },
   { command: '/tournament', description: 'Parallel A/B Tournament execution for multiple plugins/workflows', tags: ['command', 'testing', 'tournament', 'ab-test'] },
   { command: '/brand', description: 'Brand identity, logo and brand guideline creation and refactoring flow', tags: ['command', 'design', 'strategy', 'brand'] },
+  { command: '/flow', description: 'Automated Epic/Story SDLC pipeline workflow', tags: ['command', 'sdlc', 'automation', 'pipeline'] },
 ];
 
 function readYaml<T>(filePath: string): T {

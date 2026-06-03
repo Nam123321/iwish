@@ -2,7 +2,8 @@ nodes:
 - id: skill-pack-white-hacker
   type: skill
   path: /.agent/skills/white-hacker/SKILL.md
-  description: Security validation skill pack containing playbooks for vulnerability testing, SAST audits, and security toolings.
+  description: Security validation skill pack containing playbooks for vulnerability
+    testing, SAST audits, and security toolings.
   tags:
   - security
   - testing
@@ -50,7 +51,8 @@ nodes:
 - id: skill-design-dna-extraction
   type: skill
   path: /.agent/skills/clone-website/design-dna-extraction.md
-  description: Extracts the visual DNA (layout structure, fonts, color anchors, rhythm) from screenshots or URLs.
+  description: Extracts the visual DNA (layout structure, fonts, color anchors, rhythm)
+    from screenshots or URLs.
   tags:
   - cloner
   - dna
@@ -60,7 +62,8 @@ nodes:
 - id: skill-hybrid-cloner
   type: skill
   path: /.agent/skills/clone-website/hybrid-cloner.md
-  description: Dual-track website cloner combining asset harvesting and visual DNA extraction.
+  description: Dual-track website cloner combining asset harvesting and visual DNA
+    extraction.
   tags:
   - cloner
   - hybrid
@@ -126,7 +129,8 @@ nodes:
 - id: skill-ux-guardian-anti-slop
   type: skill
   path: /.agent/skills/ux-guardian/ux-guardian-anti-slop.md
-  description: Aesthetic checks adapted from Hallmark to eliminate AI styling tells (flat greys, bad line length, un-centered headers, default hover animations).
+  description: Aesthetic checks adapted from Hallmark to eliminate AI styling tells
+    (flat greys, bad line length, un-centered headers, default hover animations).
   tags:
   - ux
   - anti-slop
@@ -137,7 +141,8 @@ nodes:
 - id: skill-8-state-preview-rule
   type: skill
   path: /.agent/skills/ux-guardian/8-state-preview-rule.md
-  description: Enforces interactive previews rendering elements across all 8 standard states (default, hover, active, focus, disabled, loading, selected, error).
+  description: Enforces interactive previews rendering elements across all 8 standard
+    states (default, hover, active, focus, disabled, loading, selected, error).
   tags:
   - ux
   - testing
@@ -190,7 +195,8 @@ nodes:
 - id: fragment-project-expansion-review
   type: fragment
   path: /.agent/fragments/project-expansion-review.md
-  description: Evaluation and suitability review protocol for new project expansions and features to prevent drift, manage pivots, and route back to planning funnel.
+  description: Evaluation and suitability review protocol for new project expansions
+    and features to prevent drift, manage pivots, and route back to planning funnel.
   tags:
   - project-expansion
   - alignment
@@ -200,7 +206,8 @@ nodes:
 - id: fragment-document-traceability-standards
   type: fragment
   path: /.agent/fragments/document-traceability-standards.md
-  description: Document traceability and folder standards for storing outputs and defining inheritance rules across steps.
+  description: Document traceability and folder standards for storing outputs and
+    defining inheritance rules across steps.
   tags:
   - documentation
   - traceability
@@ -481,7 +488,8 @@ nodes:
 - id: workflow-security-guardian-patch
   type: workflow
   path: /.agent/workflows/security-guardian-patch.md
-  description: Dedicated security validation workflow that runs static scans (semgrep/gitleaks) and dynamic PoC tests in a sandbox, then handles automated patching.
+  description: Dedicated security validation workflow that runs static scans (semgrep/gitleaks)
+    and dynamic PoC tests in a sandbox, then handles automated patching.
   tags:
   - security
   - validation
@@ -880,7 +888,8 @@ nodes:
 - id: skill-ag-kit-nextjs-react
   type: skill
   path: /.agent/skills/ag-kit-guides/nextjs-react/SKILL.md
-  description: Hướng dẫn chuyên sâu về tối ưu hiệu năng Next.js và React
+  description: "H\u01B0\u1EDBng d\u1EABn chuy\xEAn s\xE2u v\u1EC1 t\u1ED1i \u01B0\
+    u hi\u1EC7u n\u0103ng Next.js v\xE0 React"
   tags:
   - nextjs
   - react
@@ -890,7 +899,8 @@ nodes:
 - id: skill-ag-kit-frontend-design
   type: skill
   path: /.agent/skills/ag-kit-guides/frontend-design/SKILL.md
-  description: Hướng dẫn chuyên sâu về tư duy thiết kế web UI/UX
+  description: "H\u01B0\u1EDBng d\u1EABn chuy\xEAn s\xE2u v\u1EC1 t\u01B0 duy thi\u1EBF\
+    t k\u1EBF web UI/UX"
   tags:
   - frontend
   - design
@@ -900,7 +910,8 @@ nodes:
 - id: skill-ag-kit-mobile-design
   type: skill
   path: /.agent/skills/ag-kit-guides/mobile-design/SKILL.md
-  description: Hướng dẫn chuyên sâu về tư duy và kỹ thuật thiết kế giao diện Mobile
+  description: "H\u01B0\u1EDBng d\u1EABn chuy\xEAn s\xE2u v\u1EC1 t\u01B0 duy v\xE0\
+    \ k\u1EF9 thu\u1EADt thi\u1EBFt k\u1EBF giao di\u1EC7n Mobile"
   tags:
   - mobile
   - design
@@ -910,7 +921,8 @@ nodes:
 - id: skill-ag-kit-context-compression
   type: skill
   path: /.agent/skills/ag-kit-guides/context-compression.md
-  description: Bộ quy tắc nhận thức nén ngữ cảnh 3 cấp độ giúp tối ưu hóa token
+  description: "B\u1ED9 quy t\u1EAFc nh\u1EADn th\u1EE9c n\xE9n ng\u1EEF c\u1EA3nh\
+    \ 3 c\u1EA5p \u0111\u1ED9 gi\xFAp t\u1ED1i \u01B0u h\xF3a token"
   tags:
   - context
   - compression
@@ -920,7 +932,8 @@ nodes:
 - id: skill-ag-kit-coordinator-mode
   type: skill
   path: /.agent/skills/ag-kit-guides/coordinator-mode.md
-  description: Cơ chế điều phối 4 pha với quy tắc song song/tuần tự và Golden Rule prompt
+  description: "C\u01A1 ch\u1EBF \u0111i\u1EC1u ph\u1ED1i 4 pha v\u1EDBi quy t\u1EAF\
+    c song song/tu\u1EA7n t\u1EF1 v\xE0 Golden Rule prompt"
   tags:
   - coordinator
   - orchestration
@@ -930,7 +943,8 @@ nodes:
 - id: skill-ag-kit-context-compression-decant
   type: skill
   path: /.agent/skills/ag-kit-guides/context-compression-decant.md
-  description: Cơ chế gạn lọc tri thức và nén ngữ cảnh trong quá trình kết thúc sửa lỗi (Bug Decanting)
+  description: "C\u01A1 ch\u1EBF g\u1EA1n l\u1ECDc tri th\u1EE9c v\xE0 n\xE9n ng\u1EEF\
+    \ c\u1EA3nh trong qu\xE1 tr\xECnh k\u1EBFt th\xFAc s\u1EEDa l\u1ED7i (Bug Decanting)"
   tags:
   - decant
   - compression
@@ -940,7 +954,8 @@ nodes:
 - id: skill-ag-kit-sbrp-coordinator-rules
   type: skill
   path: /.agent/skills/ag-kit-guides/sbrp-coordinator-rules.md
-  description: Quy tắc điều phối song song và tuần tự dành riêng cho quy trình sửa lỗi SBRP
+  description: "Quy t\u1EAFc \u0111i\u1EC1u ph\u1ED1i song song v\xE0 tu\u1EA7n t\u1EF1\
+    \ d\xE0nh ri\xEAng cho quy tr\xECnh s\u1EEDa l\u1ED7i SBRP"
   tags:
   - sbrp
   - coordinator
@@ -950,7 +965,8 @@ nodes:
 - id: script-auto-sync-sbrp
   type: script
   path: /.agent/scripts/auto-sync-sbrp.js
-  description: Script tự động đồng bộ hóa đặc tả story/epic và đồ thị tri thức cho SBRP
+  description: "Script t\u1EF1 \u0111\u1ED9ng \u0111\u1ED3ng b\u1ED9 h\xF3a \u0111\
+    \u1EB7c t\u1EA3 story/epic v\xE0 \u0111\u1ED3 th\u1ECB tri th\u1EE9c cho SBRP"
   tags:
   - script
   - sync
@@ -960,7 +976,8 @@ nodes:
 - id: skill-code-search
   type: skill
   path: /.agent/skills/code-search/SKILL.md
-  description: Local hybrid semantic+lexical code search using Semble (Model2Vec + BM25 + RRF).
+  description: Local hybrid semantic+lexical code search using Semble (Model2Vec +
+    BM25 + RRF).
   tags:
   - code
   - search
@@ -980,9 +997,9 @@ nodes:
 - id: skill-autoresearch
   type: skill
   path: /.agent/skills/autoresearch/SKILL.md
-  description: 'Autonomous iterative optimization loop for measurable metrics (coverage,
+  description: Autonomous iterative optimization loop for measurable metrics (coverage,
     performance, bundle size, lint errors). Git-tracked experiments with 8-phase protocol
-    and stuck detection. Adapted from vibecode-pro-max-kit vc:autoresearch (MIT).'
+    and stuck detection. Adapted from vibecode-pro-max-kit vc:autoresearch (MIT).
   tags:
   - autoresearch
   - optimization
@@ -995,9 +1012,9 @@ nodes:
 - id: fragment-predict-personas
   type: fragment
   path: /.agent/fragments/predict-personas.md
-  description: '5-Persona Debate Protocol (Architect, Security, Performance, UX, Devil''s
+  description: 5-Persona Debate Protocol (Architect, Security, Performance, UX, Devil's
     Advocate) for multi-persona pre-analysis before implementation. Injected by socratic-review.
-    Adapted from vibecode-pro-max-kit vc:predict (MIT).'
+    Adapted from vibecode-pro-max-kit vc:predict (MIT).
   tags:
   - predict
   - personas
@@ -1008,9 +1025,9 @@ nodes:
 - id: fragment-scout-rules
   type: fragment
   path: /.agent/fragments/scout-rules.md
-  description: 'File/directory exclusion rules for context-efficient code scanning
+  description: File/directory exclusion rules for context-efficient code scanning
     and analysis. Prevents token waste on binaries, lock files, and build artifacts.
-    Adapted from vibecode-pro-max-kit scout-block patterns.'
+    Adapted from vibecode-pro-max-kit scout-block patterns.
   tags:
   - scout
   - exclusion
@@ -1030,7 +1047,8 @@ nodes:
 - id: workflow-project-expansion-review
   type: workflow
   path: /.agent/workflows/project-expansion-review.md
-  description: Analyze the impact of a new feature or project expansion during development, classify pivot risks, and route back to correct planning/discovery funnel.
+  description: Analyze the impact of a new feature or project expansion during development,
+    classify pivot risks, and route back to correct planning/discovery funnel.
   tags:
   - planning
   - per
@@ -1042,7 +1060,10 @@ nodes:
 - id: workflow-idea-discover
   type: workflow
   path: /.agent/workflows/idea-discover.md
-  description: Làm rõ ý tưởng thô ban đầu sử dụng bộ khung 5 Lăng Kính (Mom Test & JTBD) để xác định bối cảnh và nỗi đau người dùng trước khi brainstorm.
+  description: "L\xE0m r\xF5 \xFD t\u01B0\u1EDFng th\xF4 ban \u0111\u1EA7u s\u1EED\
+    \ d\u1EE5ng b\u1ED9 khung 5 L\u0103ng K\xEDnh (Mom Test & JTBD) \u0111\u1EC3 x\xE1\
+    c \u0111\u1ECBnh b\u1ED1i c\u1EA3nh v\xE0 n\u1ED7i \u0111au ng\u01B0\u1EDDi d\xF9\
+    ng tr\u01B0\u1EDBc khi brainstorm."
   tags:
   - discover
   - idea
@@ -1050,5 +1071,13 @@ nodes:
   - product-discovery
   depends_on:
   - fragment-idea-discovery-framework
-
-
+- id: workflow-flow
+  type: workflow
+  path: /.agent/workflows/flow.md
+  description: "Automated Epic/Story SDLC pipeline workflow: /make-story -> Spec/Design -> /code -> /review"
+  tags:
+  - flow
+  - pipeline
+  - sdlc
+  - automation
+  depends_on: []

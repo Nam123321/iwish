@@ -152,6 +152,9 @@ guide:
       logic hoàn chỉnh."
     desc: "Vòng lặp phát triển cho mỗi Story: Tạo câu chuyện chi tiết -> Đặc tả
       UI/UX -> Đặc tả dữ liệu -> Thực thi lập trình mã nguồn."
+  step_4_flow:
+    output: "💡 Lệnh nhanh: /flow (Quy trình tự động khép kín phát triển Epic/Story)"
+    note: "Tự động chạy toàn bộ quy trình: /make-story -> /make-ui-spec & /make-data-spec -> design scoring để quyết định tạo thiết kế trên nền tảng người dùng chọn (Stitch, Figma, Claude Design, Canva,...) -> tạm dừng chờ duyệt (User Gate) -> /code -> /review. Mẹo nâng cao: Có thể chạy lệnh /flow song song cho các story không liên quan/phụ thuộc lẫn nhau trong cùng một Epic để các sub-agent cùng triển khai song song."
   step_4_story:
     output: 📄 Chi tiết file 3. Development/1. Epic &
       Story/Epic-[ID]/Story-[ID]/story.md sẵn sàng để đưa vào phát triển.

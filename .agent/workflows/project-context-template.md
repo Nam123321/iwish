@@ -32,9 +32,21 @@ To prevent agents from hallucinating directories or paths, you MUST strictly adh
 
 Every artifact must be written exactly into these folders. Dynamic or dated filenames for research reports are forbidden; write them directly to static names (e.g., `market-research.md`, `competitor-research.md`).
 
-## 🎨 Stitch-First Development (Design System)
+## 🎨 Design-First Development (Design System)
 
-- **ALL frontend pages and workflows MUST follow the Stitch-First playbook.**
-- **Token Mapping**: Use `var(--admin-*)` to map values instead of hardcoded hex values (Check `stitch-first-playbook.md`). 
-- **Icon Strategy**: `@ant-design/icons` for internal content (pages, tables, forms); `lucide-react` for navigation wrappers. Do not mix.
-- **Visual Verification**: Review visual regression comparisons carefully against Stitch renders.
+- **ALL frontend pages and workflows MUST follow the Design-First playbook using the user-selected/configured design tool (Stitch, Figma, Claude Design, Canva, etc.).**
+- **Token Mapping**: Use the design system tokens (e.g. `var(--admin-*)` for Admin portal) instead of hardcoded values.
+- **Icon Strategy**: Follow the defined icon strategy for the designated design tool.
+- **Visual Verification**: Review visual regression comparisons carefully against the approved mockup/design renders.
+
+## 🔄 Process-Based Epic & Story Development (Standard Flow)
+
+- **Triggers**: When the user uses terms like *"phát triển epic và story theo quy trình"*, *"go ahead với story"*, *"dev story"*, *"deploy story/ epic"*, *"chạy story"*, *"triển khai epic/story"*, etc.
+- **Workflow Pipeline**:
+  1. `/make-story` -> Initial story specification.
+  2. `/make-ui-spec` (if frontend/UI required) AND `/make-data-spec` (if database/API required).
+  3. **Design Scoring**: Score the UI/UX complexity to see if a design asset needs to be generated on design tools (Stitch, Figma, Claude Design, Canva, or user-configured tools).
+  4. **Generate Design**: Create visual design draft for user review.
+  5. **Implementation (`/code`)**: Code the feature after specification and design approval.
+  6. **Quality Gate (`/review`)**: Audit the code and run quality verification checks.
+- **Pause & Resume**: Whenever user input, feedback, or approval is required (e.g., spec reviews, design approvals, or code review findings), the agent **MUST automatically pause (Pause)**. Once the user replies or approves, the agent **MUST automatically resume the flow** from the next sequential step.

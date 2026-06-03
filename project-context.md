@@ -46,3 +46,11 @@ All AI assistants and agents operating on this project must strictly comply with
 2. **Commit Integrity**: Ensure that internal development logs, databases, or test output files are not tracked by git. Always check `.gitignore` before creating new directories.
 3. **NPM Package Safety**: The `package.json` uses an explicit `"files"` allowlist. When adding new core modules or assets that must be shipped to users, verify they are added to the `files` array. If they are internal-only dev tools, leave them out.
 4. **Consistency Across Sessions**: When starting a new development thread or story, read this file (`project-context.md`) first to align on the development boundaries.
+5. **Process-Based Epic & Story Development (Standard Flow)**: When the user uses terms like *"phát triển epic và story theo quy trình"*, *"go ahead với story"*, *"dev story"*, *"deploy story/ epic"*, *"chạy story"*, *"triển khai epic/story"*, etc., the agent must understand that the user is requesting the full automated development pipeline:
+   - **Step 1**: Run `/make-story` to analyze and prepare the user story.
+   - **Step 2**: Concurrently run `/make-ui-spec` (if frontend/UI layout required) and `/make-data-spec` (if database/API required).
+   - **Step 3**: Score the UI/UX complexity to check if screen designs are needed, and identify the user-selected/configured design tool (Stitch, Figma, Claude Design, Canva, or other design tools configured by the user).
+   - **Step 4**: Generate the design on the selected tool (do not default to Stitch) for user review and approval if design scoring requirements are met.
+   - **Step 5**: Proceed to write code using `/code` after specifications and design approvals.
+   - **Step 6**: Run `/review` to audit code quality and complete verification.
+   - **Automatic Pause & Resume Principle**: At any step (story specs, ui/data specs, design, or review results) requiring user feedback, input, or approval, the agent **MUST automatically pause (Pause)**, save the workflow state, notify the user, and wait. As soon as the user responds or approves, the agent **MUST automatically resume the flow** from where it paused without requiring the user to issue redundant commands.
