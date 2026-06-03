@@ -110,6 +110,16 @@ categories:
           - "FR-SET-8 [Partner]: Partners can view and modify their business profile details, bank transfer/Stripe Connect payout methods, and contact configurations."
           - "FR-SET-9 [Partner]: Partners can customize branding options for their sub-tenants (whitelabel settings: custom email template sender, partner sub-logo, support links)."
 
+      - area: "Localization, Currency & System Conventions"
+        portal: "General"
+        items:
+          - "FR-LOC-1: System supports multi-language localization (e.g., English, Vietnamese), allowing users to switch languages on storefronts and portals."
+          - "FR-LOC-2: System dynamically formats dates, times, and calendars based on the user's selected locale or timezone."
+          - "FR-LOC-3: System supports configuring a base currency (e.g., USD, VND) and optionally multi-currency transactions with automated exchange rate updates."
+          - "FR-LOC-4: System formats currency symbols and codes correctly based on local standards (e.g., placement of currency symbol, thousands and decimal separators)."
+          - "FR-LOC-5: System supports measurement unit conventions (Metric vs Imperial) for shipping, inventory, and dimension inputs."
+          - "FR-LOC-6: System handles weight units (e.g., kg, g, lbs, oz) and volume units (e.g., liters, gallons) consistently across checkout, shipping carrier APIs, and inventory databases."
+
   b2c_consumer:
     name: "B2C Consumer SaaS"
     description: "Single-user subscription apps focusing on personal usage, social features, and consumer billing."
