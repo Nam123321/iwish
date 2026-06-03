@@ -198,17 +198,17 @@ If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
 - Use it only after Design System Gate and User Simulation Gate pass
 - Treat approved Design System, approved Stitch screens, extracted visual contract, User Simulation Guardian, Design Consultation, and UX Guardian as higher authority
 
-### Stitch MCP Integration & Project Consistency ⚠️ MANDATORY
+### Design System Integration (Stitch, Figma, etc.) & Project Consistency ⚠️ MANDATORY
 
 **Project Consistency Rule:**
-- Every portal has a specific Stitch project mapped to its `DESIGN.md`.
-- Read `{planning_artifacts}/design-system/{portal-slug}/stitch-project.json` for `projectId` and `assetId`.
-- When making any `generate_screen_from_text` or `edit_screens` calls for a story, you **MUST** pass the correct `projectId` and `designSystem` (as `assetId`) for the portal that the screen belongs to.
-- If a story requires screens for multiple portals (e.g., Admin and Webstore), you MUST separate the generation into two different projects. **NEVER** generate a Webstore screen inside the Admin Stitch project.
+- Every portal has a specific design project (Figma, Stitch, Claude Design, Canva, etc.) mapped to its `DESIGN.md`.
+- For Stitch, read `{planning_artifacts}/design-system/{portal-slug}/stitch-project.json` for `projectId` and `assetId`. For other tools, read their respective configuration files.
+- When making design generation or edit calls for a story, you **MUST** use the configured project identifier and design system asset for the portal that the screen belongs to.
+- If a story requires screens for multiple portals (e.g., Admin and Webstore), you MUST separate the generation into different projects or files. **NEVER** generate/edit a Webstore screen inside the Admin design project.
 
 **Sync Approval Flow:**
-- After generating or editing Stitch screens and presenting them to the user, the agent MUST explicitly ask: *"Do you approve this design to be synchronized to the Stitch Design System?"*
-- ONLY if the user says yes/approves, the agent may trigger the `/sync-stitch-design` workflow or proceed to finalizing the design system on the server.
+- After generating or editing screens/mockups and presenting them to the user, the agent MUST explicitly ask: *"Do you approve this design to be synchronized to the Design System?"*
+- ONLY if the user says yes/approves, the agent may trigger the synchronization workflow (e.g. `/sync-stitch-design` for Stitch) or proceed to finalizing the design system on the server.
 
 ## 5-OPTION FRAMEWORK
 
@@ -216,28 +216,35 @@ Each story UI spec MUST include **5 visual options** for the story's key screen(
 
 | Option | Method | Requirement |
 |--------|--------|-------------|
-| Option 1 | Stitch Flash → Nano Banana Pro | Dark variant |
-| Option 2 | Stitch Flash → Nano Banana Pro | Light variant |
-| Option 3 | Stitch Flash → Nano Banana Pro | Hybrid/Creative variant |
+| Option 1 | Design Flash (Stitch, Figma, Claude Design, etc.) | Dark variant |
+| Option 2 | Design Flash (Stitch, Figma, Claude Design, etc.) | Light variant |
+| Option 3 | Design Flash (Stitch, Figma, Claude Design, etc.) | Hybrid/Creative variant |
 | Option 4 | `generate_image` AI mockup | High-fidelity static |
 | Option 5 | HTML/CSS prototype | Interactive prototype |
 
-**Context Injection for Stitch calls:**
+**Context Injection for Design/Stitch calls:**
 ```
 Product: {project_name}
 Portal: {portal_name}
 Story: {story_key} — {story_title}
 Acceptance Criteria: {acceptance_criteria_bullets}
 Persona: {persona} — {device}
-Design System: Use Stitch MCP Asset ID {assetId}. If {assetId} is missing, STOP and request user to run `/sync-stitch-design` first.
+Design System: Use configured Design System Asset ID (e.g. Stitch Asset ID {assetId} or Figma file/frame). If configured asset is missing, STOP and request user to sync design first.
 Page Override: load from {page_override_path} only when it exists for the active page/story context
 UI-UX Story Notes: include only approved or non-conflicting story-level specialist guidance
-Conflict Rule: approved Stitch screens and extracted visual contract remain authoritative if specialist guidance conflicts
+Conflict Rule: approved screens and extracted visual contract remain authoritative if specialist guidance conflicts
 ```
 
 ## REQUIRED UI SPEC OUTPUT SECTIONS
 
 The final story UI spec MUST include these sections in addition to the existing workflow artifacts:
+
+### Navigation, Routing & Menu Placement
+- Document the exact URL route/path mapping (e.g. `/admin/billing/invoices`).
+- Specify the menu hierarchy: identify the Parent Menu/Tab and the Child/Sub-tab.
+- Define the detailed Access Flow (step-by-step navigation path starting from home/landing).
+- Outline active/highlight states for menus, sidebars, and breadcrumbs.
+- Detail routing guards, auth check redirections, and navigation states (query parameters passed).
 
 ### User Simulation Results
 - Personas tested
@@ -252,15 +259,15 @@ The final story UI spec MUST include these sections in addition to the existing 
 - Preserve `Conflict Status`, `Winning Authority`, and `I-Wish Conflict Check`
 - Reconcile the section again after final story-level Stitch approval so the conflict fields reflect the final approved visual contract, not a pre-approval draft
 
-### Stitch Visual Contract Protection
-- State that approved Stitch screens and extracted HTML/CSS visual contract remain authoritative for implementation
+### Design/Stitch Visual Contract Protection
+- State that approved design screens (Stitch, Figma, Claude Design, Canva, etc.) and extracted HTML/CSS visual contract remain authoritative for implementation
 - Call out any specialist recommendation that was downgraded to checklist-only or advisory-only because of conflict with approved visual artifacts
-- If a page override exists, state whether it actively shaped this story/page context or was superseded by an already approved Stitch screen for the same page state
+- If a page override exists, state whether it actively shaped this story/page context or was superseded by an already approved design screen for the same page state
 
-### [POST_STITCH_ENRICHMENT_LOGIC]
+### [POST_DESIGN_ENRICHMENT_LOGIC]
 - Mandatory placeholder section for dynamic interactions.
-- If `Enrichment_Required: true`, this section MUST be populated by the `/enrich-ux` workflow AFTER Stitch approval.
-- Before Stitch approval, leave this section empty with a note: "Pending `/enrich-ux` execution post-Stitch approval."
+- If `Enrichment_Required: true`, this section MUST be populated by the `/enrich-ux` workflow AFTER design approval.
+- Before design approval, leave this section empty with a note: "Pending `/enrich-ux` execution post-design approval."
 - This section strictly decouples dynamic interaction from the static layout.
 
 **Comparison table MUST be included in the UI spec:**
@@ -280,39 +287,39 @@ After user approves a design option:
 - Capture approved screen screenshot, design rationale, and MKT story
 - Update knowledge base with design decision
 
-## STITCH HTML FIDELITY PIPELINE ⚠️ MANDATORY
+## DESIGN HTML FIDELITY PIPELINE ⚠️ MANDATORY
 
 > [!IMPORTANT]
-> **This pipeline closes the design-to-code visual gap.** After Stitch screens are approved, the agent MUST extract HTML/CSS to ensure coded output pixel-matches the approved design.
+> **This pipeline closes the design-to-code visual gap.** After design screens are approved, the agent MUST extract HTML/CSS to ensure coded output pixel-matches the approved design.
 
-### Screen Selection Strategy (100% Stitch Coverage)
+### Screen Selection Strategy (100% Design Coverage)
 
 > [!CAUTION]
-> **ALL screens MUST have a Stitch representation before code extraction.** No screen may be coded without a Stitch-approved visual. If a screen doesn't exist in Stitch yet, it MUST be generated via `generate_screen_from_text` and approved by the user.
+> **ALL screens MUST have a design representation before code extraction.** No screen may be coded without an approved visual. If a screen doesn't exist in the design tool yet, it MUST be generated or created and approved by the user.
 
-Use this decision matrix to determine HOW each screen enters Stitch:
+Use this decision matrix to determine HOW each screen enters the Design System:
 
-| Screen Type | Stitch Method | Example |
+| Screen Type | Design Method | Example |
 |---|---|---|
-| **New layout** — no existing pattern in codebase | ✅ Generate on Stitch (manual design) | List page, Create gallery, Form with review panel |
-| **Mode variant** — light/dark of a key layout | ✅ Generate variant on Stitch | Dark mode list page |
-| **State variant** — loading, empty, error states | ✅ Generate on Stitch via `generate_screen_from_text` referencing parent screen | Loading skeleton, empty state |
-| **Responsive** — mobile/tablet breakpoint | ✅ Generate on Stitch with `deviceType: MOBILE/TABLET` | Mobile list view |
-| **Sub-flow** — modal, drawer, popover, toast | ✅ Generate on Stitch via `generate_screen_from_text` | Delete confirmation, filter drawer |
+| **New layout** — no existing pattern in codebase | ✅ Generate/create on design platform (manual design) | List page, Create gallery, Form with review panel |
+| **Mode variant** — light/dark of a key layout | ✅ Generate/create variant on design platform | Dark mode list page |
+| **State variant** — loading, empty, error states | ✅ Generate on design platform referencing parent screen | Loading skeleton, empty state |
+| **Responsive** — mobile/tablet breakpoint | ✅ Generate on design platform with device Type MOBILE/TABLET | Mobile list view |
+| **Sub-flow** — modal, drawer, popover, toast | ✅ Generate/create on design platform | Delete confirmation, filter drawer |
 
-**Rule:** Create key screens manually on Stitch first (Tier 1). Generate remaining screens via `generate_screen_from_text` referencing Tier 1 as style anchors (Tier 3 → approved → becomes Tier 1). See `/stitch-to-code` workflow for full Tier model.
+**Rule:** Create key screens manually on design tool first (Tier 1). Generate remaining screens referencing Tier 1 as style anchors.
 
 **Screen Mapping Table (REQUIRED in UI Spec output):**
 
-| # | Screen Name | UI Spec Section | Stitch Screen ID | Tier | Status |
+| # | Screen Name | UI Spec Section | Design Screen ID | Tier | Status |
 |---|-------------|----------------|------------------|------|--------|
 | 1 | Example | §X | abc123... | 1 | ✅ Approved |
 
 ### HTML Export Extraction (Post-FINAL-Approval)
 
 > [!CAUTION]
-> **HTML must be extracted from the FINAL approved version of Stitch screens.**
-> If user requests changes → edit screens on Stitch → get re-approval → THEN extract HTML.
+> **HTML/CSS style rules must be extracted from the FINAL approved version of design screens.**
+> If user requests changes → edit screens in design tool → get re-approval → THEN extract HTML/CSS rules.
 > Never extract HTML from the initial generation if edits were made afterward.
 
 **Feedback loop:**
