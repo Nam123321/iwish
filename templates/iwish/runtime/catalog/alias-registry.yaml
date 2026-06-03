@@ -49,4 +49,7 @@ commands:
   /per: /project-expansion-review
   /feature-expansion-review: /project-expansion-review
   /idea-discovery: /idea-discover
+  /brand-id: /brand
+  /brand-guideline: /brand
+  /logo: /brand
 

@@ -128,6 +128,9 @@ export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
   '/per': '/project-expansion-review',
   '/feature-expansion-review': '/project-expansion-review',
   '/idea-discovery': '/idea-discover',
+  '/brand-id': '/brand',
+  '/brand-guideline': '/brand',
+  '/logo': '/brand',
 };
 
 export function getCanonicalHome(): string {

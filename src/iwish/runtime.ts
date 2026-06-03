@@ -463,12 +463,37 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
   const codeGraphData = extractCodeGraphData(projectRoot);
   const evolverData = extractEvolverData(projectRoot);
 
+  // Load locale files
+  const localesDir = path.join(TEMPLATES_ROOT, 'locales');
+  const localesData: Record<string, any> = {};
+  if (fs.existsSync(localesDir)) {
+    const files = await fs.readdir(localesDir);
+    for (const file of files) {
+      if (file.endsWith('.yaml') || file.endsWith('.yml')) {
+        const lang = path.basename(file, path.extname(file)); // e.g. "en"
+        const content = await fs.readFile(path.join(localesDir, file), 'utf8');
+        try {
+          localesData[lang] = YAML.parse(content);
+        } catch (e: any) {
+          console.warn(`[Warning] Failed to parse locale file ${file}: ${e.message}`);
+        }
+      }
+    }
+  }
+
   const finalHtml = templateContent
+    .replace('/*NODES_EDGES*/ {}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('/*SPRINT_DATA*/ {}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('/*ORCHESTRATION_DATA*/ {}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('/*IDEA_TO_PRD_DATA*/ {}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{IDEA_TO_PRD_DATA_PLACEHOLDER}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('/*EVOLVER_DATA*/ {}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{EVOLVER_DATA_PLACEHOLDER}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('/*LOCALES_DATA*/ {}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
+    .replace('{LOCALES_DATA_PLACEHOLDER}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
 
   await fs.ensureDir(path.dirname(outputPath));

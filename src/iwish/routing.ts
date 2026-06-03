@@ -100,6 +100,8 @@ function getTargetAgent(canonicalCommand: string): string {
     case '/register-skill-pack':
     case '/absorb-repo':
       return 'capability-agent';
+    case '/brand':
+      return 'creative-agent';
     default:
       return 'orch-agent';
   }
@@ -255,6 +257,18 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
   }
 
   if (
+    /\b(brand|logo|guideline|brand identity|rebrand|branding|brand-id|brand-guideline)\b/.test(normalizedRequest) ||
+    /logo|nhãn hiệu|thương hiệu|guideline thương hiệu/.test(normalizedRequest)
+  ) {
+    return {
+      canonicalCommand: '/brand',
+      legacyAliasMatched: null,
+      targetAgent: 'creative-agent',
+      routeReason: 'Brand identity or logo design/refactoring intent detected',
+    };
+  }
+
+  if (
     /\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
     /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)
   ) {
@@ -317,6 +331,15 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
       legacyAliasMatched: null,
       targetAgent: 'orch-agent',
       routeReason: 'Status/communication intent detected',
+    };
+  }
+
+  if (/\b(tournament|ab-testing|ab-tournament|đấu trường|so tài|so sánh plugin)\b/.test(normalizedRequest)) {
+    return {
+      canonicalCommand: '/tournament',
+      legacyAliasMatched: null,
+      targetAgent: 'orch-agent',
+      routeReason: 'A/B Tournament intent detected',
     };
   }
 
@@ -390,6 +413,9 @@ function getKeywordScore(normalizedRequest: string, canonicalCommand: string): n
   }
   if (canonicalCommand === '/plan') {
     if (/\b(plan|prd|brief|roadmap)\b/.test(normalizedRequest)) return 18;
+  }
+  if (canonicalCommand === '/brand') {
+    if (/\b(brand|logo|guideline|identity|rebrand|prism)\b/.test(normalizedRequest)) return 18;
   }
   return 10;
 }
@@ -588,6 +614,22 @@ function buildRecommendations(
     };
   }
 
+  if (canonicalCommand === '/tournament') {
+    return {
+      workflowChain: ['/tournament', 'setup', 'dispatch', 'gate', 'human', 'merge'],
+      supportiveSkills: ['pivot-guardian', 'qa-simulator-guardian'],
+      artifactChain: ['_iwish-output/tournaments/{task-slug}-scorecard.md'],
+    };
+  }
+
+  if (canonicalCommand === '/brand') {
+    return {
+      workflowChain: ['/brand', 'strategy-intake', 'logo-brainstorm', 'prompt-generation', 'design-connection', 'logo-blocker', 'brand-refactoring'],
+      supportiveSkills: ['ux-guardian'],
+      artifactChain: ['questionnaire.md', 'logo-options.md', 'brand-guidelines.md'],
+    };
+  }
+
   return {
     workflowChain: [canonicalCommand],
     supportiveSkills: [],
@@ -637,6 +679,16 @@ export async function routeRequest(projectRoot: string, request: string): Promis
       };
       targetAgent = agentsMap[String(currentPhase)] || 'orch-agent';
       routeReason = `Continuing active Repo Absorption (Phase ${currentPhase}) using ${targetAgent}`;
+    } else if (wfName === 'tournament') {
+      const agentsMap: Record<string, string> = {
+        'setup': 'orch-agent',
+        'dispatch': 'orch-agent',
+        'gate': 'review-agent',
+        'human': 'orch-agent',
+        'merge': 'orch-agent'
+      };
+      targetAgent = agentsMap[String(currentPhase)] || 'orch-agent';
+      routeReason = `Continuing active A/B Tournament (Phase ${currentPhase}) using ${targetAgent}`;
     } else if (wfName === 'create-skill') {
       const agentsMap: Record<string, string> = {
         'triage': 'capability-agent',

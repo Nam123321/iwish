@@ -60,6 +60,7 @@ const CANONICAL_WORKFLOW_NAMES = new Set([
     'research-solution-sources',
     'register-skill-pack',
     'absorb-repo',
+    'tournament',
     'canary',
     'simulate-user',
     'fix-bug',

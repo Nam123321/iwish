@@ -202,7 +202,7 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
        - *Ưu điểm (gồm feedback thực tế) / Pros (incl. user feedback)*: Unique strengths, praises from community report deep-dived, or optimizations.
        - *Nhược điểm (đối chiếu feedback) / Cons (incl. user complaints)*: Weaknesses, token overhead, maintenance cost, user criticisms matched against technical analysis, or limitations.
        - *Khoảng cách & Trùng lặp / Gap & Overlaps*: Precise overlap or delta compared to existing I-Wish assets.
-       - *Phương án & Nơi tích hợp / Proposed Action & Target*: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`).
+       - *Phương án & Nơi tích hợp / Proposed Action & Target*: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP` | `TOURNAMENT_PLUGIN`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`). Note: `TOURNAMENT_PLUGIN` packages the repo as an isolated Skill Attachment meant for A/B testing rather than merging its core logic into I-Wish.
        - *Tiêu chí Phễu / Funnel Criteria*: Justification details based on the 3 funnel criteria (Scope & Autonomy, Execution Context, Reusability).
      - **Phân tích Cơ chế Vận hành / Operational Mechanisms Analysis**: A dedicated section comparing the execution model, orchestrator flows, prompt loading methods, and state flow of the target repository versus I-Wish. Highlight which operational patterns should be adopted or avoided.
   9. **Create Detailed Integration Plan:** Following the matrix, provide concrete, actionable integration steps for each group marked for adoption/merging (e.g., target destination directories, frontmatter schemas, routing triggers).

@@ -1,0 +1,308 @@
+# ZH Locale Dictionary
+tabs:
+  idea_to_prd: 想法到 PRD
+  epic_story_map: Epic 与 story 地图
+  feature_graph: Feature 图谱
+  sprint_kanban: Sprint 看板
+  orchestration: Orchestration 调度图
+  iwish_guide: I-Wish 指南
+  code_graph: 代码依赖图
+  evolver: 已进化 Skills
+  plugins: Plugins 与 竞技场
+fallbacks:
+  untranslated_title: i18n 翻译状态
+  untranslated_text: 当前选定的语言尚不支持此标签页的内容。正在显示默认的英文内容。
+  no_node_selected: 未选择节点
+  no_node_selected_desc: 点击任何节点以查看详细属性。
+  no_evolved_skills: 未找到已进化 Skills
+  no_evolved_skills_desc: 运行 I-Wish Evolver（例如 lineage-sync 跟踪）以记录技能突变谱系并在当前显示祖先 DAG 树。
+  code_graph_not_available: 代码图谱不可用
+  code_graph_not_available_desc: 运行 code-graph 生成命令，将您项目的架构可视化为交互式依赖图谱。
+  select_evolved_skill: 选择已进化 Skill
+  skill_evolution_stats: Skill 进化统计
+  total_mutations: 总突变数
+  average_latency: 平均延迟
+  average_success_rate: 平均成功率
+  no_version_selected: 未选择版本
+  no_version_selected_desc: 点击树中的任何突变版本节点以查看性能延迟、成功指标和时间戳。
+  epic_story_map_details: Epic 与 Story 地图详情
+guide:
+  sidebar_title: 指南目录
+  main_pipeline: 🚀 主开发流程
+  output_structure: 📁 输出目录结构
+  per: 🔄 范围扩张评审 (PER)
+  orch: 🤖 调度 Agent 路由
+  supportive_skills: 🛠️ 辅助技能系统
+  usecases: 💡 关键使用案例
+  title: 🚀 主开发流程
+  subtitle: I-Wish 中的软件开发生命周期被设计为一个 AI 原生工厂，包含从想法发现到发布和维护的 7 个阶段。
+  step_0:
+    title: Bootstrap (项目中途接入)
+    focus: 目标：让 I-Wish 接管一个正在开发中的项目 (Brownfield Bootstrapping)。
+    badge: 🚀 从这里开始 - 现有项目
+    desc: 对于 brownfield 项目（现有代码库）：首先运行此命令，让 I-Wish 自动扫描源代码、绘制依赖关系并设置项目上下文，而无需从头开始
+      Discover/Plan 流程。
+    output: 设置 📄 1. Idea Discovery/1.4.
+      research/project-context.md，索引代码库图谱，并生成最小待办列表 (backlog)。
+    note: 在转移到主开发流程之前，自动规范化当前项目上下文。支持别名：/document-project 或
+      /generate-project-context。
+  step_1:
+    title: Discover & Idea Hardening (发现与想法强化)
+    focus: 目标：评估可行性，制定业务假设，并研究项目领域。
+    desc: 初始阶段专注于市场研究、技术可行性研究以及对产品价值主张的压力测试。
+  step_1_discover:
+    output: 📄 1. Idea Discovery/1.1. idea-discovery.md (Mom Test 与 JTBD)。
+    note: 先决步骤：在进行头脑风暴之前，先厘清想法和用户痛点。
+  step_1_brainstorm:
+    output: 📄 1. Idea Discovery/1.2. idea-bank.md (想法草案，复杂度评分 CS 1-5)。
+    note: 在 discover 步骤厘清上下文后，头脑风暴详细的解决方案和 MVP 范围。
+  step_1_challenge:
+    output: 📄 1. Idea Discovery/1.3. idea-challenge.md (包含亚马逊 PRFAQ 模板)。
+    note: 使用亚马逊的 Working Backwards（逆向工作法）方法来挑战想法，寻找核心价值。
+  step_1_evaluator:
+    output: 可持续竞争壁垒评估报告 (Moat Evaluator)。
+    note: 在完善想法后触发，以寻找独有的业务竞争优势。
+  step_1_research:
+    output: 📄 1. Idea Discovery/1.4. research/market-research.md,
+      competitor-research.md, domain-research.md, 和 technical-research.md。
+    note: 通过网络访问对市场细节、合规性或技术库进行检查。
+  step_1_competitor:
+    output: 📄 1. Idea Discovery/1.4. research/competitor-research.md。
+    note: 分析竞争对手或替代方案，重新验证对当前解决方案的不满。
+  step_1_context:
+    output: 📄 1. Idea Discovery/1.4. research/project-context.md。
+    note: 生成核心准则，供 AI agent 在整个项目中遵循和尊重。
+  quick_dev:
+    title: Quick Dev Mode (快速开发模式/旁路通道)
+    focus: 目标：快速实现小功能，无需编写完整的 PRD/规划文档。
+    badge: ⚡ 立即开发 - 快速旁路
+    desc: 绕过完整的流程开销：专为需要直接根据技术规范/指令运行紧急热修复或小功能的工程师设计，无需编写规划样板文件。在速度为绝对优先级时使用。
+    output: 直接修改源代码，不产生繁琐的文档生成。
+    note: 系统自动绕过严格的规划评审关卡，以最大化编码速度。
+  step_2:
+    title: Plan (产品需求规划)
+    focus: 目标：将产品价值细化为清晰的功能规格文档。
+    desc: 详述计划阶段，构建包含清晰成功指标的完整产品需求文档 (PRD)。
+  step_2_prd:
+    output: 📄 2. Product Planning/2.1. product-brief-or-prd.md (SMART PRD)。
+    note: 包含成功指标、技术栈、功能性需求 (FR) 和非功能性需求 (NFR)。
+  step_2_brand:
+    output: 📄 压缩包 _iwish-output/brand-identity/ (包含 brand-guideline.html,
+      brand-guidelines.md, strategy/, assets/logo/, design-tokens.json)
+      并将备用文件复制到 /assets。
+    note: "可选步骤：如果项目没有品牌标识，请在 UI/UX 之前运行，因为样式细节会影响设计系统。使用 Kapferer 的品牌棱镜生成徽标，通过 3
+      条重构路径（A: 清理，B: 渐进，C: 变革）进行管理。"
+  step_2_ux:
+    output: 📄 2. Product Planning/2.3. ui-ux-spec.md (用户旅程图和整体 UX 规范)。
+    note: 在 PRD 完成后触发，以勾勒出布局结构和交互方式。
+  step_3:
+    title: Solution (架构与 Backlog)
+    focus: 目标：建立技术设计蓝图，分解 Epics & Stories，并初始化迭代。
+    desc: 设计技术架构，编译用户故事待办列表，并规划活跃的 sprint 周期。
+  step_3_arch:
+    output: 📄 docs/architecture.md (ADR) 和 2. Product Planning/2.2. database-spec.md。
+    note: 定义数据库、ERD 图、API 契约和目录结构设计。
+  step_3_stories:
+    output: 📄 2. Product Planning/2.4. epics-and-stories.md 和骨架用户故事文件。
+    note: 将 PRD 需求分解为独立的、以用户价值为核心的 Epics 和 Stories。
+  step_4:
+    title: Implement (微循环实现)
+    focus: 目标：详述单个 stories 的细节（微循环）并执行编码逻辑。
+    desc: 针对每个 Story 的开发循环：创建 story 细节 -> UI/UX 规范 -> 数据规范 -> 编写代码逻辑。
+  step_4_story:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/story.md 已就绪，准备开发。
+    note: 指定验收条件 (Acceptance Criteria)、实现说明和目标范围。
+  step_4_ui:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/ui-ux-spec.md
+      (详细的 UI 规范)。
+    note: 通过配置好的设计工具（Stitch、Figma、Claude）同步布局并同步设计模型。
+  step_4_data:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/database-spec.md。
+    note: 如果故事在编码前需要数据库更新，则自动创建。
+  step_4_code:
+    output: 💻 符合整洁架构 (Clean Architecture) 规范的源代码和单元测试（覆盖率 > 80%）。
+    note: 启动代码执行的 canonical 命令。自动对照数据库规范检查一致性。
+  step_4_per:
+    output: 📄 3. Development/project-expansion-review/PER-[feature-name].md。
+    note: 在提议扩大进行中项目的范围时，评估影响和转向风险。别名：/per, /feature-expansion-review。
+  step_5:
+    title: Validate (质量关卡)
+    focus: 目标：审查代码质量，审计架构，并进行回归测试。
+    desc: 执行自动评审，分析向后兼容性风险，并审计全局代码库的健康状况。
+  step_5_review:
+    output: 📄 详细的评审报告、安全扫描 (SAST) 以及 Hybrid QA 记分卡。
+    note: 在编译发布版本之前，确保代码质量、测试覆盖率和安全性。
+  step_5_health:
+    output: 📄 代码库健康报告（死代码、循环依赖、孤立文件）。
+    note: 定期运行以防止架构偏离并清理技术债。
+  step_6:
+    title: Deliver & Release (交付与发布)
+    focus: 目标：产品移交、CI/CD 配置以及执行安全上线。
+    desc: 在功能验证通过后，配置发布流水线，引导流量分配并启动发布。
+  step_6_canary:
+    output: 金丝雀发布计划，预发布/生产环境上的流量门控配置。
+    note: 实施渐进式上线以最大程度降低部署风险。
+  step_7:
+    title: Operate, Maintain & Evolve (运行、维护与演进)
+    focus: 目标：收集知识增量，处理生产问题，并优化运营。
+    desc: 发布后维护，运行紧急热修复，并回馈已演进的能力。
+  step_7_retro:
+    output: 📄 4. Verification & Release/4.3. retrospective.md。
+    note: 每次 sprint 后收集知识增量 (Knowledge Delta)，反馈到 Corporate Brain（企业大脑）中。
+  step_7_fix:
+    output: 📄 3. Development/2. Bug Report/ 下的缺陷报告，源代码已修复上线。
+    note: 在出现问题时立即触发，生成结构化的诊断分析。
+  step_7_dashboard:
+    output: 🖥️ 编译后的 I-Wish 工作区用户指南与看板（HTML 格式）。
+    note: 编译迭代跟踪数据和图表。可通过 CLI 运行：iwish gen-dashboard。
+  dir_title: 📁 标准输出目录结构
+  dir_desc: I-Wish 在标准目录布局下管理所有规划、设计、规范和验证文档，以确保跨阶段的可追溯性：
+  per_title: 🔄 项目范围扩张评审 (PER) 协议
+  per_desc: 当在进行中（in-flight）的项目上请求新功能/模块时，I-Wish 会触发 PER 流程，将范围影响分类为 3 个级别：
+  per_tier_1:
+    title: 🟢 级别 1：低影响
+    desc: 添加微小的功能，不改变核心流程或数据库 schema。路线：继续生成故事 (/make-story) 并进行开发。输出：story.md,
+      sprint-status.yaml, task.md。
+  per_tier_2:
+    title: 🟡 级别 2：中等影响
+    desc: 影响核心数据库或更改核心用户流程的大型功能模块。路线：冻结故事创建。转回 /plan 以更新 PRD、重构数据库规范并重新分解
+      Epics。输出：PRD.md, epics-and-stories.md, database-spec.md。
+  per_tier_3:
+    title: 🔴 级别 3：高影响（转向）
+    desc: 改变核心产品价值、用户画像或基准技术栈。路线：冻结所有开发。转回 /idea-challenge 以测试核心假设、运行新的 /research
+      并重新构建 PRD。输出：idea-challenge.md, research/, architecture.md。
+  orch_title: 🤖 智能调度路由
+  orch_desc: 觉得所有这些工作流程太繁琐？别担心！虽然工作流定义了结构，但您不需要手动调用每个命令。只需与 Orch Agent 交流——它是
+    I-Wish 的最高大脑。它会自动分析上下文并委托任务！
+  orch_badge: 💡 立即自动化 - 运行调度器
+  orch_note: 统一的调度器接口。自动检测意图并路由请求，最大限度地减少开发人员的手动输入。
+  skills_title: 🛠️ 辅助与基础技能系统
+  skills_desc: 除了主开发线，I-Wish 还集成了专门的技能，负责审计代码质量、验证安全性和优化 UX。
+  skills:
+    desc_repo_absorption: 分析、吸收和解构来自 GitHub 的外部仓库，自动集成指令并与 Orch 调度路由链接。
+    desc_idea_hardening: 严格评估产品想法，分析至少 2-3 种实现方法以及权衡和核心价值。
+    desc_security_guardian: 外部安全控制：扫描漏洞、机密泄露，在合并/部署之前审查信任级别并强制执行最小特权。
+    desc_ux_guardian: 确保用户界面与主设计系统完美匹配，防止跨多个迭代的样式偏离。
+    desc_user_simulation_guardian: 使用第一性原理思维模拟不同业务角色的行为，以测试 UX 流程的连贯性（通过 /simulate-user 运行）。
+    desc_pivot_guardian: 循环看门人：如果代理在未运行测试或构建的情况下连续编辑同一个文件超过 3 次，将自动中断该代理。
+    desc_socratic_review: 执行苏格拉底式提问来审查数据库更改，控制向后兼容性，并防止架构偏离。
+    desc_qa_simulator_guardian: 模拟完整的测试流程并计算 Hybrid 记分卡，以评估代码发布的就绪状态。
+    desc_creative_agent: 创意支持代理：提议 2-3 个 UI/UX 设计方向，帮助绘制 HTML/Mermaid 模型并集成 Stitch 设计。
+    desc_ai_engineer_agent: AI/LLM 开发代理：优化提示词模板，管理 token 预算，防止提示词注入并分配模型层级。
+    desc_data_architect_agent: 数据管理代理：设计数据库 schema，同步迁移 (Prisma) 并验证数据规范 (Data Specs) 的一致性。
+    desc_data_strategist_agent: 数据战略代理：规划集成数据分析，控制向后兼容性并对项目信息结构进行建模。
+  usecases_title: 💡 使用案例行动指南
+  usecases_desc: I-Wish 中常见的操作场景及解决它们的关键工作流：
+  usecase_1:
+    title: GitHub 仓库吸收 (RAP 协议)
+    desc: 当您想要克隆、解析并将 GitHub 上的外部仓库或技能模板吸收到 I-Wish 中时。
+    action: RAP 流水线：security-guardian 扫描信任度/恶意软件，repo-absorption
+      克隆并索引代码图谱，生成集成指南，并绑定触发标签以进行 Orch 路由。
+  usecase_2:
+    title: 克隆现有网站 (Cloner)
+    desc: 当您需要复制公共网站的视觉布局并输出干净的 React/HTML UI 组件时。
+    action: 浏览器驱动的克隆：捕获 DOM/CSS 结构，提取排版、布局 token，并编译代码。
+  usecase_3:
+    title: UI 设计同步 (Stitch / UX Pro Max)
+    desc: 当您设计原型并希望与 Stitch 设计服务器同步设计规范时。
+    action: UX 同步工作流：运行 /create-ux-design 和 /make-ui-spec。调用 /sync-stitch-design
+      推送更改。Visual-fidelity-gate 自动审查前端代码是否与原型匹配。
+  usecase_4:
+    title: 代码库分析与知识图谱
+    desc: 映射文件导入并跟踪故事实现影响（Feature 图谱）以进行 Orch 路由。
+    action: 分析器：扫描源代码，追踪功能依赖节点，并更新看板图谱。
+  usecase_5:
+    title: 金丝雀测试与预发布验证
+    desc: 在完全生产发布之前，在预发布流量子集上测试新代码。
+    action: 部署工作流：运行 /canary 以启动沙箱、监控性能并自动化回滚。
+  usecase_6:
+    title: 紧急热修复与运营诊断
+    desc: 诊断生产缺陷并在不破坏基准兼容性的情况下安全地实施热修复。
+    action: 诊断循环：运行 /fix-bug 进行根本原因分析，生成回归测试，并应用补丁。
+  usecase_7:
+    title: 品牌标识、徽标和样式指南
+    desc: 从头开始创建品牌资产、徽标和指南，或重构现有资产。
+    action: 品牌棱镜工作流：运行 /brand 进行品牌棱镜问卷调查、绘制概念徽标并导出设计 token。
+  label_note: "备注:"
+  label_output: "输出:"
+plugins:
+  sidebar_title: Tournament 竞技场
+  nav_intro: ℹ️ 基本介绍
+  nav_registry: 🔌 Plugins 注册表
+  nav_workflow: ⚔️ 5 步流程
+  nav_usecases: 💡 实际案例
+  nav_slash: 💬 命令行示例
+  title: 🔌 基于 Plugin 的 A/B 竞技场
+  intro: I-Wish 采用灵活的插件架构以及先进的 A/B Tournament
+    竞技场系统。用户不需要直接将吸收的每个仓库或技能合并到核心代码库中，而是可以将它们打包为孤立的插件。当有任务需要执行时，您可以触发一个并行的竞技场，多个候选插件将在独立的隔离工作区中独立完成该任务。然后系统将评估结果，并允许您选择最佳方案。
+  card_isolation:
+    title: 🛡️ 安全隔离
+    desc: 各候选插件在独立工作区内的不同 Git 分支上执行任务。没有工作区冲突或脏状态。
+  card_evaluation:
+    title: 📊 公正评估
+    desc: review-agent 会根据需求、代码质量、稳定性和自动化测试来评估每个候选插件。
+  card_hitl:
+    title: 👑 人类确认
+    desc: 在清晰的视觉布局中审查竞争记分卡和 diff，并选择合并哪个候选插件的代码。
+  registry_title: 🔌 Plugins & Modules Registry (插件与模块注册表)
+  registry_desc: 以下是当前激活的插件注册表，按功能领域分类，用于管理和配置竞技场：
+  registry_uiux: 🎨 UI/UX 与设计提供者 (设计与交互)
+  registry_coding: ⚡ 编码与生产力 (代码编写与性能优化)
+  registry_badge_illustrative: 示例展示
+  desc_uiux_pro_max: 用于高度响应式界面、定制过渡效果和精细视觉 token 的插件。
+  desc_taste_skill: 专门专注于美学微细节、HSL 调色板和奢华排版的布局提供者。
+  desc_stitch: 与 Stitch 设计服务器集成的默认视觉规范系统。
+  desc_superpower: 提供高级代码生成和重构的重度算法优化模块。
+  desc_vibecode: 优先考虑速度的精简版、提示词驱动的开发框架。
+  desc_native: 核心 I-Wish 开发实现流程（标准的 dev-agent 执行）。
+  workflow_title: ⚔️ 5 阶段 Tournament 流水线
+  workflow_desc: A/B Tournament 流水线通过 5 个不同的阶段运行，以确保代码质量和稳定性。
+  step_setup:
+    title: Arena Setup (场地设置)
+    focus: 目标：确保候选插件之间的完全隔离。
+    desc: 验证 git 状态的干净度。对于每个选定的候选插件，I-Wish 会自动从基准提交中分叉出一个新的 Git 分支。
+  step_dispatch:
+    title: Agent Dispatch (代理分派)
+    focus: 目标：在并行工作区中执行任务。
+    desc: "启动带有 Workspace: branch 配置的并行子代理。每个代理都在其隔离的分支上下文中执行指令。"
+  step_gate:
+    title: Resolution Gate (决议门控)
+    focus: 目标：客观评分和评估。
+    desc: 编译代码并运行自动测试 (npm test)。review-agent 会在需求、质量、安全和测试通过率方面为每个候选者评分。
+  step_human:
+    title: Human Checkpoint (人工检查点)
+    focus: 目标：用户批准最佳解决方案。
+    desc: 显示比较候选者 diff 和日志的记分卡。用户选择合并哪个分支，或者完全中止竞技场。
+  step_merge:
+    title: Merge & Cleanup (合并与清理)
+    focus: 目标：应用干净的合并并删除临时分支。
+    desc: 将批准的优胜者分支合并到基线中。所有临时竞技场分支和子代理工作区都将被自动删除。
+  usecases_title: 💡 实际使用案例
+  usecases_desc: 通过启动 A/B Tournament 竞技场来帮助解决复杂架构选择的现实场景。
+  usecase_design:
+    title: 🎨 场景 1：比较视觉设计布局风格
+    desc: 您想要构建一个用户界面（例如登录页面），并在合并之前直观地比较多个设计提供者的效果。
+    action: 运行包含 ui-ux-pro-max（动画）、taste-skill（奢华字体）和 native（默认）的竞技场。
+    cmd_label: 激活指令：
+    cmd_text: /tournament 使用模块 ui-ux-pro-max，taste-skill 和 native 设计一个奢华的登录页面
+    result: 👉 结果：三个分支并行运行。记分卡总结了设计风格和代码质量，供最终人工选择。
+  usecase_optim:
+    title: ⚡ 场景 2：算法优化和性能基准测试
+    desc: 您需要编写一个对性能要求极高的数理处理器，并希望评估资源效率。
+    action: 让 Superpower（重度数学优化）、vibecode-pro-max（轻量级代码）和 native 进行竞争。
+    cmd_label: 激活指令：
+    cmd_text: /tournament 使用模块 Superpower，vibecode-pro-max 和 native 优化 10000 个节点的寻路算法
+    result: 👉 结果：参赛候选插件在记分卡上输出基准测试指标（内存、速度），以便进行客观比较。
+  syntax_title: 💬 自然语言激活语法
+  syntax_desc: 无需使用冗长的 CLI 标志，您可以使用自然语言直接调用竞技场。请求必须包含 3 个核心部分：
+  syntax_part1: 1. 任务动作和描述 (Task Action & Description)：明确说明您要执行的请求（例如 '设计一个奢华的登录页面'）。
+  syntax_part2: 2. 连接关键字 (Connecting Keyword)：连接关键字（例如 '使用模块'、'使用'、'用'、'with
+    modules'、'using'）。
+  syntax_part3: 3. 候选者列表 (Candidates List)：由逗号和 '和'/'and' 分隔的候选模块列表（例如
+    'ui-ux-pro-max, taste-skill 和 native'）。
+  syntax_example_label: 请求示例如下：
+  warning_title: ⚠️ 边界情况：如果您忘记指定候选模块会怎样？
+  warning_desc: 如果您运行了 `/tournament [任务描述]`，但完全省略了候选者列表（例如 `/tournament 创建登录页面`），系统会触发降级备用机制：
+  warning_point1: 默认只在单个候选者上运行任务：native（基线开发人员工作流程）。
+  warning_point2: 在控制台输出警告提示，展示下次如何添加候选者。
+  warning_point3: 确保操作的连续性，不会抛出错误或锁定系统。

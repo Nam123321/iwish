@@ -151,6 +151,9 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/per': '/project-expansion-review',
     '/feature-expansion-review': '/project-expansion-review',
     '/idea-discovery': '/idea-discover',
+    '/brand-id': '/brand',
+    '/brand-guideline': '/brand',
+    '/logo': '/brand',
 };
 function getCanonicalHome() {
     return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');

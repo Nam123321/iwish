@@ -20,5 +20,6 @@ _iwish-output/
 .gemini/
 .iwish/
 *.tgz
+scratch/
 
 

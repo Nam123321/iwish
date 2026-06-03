@@ -1,0 +1,18 @@
+id: workflow-brand
+name: brand
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discover, plan, implement]
+stages: [strategy-intake, logo-brainstorm, prompt-generation, design-connection, logo-blocker, brand-refactoring]
+triggers: [brand, brand-id, brand-guideline, logo, logo-brainstorm, design-tokens, rebrand]
+anti_triggers: [code-review, bugfix, deploy]
+primary_agents: [orch-agent, ux-agent, creative-agent]
+primary_workflows: [brand]
+supportive_skills: [ux-guardian]
+tool_dependencies: [design]
+constraints:
+  - Enforce logo-first sequential approval gate where no typography, color scheme, or touchpoints are generated until the logo mark has been explicitly chosen.
+  - Do not hardcode Dall-E 3 references; refer to ChatGPT or general custom engines.
+source_path: /_iwish/catalog/routing-profiles/workflow-brand.yaml
+tags: [brand-bundle, canonical, design-system]

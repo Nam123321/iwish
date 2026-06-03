@@ -173,6 +173,7 @@ function classifyWorkflowLifecycle(name: string): keyof SkillGraphReport['inheri
       'fix-bug',
       'code',
       'absorb-repo',
+      'tournament',
     ].includes(name)
   ) {
     return 'implementation';

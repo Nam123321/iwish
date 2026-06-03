@@ -144,6 +144,7 @@ function classifyWorkflowLifecycle(name) {
         'fix-bug',
         'code',
         'absorb-repo',
+        'tournament',
     ].includes(name)) {
         return 'implementation';
     }

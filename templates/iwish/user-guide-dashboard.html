@@ -52,6 +52,38 @@
       z-index: 100;
     }
 
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+    }
+    .lang-dropdown {
+      background: var(--panel-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 6px 30px 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%231f2937' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+    }
+    .lang-dropdown:hover {
+      border-color: var(--primary);
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    .lang-dropdown:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-glow);
+    }
+
     .brand {
       display: flex;
       align-items: center;
@@ -1495,17 +1527,37 @@
       <div class="logo-glow"></div>
       <h1>I-Wish Workspace</h1>
     </div>
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('idea-to-prd')">Idea To PRD</button>
-      <button class="tab-btn" onclick="switchTab('idea')">Epic & story map</button>
-      <button class="tab-btn" onclick="switchTab('features')">Feature graph</button>
-      <button class="tab-btn" onclick="switchTab('sprint')">Sprint Kanban</button>
-      <button class="tab-btn" onclick="switchTab('orchestration')">Orchestration Graph</button>
-      <button class="tab-btn" onclick="switchTab('iwish-guide')">I-Wish Guide</button>
-      <button class="tab-btn" onclick="switchTab('code-graph')">Code Graph</button>
-      <button class="tab-btn" onclick="switchTab('evolver')">Evolved Skills</button>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('idea-to-prd')" data-i18n="tabs.idea_to_prd">Idea To PRD</button>
+        <button class="tab-btn" onclick="switchTab('idea')" data-i18n="tabs.epic_story_map">Epic & story map</button>
+        <button class="tab-btn" onclick="switchTab('features')" data-i18n="tabs.feature_graph">Feature graph</button>
+        <button class="tab-btn" onclick="switchTab('sprint')" data-i18n="tabs.sprint_kanban">Sprint Kanban</button>
+        <button class="tab-btn" onclick="switchTab('orchestration')" data-i18n="tabs.orchestration">Orchestration Graph</button>
+        <button class="tab-btn" onclick="switchTab('iwish-guide')" data-i18n="tabs.iwish_guide">I-Wish Guide</button>
+        <button class="tab-btn" onclick="switchTab('code-graph')" data-i18n="tabs.code_graph">Code Graph</button>
+        <button class="tab-btn" onclick="switchTab('evolver')" data-i18n="tabs.evolver">Evolved Skills</button>
+        <button class="tab-btn" onclick="switchTab('plugins')" data-i18n="tabs.plugins">Plugins & Tournaments</button>
+      </div>
+      <div class="lang-switcher">
+        <select id="lang-select" onchange="setLanguage(this.value)" class="lang-dropdown">
+          <option value="en">EN</option>
+          <option value="vi">VI</option>
+          <option value="zh">ZH</option>
+          <option value="ko">KO</option>
+          <option value="ja">JA</option>
+        </select>
+      </div>
     </div>
   </header>
+
+  <div id="untranslated-banner" style="display: none; background: rgba(217, 119, 6, 0.08); border-bottom: 1px solid rgba(217, 119, 6, 0.15); padding: 10px 40px; align-items: center; gap: 12px; color: var(--text-color); flex-shrink: 0;">
+    <span style="font-size: 16px;">⚠️</span>
+    <div style="display: flex; flex-direction: row; gap: 8px; align-items: baseline;">
+      <strong style="font-size: 12px;" data-i18n="fallbacks.untranslated_title">i18n Translation Status</strong>
+      <span style="font-size: 11px; opacity: 0.85;" data-i18n="fallbacks.untranslated_text">This tab's content is not yet available in the selected language. Displaying English default content.</span>
+    </div>
+  </div>
 
   <div class="container">
     <!-- Tab 1: Idea Tree (Epic & story map) -->
@@ -1706,11 +1758,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">Thiết lập 📄 <code>1. Idea Discovery/1.4. research/project-context.md</code>, index đồ thị mã nguồn, tạo backlog Story/Epic tối thiểu.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Tự động chuẩn hóa bối cảnh dự án hiện tại trước khi chuyển giao sang luồng phát triển chính. Có thể dùng các alias như <code>/document-project</code> hoặc <code>/generate-project-context</code>.</span>
                       </div>
                     </div>
@@ -1742,11 +1794,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>1. Idea Discovery/1.1. idea-discovery.md</code> (Mom Test & JTBD).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val"><strong>Bước tiên quyết đầu tiên:</strong> Làm rõ ý tưởng và nỗi đau của người dùng trước khi brainstorm.</span>
                       </div>
                     </div>
@@ -1759,11 +1811,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>1. Idea Discovery/1.2. idea-bank.md</code> (Ý tưởng phác thảo sơ bộ, Complexity Score CS 1-5).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Brainstorm giải pháp chi tiết và MVP scope sau khi đã làm rõ bối cảnh ở bước discover.</span>
                       </div>
                     </div>
@@ -1776,11 +1828,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>1. Idea Discovery/1.3. idea-challenge.md</code> (chứa bản Press Release & Customer FAQ).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Thách thức ý tưởng theo phương thức Working Backwards của Amazon nhằm tìm ra giá trị cốt lõi.</span>
                       </div>
                     </div>
@@ -1793,11 +1845,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">Bản đánh giá lợi thế cạnh tranh bền vững (Moat Evaluator).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Kích hoạt sau khi làm sắc nét ý tưởng để tìm ra các lợi thế kinh doanh độc quyền.</span>
                       </div>
                     </div>
@@ -1810,11 +1862,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
-                        <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/market-research.md</code> hoặc <code>domain-research.md</code> / <code>technical-research.md</code>.</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
+                        <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/market-research.md</code>, <code>competitor-research.md</code>, <code>domain-research.md</code>, và <code>technical-research.md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Thực hiện rà soát thông tin thị trường, luật lệ hoặc thư viện kỹ thuật thực tế thông qua truy cập web.</span>
                       </div>
                     </div>
@@ -1827,11 +1879,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/competitor-research.md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Phân tích đối thủ hoặc giải pháp thay thế đang có để reconfirm sự không hài lòng với giải pháp hiện tại.</span>
                       </div>
                     </div>
@@ -1844,11 +1896,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>1. Idea Discovery/1.4. research/project-context.md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Tạo chỉ dẫn cốt lõi để các Agent tham chiếu và tuân thủ tuyệt đối trong suốt dự án.</span>
                       </div>
                     </div>
@@ -1880,11 +1932,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">Mã nguồn được sửa đổi trực tiếp theo yêu cầu mà không sinh tài liệu cồng kềnh.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Hệ thống sẽ tự động phát hiện chế độ, bỏ qua các cổng kiểm tra an toàn nghiêm ngặt để tăng tối đa tốc độ code.</span>
                       </div>
                     </div>
@@ -1916,12 +1968,29 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>2. Product Planning/2.1. product-brief-or-prd.md</code> (Bản Product Requirements Document đạt chuẩn SMART).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Chứa Success Metrics, Technical Stack, các yêu cầu chức năng (FR) và phi chức năng (NFR).</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/brand</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/brand', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
+                        <span class="meta-val">📄 Gói <code>_iwish-output/brand-identity/</code> (bao gồm <code>brand-guideline.html</code>, <code>brand-guidelines.md</code>, <code>strategy/</code>, <code>assets/logo/</code>, <code>source/design-tokens.json</code>) & sao chép fallbacks ra thư mục <code>/assets</code>.</span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
+                        <span class="meta-val">⚠️ <strong>Bước tùy chọn:</strong> Chạy trước khi thiết kế UI/UX nếu người dùng chưa có Logo & Brand Identity, vì logo và brand ID sẽ tác động trực tiếp đến Design System của sản phẩm. Sinh Logo theo mô hình lăng kính Kapferer's Brand Prism, quản lý qua 3 lộ trình Refactoring (A: Cleanup, B: Evolution, C: Revolution), hỗ trợ đồng bộ qua các công cụ thiết kế đã cấu hình sẵn như Stitch, Figma, Claude Design, Canva, hoặc các công cụ khác theo yêu cầu. Nếu không chọn công cụ, hệ thống tự động tạo cấu trúc Phase 12 đầy đủ tại <code>_iwish-output/brand-identity/</code> và lưu fallbacks tại thư mục <code>/assets</code>.</span>
                       </div>
                     </div>
                   </div>
@@ -1933,11 +2002,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>2. Product Planning/2.3. ui-ux-spec.md</code> (Bản kế hoạch hành trình người dùng và đặc tả UX tổng thể).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Kích hoạt sau khi PRD hoàn tất để định hình cấu trúc giao diện và trải nghiệm.</span>
                       </div>
                     </div>
@@ -1969,11 +2038,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>docs/architecture.md</code> (ADR) & <code>2. Product Planning/2.2. database-spec.md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Xác định cơ sở dữ liệu, sơ đồ ERD, API contracts và phân chia cấu trúc thư mục.</span>
                       </div>
                     </div>
@@ -1986,14 +2055,17 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>2. Product Planning/2.4. epics-and-stories.md</code> & các bộ khung User Story sẵn có.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Phân rã PRD thành các Epic và User Story độc lập mang lại giá trị cho người dùng.</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
                            <!-- Step 4 -->
               <div class="pipeline-step">
                 <div class="step-number">4</div>
@@ -2018,11 +2090,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 Chi tiết file <code>3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/story.md</code> sẵn sàng để đưa vào phát triển.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Đặc tả Acceptance Criteria, bối cảnh sử dụng của story cụ thể.</span>
                       </div>
                     </div>
@@ -2035,11 +2107,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/ui-ux-spec.md</code> (Đặc tả thiết kế giao diện chi tiết).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Đồng bộ hoá thiết kế và tạo mockup trên Stitch, Figma, Claude Design... do người dùng chọn.</span>
                       </div>
                     </div>
@@ -2052,11 +2124,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/database-spec.md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">⚠️ <strong>Tự động kích hoạt:</strong> Lược đồ này được kiểm tra và sinh tự động nếu story có yêu cầu cập nhật DB trước khi code.</span>
                       </div>
                     </div>
@@ -2069,11 +2141,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">💻 Mã nguồn chất lượng chuẩn Clean Architecture và Unit Tests (coverage > 80%).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Lệnh canonical chính thức để dev-agent bắt đầu viết code logic. Tự động kiểm tra tính nhất quán với Data Spec.</span>
                       </div>
                     </div>
@@ -2086,16 +2158,17 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 Báo cáo đánh giá tác động <code>3. Development/project-expansion-review/PER-[feature-name].md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Đánh giá 4 trụ cột và rủi ro pivot khi có đề xuất mở rộng dự án in-flight. Hỗ trợ alias viết tắt: <code>/per</code> hoặc <code>/feature-expansion-review</code>.</span>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
 
               <!-- Step 5 -->
@@ -2122,11 +2195,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 Báo cáo review chi tiết, log quét bảo mật (SAST), và điểm chất lượng Hybrid QA Scorecard.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Đảm bảo chất lượng code và an toàn bảo mật trước khi bàn giao mã nguồn.</span>
                       </div>
                     </div>
@@ -2139,11 +2212,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 Báo cáo sức khỏe codebase (dead code, circular dependencies, orphan files).</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Chạy định kỳ theo chu kỳ để giữ cho cấu trúc mã nguồn luôn sạch sẽ, kiểm soát nợ kỹ thuật.</span>
                       </div>
                     </div>
@@ -2175,11 +2248,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">Kịch bản rollout canary, cấu hình an toàn cho traffic gating trên staging/production.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Thực thi quy trình triển khai từng phần để kiểm soát rủi ro phát hành.</span>
                       </div>
                     </div>
@@ -2211,11 +2284,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 <code>4. Verification & Release/4.3. retrospective.md</code>.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Thu hoạch tri thức thực tế (Knowledge Delta) nạp lại vào Corporate Brain sau mỗi sprint để tiến hóa hệ thống.</span>
                       </div>
                     </div>
@@ -2228,11 +2301,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">📄 Báo cáo sửa lỗi trong <code>3. Development/2. Bug Report/</code>, mã nguồn được vá an toàn.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Kích hoạt ngay khi có sự cố phát sinh. Tạo file báo cáo lỗi theo cấu trúc chuẩn.</span>
                       </div>
                     </div>
@@ -2245,11 +2318,11 @@
                     </div>
                     <div class="command-meta">
                       <div class="meta-line">
-                        <span class="meta-label">Output:</span>
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                         <span class="meta-val">🖥️ Giao diện Dashboard I-Wish Workspace tương tác được cập nhật mới nhất.</span>
                       </div>
                       <div class="meta-line">
-                        <span class="meta-label">Ghi chú:</span>
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Biên dịch các siêu dữ liệu sprint, sơ đồ liên kết ý tưởng để người dùng và tác nhân cùng theo dõi tiến độ. Có thể sử dụng lệnh CLI <code>iwish gen-dashboard</code>.</span>
                       </div>
                     </div>
@@ -2343,6 +2416,7 @@
                 </p>
               </div>
             </div>
+          </div>
 
           <!-- Section 1.5: Orch Agent Routing (Điều phối thông minh) -->
           <div id="orch-section" class="guide-section" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; margin-top: 10px;">
@@ -2363,11 +2437,11 @@
                 </div>
                 <div class="command-meta">
                   <div class="meta-line">
-                    <span class="meta-label">Output:</span>
+                    <span class="meta-label" data-i18n="guide.label_output">Output:</span>
                     <span class="meta-val">Giao diện điều phối tương tác, tự động ủy thác công việc cho các tác nhân chuyên biệt.</span>
                   </div>
                   <div class="meta-line">
-                    <span class="meta-label">Ghi chú:</span>
+                    <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                     <span class="meta-val">Lệnh vạn năng khởi động Tác nhân Điều phối (Orchestrator). Nhận diện bối cảnh và tự chọn routing phù hợp nhất để giảm tải thao tác thủ công cho nhà phát triển.</span>
                   </div>
                 </div>
@@ -2610,6 +2684,22 @@
                   <button class="cli-copy-btn" onclick="copyCommand('/fix-bug', this)">COPY</button>
                 </div>
               </div>
+
+              <!-- Use case 7 -->
+              <div class="usecase-card">
+                <div class="usecase-title">🎨 7. Tạo & Thiết kế Brand Identity, Logo & Brand Guidelines</div>
+                <p class="usecase-desc">
+                  Khi bạn muốn khởi tạo bộ nhận diện thương hiệu từ đầu hoặc refactor logo và guideline hiện có.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách thức hoạt động:</strong> Khởi tạo bảng câu hỏi lăng kính thương hiệu (Kapferer's Brand Prism) và khảo sát hiện trạng thương hiệu (Paths A/B/C). Sinh ít nhất 5 concept logo kèm giải trình ý nghĩa. Tiến hành kiểm tra kết nối thiết kế và sync asset/token qua các công cụ thiết kế đã cấu hình sẵn như Stitch, Figma, Claude Design, Canva, hoặc các công cụ khác theo yêu cầu, tuân thủ nguyên tắc logo-first gate blocker. Nếu không chọn công cụ, hệ thống tự động tạo cấu trúc Phase 12 đầy đủ tại <code>_iwish-output/brand-identity/</code> và lưu fallbacks tại thư mục <code>/assets</code>.</li>
+                  <li><strong>Lệnh slash command:</strong></li>
+                </ul>
+                <div class="cli-box">
+                  <span class="cli-cmd">/brand</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/brand', this)">COPY</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2699,15 +2789,729 @@
       </div>
     </div>
 
+    <!-- Tab 8: Plugins & Tournaments -->
+    <div id="tab-plugins" class="tab-content">
+      <div class="guide-layout">
+        <!-- Sidebar Navigation -->
+        <div class="guide-sidebar">
+          <h3>Đấu trường Tournament</h3>
+          <a onclick="scrollToSection('plugins-intro-section')" class="sidebar-link active-link">ℹ️ Giới thiệu chung</a>
+          <a onclick="scrollToSection('plugins-registry-section')" class="sidebar-link">🔌 Danh mục Plugins</a>
+          <a onclick="scrollToSection('tournament-workflow-section')" class="sidebar-link">⚔️ Quy trình 5 Bước</a>
+          <a onclick="scrollToSection('tournament-usecases-section')" class="sidebar-link">💡 Ví dụ thực tế</a>
+          <a onclick="scrollToSection('tournament-slash-section')" class="sidebar-link">💬 Câu lệnh mẫu</a>
+        </div>
+        <!-- Main Content -->
+        <div class="guide-main">
+          <!-- Section 1: Overview -->
+          <div id="plugins-intro-section" class="guide-section">
+            <h2>🔌 Đấu Trường A/B Tournament Cho Plugins</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px; line-height: 1.7;">
+              I-Wish sử dụng kiến trúc plugin linh hoạt cùng hệ thống <strong>Đấu trường A/B Tournament</strong> tiên tiến. Thay vì trực tiếp tích hợp mọi kho mã nguồn (repository) hay bộ kỹ năng (skills) được hấp thụ vào nhân hệ thống, người dùng có thể đóng gói chúng thành các plugin cô lập. Khi có một yêu cầu công việc cần thực thi, bạn có thể phát động đấu trường song song, nơi các plugin ứng viên làm việc trên các nhánh độc lập để giải quyết tác vụ. Sau đó, hệ thống sẽ đánh giá kết quả và cho phép bạn lựa chọn phương án tối ưu nhất để trộn (merge) vào mã nguồn chính.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px;">
+              <div class="card" style="border-top: 4px solid var(--accent); background: var(--panel-bg); border-radius: 22px; padding: 24px;">
+                <h3 style="font-size: 15px; margin-bottom: 10px; font-weight: 700;">🛡️ Cô Lập An Toàn</h3>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Các ứng viên thực thi tác vụ trên các nhánh Git (Git branch) độc lập trong các không gian làm việc riêng biệt. Không lo xung đột hay bẩn trạng thái mã nguồn.
+                </p>
+              </div>
+              <div class="card" style="border-top: 4px solid var(--success); background: var(--panel-bg); border-radius: 22px; padding: 24px;">
+                <h3 style="font-size: 15px; margin-bottom: 10px; font-weight: 700;">📊 Đánh Giá Khách Quan</h3>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Trình đánh giá <code>review-agent</code> sẽ tự động chạy các bài kiểm thử (automated tests), đánh giá độ ổn định và chấm điểm chất lượng mã nguồn của từng ứng viên.
+                </p>
+              </div>
+              <div class="card" style="border-top: 4px solid var(--warning); background: var(--panel-bg); border-radius: 22px; padding: 24px;">
+                <h3 style="font-size: 15px; margin-bottom: 10px; font-weight: 700;">👑 Quyền Quyết Định</h3>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Xem chi tiết ưu/nhược điểm và mã nguồn của từng ứng viên thông qua bảng điểm scorecard trực quan, từ đó phê duyệt phương án tốt nhất để tích hợp.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Plugins Registry -->
+          <div id="plugins-registry-section" class="guide-section">
+            <h2>🔌 Plugins & Modules Registry (Danh Mục Plugins)</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px; line-height: 1.7;">
+              Dưới đây là <strong>danh mục quản lý cấu trúc các plugins & modules hoạt động</strong> của hệ thống I-Wish, được phân loại và gom nhóm theo từng phân vùng chức năng cụ thể để bạn dễ dàng quản lý, đối chiếu và cấu hình giải đấu (A/B Tournament):
+            </p>
+            
+            <div style="display:flex; flex-direction:column; gap: 30px;">
+              <!-- Domain: UI/UX & Design -->
+              <div>
+                <h3 style="font-size: 16px; margin-bottom: 12px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  🎨 UI/UX & Design Providers (Thiết kế & Giao diện)
+                  <span style="font-size: 11px; padding: 2px 8px; background: rgba(59, 130, 246, 0.1); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Ví dụ minh họa</span>
+                </h3>
+                <div class="skills-grid">
+                  <div class="skill-card">
+                    <div class="skill-header">
+                      <span class="skill-name">ui-ux-pro-max</span>
+                      <span class="skill-type type-primary">Plugin</span>
+                    </div>
+                    <p class="skill-desc">Plugin thiết kế giao diện chuyên sâu (hiệu ứng mượt mà, responsive, visual tokens).</p>
+                  </div>
+                  <div class="skill-card">
+                    <div class="skill-header">
+                      <span class="skill-name">taste-skill</span>
+                      <span class="skill-type type-primary">Plugin</span>
+                    </div>
+                    <p class="skill-desc">Bộ thiết kế chuyên biệt về micro-details, màu sắc HSL và typography sang trọng.</p>
+                  </div>
+                  <div class="skill-card">
+                    <div class="skill-header">
+                      <span class="skill-name">stitch</span>
+                      <span class="skill-type type-foundational">Built-in</span>
+                    </div>
+                    <p class="skill-desc">Hệ thống đặc tả giao diện mặc định kết nối với Stitch design server.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Domain: Coding & Productivity -->
+              <div>
+                <h3 style="font-size: 16px; margin-bottom: 12px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  ⚡ Coding & Productivity (Lập trình & Tối ưu hiệu năng)
+                  <span style="font-size: 11px; padding: 2px 8px; background: rgba(168, 85, 247, 0.1); color: var(--accent); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Ví dụ minh họa</span>
+                </h3>
+                <div class="skills-grid">
+                  <div class="skill-card">
+                    <div class="skill-header">
+                      <span class="skill-name">Superpower</span>
+                      <span class="skill-type type-primary">Plugin</span>
+                    </div>
+                    <p class="skill-desc">Module tối ưu thuật toán nặng, refactoring và sinh mã nguồn nâng cao.</p>
+                  </div>
+                  <div class="skill-card">
+                    <div class="skill-header">
+                      <span class="skill-name">vibecode-pro-max</span>
+                      <span class="skill-type type-primary">Plugin</span>
+                    </div>
+                    <p class="skill-desc">Khung phát triển tinh gọn điều khiển bằng câu lệnh, ưu tiên tốc độ.</p>
+                  </div>
+                  <div class="skill-card">
+                    <div class="skill-header">
+                      <span class="skill-name">native</span>
+                      <span class="skill-type type-foundational">Core</span>
+                    </div>
+                    <p class="skill-desc">Quy trình lập trình cốt lõi mặc định của nền tảng I-Wish.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: A/B Tournament Flow -->
+          <div id="tournament-workflow-section" class="guide-section">
+            <h2>⚔️ Quy Trình Vận Hành Tournament (5 Steps)</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px; line-height: 1.7;">
+              Đấu trường A/B Tournament vận hành qua mô hình 5 giai đoạn nhằm đảm bảo chất lượng và tính an toàn tuyệt đối của mã nguồn.
+            </p>
+            <div class="pipeline-timeline">
+              <!-- Step 1 -->
+              <div class="pipeline-step">
+                <div class="step-number">1</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Arena Setup (Thiết lập Đấu trường)</h4>
+                    <div class="step-focus">Mục tiêu: Đảm bảo tính cô lập hoàn toàn giữa các plugin.</div>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">
+                  Hệ thống kiểm tra trạng thái Git làm việc. Với mỗi candidate plugin được chọn tham chiến, I-Wish sẽ tự động rẽ nhánh (Git branch) độc lập xuất phát từ commit cơ sở (baseline commit).
+                </p>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="pipeline-step">
+                <div class="step-number">2</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Agent Dispatch (Điều phối Song song)</h4>
+                    <div class="step-focus">Mục tiêu: Thực hiện tác vụ song song trên các nhánh cô lập.</div>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">
+                  Kích hoạt các subagents song song (parallel subagents) sử dụng cấu hình <code>Workspace: branch</code>. Mỗi subagent chỉ chạy trong bối cảnh nhánh tương ứng và được nạp các prompt/instruction đặc thù của plugin đó.
+                </p>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="pipeline-step">
+                <div class="step-number">3</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Resolution Gate (Đánh giá Tự động)</h4>
+                    <div class="step-focus">Mục tiêu: Chấm điểm và so sánh kết quả khách quan.</div>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">
+                  Sau khi các subagents hoàn thành, hệ thống thu thập Git diff và chạy bộ kiểm thử (npm test) hoặc các trình biên dịch để đo lường. <code>review-agent</code> sẽ chấm điểm các candidate theo thang đo 4 tiêu chí (Yêu cầu, Chất lượng code, Bảo mật/Hiệu năng, Test pass).
+                </p>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="pipeline-step">
+                <div class="step-number">4</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Human Checkpoint (Quyết định của Bạn)</h4>
+                    <div class="step-focus">Mục tiêu: Người dùng phê duyệt kết quả tối ưu nhất.</div>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">
+                  Hệ thống xuất bảng điểm so sánh (scorecard) chứa chi tiết các ưu/nhược điểm và diff của từng candidate. Người dùng chọn phê duyệt tích hợp nhánh nào, hoặc hủy toàn bộ giải đấu để giữ nguyên mã nguồn.
+                </p>
+              </div>
+
+              <!-- Step 5 -->
+              <div class="pipeline-step">
+                <div class="step-number">5</div>
+                <div class="step-header">
+                  <div class="step-title-group">
+                    <h4>Merge & Cleanup (Trộn & Dọn dẹp)</h4>
+                    <div class="step-focus">Mục tiêu: Cập nhật mã nguồn sạch sẽ và xóa các nhánh thừa.</div>
+                  </div>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6;">
+                  Khi có sự lựa chọn từ người dùng, nhánh thắng cuộc được merge vào nhánh chính. Các nhánh đấu trường (tournament branches) và subagent contexts tạm thời sẽ tự động được dọn dẹp sạch sẽ khỏi Workspace.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Use Cases & Examples -->
+          <div id="tournament-usecases-section" class="guide-section" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 30px; margin-top: 10px;">
+            <h2>💡 Ví dụ Use Case Thực Tế (Use Cases & Examples)</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px; line-height: 1.7;">
+              Dưới đây là các kịch bản thực tế khi áp dụng cơ chế Plugin và A/B Tournament để giải quyết các bài toán phát triển phần mềm phức tạp.
+            </p>
+            <div class="usecase-container">
+              <!-- Use case 1 -->
+              <div class="usecase-card">
+                <div class="usecase-title">🎨 Kịch bản 1: So sánh, đánh giá phong cách UI/UX từ nhiều Design Provider</div>
+                <p class="usecase-desc">
+                  Bạn muốn xây dựng một giao diện người dùng (ví dụ: Trang Login hoặc Dashboard) nhưng muốn so sánh trực quan các tùy chọn thiết kế khác nhau trước khi quyết định merge.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách vận hành:</strong> Phát động giải đấu với các ứng viên thiết kế như <code>ui-ux-pro-max</code> (chuyên micro-animations, glassmorphism), <code>taste-skill</code> (chuyên luxury typography, HSL palettes) và <code>native</code> (mặc định).</li>
+                  <li><strong>Câu lệnh kích hoạt:</strong></li>
+                </ul>
+                <div class="cli-box" style="margin-bottom: 10px;">
+                  <span class="cli-cmd">/tournament Thiết kế trang Login sang trọng và hiện đại với các module ui-ux-pro-max, taste-skill, và native</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/tournament Thiết kế trang Login sang trọng và hiện đại với các module ui-ux-pro-max, taste-skill, và native', this)">COPY</button>
+                </div>
+                <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-top: 10px;">
+                  👉 <strong>Kết quả:</strong> Ba nhánh git độc lập sẽ chạy song song để thiết kế trang login. Khi hoàn tất, bảng so sánh scorecard sẽ hiển thị đầy đủ ưu/nhược điểm thiết kế và mã nguồn của từng ứng viên để bạn lựa chọn merge.
+                </p>
+              </div>
+
+              <!-- Use case 2 -->
+              <div class="usecase-card">
+                <div class="usecase-title">⚡ Kịch bản 2: Tối ưu thuật toán xử lý dữ liệu lớn & Hiệu năng hệ thống</div>
+                <p class="usecase-desc">
+                  Bạn có một module tính toán phức tạp (như phân tích đồ thị hoặc sắp xếp dữ liệu lớn) và cần tìm giải pháp tối ưu nhất về mặt tài nguyên và tốc độ xử lý.
+                </p>
+                <ul class="usecase-steps">
+                  <li><strong>Cách vận hành:</strong> Cho so tài thuật toán giữa plugin <code>Superpower</code> (chuyên giải pháp thuật toán nặng, tối ưu bộ nhớ), <code>vibecode-pro-max</code> (chuyên code tinh gọn, zero-bloat) và code mặc định của <code>native</code>.</li>
+                  <li><strong>Câu lệnh kích hoạt:</strong></li>
+                </ul>
+                <div class="cli-box" style="margin-bottom: 10px;">
+                  <span class="cli-cmd">/tournament Tối ưu hàm tìm kiếm đường đi ngắn nhất cho 10,000 nodes với các module Superpower, vibecode-pro-max, và native</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/tournament Tối ưu hàm tìm kiếm đường đi ngắn nhất cho 10,000 nodes với các module Superpower, vibecode-pro-max, và native', this)">COPY</button>
+                </div>
+                <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-top: 10px;">
+                  👉 <strong>Kết quả:</strong> Các ứng viên sẽ tự động viết các module giải thuật độc lập kèm theo script test benchmark. Scorecard sẽ thống kê chính xác thời gian chạy (Execution Time), dung lượng RAM tiêu thụ và tỷ lệ test pass để tìm ra ứng viên thắng cuộc.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: Slash Commands & Natural Language Activation -->
+          <div id="tournament-slash-section" class="guide-section">
+            <h2>💬 Cú pháp kích hoạt Tournament bằng Ngôn ngữ tự nhiên</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 14.5px; line-height: 1.7;">
+              Thay vì sử dụng các tham số dài dòng kiểu CLI, bạn có thể trò chuyện trực tiếp với Agent bằng <strong>ngôn ngữ tự nhiên</strong> thông qua câu lệnh <code>/tournament</code>. Câu lệnh cần đảm bảo đầy đủ <strong>3 cấu phần cốt lõi</strong>:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; padding-left: 20px;">
+              <div style="font-size: 13.5px; color: var(--text-color);"><strong style="color: var(--accent);">1. Hành động & Mô tả Task:</strong> Nêu rõ yêu cầu bạn muốn thực hiện (ví dụ: <i>"Thiết kế trang Login sang trọng và hiện đại"</i>).</div>
+              <div style="font-size: 13.5px; color: var(--text-color);"><strong style="color: var(--primary);">2. Từ khóa kết nối cấu phần:</strong> Sử dụng các liên từ tự nhiên như <i>"với các module"</i>, <i>"với"</i>, <i>"sử dụng"</i>, <i>"dùng"</i>, hoặc <i>"using"</i>.</div>
+              <div style="font-size: 13.5px; color: var(--text-color);"><strong style="color: var(--warning);">3. Danh sách ứng viên (Candidates):</strong> Danh sách các module tham chiến, phân tách bằng dấu phẩy và liên từ "và" / "and" (ví dụ: <i>"ui-ux-pro-max, taste-skill, và native"</i>).</div>
+            </div>
+
+            <div class="command-list">
+              <div class="command-item">
+                <div class="cli-box">
+                  <span class="cli-cmd">/tournament Thiết kế trang Login sang trọng và hiện đại với các module ui-ux-pro-max, taste-skill, và native</span>
+                  <button class="cli-copy-btn" onclick="copyCommand('/tournament Thiết kế trang Login sang trọng và hiện đại với các module ui-ux-pro-max, taste-skill, và native', this)">COPY</button>
+                </div>
+                <div class="command-meta" style="margin-top: 10px;">
+                  <div class="meta-line">
+                    <span class="meta-label">Ví dụ thực tế:</span>
+                    <span class="meta-val"><code>/tournament Thiết kế trang Login sang trọng và hiện đại với các module ui-ux-pro-max, taste-skill, và native</code></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edge case explanation -->
+            <div style="margin-top: 25px; padding: 20px; background: rgba(220, 38, 38, 0.03); border: 1px solid rgba(220, 38, 38, 0.15); border-radius: 12px;">
+              <h3 style="font-size: 14.5px; color: var(--error); margin-bottom: 8px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                ⚠️ Edge-case: Quên chọn module/candidate thì sao?
+              </h3>
+              <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.6; margin: 0;">
+                Nếu bạn sử dụng lệnh <code>/tournament</code> nhưng quên mô tả danh sách module (ví dụ chỉ ghi <code>/tournament Thiết kế trang Login</code>), hệ thống sẽ <strong>tự động kích hoạt cơ chế tự dẹp lỗi (degradation fallback)</strong>:
+              </p>
+              <ul style="margin-left: 20px; margin-top: 8px; font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+                <li>Hệ thống mặc định chọn duy nhất module <code>native</code> (lập trình core của I-Wish) để thực thi.</li>
+                <li>In ra một dòng cảnh báo (Warning) trong log để nhắc bạn cách điền thêm ứng viên so tài cho lần sau.</li>
+                <li>Hành vi này giúp hệ thống hoạt động liên tục, không bị treo hoặc crash lỗi do thiếu tham số đầu vào.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script type="text/javascript">
     // Injected placeholders
-    const nodesEdgesData = {NODES_EDGES_PLACEHOLDER};
-    const sprintData = {SPRINT_DATA_PLACEHOLDER};
-    const orchestrationData = {ORCHESTRATION_DATA_PLACEHOLDER};
-    const ideaToPrdData = {IDEA_TO_PRD_DATA_PLACEHOLDER};
-    const evolverData = {EVOLVER_DATA_PLACEHOLDER};
+    const nodesEdgesData = /*NODES_EDGES*/ {};
+    const sprintData = /*SPRINT_DATA*/ {};
+    const orchestrationData = /*ORCHESTRATION_DATA*/ {};
+    const ideaToPrdData = /*IDEA_TO_PRD_DATA*/ {};
+    const evolverData = /*EVOLVER_DATA*/ {};
+    let localesData = /*LOCALES_DATA*/ {};
+    if (Object.keys(localesData).length === 0) {
+      localesData = { "en": {"tabs":{"idea_to_prd":"Idea To PRD","epic_story_map":"Epic & story map","feature_graph":"Feature graph","sprint_kanban":"Sprint Kanban","orchestration":"Orchestration Graph","iwish_guide":"I-Wish Guide","code_graph":"Code Graph","evolver":"Evolved Skills","plugins":"Plugins & Tournaments"},"fallbacks":{"untranslated_title":"i18n Translation Status","untranslated_text":"This tab's content is not yet available in the selected language. Displaying English default content.","no_node_selected":"No Node Selected","no_node_selected_desc":"Click on any node to inspect detail properties.","no_evolved_skills":"No Evolved Skills Found","no_evolved_skills_desc":"Run I-Wish Evolver (e.g. lineage-sync tracking) to log skill mutation lineages and display ancestry DAG trees here.","code_graph_not_available":"Code Graph Not Available","code_graph_not_available_desc":"Run the code-graph generation command to visualise your project's architecture as an interactive dependency graph.","select_evolved_skill":"Select Evolved Skill","skill_evolution_stats":"Skill Evolution Stats","total_mutations":"Total Mutations","average_latency":"Average Latency","average_success_rate":"Average Success Rate","no_version_selected":"No Version Selected","no_version_selected_desc":"Click on any mutation version node in the tree to inspect performance latency, success metrics, and timestamps.","epic_story_map_details":"Epic & Story Map Details"},"guide":{"sidebar_title":"Guide Navigation","main_pipeline":"🚀 Main Pipeline","output_structure":"📁 Output Structure","per":"🔄 Expansion Review (PER)","orch":"🤖 Orch Agent Routing","supportive_skills":"🛠️ Supportive Skills","usecases":"💡 Key Use Cases","title":"🚀 Main Pipeline","subtitle":"The software development lifecycle in I-Wish is designed as an AI-Native Factory with 7 phases from idea discovery to release & maintenance.","step_0":{"title":"Bootstrap (Mid-project Integration)","focus":"Goal: Put I-Wish in charge of an in-flight project (Brownfield Bootstrapping).","badge":"🚀 START HERE - EXISTING PROJECT","desc":"For brownfield projects (existing codebase): Run this command first to let I-Wish automatically scan source code, map dependencies, and set up project context without going through the Discover/Plan flow from scratch.","output":"Setup 📄 1. Idea Discovery/1.4. research/project-context.md, index codebase graph, and generate minimum backlog.","note":"Automatically normalizes current project context before transferring to the main development track. Supports aliases: /document-project or /generate-project-context."},"step_1":{"title":"Discover & Idea Hardening","focus":"Goal: Assess feasibility, formulate business hypotheses, and research project domain.","desc":"The initial phase focuses on market research, technical feasibility studies, and stress-testing the product value proposition."},"step_1_discover":{"output":"📄 1. Idea Discovery/1.1. idea-discovery.md (Mom Test & JTBD).","note":"Prerequisite step: Clarify idea and user pain points before brainstorming."},"step_1_brainstorm":{"output":"📄 1. Idea Discovery/1.2. idea-bank.md (Draft ideas, Complexity Score CS 1-5).","note":"Brainstorm detailed solution and MVP scope after clarifying context in the discover step."},"step_1_challenge":{"output":"📄 1. Idea Discovery/1.3. idea-challenge.md (contains Amazon PRFAQ template).","note":"Challenge ideas using Amazon's Working Backwards methodology to find core value."},"step_1_evaluator":{"output":" sustainable competitive moat evaluation report.","note":"Trigger after refining ideas to find proprietary business advantages."},"step_1_research":{"output":"📄 1. Idea Discovery/1.4. research/market-research.md, competitor-research.md, domain-research.md, and technical-research.md.","note":"Perform checks on market details, compliance, or technical libraries via web access."},"step_1_competitor":{"output":"📄 1. Idea Discovery/1.4. research/competitor-research.md.","note":"Analyze competitors or alternatives to re-verify dissatisfaction with current solutions."},"step_1_context":{"output":"📄 1. Idea Discovery/1.4. research/project-context.md.","note":"Generate core guidelines for AI agents to follow and respect across the project."},"quick_dev":{"title":"Quick Dev Mode (Fast Track Bypass)","focus":"Goal: Quickly implement small features without writing full PRD/Planning documents.","badge":"⚡ DEVELOP NOW - FAST BYPASS","desc":"Bypass full pipeline overhead: Designed for engineers needing to run urgent hotfixes or small features directly from tech-spec/instructions, without planning boilerplate. Use when speed is the absolute priority.","output":"Direct source code modifications without bloating document generation.","note":"System automatically bypasses strict planning review gates to maximize coding speed."},"step_2":{"title":"Plan (Product Requirements)","focus":"Goal: Detail the product value into clear functional specification documents.","desc":"Phase for detailing plans, building complete product requirement documents (PRD) with clear success metrics."},"step_2_prd":{"output":"📄 2. Product Planning/2.1. product-brief-or-prd.md (SMART PRD).","note":"Contains Success Metrics, Technical Stack, Functional (FR) and Non-Functional Requirements (NFR)."},"step_2_brand":{"output":"📄 Package _iwish-output/brand-identity/ (brand-guideline.html, brand-guidelines.md, strategy/, assets/logo/, design-tokens.json) & copy fallbacks to /assets.","note":"Optional step: Run before UI/UX if the project has no brand identity, as styling details affect design system. Generates logos using Kapferer's Brand Prism, managed via 3 Refactoring paths (A: Cleanup, B: Evolution, C: Revolution)."},"step_2_ux":{"output":"📄 2. Product Planning/2.3. ui-ux-spec.md (User journey maps and overall UX spec).","note":"Trigger after PRD is completed to outline layout structure and interactions."},"step_3":{"title":"Solution (Architecture & Backlog)","focus":"Goal: Establish technical design blueprints, break down Epics & Stories, and initialize sprint.","desc":"Design the technical architecture, compile user story backlogs, and plan active sprint cycles."},"step_3_arch":{"output":"📄 docs/architecture.md (ADR) & 2. Product Planning/2.2. database-spec.md.","note":"Defines databases, ERD diagrams, API contracts, and directory structure design."},"step_3_stories":{"output":"📄 2. Product Planning/2.4. epics-and-stories.md & skeleton User Story files.","note":"Decompose PRD requirements into independent, user-value-focused Epics and Stories."},"step_4":{"title":"Implement (Micro-loop Implementation)","focus":"Goal: Specify details for individual stories (Micro-loop) and execute coding logic.","desc":"Development loop for each Story: Create story detail -> UI/UX Spec -> Data Spec -> Write source code."},"step_4_story":{"output":"📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/story.md ready for development.","note":"Specify Acceptance Criteria, implementation notes, and target scope."},"step_4_ui":{"output":"📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/ui-ux-spec.md (detailed UI spec).","note":"Synchronize layout and sync design mockups via configured design tools (Stitch, Figma, Claude)."},"step_4_data":{"output":"📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/database-spec.md.","note":"Automatically created if the story requires database updates prior to coding."},"step_4_code":{"output":"💻 Clean Architecture compliant source code and unit tests (coverage > 80%).","note":"Canonical command to start code execution. Auto-checks consistency against database specs."},"step_4_per":{"output":"📄 3. Development/project-expansion-review/PER-[feature-name].md.","note":"Evaluate impacts and pivot risks when proposing to expand project scope in-flight. Aliases: /per, /feature-expansion-review."},"step_5":{"title":"Validate (Quality Gates)","focus":"Goal: Review code quality, audit architecture, and perform regression testing.","desc":"Perform automated reviews, analyze backward compatibility risks, and audit the global codebase health."},"step_5_review":{"output":"📄 Detailed review report, security scans (SAST), and Hybrid QA Scorecard.","note":"Ensure code quality, test coverage, and security before compiling release builds."},"step_5_health":{"output":"📄 Codebase health report (dead code, circular dependencies, orphan files).","note":"Run periodically to prevent architectural drift and clean up technical debt."},"step_6":{"title":"Deliver & Release","focus":"Goal: Product handoff, CI/CD configuration, and executing safe rollouts.","desc":"Once features are verified, configure release pipelines, direct traffic allocation, and launch."},"step_6_canary":{"output":"Canary rollout plan, traffic gating configurations on staging/production.","note":"Implement incremental rollout to minimize deployment risks."},"step_7":{"title":"Operate, Maintain & Evolve","focus":"Goal: Harvest knowledge delta, handle production issues, and optimize operations.","desc":"Post-release maintenance, running urgent hotfixes, and feeding back evolved capabilities."},"step_7_retro":{"output":"📄 4. Verification & Release/4.3. retrospective.md.","note":"Harvest Knowledge Delta to feed back into the Corporate Brain after each sprint."},"step_7_fix":{"output":"📄 Bug reports under 3. Development/2. Bug Report/, source code hotfixed.","note":"Trigger immediately when issues occur, generating structured diagnostics."},"step_7_dashboard":{"output":"🖥️ Compiled I-Wish Workspace User Guide & Dashboard (HTML format).","note":"Compile sprint tracking data and graphs. Can be run via CLI: iwish gen-dashboard."},"dir_title":"📁 Standardized Output Directory Structure","dir_desc":"I-Wish manages all planning, design, specs, and verification documents under a standard directory layout to ensure traceability across phases:","per_title":"🔄 Project Expansion Review (PER) Protocol","per_desc":"When a new feature/module is requested on an in-flight project, I-Wish triggers the PER workflow to classify scope impacts into 3 tiers:","per_tier_1":{"title":"🟢 Tier 1: Low Impact","desc":"Minor feature additions without changing core flows or database schemas. Route: Continue generating Story (/make-story) and develop. Outputs: story.md, sprint-status.yaml, task.md."},"per_tier_2":{"title":"🟡 Tier 2: Medium Impact","desc":"Large feature module impacting core databases or changing core user flows. Route: Freeze story creation. Pivot back to /plan to update PRD, re-architect database spec, and re-decompose Epics. Outputs: PRD.md, epics-and-stories.md, database-spec.md."},"per_tier_3":{"title":"🔴 Tier 3: High Impact (Pivot)","desc":"Changes core product values, user personas, or baseline tech stack. Route: Freeze all development. Pivot back to /idea-challenge to stress-test core assumptions, run new /research, and rebuild PRD. Outputs: idea-challenge.md, research/, architecture.md."},"orch_title":"🤖 Smart Orchestration Routing","orch_desc":"Feel overwhelmed by all these workflows? No worries! While the pipeline defines the structure, you do not need to call every command manually. Just talk to the Orch Agent - the supreme brain of I-Wish. It analyzes context and delegates tasks automatically!","orch_badge":"💡 AUTOMATE NOW - RUN ORCHESTRATOR","orch_note":"Unified orchestrator interface. Detects intent and routes requests automatically, minimizing manual developer input.","skills_title":"🛠️ Supportive & Foundational Skills System","skills_desc":"Beyond the main track, I-Wish integrates specialized skills tasked with auditing code quality, validating security, and optimizing UX.","skills":{"desc_repo_absorption":"Analyze, absorb and deconstruct external repositories from GitHub, automatically integrating instructions and linking with Orch routing.","desc_idea_hardening":"Rigorously evaluate product ideas, analyze at least 2-3 implementation approaches along with trade-offs and core value.","desc_security_guardian":"External security control: scan vulnerabilities, secret leaks, review trust levels and enforce least privileges before merging/deploying.","desc_ux_guardian":"Ensure user interfaces match the Master Design System perfectly, preventing style drift across multiple sprints.","desc_user_simulation_guardian":"Simulate behaviors of different business personas using 1st-Principle thinking to test UX flow coherence (run via /simulate-user).","desc_pivot_guardian":"Loop gatekeeper: automatically interrupt the agent if it edits a file consecutively more than 3 times without running tests or builds.","desc_socratic_review":"Perform Socratic Q&A to review database changes, control backward compatibility, and prevent architectural drift.","desc_qa_simulator_guardian":"Simulate full testing processes and calculate the Hybrid Scorecard to evaluate readiness for code shipping.","desc_creative_agent":"Creative support agent: propose 2-3 UI/UX design directions, help draw HTML/Mermaid mockups and integrate Stitch designs.","desc_ai_engineer_agent":"AI/LLM developer agent: optimize prompt templates, manage token budget, prevent prompt injection and allocate model tiers.","desc_data_architect_agent":"Data administration agent: design DB schemas, synchronize migrations (Prisma) and verify consistency of Data Specs.","desc_data_strategist_agent":"Data strategy agent: plan integrated data analysis, control backward compatibility and model project information structures."},"usecases_title":"💡 Usecase Action Guides","usecases_desc":"Common operational scenarios and key workflows to resolve them in I-Wish:","usecase_1":{"title":"GitHub Repository Absorption (RAP)","desc":"When you want to clone, parse, and absorb external repositories or skill templates from GitHub into I-Wish.","action":"RAP pipeline: security-guardian scans for trust/malware, repo-absorption clones and indexes code graph, generates integration guide, and binds trigger tags for Orch routing."},"usecase_2":{"title":"Clone Existing Website (Cloner)","desc":"When you need to copy visual layouts of a public website and output clean React/HTML UI components.","action":"Browser-driven cloning: Captures DOM/CSS structures, extracts typography, layout tokens, and compiles code."},"usecase_3":{"title":"UI Design Synchronization (Stitch / UX Pro Max)","desc":"When you design mockups and want to synchronize design specs with Stitch design server.","action":"UX sync workflow: run /create-ux-design and /make-ui-spec. Call /sync-stitch-design to push changes. Visual-fidelity-gate automatically reviews if frontend code matches mockups."},"usecase_4":{"title":"Codebase Analysis & Knowledge Graphing","desc":"To map file imports and trace story implementation impacts (Feature Graph) for Orch routing.","action":"Analyzer: Scans source code, traces functional dependency nodes, and updates Dashboard graphs."},"usecase_5":{"title":"Canary Trialling & Staging Validation","desc":"To trial new code on a subset of staging traffic prior to full production release.","action":"Deployment workflow: run /canary to spin up sandboxes, monitor performance, and automate rollbacks."},"usecase_6":{"title":"Urgent Hotfixing & Operational Diagnostics","desc":"Diagnose production bugs and safely implement hotfixes without breaking baseline compatibility.","action":"Diagnostics loop: run /fix-bug for root-cause analysis, generate regression tests, and apply patches."},"usecase_7":{"title":"Brand Identity, Logo & Style Guidelines","desc":"Create brand assets, logos, and guidelines from scratch or refactor existing ones.","action":"Prism workflow: run /brand to questionnaire Brand Prism, draw concept logos, and export design tokens."},"label_note":"Note:","label_output":"Output:"},"plugins":{"sidebar_title":"Tournament Arena","nav_intro":"ℹ️ Overview","nav_registry":"🔌 Plugins Registry","nav_workflow":"⚔️ 5-Step Pipeline","nav_usecases":"💡 Practical Use Cases","nav_slash":"💬 Syntax & Examples","title":"🔌 Plugin-driven A/B Tournaments","intro":"I-Wish utilizes a flexible plugin architecture alongside an advanced A/B Tournament system. Instead of directly merging every absorbed repository or skill set into the core codebase, users can package them as isolated plugins. When a task requires execution, you can trigger a parallel tournament where multiple candidate plugins work in isolated workspaces and complete the task independently. The system then evaluates the results and allows you to select the best outcome.","card_isolation":{"title":"🛡️ Safe Isolation","desc":"Candidates execute tasks on separate Git branches in independent workspaces. No workspace collision or dirty states."},"card_evaluation":{"title":"📊 Fair Evaluation","desc":"The review-agent evaluates each candidate against requirements, code quality, stability, and automated tests."},"card_hitl":{"title":"👑 Human-in-the-Loop","desc":"Review the competitive scorecard and diffs in a clear visual layout, and select which candidate to merge."},"registry_title":"🔌 Plugins & Modules Registry (Plugins List)","registry_desc":"Below is the registry of active plugins, categorized by functional domains, used to manage and configure tournaments:","registry_uiux":"🎨 UI/UX & Design Providers (Design & Interfaces)","registry_coding":"⚡ Coding & Productivity (Coding & Performance)","registry_badge_illustrative":"ILLUSTRATIVE EXAMPLE","desc_uiux_pro_max":"Plugin for highly responsive interfaces, bespoke transitions, and refined visual tokens.","desc_taste_skill":"Layout provider specializing in aesthetic micro-details, HSL palettes, and luxury typography.","desc_stitch":"Default visual specification system integrated with the Stitch design server.","desc_superpower":"Algorithm-heavy optimization module providing advanced code generation and refactoring.","desc_vibecode":"Streamlined, prompt-driven developer framework prioritizing speed.","desc_native":"Core I-Wish developer implementation workflow (standard dev-agent execution).","workflow_title":"⚔️ 5-Phase Tournament Pipeline","workflow_desc":"The A/B Tournament pipeline runs through 5 distinct phases to guarantee code quality and stability.","step_setup":{"title":"Arena Setup","focus":"Goal: Ensure total isolation between candidates.","desc":"Verifies git cleanliness. For each selected candidate, I-Wish automatically forks a new Git branch branching off the baseline commit."},"step_dispatch":{"title":"Agent Dispatch","focus":"Goal: Execute tasks in parallel workspaces.","desc":"Launches parallel subagents with Workspace: branch configuration. Each agent executes instructions inside its isolated branch context."},"step_gate":{"title":"Resolution Gate","focus":"Goal: Objective grading and evaluation.","desc":"Compiles code and runs automated tests (npm test). The review-agent scores each candidate across requirements, quality, safety, and test passes."},"step_human":{"title":"Human Checkpoint","focus":"Goal: User approves the best solution.","desc":"Displays the scorecard comparing candidates' diffs and logs. The user selects which branch to merge, or aborts the tournament entirely."},"step_merge":{"title":"Merge & Cleanup","focus":"Goal: Apply clean merges and remove temporary branches.","desc":"Merges the approved winning branch into the baseline. All temporary tournament branches and subagent workspaces are automatically deleted."},"usecases_title":"💡 Practical Use Cases","usecases_desc":"Real-world scenarios where launching an A/B Tournament helps resolve complex architectural choices.","usecase_design":{"title":"🎨 Scenario 1: Comparing visual design layout styles","desc":"You want to build a user interface (e.g., Login Page) and visually compare multiple design providers before merging.","action":"Run tournament with ui-ux-pro-max (animations), taste-skill (luxury fonts), and native (default).","cmd_label":"Activation Command:","cmd_text":"/tournament Design a luxury login page with modules ui-ux-pro-max, taste-skill, and native","result":"👉 Result: Three branches run in parallel. A scorecard summarizes design styles and code quality for final human selection."},"usecase_optim":{"title":"⚡ Scenario 2: Algorithm optimization and performance benchmark","desc":"You need to write a performance-critical data processor and want to evaluate resource efficiency.","action":"Compete Superpower (heavy math optimizations), vibecode-pro-max (lightweight code), and native.","cmd_label":"Activation Command:","cmd_text":"/tournament Optimize pathfinder algorithm for 10000 nodes using modules Superpower, vibecode-pro-max, and native","result":"👉 Result: Competing candidates output benchmark metrics (memory, speed) on the scorecard for objective comparison."},"syntax_title":"💬 Natural Language Activation Syntax","syntax_desc":"Instead of long CLI flags, you can invoke a tournament in conversational natural language. The request must contain 3 core parts:","syntax_part1":"1. Task Action & Description: Clearly state what you want to implement (e.g., 'Design a luxury login page').","syntax_part2":"2. Connecting Keyword: Linking phrase (e.g., 'with modules', 'using').","syntax_part3":"3. Candidates List: Comma-separated list of candidate modules joined by 'and'/'or' (e.g., 'ui-ux-pro-max, taste-skill, and native').","syntax_example_label":"Example request:","warning_title":"⚠️ Edge-case: What if you forget to specify candidate modules?","warning_desc":"If you run `/tournament [Task Description]` but omit the candidates list entirely (e.g., `/tournament Create login page`), the system triggers a degradation fallback:","warning_point1":"Defaults to running the task on a single candidate: native (baseline developer workflow).","warning_point2":"Emits a console warning reminder showing how to add candidates next time.","warning_point3":"Ensures continuity of operations without throwing errors or locking up."}} };
+    }
+
+    let currentLanguage = localStorage.getItem('iwish-lang') || 'en';
+
+    function getTranslation(lang, path) {
+      const keys = path.split('.');
+      let current = localesData[lang] || localesData['en'];
+      for (const key of keys) {
+        if (current && current[key] !== undefined) {
+          current = current[key];
+        } else {
+          // fallback to en
+          let fallback = localesData['en'];
+          for (const fallbackKey of keys) {
+            if (fallback && fallback[fallbackKey] !== undefined) {
+              fallback = fallback[fallbackKey];
+            } else {
+              return path;
+            }
+          }
+          return fallback;
+        }
+      }
+      return current;
+    }
+
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      localStorage.setItem('iwish-lang', lang);
+      
+      // Update UI active value in dropdown selector
+      const selectEl = document.getElementById('lang-select');
+      if (selectEl) selectEl.value = lang;
+      
+      // Update translatable elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const path = el.getAttribute('data-i18n');
+        const translation = getTranslation(lang, path);
+        
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = translation;
+        } else {
+          el.innerHTML = translation;
+        }
+      });
+      
+      // Update copy buttons with translated commands
+      document.querySelectorAll('[data-i18n-cmd]').forEach(el => {
+        const path = el.getAttribute('data-i18n-cmd');
+        const translation = getTranslation(lang, path);
+        el.setAttribute('onclick', `copyCommand('${translation.replace(/'/g, "\\'")}', this)`);
+      });
+      
+      // Update language warning banner for untranslated tabs
+      const activeTabBtn = document.querySelector('.tab-btn.active');
+      if (activeTabBtn) {
+        const onclickAttr = activeTabBtn.getAttribute('onclick') || '';
+        const match = onclickAttr.match(/'([^']+)'/);
+        const activeTabId = match ? match[1] : 'idea-to-prd';
+        updateLanguageBanner(activeTabId);
+      } else {
+        updateLanguageBanner('idea-to-prd');
+      }
+    }
+
+    function updateLanguageBanner(activeTabId) {
+      const banner = document.getElementById('untranslated-banner');
+      if (!banner) return;
+      
+      const untranslatedTabs = [
+        'idea-to-prd',
+        'idea',
+        'features',
+        'sprint',
+        'orchestration',
+        'code-graph',
+        'evolver'
+      ];
+      
+      const isUntranslatedTab = untranslatedTabs.includes(activeTabId);
+      
+      if (currentLanguage !== 'en' && isUntranslatedTab) {
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+
+    function initScrollObserver() {
+      const options = {
+        root: null,
+        rootMargin: '-50px 0px -60% 0px',
+        threshold: 0
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            const guideLayout = entry.target.closest('.guide-layout');
+            if (guideLayout) {
+              guideLayout.querySelectorAll('.sidebar-link').forEach(link => {
+                const onclickAttr = link.getAttribute('onclick') || '';
+                if (onclickAttr.includes(`'${sectionId}'`)) {
+                  link.classList.add('active-link');
+                } else {
+                  link.classList.remove('active-link');
+                }
+              });
+            }
+          }
+        });
+      }, options);
+      
+      document.querySelectorAll('.guide-section').forEach(section => {
+        observer.observe(section);
+      });
+    }
+
+    function initI18nDomTags() {
+      // 1. Tab 5 Guide Sidebar Links
+      const guideSidebarLinks = document.querySelectorAll('#tab-iwish-guide .guide-sidebar a');
+      const guideNavKeys = [
+        'guide.main_pipeline',
+        'guide.output_structure',
+        'guide.per',
+        'guide.orch',
+        'guide.supportive_skills',
+        'guide.usecases'
+      ];
+      guideSidebarLinks.forEach((link, idx) => {
+        if (guideNavKeys[idx]) link.setAttribute('data-i18n', guideNavKeys[idx]);
+      });
+      const guideSidebarTitle = document.querySelector('#tab-iwish-guide .guide-sidebar h3');
+      if (guideSidebarTitle) guideSidebarTitle.setAttribute('data-i18n', 'guide.sidebar_title');
+
+      // 2. Tab 5 Main Pipeline Sections & Sub-sections
+      document.querySelector('#pipeline-section h2').setAttribute('data-i18n', 'guide.title');
+      document.querySelector('#pipeline-section p').setAttribute('data-i18n', 'guide.subtitle');
+      
+      const steps = document.querySelectorAll('#pipeline-section .pipeline-timeline .pipeline-step');
+      const stepKeys = [
+        { title: 'guide.step_0.title', focus: 'guide.step_0.focus', badge: 'guide.step_0.badge', desc: 'guide.step_0.desc', output: 'guide.step_0.output', note: 'guide.step_0.note' },
+        { title: 'guide.step_1.title', focus: 'guide.step_1.focus', desc: 'guide.step_1.desc', sub: [
+          { output: 'guide.step_1_discover.output', note: 'guide.step_1_discover.note' },
+          { output: 'guide.step_1_brainstorm.output', note: 'guide.step_1_brainstorm.note' },
+          { output: 'guide.step_1_challenge.output', note: 'guide.step_1_challenge.note' },
+          { output: 'guide.step_1_evaluator.output', note: 'guide.step_1_evaluator.note' },
+          { output: 'guide.step_1_research.output', note: 'guide.step_1_research.note' },
+          { output: 'guide.step_1_competitor.output', note: 'guide.step_1_competitor.note' },
+          { output: 'guide.step_1_context.output', note: 'guide.step_1_context.note' }
+        ]},
+        { title: 'guide.quick_dev.title', focus: 'guide.quick_dev.focus', badge: 'guide.quick_dev.badge', desc: 'guide.quick_dev.desc', output: 'guide.quick_dev.output', note: 'guide.quick_dev.note' },
+        { title: 'guide.step_2.title', focus: 'guide.step_2.focus', desc: 'guide.step_2.desc', sub: [
+          { output: 'guide.step_2_prd.output', note: 'guide.step_2_prd.note' },
+          { output: 'guide.step_2_brand.output', note: 'guide.step_2_brand.note' },
+          { output: 'guide.step_2_ux.output', note: 'guide.step_2_ux.note' }
+        ]},
+        { title: 'guide.step_3.title', focus: 'guide.step_3.focus', desc: 'guide.step_3.desc', sub: [
+          { output: 'guide.step_3_arch.output', note: 'guide.step_3_arch.note' },
+          { output: 'guide.step_3_stories.output', note: 'guide.step_3_stories.note' }
+        ]},
+        { title: 'guide.step_4.title', focus: 'guide.step_4.focus', desc: 'guide.step_4.desc', sub: [
+          { output: 'guide.step_4_story.output', note: 'guide.step_4_story.note' },
+          { output: 'guide.step_4_ui.output', note: 'guide.step_4_ui.note' },
+          { output: 'guide.step_4_data.output', note: 'guide.step_4_data.note' },
+          { output: 'guide.step_4_code.output', note: 'guide.step_4_code.note' },
+          { output: 'guide.step_4_per.output', note: 'guide.step_4_per.note' }
+        ]},
+        { title: 'guide.step_5.title', focus: 'guide.step_5.focus', desc: 'guide.step_5.desc', sub: [
+          { output: 'guide.step_5_review.output', note: 'guide.step_5_review.note' },
+          { output: 'guide.step_5_health.output', note: 'guide.step_5_health.note' }
+        ]},
+        { title: 'guide.step_6.title', focus: 'guide.step_6.focus', desc: 'guide.step_6.desc', sub: [
+          { output: 'guide.step_6_canary.output', note: 'guide.step_6_canary.note' }
+        ]},
+        { title: 'guide.step_7.title', focus: 'guide.step_7.focus', desc: 'guide.step_7.desc', sub: [
+          { output: 'guide.step_7_retro.output', note: 'guide.step_7_retro.note' },
+          { output: 'guide.step_7_fix.output', note: 'guide.step_7_fix.note' },
+          { output: 'guide.step_7_dashboard.output', note: 'guide.step_7_dashboard.note' }
+        ]}
+      ];
+      steps.forEach((step, idx) => {
+        const config = stepKeys[idx];
+        if (!config) return;
+        
+        const h4 = step.querySelector('h4');
+        if (h4) h4.setAttribute('data-i18n', config.title);
+        
+        const focus = step.querySelector('.step-focus');
+        if (focus) focus.setAttribute('data-i18n', config.focus);
+        
+        const badge = step.querySelector('.agent-badge');
+        if (badge && config.badge) badge.setAttribute('data-i18n', config.badge);
+        
+        const desc = step.querySelector('p');
+        if (desc) desc.setAttribute('data-i18n', config.desc);
+        
+        if (config.sub) {
+          const items = step.querySelectorAll('.command-item');
+          items.forEach((item, itemIdx) => {
+            const subConfig = config.sub[itemIdx];
+            if (!subConfig) return;
+            
+            const metaVals = item.querySelectorAll('.meta-val');
+            if (metaVals[0] && subConfig.output) metaVals[0].setAttribute('data-i18n', subConfig.output);
+            if (metaVals[1] && subConfig.note) metaVals[1].setAttribute('data-i18n', subConfig.note);
+          });
+        } else {
+          const metaVals = step.querySelectorAll('.meta-val');
+          if (metaVals[0] && config.output) metaVals[0].setAttribute('data-i18n', config.output);
+          if (metaVals[1] && config.note) metaVals[1].setAttribute('data-i18n', config.note);
+        }
+      });
+
+      // 3. Other Guide Sections
+      document.querySelector('#directory-section h2').setAttribute('data-i18n', 'guide.dir_title');
+      document.querySelector('#directory-section p').setAttribute('data-i18n', 'guide.dir_desc');
+      
+      document.querySelector('#per-section h2').setAttribute('data-i18n', 'guide.per_title');
+      document.querySelector('#per-section p').setAttribute('data-i18n', 'guide.per_desc');
+      const perBlocks = document.querySelectorAll('#per-section div[style*="display: flex; flex-direction: column"] > div');
+      const perTiers = [
+        { title: 'guide.per_tier_1.title', desc: 'guide.per_tier_1.desc' },
+        { title: 'guide.per_tier_2.title', desc: 'guide.per_tier_2.desc' },
+        { title: 'guide.per_tier_3.title', desc: 'guide.per_tier_3.desc' }
+      ];
+      perBlocks.forEach((block, idx) => {
+        const config = perTiers[idx];
+        if (!config) return;
+        const h4 = block.querySelector('h4');
+        const p = block.querySelector('p');
+        if (h4) h4.setAttribute('data-i18n', config.title);
+        if (p) p.setAttribute('data-i18n', config.desc);
+      });
+      
+      document.querySelector('#orch-section h2').setAttribute('data-i18n', 'guide.orch_title');
+      document.querySelector('#orch-section p').setAttribute('data-i18n', 'guide.orch_desc');
+      const orchMeta = document.querySelectorAll('#orch-section .meta-val');
+      if (orchMeta[0]) orchMeta[0].setAttribute('data-i18n', 'guide.orch_badge');
+      if (orchMeta[1]) orchMeta[1].setAttribute('data-i18n', 'guide.orch_note');
+      
+      document.querySelector('#skills-section h2').setAttribute('data-i18n', 'guide.skills_title');
+      document.querySelector('#skills-section p').setAttribute('data-i18n', 'guide.skills_desc');
+      
+      const skillDescs = [
+        'guide.skills.desc_repo_absorption',
+        'guide.skills.desc_idea_hardening',
+        'guide.skills.desc_security_guardian',
+        'guide.skills.desc_ux_guardian',
+        'guide.skills.desc_user_simulation_guardian',
+        'guide.skills.desc_pivot_guardian',
+        'guide.skills.desc_socratic_review',
+        'guide.skills.desc_qa_simulator_guardian',
+        'guide.skills.desc_creative_agent',
+        'guide.skills.desc_ai_engineer_agent',
+        'guide.skills.desc_data_architect_agent',
+        'guide.skills.desc_data_strategist_agent'
+      ];
+      const skillCards = document.querySelectorAll('#skills-section .skill-card');
+      skillCards.forEach((card, idx) => {
+        const desc = card.querySelector('.skill-desc');
+        if (desc && skillDescs[idx]) {
+          desc.setAttribute('data-i18n', skillDescs[idx]);
+        }
+      });
+      
+      document.querySelector('#usecases-section h2').setAttribute('data-i18n', 'guide.usecases_title');
+      document.querySelector('#usecases-section p').setAttribute('data-i18n', 'guide.usecases_desc');
+      const usecaseCards = document.querySelectorAll('#usecases-section .usecase-card');
+      usecaseCards.forEach((card, idx) => {
+        const uNum = idx + 1;
+        const title = card.querySelector('.usecase-title');
+        const desc = card.querySelector('.usecase-desc');
+        const action = card.querySelector('.usecase-steps li');
+        if (title) title.setAttribute('data-i18n', `guide.usecase_${uNum}.title`);
+        if (desc) desc.setAttribute('data-i18n', `guide.usecase_${uNum}.desc`);
+        if (action) action.setAttribute('data-i18n', `guide.usecase_${uNum}.action`);
+      });
+
+      // 4. Tab 9 Plugins Sidebar & Header
+      const plSidebarLinks = document.querySelectorAll('#tab-plugins .guide-sidebar a');
+      const plNavKeys = [
+        'plugins.nav_intro',
+        'plugins.nav_registry',
+        'plugins.nav_workflow',
+        'plugins.nav_usecases',
+        'plugins.nav_slash'
+      ];
+      plSidebarLinks.forEach((link, idx) => {
+        if (plNavKeys[idx]) link.setAttribute('data-i18n', plNavKeys[idx]);
+      });
+      const plSidebarTitle = document.querySelector('#tab-plugins .guide-sidebar h3');
+      if (plSidebarTitle) plSidebarTitle.setAttribute('data-i18n', 'plugins.sidebar_title');
+
+      // 5. Tab 9 Intro
+      document.querySelector('#plugins-intro-section h2').setAttribute('data-i18n', 'plugins.title');
+      document.querySelector('#plugins-intro-section p').setAttribute('data-i18n', 'plugins.intro');
+      const introCards = document.querySelectorAll('#plugins-intro-section div.card');
+      if (introCards.length === 3) {
+        const keys = [
+          { title: 'plugins.card_isolation.title', desc: 'plugins.card_isolation.desc' },
+          { title: 'plugins.card_evaluation.title', desc: 'plugins.card_evaluation.desc' },
+          { title: 'plugins.card_hitl.title', desc: 'plugins.card_hitl.desc' }
+        ];
+        introCards.forEach((card, idx) => {
+          const h3 = card.querySelector('h3');
+          const p = card.querySelector('p');
+          if (h3) h3.setAttribute('data-i18n', keys[idx].title);
+          if (p) p.setAttribute('data-i18n', keys[idx].desc);
+        });
+      }
+
+      // 6. Tab 9 Registry
+      document.querySelector('#plugins-registry-section h2').setAttribute('data-i18n', 'plugins.registry_title');
+      document.querySelector('#plugins-registry-section p').setAttribute('data-i18n', 'plugins.registry_desc');
+      
+      const subheads = document.querySelectorAll('#plugins-registry-section h3');
+      if (subheads[0]) {
+        subheads[0].innerHTML = `<span data-i18n="plugins.registry_uiux">🎨 UI/UX & Design Providers (Thiết kế & Giao diện)</span> <span style="font-size: 11px; padding: 2px 8px; background: rgba(59, 130, 246, 0.1); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="plugins.registry_badge_illustrative">Ví dụ minh họa</span>`;
+      }
+      if (subheads[1]) {
+        subheads[1].innerHTML = `<span data-i18n="plugins.registry_coding">⚡ Coding & Productivity (Lập trình & Tối ưu hiệu năng)</span> <span style="font-size: 11px; padding: 2px 8px; background: rgba(168, 85, 247, 0.1); color: var(--accent); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="plugins.registry_badge_illustrative">Ví dụ minh họa</span>`;
+      }
+      
+      const registryCards = document.querySelectorAll('#plugins-registry-section .skill-card');
+      const registryKeys = [
+        'plugins.desc_uiux_pro_max',
+        'plugins.desc_taste_skill',
+        'plugins.desc_stitch',
+        'plugins.desc_superpower',
+        'plugins.desc_vibecode',
+        'plugins.desc_native'
+      ];
+      registryCards.forEach((card, idx) => {
+        const desc = card.querySelector('.skill-desc');
+        if (desc && registryKeys[idx]) {
+          desc.setAttribute('data-i18n', registryKeys[idx]);
+        }
+      });
+
+      // 7. Tab 9 Workflow
+      document.querySelector('#tournament-workflow-section h2').setAttribute('data-i18n', 'plugins.workflow_title');
+      document.querySelector('#tournament-workflow-section p').setAttribute('data-i18n', 'plugins.workflow_desc');
+      const plWorkflowSteps = document.querySelectorAll('#tournament-workflow-section .pipeline-timeline .pipeline-step');
+      const plStepKeys = [
+        { title: 'plugins.step_setup.title', focus: 'plugins.step_setup.focus', desc: 'plugins.step_setup.desc' },
+        { title: 'plugins.step_dispatch.title', focus: 'plugins.step_dispatch.focus', desc: 'plugins.step_dispatch.desc' },
+        { title: 'plugins.step_gate.title', focus: 'plugins.step_gate.focus', desc: 'plugins.step_gate.desc' },
+        { title: 'plugins.step_human.title', focus: 'plugins.step_human.focus', desc: 'plugins.step_human.desc' },
+        { title: 'plugins.step_merge.title', focus: 'plugins.step_merge.focus', desc: 'plugins.step_merge.desc' }
+      ];
+      plWorkflowSteps.forEach((step, idx) => {
+        const config = plStepKeys[idx];
+        if (!config) return;
+        const h4 = step.querySelector('h4');
+        const focus = step.querySelector('.step-focus');
+        const desc = step.querySelector('p');
+        if (h4) h4.setAttribute('data-i18n', config.title);
+        if (focus) focus.setAttribute('data-i18n', config.focus);
+        if (desc) desc.setAttribute('data-i18n', config.desc);
+      });
+
+      // 8. Tab 9 Usecases
+      document.querySelector('#tournament-usecases-section h2').setAttribute('data-i18n', 'plugins.usecases_title');
+      document.querySelector('#tournament-usecases-section p').setAttribute('data-i18n', 'plugins.usecases_desc');
+      const plUsecaseCards = document.querySelectorAll('#tournament-usecases-section .usecase-card');
+      if (plUsecaseCards.length === 2) {
+        // Card 1: Design
+        const card1 = plUsecaseCards[0];
+        card1.querySelector('.usecase-title').setAttribute('data-i18n', 'plugins.usecase_design.title');
+        card1.querySelector('.usecase-desc').setAttribute('data-i18n', 'plugins.usecase_design.desc');
+        card1.querySelectorAll('.usecase-steps li')[0].setAttribute('data-i18n', 'plugins.usecase_design.action');
+        card1.querySelectorAll('.usecase-steps li')[1].setAttribute('data-i18n', 'plugins.usecase_design.cmd_label');
+        card1.querySelectorAll('p')[1].setAttribute('data-i18n', 'plugins.usecase_design.result');
+        
+        const cmdSpan1 = card1.querySelector('.cli-cmd');
+        if (cmdSpan1) cmdSpan1.setAttribute('data-i18n', 'plugins.usecase_design.cmd_text');
+        const copyBtn1 = card1.querySelector('.cli-copy-btn');
+        if (copyBtn1) copyBtn1.setAttribute('data-i18n-cmd', 'plugins.usecase_design.cmd_text');
+        
+        // Card 2: Optim
+        const card2 = plUsecaseCards[1];
+        card2.querySelector('.usecase-title').setAttribute('data-i18n', 'plugins.usecase_optim.title');
+        card2.querySelector('.usecase-desc').setAttribute('data-i18n', 'plugins.usecase_optim.desc');
+        card2.querySelectorAll('.usecase-steps li')[0].setAttribute('data-i18n', 'plugins.usecase_optim.action');
+        card2.querySelectorAll('.usecase-steps li')[1].setAttribute('data-i18n', 'plugins.usecase_optim.cmd_label');
+        card2.querySelectorAll('p')[1].setAttribute('data-i18n', 'plugins.usecase_optim.result');
+        
+        const cmdSpan2 = card2.querySelector('.cli-cmd');
+        if (cmdSpan2) cmdSpan2.setAttribute('data-i18n', 'plugins.usecase_optim.cmd_text');
+        const copyBtn2 = card2.querySelector('.cli-copy-btn');
+        if (copyBtn2) copyBtn2.setAttribute('data-i18n-cmd', 'plugins.usecase_optim.cmd_text');
+      }
+
+      // 9. Tab 9 Syntax
+      document.querySelector('#tournament-slash-section h2').setAttribute('data-i18n', 'plugins.syntax_title');
+      document.querySelector('#tournament-slash-section p').setAttribute('data-i18n', 'plugins.syntax_desc');
+      const plSyntaxDivs = document.querySelectorAll('#tournament-slash-section div[style*="display: flex; flex-direction: column"] > div');
+      if (plSyntaxDivs[0]) plSyntaxDivs[0].setAttribute('data-i18n', 'plugins.syntax_part1');
+      if (plSyntaxDivs[1]) plSyntaxDivs[1].setAttribute('data-i18n', 'plugins.syntax_part2');
+      if (plSyntaxDivs[2]) plSyntaxDivs[2].setAttribute('data-i18n', 'plugins.syntax_part3');
+      const sampleLabel = document.querySelector('#tournament-slash-section .meta-label');
+      if (sampleLabel) sampleLabel.setAttribute('data-i18n', 'plugins.syntax_example_label');
+      
+      const syntaxCmdSpan = document.querySelector('#tournament-slash-section .cli-cmd');
+      if (syntaxCmdSpan) syntaxCmdSpan.setAttribute('data-i18n', 'plugins.usecase_design.cmd_text');
+      const syntaxCopyBtn = document.querySelector('#tournament-slash-section .cli-copy-btn');
+      if (syntaxCopyBtn) syntaxCopyBtn.setAttribute('data-i18n-cmd', 'plugins.usecase_design.cmd_text');
+      const syntaxCodeSample = document.querySelector('#tournament-slash-section .meta-val code');
+      if (syntaxCodeSample) syntaxCodeSample.setAttribute('data-i18n', 'plugins.usecase_design.cmd_text');
+
+      // 10. Tab 9 Warning
+      const warningBlock = document.querySelector('#tournament-slash-section div[style*="background: rgba(220, 38, 38"]');
+      if (warningBlock) {
+        const h3 = warningBlock.querySelector('h3');
+        const p = warningBlock.querySelector('p');
+        const lis = warningBlock.querySelectorAll('ul li');
+        if (h3) h3.setAttribute('data-i18n', 'plugins.warning_title');
+        if (p) p.setAttribute('data-i18n', 'plugins.warning_desc');
+        if (lis[0]) lis[0].setAttribute('data-i18n', 'plugins.warning_point1');
+        if (lis[1]) lis[1].setAttribute('data-i18n', 'plugins.warning_point2');
+        if (lis[2]) lis[2].setAttribute('data-i18n', 'plugins.warning_point3');
+      }
+    }
 
     let currentSlideIndex = 0;
 
@@ -3134,6 +3938,8 @@
       const contentEl = document.getElementById(`tab-${tabId}`);
       if (contentEl) contentEl.classList.add('active');
 
+      updateLanguageBanner(tabId);
+
       // Stabilize/Redraw vis.js networks since display was none
       setTimeout(() => {
         if (tabId === 'idea' && window.ideaNetwork) {
@@ -3158,22 +3964,27 @@
     // Guide section scrolling
     function scrollToSection(sectionId) {
       const section = document.getElementById(sectionId);
-      const container = document.querySelector('.guide-main');
-      if (section && container) {
-        container.scrollTo({
-          top: section.offsetTop - container.offsetTop,
-          behavior: 'smooth'
-        });
+      if (section) {
+        const container = section.closest('.guide-main');
+        if (container) {
+          container.scrollTo({
+            top: section.offsetTop - container.offsetTop,
+            behavior: 'smooth'
+          });
+        }
         
-        // Update active class in guide sidebar
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-          link.classList.remove('active-link');
-        });
-        const activeLink = Array.from(document.querySelectorAll('.sidebar-link')).find(link => {
-          const onclickAttr = link.getAttribute('onclick') || '';
-          return onclickAttr.includes(sectionId);
-        });
-        if (activeLink) activeLink.classList.add('active-link');
+        // Update active class in guide sidebar scoped to current layout container
+        const guideLayout = section.closest('.guide-layout');
+        if (guideLayout) {
+          guideLayout.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.remove('active-link');
+          });
+          const activeLink = Array.from(guideLayout.querySelectorAll('.sidebar-link')).find(link => {
+            const onclickAttr = link.getAttribute('onclick') || '';
+            return onclickAttr.includes(sectionId);
+          });
+          if (activeLink) activeLink.classList.add('active-link');
+        }
       }
     }
 
@@ -3196,6 +4007,7 @@
 
     // Tab 1: Idea Tree Setup (Hierarchical)
     function renderIdeaTree() {
+      if (!nodesEdgesData || !Array.isArray(nodesEdgesData.nodes) || !Array.isArray(nodesEdgesData.edges)) return;
       const visNodes = nodesEdgesData.nodes.map(n => ({
         id: n.id,
         label: n.label.split(':')[0],
@@ -3251,6 +4063,7 @@
 
     // Tab 2: Feature Graph Setup
     function renderFeatureGraph() {
+      if (!nodesEdgesData || !Array.isArray(nodesEdgesData.nodes) || !Array.isArray(nodesEdgesData.edges)) return;
       // Connect technical file dependencies or story links
       const container = document.getElementById('features-canvas');
       const data = { 
@@ -3291,6 +4104,7 @@
 
     // Tab 3: Kanban Sprint Dashboard
     function renderSprintDashboard() {
+      if (!sprintData || !Array.isArray(sprintData)) return;
       const colMap = {
         'backlog': 'cards-backlog',
         'ready': 'cards-ready',
@@ -3483,6 +4297,11 @@
       renderSprintDashboard();
       renderOrchestrationGraph();
       initIdeaToPrdPresentation();
+      
+      // Dynamic i18n and scroll setup
+      initI18nDomTags();
+      setLanguage(currentLanguage);
+      initScrollObserver();
     };
 
     // ===== CODE GRAPH TAB =====

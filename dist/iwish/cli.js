@@ -52,6 +52,7 @@ const source_of_truth_1 = require("./source-of-truth");
 const inventory_1 = require("./inventory");
 const skill_graph_1 = require("./skill-graph");
 const routing_profile_1 = require("./routing-profile");
+const tournament_runner_1 = require("./tournament-runner");
 function getInvocationName() {
     return process.argv[1]?.split('/').pop() || 'iwish';
 }
@@ -658,6 +659,29 @@ async function runCli() {
         });
         console.log(chalk_1.default.green(`Advanced solution-research '${options.name}' to ${result.state.current_stage}`));
         console.log(`state: ${result.statePath}`);
+    }));
+    addSharedDirectoryOption(program
+        .command('tournament')
+        .description('Run a parallel A/B tournament for multiple plugins/workflows')
+        .option('--task <task>', 'Task description to evaluate')
+        .option('--candidates <candidates>', 'Comma-separated list of candidate plugins/workflows')
+        .option('--merge <candidate>', 'Merge a winning candidate branch and clean up')
+        .option('--abort', 'Abort the active tournament and return to baseline')
+        .action(async (options) => {
+        const projectRoot = getProjectRoot(options.directory);
+        if (options.abort) {
+            await (0, tournament_runner_1.abortTournament)(projectRoot);
+        }
+        else if (options.merge) {
+            await (0, tournament_runner_1.mergeTournament)(projectRoot, options.merge);
+        }
+        else {
+            if (!options.task || !options.candidates) {
+                console.error(chalk_1.default.red('❌ Error: Either specify --task and --candidates to start a tournament, or --merge / --abort to finish/abort it.'));
+                process.exit(1);
+            }
+            await (0, tournament_runner_1.runTournament)(projectRoot, options.task, options.candidates);
+        }
     }));
     addSharedDirectoryOption(program
         .command('scaffold-idea-challenge')

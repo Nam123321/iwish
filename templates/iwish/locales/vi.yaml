@@ -1,0 +1,491 @@
+# VI Locale Dictionary
+tabs:
+  idea_to_prd: Ý tưởng & PRD
+  epic_story_map: Sơ đồ Epic & Story
+  feature_graph: Đồ thị Feature
+  sprint_kanban: Bảng Sprint Kanban
+  orchestration: Đồ thị Orchestration
+  iwish_guide: Hướng dẫn sử dụng
+  code_graph: Đồ thị Code
+  evolver: Tiến hóa Skills
+  plugins: Plugins & Đấu trường
+fallbacks:
+  untranslated_title: Trạng thái dịch thuật i18n
+  untranslated_text: Nội dung tab này chưa được hỗ trợ ngôn ngữ đã chọn. Đang hiển
+    thị bản tiếng Anh mặc định.
+  no_node_selected: Chưa chọn node
+  no_node_selected_desc: Nhấp vào bất kỳ node nào để kiểm tra thông tin chi tiết.
+  no_evolved_skills: Không tìm thấy Evolved Skills
+  no_evolved_skills_desc: "Chạy I-Wish Evolver (ví dụ: lineage-sync tracking) để
+    ghi nhận phả hệ đột biến kỹ năng và hiển thị cây phả hệ DAG tại đây."
+  code_graph_not_available: Đồ thị Code chưa sẵn sàng
+  code_graph_not_available_desc: Chạy lệnh sinh code-graph để trực quan hóa kiến
+    trúc dự án của bạn dưới dạng sơ đồ phụ thuộc tương tác.
+  select_evolved_skill: Chọn Evolved Skill
+  skill_evolution_stats: Thống kê tiến hóa Skill
+  total_mutations: Tổng số đột biến
+  average_latency: Độ trễ trung bình
+  average_success_rate: Tỷ lệ thành công TB
+  no_version_selected: Chưa chọn phiên bản
+  no_version_selected_desc: Nhấp vào bất kỳ node phiên bản đột biến nào trên cây
+    để kiểm tra hiệu suất độ trễ, số liệu thành công và mốc thời gian.
+  epic_story_map_details: Chi tiết sơ đồ Epic & Story
+guide:
+  sidebar_title: Danh mục tài liệu
+  main_pipeline: 🚀 Trục phát triển
+  output_structure: 📁 Thư mục đầu ra
+  per: 🔄 Đánh giá mở rộng (PER)
+  orch: 🤖 Tác nhân điều phối
+  supportive_skills: 🛠️ Kỹ năng bổ trợ
+  usecases: 💡 Use Cases thực tế
+  title: 🚀 Trục Phát Triển Chính (Main Pipeline)
+  subtitle: Quy trình phát triển phần mềm trong I-Wish được thiết kế theo mô hình
+    AI-Native Factory gồm 7 giai đoạn từ ý tưởng, phát triển đến vận hành & bảo
+    trì sản phẩm.
+  step_0:
+    title: Bootstrap (Tích Hợp Giữa Chừng)
+    focus: "Mục tiêu: Đưa I-Wish vào tiếp quản một dự án đang phát triển (Brownfield
+      Bootstrapping)."
+    badge: 🚀 SỬ DỤNG NGAY - DỰ ÁN CÓ SẴN
+    desc: "Dành cho dự án brownfield (đã có code sẵn): Chạy lệnh này ngay từ đầu để
+      I-Wish tự động quét mã nguồn, lập bản đồ phụ thuộc và thiết lập bối cảnh
+      dự án mà không cần đi qua luồng Discover/Plan từ số 0."
+    output: Thiết lập 📄 1. Idea Discovery/1.4. research/project-context.md, đồ thị
+      mã nguồn, tạo backlog Story/Epic tối thiểu.
+    note: Tự động chuẩn hóa bối cảnh dự án hiện tại trước khi chuyển giao sang luồng
+      phát triển chính. Có thể dùng các alias như /document-project hoặc
+      /generate-project-context.
+  step_1:
+    title: Discover & Idea Hardening (Phát hiện & Thách thức Ý tưởng)
+    focus: "Mục tiêu: Đánh giá tính khả thi, lập giả thuyết kinh doanh & nghiên cứu
+      bối cảnh dự án."
+    desc: Giai đoạn đầu tiên tập trung vào việc nghiên cứu thị trường, bối cảnh kỹ
+      thuật và thử thách điểm yếu của ý tưởng sản phẩm.
+  step_1_discover:
+    output: 📄 1. Idea Discovery/1.1. idea-discovery.md (Mom Test & JTBD).
+    note: "Bước tiên quyết đầu tiên: Làm rõ ý tưởng và nỗi đau của người dùng trước
+      khi brainstorm."
+  step_1_brainstorm:
+    output: 📄 1. Idea Discovery/1.2. idea-bank.md (Ý tưởng phác thảo sơ bộ,
+      Complexity Score CS 1-5).
+    note: Brainstorm giải pháp chi tiết và MVP scope sau khi đã làm rõ bối cảnh ở
+      bước discover.
+  step_1_challenge:
+    output: 📄 1. Idea Discovery/1.3. idea-challenge.md (chứa bản Press Release &
+      Customer FAQ).
+    note: Thách thức ý tưởng theo phương thức Working Backwards của Amazon nhằm tìm
+      ra giá trị cốt lõi.
+  step_1_evaluator:
+    output: Bản đánh giá lợi thế cạnh tranh bền vững (Moat Evaluator).
+    note: Kích hoạt sau khi làm sắc nét ý tưởng để tìm ra các lợi thế kinh doanh độc
+      quyền.
+  step_1_research:
+    output: 📄 1. Idea Discovery/1.4. research/market-research.md,
+      competitor-research.md, domain-research.md, và technical-research.md.
+    note: Thực hiện rà soát thông tin thị trường, luật lệ hoặc thư viện kỹ thuật
+      thực tế thông qua truy cập web.
+  step_1_competitor:
+    output: 📄 1. Idea Discovery/1.4. research/competitor-research.md.
+    note: Phân tích đối thủ hoặc giải pháp thay thế đang có để reconfirm sự không
+      hài lòng với giải pháp hiện tại.
+  step_1_context:
+    output: 📄 1. Idea Discovery/1.4. research/project-context.md.
+    note: Tạo chỉ dẫn cốt lõi để các Agent tham chiếu và tuân thủ tuyệt đối trong
+      suốt dự án.
+  quick_dev:
+    title: Quick Dev Mode (Lối Đi Nhanh - Bỏ Qua Plan)
+    focus: "Mục tiêu: Lập trình nhanh các tính năng nhỏ không cần qua PRD/Planning."
+    badge: ⚡ SỬ DỤNG NGAY - LẬP TRÌNH NHANH
+    desc: "Lối tắt bỏ qua quy trình: Dành cho lập trình viên muốn thực thi code khẩn
+      cấp, sửa lỗi nhanh hoặc lập trình tính năng nhỏ trực tiếp từ Tech-Spec/chỉ
+      thị mà không muốn đi qua PRD/Planning cồng kềnh. Sử dụng ngay khi cần tăng
+      tối đa tốc độ phát triển."
+    output: Mã nguồn được sửa đổi trực tiếp theo yêu cầu mà không sinh tài liệu cồng
+      kềnh.
+    note: Hệ thống sẽ tự động phát hiện chế độ, bỏ qua các cổng kiểm tra an toàn
+      nghiêm ngặt để tăng tối đa tốc độ code.
+  step_2:
+    title: Plan (Hoạch Định Yêu Cầu)
+    focus: "Mục tiêu: Chi tiết hóa sản phẩm thành tài liệu đặc tả chức năng rõ ràng."
+    desc: Giai đoạn lập kế hoạch chi tiết, xây dựng tài liệu yêu cầu sản phẩm hoàn
+      chỉnh với mục tiêu đo lường rõ ràng.
+  step_2_prd:
+    output: 📄 2. Product Planning/2.1. product-brief-or-prd.md (Bản Product
+      Requirements Document đạt chuẩn SMART).
+    note: Chứa Success Metrics, Technical Stack, các yêu cầu chức năng (FR) và phi
+      chức năng (NFR).
+  step_2_brand:
+    output: 📄 Gói _iwish-output/brand-identity/ (bao gồm brand-guideline.html,
+      brand-guidelines.md, strategy/, assets/logo/, source/design-tokens.json) &
+      sao chép fallbacks ra thư mục /assets.
+    note: "⚠️ Bước tùy chọn: Chạy trước khi thiết kế UI/UX nếu người dùng chưa có
+      Logo & Brand Identity, vì logo và brand ID sẽ tác động trực tiếp đến
+      Design System của sản phẩm. Sinh Logo theo mô hình lăng kính Kapferer's
+      Brand Prism, quản lý qua 3 lộ trình Refactoring (A: Cleanup, B: Evolution,
+      C: Revolution), hỗ trợ đồng bộ qua các công cụ thiết kế đã cấu hình sẵn
+      như Stitch, Figma, Claude Design, Canva, hoặc các công cụ khác theo yêu
+      cầu. Nếu không chọn công cụ, hệ thống tự động tạo cấu trúc Phase 12 đầy đủ
+      tại _iwish-output/brand-identity/ và lưu fallbacks tại thư mục /assets."
+  step_2_ux:
+    output: 📄 2. Product Planning/2.3. ui-ux-spec.md (Bản kế hoạch hành trình người
+      dùng và đặc tả UX tổng thể).
+    note: Kích hoạt sau khi PRD hoàn tất để định hình cấu trúc giao diện và trải
+      nghiệm.
+  step_3:
+    title: Solution (Kiến Trúc & Lập Backlog)
+    focus: "Mục tiêu: Thiết lập bản vẽ kỹ thuật kiến trúc, bẻ nhỏ Epics & Stories,
+      và khởi tạo Sprint."
+    desc: Thiết kế cấu trúc giải pháp kỹ thuật lớn, lập danh sách hạng mục câu
+      chuyện của người dùng (Backlog) và lên kế hoạch chạy Sprint.
+  step_3_arch:
+    output: 📄 docs/architecture.md (ADR) & 2. Product Planning/2.2. database-spec.md.
+    note: Xác định cơ sở dữ liệu, sơ đồ ERD, API contracts và phân chia cấu trúc thư
+      mục.
+  step_3_stories:
+    output: 📄 2. Product Planning/2.4. epics-and-stories.md & các bộ khung User
+      Story sẵn có.
+    note: Phân rã PRD thành các Epic và User Story độc lập mang lại giá trị cho
+      người dùng.
+  step_4:
+    title: Implement (Đặc Tả Chi Tiết & Viết Code)
+    focus: "Mục tiêu: Đặc tả chi tiết từng câu chuyện (Micro-loop) và thực thi code
+      logic hoàn chỉnh."
+    desc: "Vòng lặp phát triển cho mỗi Story: Tạo câu chuyện chi tiết -> Đặc tả
+      UI/UX -> Đặc tả dữ liệu -> Thực thi lập trình mã nguồn."
+  step_4_story:
+    output: 📄 Chi tiết file 3. Development/1. Epic &
+      Story/Epic-[ID]/Story-[ID]/story.md sẵn sàng để đưa vào phát triển.
+    note: Đặc tả Acceptance Criteria, bối cảnh sử dụng của story cụ thể.
+  step_4_ui:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/ui-ux-spec.md
+      (Đặc tả thiết kế giao diện chi tiết).
+    note: Đồng bộ hoá thiết kế và tạo mockup trên Stitch, Figma, Claude Design... do
+      người dùng chọn.
+  step_4_data:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/database-spec.md.
+    note: "⚠️ Tự động kích hoạt: Lược đồ này được kiểm tra và sinh tự động nếu story
+      có yêu cầu cập nhật DB trước khi code."
+  step_4_code:
+    output: 💻 Mã nguồn chất lượng chuẩn Clean Architecture và Unit Tests (coverage
+      > 80%).
+    note: Lệnh canonical chính thức để dev-agent bắt đầu viết code logic. Tự động
+      kiểm tra tính nhất quán với Data Spec.
+  step_4_per:
+    output: 📄 Báo cáo đánh giá tác động 3.
+      Development/project-expansion-review/PER-[feature-name].md.
+    note: "Đánh giá 4 trụ cột và rủi ro pivot khi có đề xuất mở rộng dự án
+      in-flight. Hỗ trợ alias viết tắt: /per hoặc /feature-expansion-review."
+  step_5:
+    title: Validate (Cổng Đảm Bảo Chất Lượng)
+    focus: "Mục tiêu: Đánh giá chất lượng code, kiểm soát kiến trúc và phát hiện lỗi
+      thụ động."
+    desc: Rà soát mã nguồn tự động, phân tích rủi ro tương thích ngược và đánh giá
+      sức khỏe cấu trúc tổng thể của codebase.
+  step_5_review:
+    output: 📄 Báo cáo review chi tiết, log quét bảo mật (SAST), và điểm chất lượng
+      Hybrid QA Scorecard.
+    note: Đảm bảo chất lượng code và an toàn bảo mật trước khi bàn giao mã nguồn.
+  step_5_health:
+    output: 📄 Báo cáo sức khỏe codebase (dead code, circular dependencies, orphan
+      files).
+    note: Chạy định kỳ theo chu kỳ để giữ cho cấu trúc mã nguồn luôn sạch sẽ, kiểm
+      soát nợ kỹ thuật.
+  step_6:
+    title: Deliver & Release (Bàn Giao & Phát Hành)
+    focus: "Mục tiêu: Handoff sản phẩm, cấu hình CI/CD và thực hiện release an toàn."
+    desc: Khi tính năng hoàn tất và sẵn sàng triển khai, tiến hành cấu hình hạ tầng
+      CI/CD, phân luồng traffic và phát hành sản phẩm.
+  step_6_canary:
+    output: Kịch bản rollout canary, cấu hình an toàn cho traffic gating trên
+      staging/production.
+    note: Thực thi quy trình triển khai từng phần để kiểm soát rủi ro phát hành.
+  step_7:
+    title: Operate, Maintain & Evolve (Vận Hành, Bảo Trì & Tiến Hóa)
+    focus: "Mục tiêu: Thu hoạch tri thức thực tế, xử lý lỗi phát sinh (hotfixes), và
+      tối ưu vận hành."
+    desc: Giai đoạn sau khi release, thực hiện bảo trì định kỳ, sửa đổi khẩn cấp khi
+      có lỗi và đúc kết tri thức tiến hóa cho dự án.
+  step_7_retro:
+    output: 📄 4. Verification & Release/4.3. retrospective.md.
+    note: Thu hoạch tri thức thực tế (Knowledge Delta) nạp lại vào Corporate Brain
+      sau mỗi sprint để tiến hóa hệ thống.
+  step_7_fix:
+    output: 📄 Báo cáo sửa lỗi trong 3. Development/2. Bug Report/, mã nguồn được vá
+      an toàn.
+    note: Kích hoạt ngay khi có sự cố phát sinh. Tạo file báo cáo lỗi theo cấu trúc
+      chuẩn.
+  step_7_dashboard:
+    output: 🖥️ Giao diện Dashboard I-Wish Workspace tương tác được cập nhật mới nhất.
+    note: Biên dịch các siêu dữ liệu sprint, sơ đồ liên kết ý tưởng để người dùng và
+      tác nhân cùng theo dõi tiến độ. Có thể sử dụng lệnh CLI iwish
+      gen-dashboard.
+  dir_title: 📁 Cấu Trúc Thư Mục Tài Liệu Đầu Ra Chuẩn
+  dir_desc: "I-Wish quản lý tất cả tài liệu lập kế hoạch, đặc tả và báo cáo dưới
+    một cấu trúc thư mục chuẩn nhằm đảm bảo tính truy vết (traceability) và kế
+    thừa dữ liệu giữa các giai đoạn:"
+  per_title: 🔄 Quy Trình Đánh Giá Mở Rộng Dự Án (Project Expansion Review - PER)
+  per_desc: "Khi dự án đang chạy (in-flight) và có yêu cầu bổ sung thêm tính năng
+    hoặc module mới, hệ thống bắt buộc kích hoạt quy trình PER nhằm đánh giá mức
+    độ ảnh hưởng và xác định xem dự án có cần Pivot không. PER phân loại tác
+    động thành 3 mức:"
+  per_tier_1:
+    title: "🟢 Mức 1: Tác động THẤP (Low Impact)"
+    desc: "Tính năng bổ sung nhỏ, không đổi luồng chính, không đổi DB schema lớn.
+      Định tuyến: Cho phép tiếp tục tạo Story (/make-story) và triển khai.
+      Outputs: story.md, sprint-status.yaml, task.md."
+  per_tier_2:
+    title: "🟡 Mức 2: Tác động TRUNG BÌNH (Medium Impact)"
+    desc: "Module lớn, ảnh hưởng đến database schema nghiệp vụ chính hoặc thay đổi
+      luồng chính nhưng giữ nguyên tệp khách hàng. Định tuyến: Dừng tạo story.
+      Quay lại bước /plan để cập nhật PRD, thiết kế database spec tổng thể, và
+      phân rã lại Epic. Outputs: PRD.md, epics-and-stories.md,
+      database-spec.md."
+  per_tier_3:
+    title: "🔴 Mức 3: Tác động CAO (High Impact / Pivot)"
+    desc: "Thay đổi mô hình giá trị sản phẩm, đổi đối tượng người dùng, hoặc đổi
+      công nghệ cốt lõi. Định tuyến: Đóng băng tiến độ cũ. Quay lại
+      /idea-challenge để stress-test lại ý tưởng, tiến hành thêm /research mới,
+      rồi mới cập nhật PRD tại /plan. Outputs: idea-challenge.md, research/,
+      architecture.md."
+  orch_title: 🤖 Điều Phối Thông Minh (Smart Orchestration Routing)
+  orch_desc: Bạn cảm thấy choáng ngợp với hàng tá quy trình và câu lệnh khác nhau?
+    Đừng lo lắng! Quy trình Main Pipeline phía trên giúp bạn nắm rõ bản chất
+    hoạt động. Trong thực tế, bạn không cần phải thực thi thủ công từng lệnh
+    phức tạp. Hãy gọi Orch Agent - bộ não điều phối tối cao của I-Wish - hệ
+    thống sẽ tự động phân tích bối cảnh, định tuyến thông minh và ủy thác công
+    việc đến đúng Agent phù hợp!
+  orch_badge: 💡 TỰ ĐỘNG NGAY - GỌI ORCHESTRATOR
+  orch_note: Lệnh vạn năng khởi động Tác nhân Điều phối (Orchestrator). Nhận diện
+    bối cảnh và tự chọn routing phù hợp nhất để giảm tải thao tác thủ công cho
+    nhà phát triển.
+  skills_title: 🛠️ Hệ Thống Kỹ Năng Bổ Trợ (Supportive & Foundational Skills)
+  skills_desc: Bên cạnh luồng chính, I-Wish trang bị hệ thống kĩ năng chuyên biệt
+    làm nhiệm vụ bảo vệ chất lượng phần mềm, quản trị bảo mật và tối ưu trải
+    nghiệm người dùng.
+  skills:
+    desc_repo_absorption: Phân tích, hấp thụ và giải cấu trúc các repository bên
+      ngoài từ GitHub, tự động tích hợp tài liệu hướng dẫn và liên kết với Orch
+      routing.
+    desc_idea_hardening: Đánh giá nghiêm túc các ý tưởng sản phẩm, phân tích ít nhất
+      2-3 phương pháp thực hiện kèm theo phân tích trade-offs và giá trị cốt
+      lõi.
+    desc_security_guardian: "Kiểm soát an ninh vòng ngoài: Quét lỗ hổng, secret
+      leak, rà soát mức độ tin cậy và cấp quyền tối thiểu trước khi code được
+      merge/deploy."
+    desc_ux_guardian: Đảm bảo giao diện người dùng đồng bộ tuyệt đối với Master
+      Design System, ngăn chặn tình trạng "lệch giao diện" sau nhiều sprint.
+    desc_user_simulation_guardian: Sử dụng tư duy 1st-Principle giả lập hành vi của
+      các Persona người dùng doanh nghiệp khác nhau để test tính mạch lạc của
+      luồng UX (chạy qua /simulate-user).
+    desc_pivot_guardian: "Người gác cổng vòng lặp: Tự động ngắt agent nếu chỉnh sửa
+      liên tục một tệp quá 3 lần mà không thông qua chạy test hoặc build xác
+      thực."
+    desc_socratic_review: Thực hiện hỏi đáp Socratic để rà soát thay đổi cơ sở dữ
+      liệu, kiểm soát tính tương thích ngược và chống drift kiến trúc.
+    desc_qa_simulator_guardian: Mô phỏng quy trình kiểm thử toàn diện, tính toán
+      bảng điểm chất lượng Hybrid Scorecard giúp đánh giá độ sẵn sàng ship code.
+    desc_creative_agent: "Tác nhân hỗ trợ sáng tạo: đề xuất 2-3 phương án thiết kế
+      UI/UX, hỗ trợ vẽ mockups HTML/Mermaid và tích hợp thiết kế Stitch."
+    desc_ai_engineer_agent: "Tác nhân lập trình AI/LLM: tối ưu prompt template, quản
+      lý token budget, bảo vệ prompt injection và phân bổ model tier."
+    desc_data_architect_agent: "Tác nhân quản trị dữ liệu: thiết kế schema DB, đồng
+      bộ hóa migrations (Prisma) và kiểm tra tính toàn vẹn của Data Specs."
+    desc_data_strategist_agent: "Tác nhân chiến lược dữ liệu: hoạch định phân tích
+      tích hợp dữ liệu, kiểm soát tương thích ngược và lập mô hình thông tin dự
+      án."
+  usecases_title: 💡 Các Use Case Cụ Thể & Hướng Dẫn Nhanh
+  usecases_desc: Các kịch bản thực tế khi làm việc với hệ thống I-Wish và các lệnh
+    cần chạy tương ứng.
+  usecase_1:
+    title: Hấp thụ và bổ sung Skill mới từ GitHub (RAP Protocol)
+    desc: Khi bạn muốn tích hợp một thư viện, template, hoặc skill bên thứ ba từ một
+      repository công khai trên GitHub vào hệ thống I-Wish.
+    action: Hệ thống kích hoạt quy trình Repo Absorption (RAP). Đầu tiên
+      security-guardian sẽ quét mã độc, sau đó repo-absorption clone và index
+      toàn bộ repo để trích xuất API/Specs, sinh tài liệu integration-guide.md,
+      và đăng ký định tuyến routing cho Orch Agent.
+  usecase_2:
+    title: Sao chép và lập trình UI từ Website có sẵn (Clone Website)
+    desc: Khi bạn muốn clone giao diện của một trang web bất kì để chuyển đổi thành
+      components React/HTML code sạch chuẩn trong workspace.
+    action: Gọi workflow /clone-website, agent sử dụng browser tool (Chrome DevTools
+      MCP) để chụp ảnh màn hình, lưu lại cấu trúc DOM và CSS, phân tách các
+      Tokens thiết kế và tự động build các components code.
+  usecase_3:
+    title: Thiết kế & Đồng bộ giao diện (UI UX Pro Max / Stitch)
+    desc: Khi bạn thiết kế UI và muốn đồng bộ hoá đặc tả thiết kế với server Stitch
+      để tạo và tối ưu giao diện.
+    action: Đầu tiên, chạy /create-ux-design và /make-ui-spec để lập spec thiết kế
+      (tạo ui-ux-spec.md). Sử dụng workflow /sync-stitch-design để đẩy thiết kế
+      lên máy chủ Stitch. Cuối cùng, visual-fidelity-gate sẽ audit tự động xem
+      code frontend có khớp pixel với nguồn thiết kế không.
+  usecase_4:
+    title: Phân tích Codebase & Tạo Graph phụ thuộc
+    desc: Để vẽ được sơ đồ liên kết giữa các file code và các User Story (Feature
+      Graph), giúp Orch Agent hiểu được độ ảnh hưởng khi thay đổi code.
+    action: Công cụ quét toàn bộ source code của bạn, trích xuất import statements,
+      các hàm gọi và ánh xạ chúng vào Feature Graph. Dữ liệu này được hiển thị
+      trực tiếp trên tab 'Feature graph' của Dashboard.
+  usecase_5:
+    title: Triển khai Canary Release & Kiểm chứng thực tế
+    desc: Để triển khai thử nghiệm tính năng mới trên một nhóm nhỏ người dùng hoặc
+      môi trường cô lập trước khi tung ra bản cập nhật chính thức.
+    action: Khởi động quy trình Canary Deployment bằng lệnh /canary. Hệ thống sẽ tự
+      động cấu hình kiểm chứng thực tế, theo dõi metrics và kiểm soát traffic
+      gating an toàn.
+  usecase_6:
+    title: Sửa lỗi nóng & Bảo trì sản phẩm (Hotfix & Bug Resolution)
+    desc: Khi phát hiện lỗi vận hành hoặc bug phát sinh và muốn kích hoạt quy trình
+      tự sửa lỗi 8 bước an toàn.
+    action: Gọi lệnh /fix-bug. Agent chuyên trách sẽ chẩn đoán nguyên nhân gốc
+      (RCA), lập phương án sửa đổi, chạy thử nghiệm kiểm chứng và tự động áp
+      dụng bản vá mà không làm gãy hệ thống.
+  usecase_7:
+    title: Tạo & Thiết kế Brand Identity, Logo & Brand Guidelines
+    desc: Khi bạn muốn khởi tạo bộ nhận diện thương hiệu từ đầu hoặc refactor logo
+      và guideline hiện có.
+    action: Khởi tạo bảng câu hỏi lăng kính thương hiệu (Kapferer's Brand Prism) và
+      khảo sát hiện trạng thương hiệu (Paths A/B/C). Sinh ít nhất 5 concept logo
+      kèm giải trình ý nghĩa. Tiến hành kiểm tra kết nối thiết kế và sync
+      asset/token qua các công cụ thiết kế đã cấu hình sẵn như Stitch, Figma,
+      Claude Design, Canva, hoặc các công cụ khác theo yêu cầu, tuân thủ nguyên
+      tắc logo-first gate blocker. Nếu không chọn công cụ, hệ thống tự động tạo
+      cấu trúc Phase 12 đầy đủ tại _iwish-output/brand-identity/ và lưu
+      fallbacks tại thư mục /assets.
+  label_note: "Ghi chú:"
+  label_output: "Đầu ra:"
+plugins:
+  sidebar_title: Đấu trường Tournament
+  nav_intro: ℹ️ Giới thiệu chung
+  nav_registry: 🔌 Danh mục Plugins
+  nav_workflow: ⚔️ Quy trình 5 Bước
+  nav_usecases: 💡 Ví dụ thực tế
+  nav_slash: 💬 Câu lệnh mẫu
+  title: 🔌 Đấu trường A/B Tournament Dựa Trên Plugin
+  intro: I-Wish sử dụng kiến trúc plugin linh hoạt cùng hệ thống Đấu trường A/B
+    Tournament tiên tiến. Thay vì trực tiếp tích hợp mọi kho mã nguồn
+    (repository) hay bộ kỹ năng (skills) được hấp thụ vào nhân hệ thống, người
+    dùng có thể đóng gói chúng thành các plugin cô lập. Khi có một yêu cầu công
+    việc cần thực thi, bạn có thể phát động đấu trường song song, nơi các plugin
+    ứng viên làm việc trên các nhánh độc lập để giải quyết tác vụ. Sau đó, hệ
+    thống sẽ đánh giá kết quả và cho phép bạn lựa chọn phương án tối ưu nhất để
+    trộn (merge) vào mã nguồn chính.
+  card_isolation:
+    title: 🛡️ Cô Lập An Toàn
+    desc: Các ứng viên thực thi tác vụ trên các nhánh Git (Git branch) độc lập trong
+      các không gian làm việc riêng biệt. Không lo xung đột hay bẩn trạng thái
+      mã nguồn.
+  card_evaluation:
+    title: 📊 Đánh Giá Khách Quan
+    desc: Trình đánh giá review-agent sẽ tự động chạy các bài kiểm thử (automated
+      tests), đánh giá độ ổn định và chấm điểm chất lượng mã nguồn của từng ứng
+      viên.
+  card_hitl:
+    title: 👑 Quyền Quyết Định
+    desc: Xem chi tiết ưu/nhược điểm và mã nguồn của từng ứng viên thông qua bảng
+      điểm scorecard trực quan, từ đó phê duyệt phương án tốt nhất để tích hợp.
+  registry_title: 🔌 Plugins & Modules Registry (Danh Mục Plugins)
+  registry_desc: "Dưới đây là danh mục quản lý cấu trúc các plugins & modules hoạt
+    động của hệ thống I-Wish, được phân loại và gom nhóm theo từng phân vùng
+    chức năng cụ thể để bạn dễ dàng quản lý, đối chiếu và cấu hình giải đấu (A/B
+    Tournament):"
+  registry_uiux: 🎨 UI/UX & Design Providers (Thiết kế & Giao diện)
+  registry_coding: ⚡ Coding & Productivity (Lập trình & Tối ưu hiệu năng)
+  registry_badge_illustrative: VÍ DỤ MINH HỌA
+  desc_uiux_pro_max: Plugin thiết kế giao diện chuyên sâu (hiệu ứng mượt mà,
+    responsive, visual tokens).
+  desc_taste_skill: Bộ thiết kế chuyên biệt về micro-details, màu sắc HSL và
+    typography sang trọng.
+  desc_stitch: Hệ thống đặc tả giao diện mặc định kết nối với Stitch design server.
+  desc_superpower: Module tối ưu thuật toán nặng, refactoring và sinh mã nguồn nâng cao.
+  desc_vibecode: Khung phát triển tinh gọn điều khiển bằng câu lệnh, ưu tiên tốc độ.
+  desc_native: Quy trình lập trình cốt lõi mặc định của nền tảng I-Wish.
+  workflow_title: ⚔️ Quy Trình Vận Hành Tournament (5 Bước)
+  workflow_desc: Đấu trường A/B Tournament vận hành qua mô hình 5 giai đoạn nhằm
+    đảm bảo chất lượng và tính an toàn tuyệt đối của mã nguồn.
+  step_setup:
+    title: Arena Setup (Thiết lập Đấu trường)
+    focus: "Mục tiêu: Đảm bảo tính cô lập hoàn toàn giữa các plugin."
+    desc: Hệ thống kiểm tra trạng thái Git làm việc. Với mỗi candidate plugin được
+      chọn tham chiến, I-Wish sẽ tự động rẽ nhánh (Git branch) độc lập xuất phát
+      từ commit cơ sở (baseline commit).
+  step_dispatch:
+    title: Agent Dispatch (Điều phối Song song)
+    focus: "Mục tiêu: Thực hiện tác vụ song song trên các nhánh cô lập."
+    desc: "Kích hoạt các subagents song song (parallel subagents) sử dụng cấu hình
+      Workspace: branch. Mỗi subagent chỉ chạy trong bối cảnh nhánh tương ứng và
+      được nạp các prompt/instruction đặc thù của plugin đó."
+  step_gate:
+    title: Resolution Gate (Đánh giá Tự động)
+    focus: "Mục tiêu: Chấm điểm và so sánh kết quả khách quan."
+    desc: Sau khi các subagents hoàn thành, hệ thống thu thập Git diff và chạy bộ
+      kiểm thử (npm test) hoặc các trình biên dịch để đo lường. review-agent sẽ
+      chấm điểm các candidate theo thang đo 4 tiêu chí (Yêu cầu, Chất lượng
+      code, Bảo mật/Hiệu năng, Test pass).
+  step_human:
+    title: Human Checkpoint (Quyết định của Bạn)
+    focus: "Mục tiêu: Người dùng phê duyệt kết quả tối ưu nhất."
+    desc: Hệ thống xuất bảng điểm so sánh (scorecard) chứa chi tiết các ưu/nhược
+      điểm và diff của từng candidate. Người dùng chọn phê duyệt tích hợp nhánh
+      nào, hoặc hủy toàn bộ giải đấu để giữ nguyên mã nguồn.
+  step_merge:
+    title: Merge & Cleanup (Trộn & Dọn dẹp)
+    focus: "Mục tiêu: Cập nhật mã nguồn sạch sẽ và xóa các nhánh thừa."
+    desc: Khi có sự lựa chọn từ người dùng, nhánh thắng cuộc được merge vào nhánh
+      chính. Các nhánh đấu trường (tournament branches) và subagent contexts tạm
+      thời sẽ tự động được dọn dẹp sạch sẽ khỏi Workspace.
+  usecases_title: 💡 Ví dụ Use Case Thực Tế
+  usecases_desc: Dưới đây là các kịch bản thực tế khi áp dụng cơ chế Plugin và A/B
+    Tournament để giải quyết các bài toán phát triển phần mềm phức tạp.
+  usecase_design:
+    title: "🎨 Kịch bản 1: So sánh, đánh giá phong cách UI/UX từ nhiều Design
+      Provider"
+    desc: "Bạn muốn xây dựng một giao diện người dùng (ví dụ: Trang Login hoặc
+      Dashboard) nhưng muốn so sánh trực quan các tùy chọn thiết kế khác nhau
+      trước khi quyết định merge."
+    action: Phát động giải đấu với các ứng viên thiết kế như ui-ux-pro-max (chuyên
+      micro-animations, glassmorphism), taste-skill (chuyên luxury typography,
+      HSL palettes) và native (mặc định).
+    cmd_label: "Lệnh kích hoạt:"
+    cmd_text: /tournament Thiết kế trang Login sang trọng và hiện đại với các module
+      ui-ux-pro-max, taste-skill, và native
+    result: "👉 Kết quả: Ba nhánh git độc lập sẽ chạy song song để thiết kế trang
+      login. Khi hoàn tất, bảng so sánh scorecard sẽ hiển thị đầy đủ ưu/nhược
+      điểm thiết kế và mã nguồn của từng ứng viên để bạn lựa chọn merge."
+  usecase_optim:
+    title: "⚡ Kịch bản 2: Tối ưu thuật toán xử lý dữ liệu lớn & Hiệu năng hệ thống"
+    desc: Bạn có một module tính toán phức tạp (như phân tích đồ thị hoặc sắp xếp dữ
+      liệu lớn) và cần tìm giải pháp tối ưu nhất về mặt tài nguyên và tốc độ xử
+      lý.
+    action: Cho so tài thuật toán giữa plugin Superpower (chuyên giải pháp thuật
+      toán nặng, tối ưu bộ nhớ), vibecode-pro-max (chuyên code tinh gọn,
+      zero-bloat) và code mặc định của native.
+    cmd_label: "Lệnh kích hoạt:"
+    cmd_text: /tournament Tối ưu hàm tìm kiếm đường đi ngắn nhất cho 10,000 nodes
+      với các module Superpower, vibecode-pro-max, và native
+    result: "👉 Kết quả: Các ứng viên sẽ tự động viết các module giải thuật độc lập
+      kèm theo script test benchmark. Scorecard sẽ thống kê chính xác thời gian
+      chạy (Execution Time), dung lượng RAM tiêu thụ và tỷ lệ test pass để tìm
+      ra ứng viên thắng cuộc."
+  syntax_title: 💬 Cú pháp kích hoạt Tournament bằng Ngôn ngữ tự nhiên
+  syntax_desc: "Thay vì sử dụng các tham số dài dòng kiểu CLI, bạn có thể trò
+    chuyện trực tiếp với Agent bằng ngôn ngữ tự nhiên thông qua câu lệnh
+    /tournament. Câu lệnh cần đảm bảo đầy đủ 3 cấu phần cốt lõi:"
+  syntax_part1: "1. Hành động & Mô tả Task: Nêu rõ yêu cầu bạn muốn thực hiện (ví
+    dụ: 'Thiết kế trang Login sang trọng và hiện đại')."
+  syntax_part2: "2. Từ khóa kết nối cấu phần: Sử dụng các liên từ tự nhiên như
+    'với các module', 'với', 'sử dụng', 'dùng', hoặc 'using'."
+  syntax_part3: "3. Danh sách ứng viên (Candidates): Danh sách các module tham
+    chiến, phân tách bằng dấu phẩy và liên từ 'và' / 'and' (ví dụ:
+    'ui-ux-pro-max, taste-skill, và native')."
+  syntax_example_label: "Ví dụ thực tế:"
+  warning_title: "⚠️ Edge-case: Quên chọn module/candidate thì sao?"
+  warning_desc: "Nếu bạn sử dụng lệnh /tournament nhưng quên mô tả danh sách
+    module (ví dụ chỉ ghi /tournament Thiết kế trang Login), hệ thống sẽ tự động
+    kích hoạt cơ chế tự dẹp lỗi (degradation fallback):"
+  warning_point1: Hệ thống mặc định chọn duy nhất module native (lập trình core
+    của I-Wish) để thực thi.
+  warning_point2: In ra một dòng cảnh báo (Warning) trong log để nhắc bạn cách
+    điền thêm ứng viên so tài cho lần sau.
+  warning_point3: Hành vi này giúp hệ thống hoạt động liên tục, không bị treo hoặc
+    crash lỗi do thiếu tham số đầu vào.

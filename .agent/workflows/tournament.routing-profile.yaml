@@ -1,0 +1,18 @@
+id: workflow-tournament
+name: tournament
+kind: workflow
+shape: workflow
+role: supportive
+phases: [tournament]
+stages: [tournament-setup, agent-dispatch, resolution-gate, selection, merge]
+triggers: [tournament, ab-testing, ab-tournament]
+anti_triggers: [prd, roadmap]
+primary_agents: [orch-agent, review-agent]
+primary_workflows: [tournament]
+supportive_skills: [pivot-guardian]
+tool_dependencies: [git]
+constraints:
+  - Requires clean git status before execution.
+  - Requires subagent dispatch support.
+source_path: /.agent/workflows/tournament.md
+tags: [tournament, ab-testing, parallel-execution]

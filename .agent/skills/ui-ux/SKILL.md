@@ -294,5 +294,5 @@ type: skill
 path: /.agent/skills/ux-pro-max/SKILL.md
 description: Specialist wrapper for invoking UI/UX Pro Max design intelligence inside I-Wish without replacing I-Wish UX governance.
 tags: ui,ux,design-system,specialist,frontend,review,typography,color,interaction,animation,accessibility,stitch,palette
-depends_on: skill-ux-guardian,skill-design-consultation,skill-stitch-design-taste,skill-user-simulation-guardian
+depends_on: skill-ux-guardian,skill-design-consultation,skill-visual-fidelity-gate,skill-user-simulation-guardian
 ```

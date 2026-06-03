@@ -72,6 +72,8 @@ const CANONICAL_COMMANDS = [
     { command: '/codebase-health', description: 'Scan codebase structure for complexity, duplicates, and nops', tags: ['command', 'architecture', 'refactor'] },
     { command: '/gen-dashboard', description: 'Synchronize the Idea Navigator and generate HTML user guide/dashboard', tags: ['command', 'tool', 'dashboard'] },
     { command: '/project-expansion-review', description: 'Evaluate impact of new features or project expansions during development', tags: ['command', 'planning', 'review', 'change-navigation'] },
+    { command: '/tournament', description: 'Parallel A/B Tournament execution for multiple plugins/workflows', tags: ['command', 'testing', 'tournament', 'ab-test'] },
+    { command: '/brand', description: 'Brand identity, logo and brand guideline creation and refactoring flow', tags: ['command', 'design', 'strategy', 'brand'] },
 ];
 function readYaml(filePath) {
     return yaml_1.default.parse(fs.readFileSync(filePath, 'utf8'));

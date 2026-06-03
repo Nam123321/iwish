@@ -35,6 +35,7 @@ import { loadSourceOfTruth } from './source-of-truth';
 import { buildPlatformInventory } from './inventory';
 import { buildSkillGraphReport } from './skill-graph';
 import { generateRoutingProfile, getRoutingProfileSummary } from './routing-profile';
+import { runTournament, mergeTournament, abortTournament } from './tournament-runner';
 
 function getInvocationName(): string {
   return process.argv[1]?.split('/').pop() || 'iwish';
@@ -786,6 +787,40 @@ export async function runCli(): Promise<void> {
           });
           console.log(chalk.green(`Advanced solution-research '${options.name}' to ${result.state.current_stage}`));
           console.log(`state: ${result.statePath}`);
+        },
+      ),
+  );
+
+  addSharedDirectoryOption(
+    program
+      .command('tournament')
+      .description('Run a parallel A/B tournament for multiple plugins/workflows')
+      .option('--task <task>', 'Task description to evaluate')
+      .option('--candidates <candidates>', 'Comma-separated list of candidate plugins/workflows')
+      .option('--merge <candidate>', 'Merge a winning candidate branch and clean up')
+      .option('--abort', 'Abort the active tournament and return to baseline')
+      .action(
+        async (
+          options: {
+            directory: string;
+            task?: string;
+            candidates?: string;
+            merge?: string;
+            abort?: boolean;
+          },
+        ) => {
+          const projectRoot = getProjectRoot(options.directory);
+          if (options.abort) {
+            await abortTournament(projectRoot);
+          } else if (options.merge) {
+            await mergeTournament(projectRoot, options.merge);
+          } else {
+            if (!options.task || !options.candidates) {
+              console.error(chalk.red('❌ Error: Either specify --task and --candidates to start a tournament, or --merge / --abort to finish/abort it.'));
+              process.exit(1);
+            }
+            await runTournament(projectRoot, options.task, options.candidates);
+          }
         },
       ),
   );
