@@ -54,3 +54,8 @@ All AI assistants and agents operating on this project must strictly comply with
    - **Step 5**: Proceed to write code using `/code` after specifications and design approvals.
    - **Step 6**: Run `/review` to audit code quality and complete verification.
    - **Automatic Pause & Resume Principle**: At any step (story specs, ui/data specs, design, or review results) requiring user feedback, input, or approval, the agent **MUST automatically pause (Pause)**, save the workflow state, notify the user, and wait. As soon as the user responds or approves, the agent **MUST automatically resume the flow** from where it paused without requiring the user to issue redundant commands.
+6. **Mandatory Spec Synchronization during Planning & Course Correction**: Whenever the user adds new requirements to an in-flight or completed story, or when a course correction/pivot is requested:
+   - When entering `planning_mode` or creating/updating `implementation_plan.md`, the agent **MUST** proactively review all related system specification documents (PRD, UI Spec, Data Spec, and FeatureGraph) to determine if they need to be updated to ensure synchronization.
+   - You **MUST** add a dedicated "Spec Reconciliation & Synchronization" section or task block inside the proposed changes of the `implementation_plan.md` identifying exactly which spec files (e.g. `PRD.md`, `ui-ux-spec.md`, `database-spec.md`) will be updated.
+   - When execution starts, the agent **MUST** update those specifications first before writing/changing code, and then run `iwish reconcile-change` to log the sync.
+   - Never skip this check even if the change seems minor or localized.
