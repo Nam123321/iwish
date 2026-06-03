@@ -50,3 +50,8 @@ Every artifact must be written exactly into these folders. Dynamic or dated file
   5. **Implementation (`/code`)**: Code the feature after specification and design approval.
   6. **Quality Gate (`/review`)**: Audit the code and run quality verification checks.
 - **Pause & Resume**: Whenever user input, feedback, or approval is required (e.g., spec reviews, design approvals, or code review findings), the agent **MUST automatically pause (Pause)**. Once the user replies or approves, the agent **MUST automatically resume the flow** from the next sequential step.
+- **Mandatory Spec Synchronization during Planning & Course Correction**: Whenever the user adds new requirements to an in-flight or completed story, or when a course correction/pivot is requested:
+  - When entering `planning_mode` or creating/updating `implementation_plan.md`, the agent **MUST** proactively review all related system specification documents (PRD, UI Spec, Data Spec, and FeatureGraph) to determine if they need to be updated to ensure synchronization.
+  - You **MUST** add a dedicated "Spec Reconciliation & Synchronization" section or task block inside the proposed changes of the `implementation_plan.md` identifying exactly which spec files (e.g. `PRD.md`, `ui-ux-spec.md`, `database-spec.md`) will be updated.
+  - When execution starts, the agent **MUST** update those specifications first before writing/changing code, and then run `iwish reconcile-change` to log the sync.
+  - Never skip this check even if the change seems minor or localized.
