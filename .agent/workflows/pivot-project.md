@@ -90,11 +90,17 @@ Typical follow-up:
    - if no, route into `bootstrap-existing-project`
 4. Determine whether outside repo/capability intake is needed:
    - if yes, route into `absorb-repo`
-5. Record reconciliation and required source-of-truth updates.
-6. Recommend the next canonical workflow instead of continuing blindly.
+5. Generate Pivot Audit Log.
+   - You MUST create a persistent audit document detailing the pivot context, severity, root cause, and the required scope changes.
+   - Save this file to `_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md`.
+   - This ensures traceability and provides context for the subsequent reconciliation.
+6. Record reconciliation and required source-of-truth updates.
+   - **MANDATORY ENFORCEMENT:** You MUST run the `iwish reconcile-change` CLI command to queue the drift record. Example: `iwish reconcile-change --type feature-tweak --summary "Changed scope to X" --story "1-1-abc" --log "path/to/PIVOT-log.md"`. This ensures the development agent will be blocked from implementation until the specs are updated.
+7. Recommend the next canonical workflow instead of continuing blindly.
 
 ## Outputs
 
+- 📄 `_iwish-output/3. Development/pivot-project/PIVOT-*.md` (Pivot Audit Log)
 - pivot severity
 - impacted source-of-truth layers
 - required reconciliation scope
