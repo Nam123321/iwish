@@ -37,7 +37,10 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
 
 ### Phase 1: INGEST 📦 (Agent: capability-agent)
 - **Action:** Invoke Phase 1 of `repo-absorption` skill.
-- **Steps:** Generate `.repomixignore` and run `repomix` to pack the repository into an AI-friendly format.
+- **Steps:** 
+  1. Generate `.repomixignore`.
+  2. Invoke `bash .agent/skills/magika-binary-filter/scripts/magika-filter.sh ${IWISH_HOME}/sandbox/{repo-name} ${IWISH_HOME}/sandbox/{repo-name}/.repomixignore` to automatically filter and block binary files.
+  3. Run `repomix` to pack the repository into an AI-friendly format.
 - **Gate:** Output must exist. If > 2MB, emit WARNING for token limits.
 - **Output:** `${IWISH_HOME}/absorbed-repos/{repo-name}/context.md`.
 

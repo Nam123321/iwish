@@ -39,6 +39,14 @@ description: Index codebase into a knowledge graph using CodeGraphContext (CGC) 
 > [!CAUTION]
 > **Key Learning:** `redislite` bundles ARM-only redis binary → fails on Intel Macs ("Bad CPU type in executable"). Luôn dùng FalkorDB Docker cho cross-platform compatibility.
 
+### Step A0: Pre-flight Binary Filter
+> [!TIP]
+> Indexer engines (CGC / GitNexus) can hang or crash when parsing large binaries. Run Magika to append binary files to `.gitignore` / `IGNORE_DIRS` before indexing.
+
+```bash
+bash .agent/skills/magika-binary-filter/scripts/magika-filter.sh . .gitignore
+```
+
 ### Step A1: Index the Codebase
 ```bash
 cgc index --force .

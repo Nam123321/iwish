@@ -39,6 +39,7 @@ Use this skill when you need to deeply understand, analyze, and map a cloned rep
    .git/
    *.lock
    ```
+2.5. **Run Binary Filter:** Execute `bash .agent/skills/magika-binary-filter/scripts/magika-filter.sh ${IWISH_HOME}/sandbox/{repo-name} ${IWISH_HOME}/sandbox/{repo-name}/.repomixignore` to block ML weights, images, and compiled binaries from token consumption.
 3. **Run Repomix:** Execute the following command:
    ```bash
    npx repomix --output ${IWISH_HOME}/absorbed-repos/{repo-name}/context.md --style markdown ${IWISH_HOME}/sandbox/{repo-name}/
