@@ -16,7 +16,10 @@ Stress-test the concept from the builder and stakeholder side.
 ## Add-On Rules
 
 - use `socratic-review` to challenge assumptions
-- pull in `research` if feasibility or market claims are uncertain
+- **[MANDATORY]** cross-reference `technical-research.md` for:
+  - ML/AI complexity and infrastructure cost reality
+  - Technology stack feasibility vs. team capability
+  - Third-party API dependencies and vendor lock-in risks
 - adapt the internal pressure to concept type instead of blindly assuming a venture-backed startup frame
 
 ## Artifact Update

@@ -2,7 +2,7 @@
 legacy_name: create-prd-legacy
 description: Create a comprehensive PRD (Product Requirements Document) through
   structured workflow facilitation
-main_config: "{project-root}/_iwish/bmm/config.yaml"
+main_config: "{project-root}/_iwish/config.yaml"
 nextStep: ./step-03-success.md
 ---
 
@@ -57,7 +57,22 @@ Load and read full config from {main_config} and resolve:
 
 ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the configured `{communication_language}`.
 
-### 2. Route to Create Workflow
+### 2. Product Strategy Gate (MANDATORY)
+
+> [!CAUTION]
+> **PREREQUISITE CHECK:** Before creating a PRD, you MUST verify that
+> `{planning_artifacts}/1. Idea Discovery/product-strategy.md` exists.
+> If it does NOT exist, STOP and inform the user to run `/product-strategy` first.
+
+Load and read the full `product-strategy.md` file. Extract and hold in context:
+- **Pillar 1** (Problem & Value Proposition) → feeds PRD Vision & Problem Statement
+- **Pillar 3** (Business Model Canvas) → feeds PRD Revenue Model & Distribution
+- **Pillar 5** (Hypothesis Registry) → PRD MUST NOT promote ❌ Unverified/Critical hypotheses as confirmed features
+- **Pillar 6** (Four Risks Assessment) → feeds PRD Non-Functional Requirements & Risk section
+- **Pillar 7** (Top 5 Key Success Metrics) → feeds PRD Success Criteria directly
+- **Final Verdict** → must be `GO` to proceed; if `PIVOT` or `KILL`, block PRD creation
+
+### 3. Route to Create Workflow
 
 "**Create Mode: Creating a new PRD from scratch.**"
 

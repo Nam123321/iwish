@@ -19,12 +19,12 @@ disable-model-invocation: true
 IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the current agent persona you may have loaded:
 
 > [!NOTE]
-> **I-Wish RUNTIME FALLBACK:** First run `./.agent/scripts/check-iwish-runtime.sh --mode project` or verify `_iwish/core/tasks/workflow.xml` and `_iwish/bmm/workflows/4-implementation/code-review/workflow.yaml` exist. If they are missing in source/template mode, load `.agent/workflows/workflow-engine.xml` as the source-mode engine and use this wrapper as the workflow-specific contract. If they are missing in project runtime mode, stop and run `./.agent/scripts/materialize-iwish-runtime.sh --apply` before continuing. Do not silently fallback in project runtime mode.
+> **I-Wish RUNTIME FALLBACK:** First run `./.agent/scripts/check-iwish-runtime.sh --mode project` or verify `_iwish/core/tasks/workflow.xml` and `_iwish/delivery/workflows/4-implementation/code-review/workflow.yaml` exist. If they are missing in source/template mode, load `.agent/workflows/workflow-engine.xml` as the source-mode engine and use this wrapper as the workflow-specific contract. If they are missing in project runtime mode, stop and run `./.agent/scripts/materialize-iwish-runtime.sh --apply` before continuing. Do not silently fallback in project runtime mode.
 
 <steps CRITICAL="TRUE">
 1. Always LOAD the FULL @{project-root}/_iwish/core/tasks/workflow.xml
-2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow-config @{project-root}/_iwish/bmm/workflows/4-implementation/code-review/workflow.yaml
-3. Pass the yaml path @{project-root}/_iwish/bmm/workflows/4-implementation/code-review/workflow.yaml as 'workflow-config' parameter to the workflow.xml instructions
+2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow-config @{project-root}/_iwish/delivery/workflows/4-implementation/code-review/workflow.yaml
+3. Pass the yaml path @{project-root}/_iwish/delivery/workflows/4-implementation/code-review/workflow.yaml as 'workflow-config' parameter to the workflow.xml instructions
 4. Follow workflow.xml instructions EXACTLY as written to process and follow the specific workflow config and its instructions
 5. Save outputs after EACH section when generating any documents from templates
 6. CRITICAL — PROJECT MEMORY REVIEW GATE. Before reviewing implementation context, check for `@{project-root}/.agent/memory/PROJECT.md`. If present, load only sections relevant to the reviewed story/change and treat them as primary project memory. Check `@{project-root}/.agent/memory/USER.md` only for stable collaboration/review preferences. `USER.md` MUST NOT override project constraints, approved architecture, story ACs, code-review rules, or the current user request. Resolve memory conflicts in this order: system/safety rules → project instructions/artifacts → workflow/story instructions → current user request → user preferences → historical session notes.

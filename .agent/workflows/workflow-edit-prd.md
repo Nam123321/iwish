@@ -1,7 +1,7 @@
 ---
 legacy_name: edit-prd-legacy
 description: Edit and improve an existing PRD - enhance clarity, completeness, and quality
-main_config: "{project-root}/_iwish/bmm/config.yaml"
+main_config: "{project-root}/_iwish/config.yaml"
 editWorkflow: ./step-e-01-discovery.md
 ---
 

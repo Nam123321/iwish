@@ -16,13 +16,13 @@ IWISH_RUNTIME_MAPPINGS=(
 
 LEGACY_BMAD_RUNTIME_MAPPINGS=(
   "_iwish/core/tasks/workflow.xml|.agent/workflows/workflow-engine.xml|core engine|copy"
-  "_iwish/bmm/workflows/4-implementation/create-story/workflow.yaml|.agent/workflows/iwish-feature-create-story.md|workflow config|manifest:create-story"
-  "_iwish/bmm/workflows/4-implementation/code-review/workflow.yaml|.agent/workflows/iwish-feature-code-review.md|workflow config|manifest:code-review"
-  "_iwish/bmm/workflows/4-implementation/Vegeta-story/workflow.yaml|.agent/workflows/iwish-feature-dev-story.md|workflow config|manifest:Vegeta-story"
-  "_iwish/bmm/workflows/4-implementation/sprint-planning/workflow.yaml|.agent/workflows/iwish-feature-sprint-planning.md|workflow config|manifest:sprint-planning"
-  "_iwish/bmm/workflows/4-implementation/sprint-status/workflow.yaml|.agent/workflows/iwish-feature-sprint-status.md|workflow config|manifest:sprint-status"
-  "_iwish/bmm/workflows/4-implementation/correct-course/workflow.yaml|.agent/workflows/iwish-feature-correct-course.md|workflow config|manifest:correct-course"
-  "_iwish/bmm/workflows/4-implementation/retrospective/workflow.yaml|.agent/workflows/iwish-feature-retrospective.md|workflow config|manifest:retrospective"
+  "_iwish/delivery/workflows/4-implementation/create-story/workflow.yaml|.agent/workflows/iwish-feature-create-story.md|workflow config|manifest:create-story"
+  "_iwish/delivery/workflows/4-implementation/code-review/workflow.yaml|.agent/workflows/iwish-feature-code-review.md|workflow config|manifest:code-review"
+  "_iwish/delivery/workflows/4-implementation/Vegeta-story/workflow.yaml|.agent/workflows/iwish-feature-dev-story.md|workflow config|manifest:Vegeta-story"
+  "_iwish/delivery/workflows/4-implementation/sprint-planning/workflow.yaml|.agent/workflows/iwish-feature-sprint-planning.md|workflow config|manifest:sprint-planning"
+  "_iwish/delivery/workflows/4-implementation/sprint-status/workflow.yaml|.agent/workflows/iwish-feature-sprint-status.md|workflow config|manifest:sprint-status"
+  "_iwish/delivery/workflows/4-implementation/correct-course/workflow.yaml|.agent/workflows/iwish-feature-correct-course.md|workflow config|manifest:correct-course"
+  "_iwish/delivery/workflows/4-implementation/retrospective/workflow.yaml|.agent/workflows/iwish-feature-retrospective.md|workflow config|manifest:retrospective"
 )
 
 runtime_mappings_print() {
@@ -55,7 +55,7 @@ runtime_make_manifest() {
     runtime_engine="{project-root}/_iwish/core/tasks/workflow.xml"
   else
     runtime_root="_bmad"
-    installed_path="{project-root}/_iwish/bmm/workflows/4-implementation/$name"
+    installed_path="{project-root}/_iwish/delivery/workflows/4-implementation/$name"
     runtime_engine="{project-root}/_iwish/core/tasks/workflow.xml"
   fi
 

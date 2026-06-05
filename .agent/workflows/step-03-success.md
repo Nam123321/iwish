@@ -40,9 +40,11 @@ partyModeWorkflow: '{project-root}/_iwish/core/workflows/party-mode/workflow.md'
 - Current document and frontmatter from previous steps are available
 - Executive Summary and Project Classification already exist in document
 - Input documents from step-01 are available (product briefs, research, brainstorming)
+- **product-strategy.md** from Phase 1 Discovery is available and MUST be referenced
 - No additional data files needed for this step
 - Focus on measurable, specific success criteria
 - LEVERAGE existing input documents to inform success criteria
+- LEVERAGE product-strategy.md Pillar 7 (Top 5 Key Success Metrics) as the PRIMARY baseline for success criteria. Refine and expand from there, not from scratch.
 
 ## YOUR TASK:
 
@@ -53,7 +55,14 @@ Define comprehensive success criteria that cover user success, business success,
 ### 1. Begin Success Definition Conversation
 
 **Check Input Documents for Success Indicators:**
-Analyze product brief, research, and brainstorming documents for success criteria already mentioned.
+Analyze product brief, research, brainstorming documents, AND `product-strategy.md` for success criteria already defined.
+
+**If product-strategy.md Exists (EXPECTED PATH):**
+- Load the Top 5 Key Success Metrics from Pillar 7
+- Present them to the user as the starting baseline
+- Ask: "These metrics were defined during Discovery. Should we refine, expand, or replace any?"
+- Cross-reference Hypothesis Registry (Pillar 5): flag any metric that depends on an unverified hypothesis
+- Ensure Business Model Canvas (Pillar 3) revenue assumptions align with business success metrics
 
 **If Input Documents Contain Success Criteria:**
 Guide user to refine existing success criteria:
@@ -103,6 +112,7 @@ Push for specificity on business metrics:
 
 Tie success metrics back to what makes the product special:
 - Connect success criteria to the product's unique differentiator
+- Cross-reference product-strategy.md Pillar 2 (Blue Ocean / Value Innovation Map) to ensure metrics reflect the unique strategic positioning, not generic industry metrics
 - Ensure metrics reflect the specific value proposition
 - Adapt success criteria to domain context:
   - Consumer: User love, engagement, retention

@@ -12,6 +12,13 @@ Stress-test the concept from the outside in.
 - what practical objections exist?
 - what edge case would a skeptical user raise?
 
+## Research-Grounded Questions (MANDATORY)
+
+The agent MUST reference `competitor-research.md` and `market-research.md` to generate:
+- How is this different from [competitor X] that already does Y? (cite specific competitor)
+- The market research shows [finding] — does the value proposition hold against this?
+- Competitor [X] has [N] users and charges [$Y] — why would users switch to us?
+
 ## Standard
 
 - questions must be hard, not softball CTA questions

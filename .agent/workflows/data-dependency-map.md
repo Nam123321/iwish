@@ -12,5 +12,5 @@ This workflow maps all cross-story data dependencies and generates execution ord
 ## Activation
 
 1. Load the architect-agent agent persona from `{project-root}/.agent/agents/architect-agent.md` and apply Kira Data architect-agent behavior from this workflow.
-2. Load config from `{project-root}/_iwish/bmm/config.yaml`
+2. Load config from `{project-root}/_iwish/config.yaml`
 3. Execute the workflow: `{project-root}/.agent/workflows/step-01-map.md`

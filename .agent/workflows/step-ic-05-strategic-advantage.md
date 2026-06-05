@@ -21,6 +21,12 @@ Attach `unique-advantage-evaluator` when:
 - Is this just operational effectiveness?
 - Does the business model reinforce or weaken the idea?
 
+### Research-Backed Validation (MANDATORY)
+
+- Cross-reference `competitor-research.md`: Which competitors have similar advantages?
+- Cross-reference `market-research.md`: Does the market data support the claimed advantage?
+- Every advantage claim MUST cite a supporting research finding or be flagged as [UNVERIFIED]
+
 ### Solution-Proposal
 
 - What stronger pricing model exists?

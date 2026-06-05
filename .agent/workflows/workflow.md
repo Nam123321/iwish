@@ -29,7 +29,7 @@ This uses **micro-file architecture** for disciplined execution:
 
 ### Configuration Loading
 
-Load config from `{project-root}/_iwish/bmm/config.yaml` and resolve:
+Load config from `{project-root}/_iwish/config.yaml` and resolve:
 
 - `project_name`, `output_folder`, `user_name`
 - `communication_language`, `document_output_language`, `user_skill_level`

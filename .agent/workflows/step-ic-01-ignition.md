@@ -7,6 +7,9 @@ Get the raw concept onto the table and make sure the workflow is solving a real 
 > [!IMPORTANT]
 > **DOUBLE-LOCK CONTEXT INJECTION:**
 > Before proceeding, you MUST use the `view_file` tool to load and read `/.agent/fragments/idea-discovery-framework.md`. You must structure the customer conversation around its **5 Lenses of Idea Discovery** to clarify the idea and push back on broad/vague assumptions.
+>
+> **RESEARCH CONTEXT INJECTION:**
+> You MUST also load all available research files from `_iwish-output/1. Idea Discovery/1.4. research/` including: market-research.md, competitor-research.md, domain-research.md, technical-research.md. Reference these during ignition questioning to ground the conversation in evidence. If these files do not exist, STOP and inform the user that `/research` must run first.
 
 ## Inputs to Capture
 

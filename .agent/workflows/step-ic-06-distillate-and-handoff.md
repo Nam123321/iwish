@@ -18,6 +18,13 @@ Convert the challenge outcome into planning-ready context and decide the next wo
 
 ## Handoff Logic
 
-- if concept is strong enough -> route to `/plan`
-- if evidence gaps dominate -> route to `/research`
-- if the work is an active-project re-direction -> route to `/pivot-project`
+- if verdict is `forged` → route to `/product-strategy` (via `/unique-advantage` if not yet completed)
+- if verdict is `needs-heat` → route to `/research` for targeted evidence gathering on weak areas
+- if verdict is `cracked` → route to `/pivot-project` or recommend `/idea-discover` restart
+- if evidence gaps dominate → route to `/research` for specific missing data
+
+> [!IMPORTANT]
+> **Do NOT route directly to `/plan`.** The mandatory pipeline is:
+> `/idea-challenge` → `/unique-advantage` → `/product-strategy` → `/plan`
+> `/product-strategy` is the synthesis gate that produces the Go/No-Go verdict before PRD creation.
+

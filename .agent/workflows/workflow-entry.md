@@ -170,7 +170,7 @@ The section MUST preserve these exact fields:
 
 ### Configuration Loading
 
-Load config from `{project-root}/_iwish/bmm/config.yaml` and resolve:
+Load config from `{project-root}/_iwish/config.yaml` and resolve:
 
 - `project_name`, `output_folder`, `planning_artifacts`, `implementation_artifacts`, `user_name`
 - `communication_language`, `document_output_language`, `user_skill_level`
