@@ -235,6 +235,7 @@ For EACH Behavioral Asset, extract and document:
      mcp_tools_required: [mcp_tools]
      subagent_triggers: [triggers]
      ```
+   - **3-Layer Progressive Disclosure Enforcement:** When advising how to ADOPT or MERGE external code into `SYSTEM_SKILL`s, you MUST specify how the code will be broken down into a concise (< 500 lines) `SKILL.md`. Instruct that all heavy architecture, long context, and complex schemas be routed into a `references/` directory.
    - Invocation and routing mechanisms (how host agents load, RAG-inject, or trigger the skill/workflow based on the synthesized operational model).
 7. **Save Output:**
    - Save the Comparison Report to `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`.

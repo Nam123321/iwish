@@ -9,7 +9,7 @@ Draft the actual technical changes to the I-Wish capabilities based on the ident
    - Read `.agent/fragments/draft-skill-creation-governance.md`.
 2. **Draft Patches**:
    - For each target identified in Step E-02, create a diff-based proposal.
-   - **Skills**: Add new "Watchouts", "Pillars", or "Mandatory Steps".
+   - **Skills**: Add new "Watchouts", "Pillars", or "Mandatory Steps". If rewriting or expanding a skill, strictly enforce the 3-Layer Progressive Disclosure rule. You MUST cap the `SKILL.md` at 500 lines and extract any bloated rules or context into a `references/` subdirectory.
    - **Workflows**: Clarify step descriptions or add sub-steps.
 3. **CSO Validation Gate (CRITICAL)**:
    - Audit the `description` field in the capability's YAML frontmatter.

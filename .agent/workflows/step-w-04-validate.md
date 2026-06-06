@@ -59,6 +59,17 @@ Run the following checks:
 - [ ] If creating a Workflow draft: Verify the generated gateway `.md` under `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}/generated-workflows/<name>/` correctly chains to all generated step files; verify canonical `.agent/workflows/` paths only after promotion approval.
 - [ ] If creating an Agent draft: Verify the generated agent under `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}/generated-agents/<name>/` can be parsed and has menu structure; verify canonical `.agent/agents/` paths only after promotion approval.
 
+### 3b. Empirical Baseline Testing ("With vs Without" Validation)
+
+**CRITICAL RULE:** Do NOT promote a skill draft if it fails empirical baseline testing.
+
+- [ ] **Test Set Selection (Anti-Bias):** The test query MUST be extracted from the original user request/failure log that triggered the skill creation, or via Adversarial Sampling (e.g., edge cases). The authoring agent MUST NOT write the test.
+- [ ] **Parallel Execution (A/B Testing):** Spawn two parallel isolated workspaces (e.g., via `invoke_subagent` with `Workspace: branch` or `/tournament`).
+  - **Path A (Baseline):** Execute the test query WITHOUT loading the draft skill.
+  - **Path B (Candidate):** Execute the test query WITH the draft skill loaded.
+- [ ] **Double-Blind Evaluation:** Extract the outputs from Path A and Path B. Present them as "Output X" and "Output Y" to an independent evaluating agent (e.g., `review-agent`).
+- [ ] **Rejection Criteria (Bloat Prevention):** The judge evaluates based on Accuracy, Token Efficiency, and Robustness. If Path B does not empirically outperform Path A (or crashes on edge cases), the validation **FAILS**. The draft MUST be rejected or returned for refinement.
+
 ### 4. Promotion Gate
 
 Present the draft files, `metadata.yaml`, `lineage.jsonl`, `promotion-plan.md`, `integration-guide.md`, and `integration-guide.html` to the user. Wait for explicit approval before promoting.
@@ -112,6 +123,7 @@ Next Steps:
 - [ ] All structural validations pass
 - [ ] Convention compliance verified
 - [ ] Integration smoke test passed
+- [ ] Empirical Baseline Testing (With vs Without) passed
 - [ ] User approved promotion or draft was left unpromoted
 - [ ] KG and portability validation pass after promotion
 - [ ] Instinct logged after promotion approval

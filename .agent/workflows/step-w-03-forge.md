@@ -15,12 +15,15 @@ Read the `capability-spec.md` and `metadata.yaml` generated in Step W-02. Verify
 ### 2. Generate Files Based on Capability Type
 
 #### If Type = SKILL
-Create directory and file:
+Create directories and file:
 ```
 ${IWISH_HOME}/generated-skills/<skill-name>/SKILL.md
+mkdir -p ${IWISH_HOME}/generated-skills/<skill-name>/references/
 ```
 
 **SKILL.md Format (MANDATORY):**
+- **Size Constraint:** The `SKILL.md` file MUST NOT exceed 500 lines.
+- **Progressive Disclosure:** If the capability requires heavy boilerplate, complex API schemas, or large code blocks, you MUST generate markdown files inside the `references/` directory and insert standard markdown links to them inside `SKILL.md`.
 ```markdown
 ---
 name: "<skill-name>"
@@ -101,7 +104,7 @@ For ALL capability types:
 
 Before concluding this step, explicitly audit every `description` field generated in the YAML frontmatter:
 - **Constraint:** The `description` MUST NOT contain a summary of the workflow or steps (e.g., "This workflow reads the spec, creates files, and validates them.").
-- **Constraint:** The `description` MUST ONLY contain triggering conditions (e.g., "Use when generating a new skill or upgrading an existing agent").
+- **Constraint:** The `description` MUST ONLY contain triggering conditions (e.g., "Use when generating a new skill or upgrading an existing agent"). Ensure these are "Pushy Descriptions" (active triggers with explicit "use this when X, Y, Z").
 - **Constraint (Banned Verbs):** If the description contains action verbs describing what the script does (e.g., "generates", "creates", "produces", "reads"), it MUST raise a warning flag and be rewritten.
 - If any description violates these constraints, rewrite it immediately before proceeding.
 

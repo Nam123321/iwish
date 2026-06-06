@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harness Integration Guide</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; color: #333; }
+        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; color: #0366d6; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.2em; margin-top: 1.5em; }
+        .classification { background: #f1f8ff; padding: 1rem; border-radius: 6px; border: 1px solid #c8e1ff; margin-bottom: 1.5rem; }
+        .badge { display: inline-block; padding: 0.2em 0.5em; font-size: 0.85em; font-weight: 600; border-radius: 3px; background: #0366d6; color: white; margin-right: 0.5em; }
+        ul { padding-left: 1.5em; }
+        li { margin-bottom: 0.5em; }
+        .questions { background: #fffbdd; padding: 1rem; border-radius: 6px; border: 1px solid #e1e4e8; margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <h1>Harness Integration Guide</h1>
+    
+    <div class="classification">
+        <h2>1. Classification & Framework Placement</h2>
+        <p><strong>Shape:</strong> <span class="badge">workflow</span> <span class="badge">skill-attachment</span></p>
+        <p><strong>Role:</strong> <span class="badge">process-primary</span> <span class="badge">supportive</span></p>
+        <p><strong>Framework Placement:</strong> SYSTEM_SKILL (Direct integration into I-Wish system workflows such as <code>/create-architecture</code>, <code>/create-skill</code>, <code>/tournament</code>, and <code>qa-agent</code>).</p>
+    </div>
+
+    <h2>2. Core Use Cases</h2>
+    <ul>
+        <li><strong>Architecting Multi-Agent Teams:</strong> Leveraging the 6-Pattern Architecture matrix to define exact multi-agent topologies.</li>
+        <li><strong>Skill Generation:</strong> Adopting Progressive Disclosure (3-layer: Metadata -&gt; Main -&gt; References) to ensure skills remain under context limits.</li>
+        <li><strong>A/B Skill Testing:</strong> Injecting "With vs Without" testing into <code>/tournament</code> to definitively validate skill effectiveness.</li>
+    </ul>
+
+    <h2>3. Adjacent Use Cases</h2>
+    <ul>
+        <li><strong>Incremental QA Validation:</strong> Upgrading the <code>qa-agent</code> guide to perform boundary cross-checks incrementally during development.</li>
+    </ul>
+
+    <h2>4. Edge Cases</h2>
+    <ul>
+        <li><strong>Compound Skill Explosion:</strong> Managing massive reference structures for highly complex skills.</li>
+        <li><strong>Tournament Token Limits:</strong> Handling rate limits during parallel "With vs Without" agent executions.</li>
+    </ul>
+
+    <h2>5. Stress Cases</h2>
+    <ul>
+        <li>Attempting to architect a 10+ agent team. I-Wish will adopt Harness's hard limit advising 3-5 focused agents.</li>
+    </ul>
+
+    <h2>6. Constraints</h2>
+    <ul>
+        <li>Do not adopt the CLAUDE.md pointer system (I-Wish uses project-context.md).</li>
+        <li>Do not blindly force Agent Teams for simple tasks.</li>
+    </ul>
+
+    <h2>7. Agent / Workflow / Skill Coordination</h2>
+    <ul>
+        <li><strong>architect-agent</strong>: Consumes the 6-Pattern Matrix.</li>
+        <li><strong>capability-agent</strong>: Uses the 3-Layer Prompt Pattern and "With vs Without" testing.</li>
+        <li><strong>qa-agent</strong>: Implements Incremental Boundary Checks.</li>
+    </ul>
+
+    <h2>8. Orch Routing Hints</h2>
+    <p><strong>Trigger keywords:</strong> "design agent team", "multi-agent architecture", "test skill effectiveness", "split skill into references".</p>
+    <p>Orch should explicitly append hints for progressive disclosure when routing to <code>/create-skill</code>.</p>
+
+    <div class="questions">
+        <h2>9. Explicit Review Questions for User</h2>
+        <ol>
+            <li>Do you agree with the token tradeoff for the "With vs Without" parallel testing in <code>/create-skill</code>?</li>
+            <li>Should we strictly limit generated Agent Teams to a maximum of 5 members to prevent overhead?</li>
+            <li>Are you ready to proceed to Phase 6 (Integrate &amp; Classify), where these modifications will be written to the live I-Wish <code>.agent/workflows/</code> files?</li>
+        </ol>
+    </div>
+</body>
+</html>
