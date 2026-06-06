@@ -63,6 +63,7 @@ Typical follow-up:
 - `make-story`
 - `plan`
 - `reconcile-change`
+- *Note: Evaluate if these PRD/Epic changes necessitate updates to `product-strategy.md` or `project-context.md`.*
 
 ### 4. Plan
 

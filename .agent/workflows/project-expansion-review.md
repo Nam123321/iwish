@@ -35,7 +35,7 @@ Evaluate the proposed change against the 4 pillars by analyzing the codebase, PR
 ### 3. Determine Routing Level
 Based on the assessment, classify the impact into one of three routing tiers:
 - **🟢 Mức 1: Tác động THẤP (Low Impact):** Incremental feature, no core flow or major DB changes. Route to `/make-story`.
-- **🟡 Mức 2: Tác động TRUNG BÌNH (Medium Impact):** Large module, changes core database schema or core workflow. Route to `/plan` to update PRD/Epics.
+- **🟡 Mức 2: Tác động TRUNG BÌNH (Medium Impact):** Large module, changes core database schema or core workflow. Route to `/plan` to update PRD/Epics. *Note: Also evaluate if these PRD changes necessitate updates to `product-strategy.md` or `project-context.md`.*
 - **🔴 Mức 3: Tác động CAO / Pivot (High Impact):** Value proposition shift, customer segment change, or core tech pivot. Route to `/idea-challenge` or `/research` to explicitly update `product-strategy.md` and `project-context.md`.
 
 ### 4. Generate the Project Expansion Report

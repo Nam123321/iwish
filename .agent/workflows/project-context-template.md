@@ -18,6 +18,10 @@ _Documented after discovery phase_
 
 ## Critical Implementation Rules
 
+### 🌐 Global Pattern Synchronization
+- **Trigger**: When the user requests to "apply this pattern to the whole project", "use this globally", "áp dụng pattern này cho toàn dự án", "cách này cho toàn dự án" or any similar phrasing during a session.
+- **Action**: You MUST immediately consult `project-context.md`. If the requested pattern or architectural rule is not already documented there, you MUST update `project-context.md` to ensure the pattern is preserved and automatically applied to all future stories and components. Do not rely on session memory for global rules.
+
 ### 📁 Standard Phase & Folder Mapping (VERY IMPORTANT)
 
 To prevent agents from hallucinating directories or paths, you MUST strictly adhere to the following mapping between workflow Phases and output folders on disk. Never use natural language phase names to construct directory names (e.g. do not create "2. Domain & Technical Research" or "3. Product Requirements" folders).
