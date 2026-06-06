@@ -36,7 +36,7 @@ Evaluate the proposed change against the 4 pillars by analyzing the codebase, PR
 Based on the assessment, classify the impact into one of three routing tiers:
 - **🟢 Mức 1: Tác động THẤP (Low Impact):** Incremental feature, no core flow or major DB changes. Route to `/make-story`.
 - **🟡 Mức 2: Tác động TRUNG BÌNH (Medium Impact):** Large module, changes core database schema or core workflow. Route to `/plan` to update PRD/Epics.
-- **🔴 Mức 3: Tác động CAO / Pivot (High Impact):** Value proposition shift, customer segment change, or core tech pivot. Route to `/idea-challenge` or `/research`.
+- **🔴 Mức 3: Tác động CAO / Pivot (High Impact):** Value proposition shift, customer segment change, or core tech pivot. Route to `/idea-challenge` or `/research` to explicitly update `product-strategy.md` and `project-context.md`.
 
 ### 4. Generate the Project Expansion Report
 Compile the analysis into a standardized markdown file located at `_iwish-output/3. Development/project-expansion-review/PER-[feature-name].md` using the following template:
@@ -66,7 +66,7 @@ Compile the analysis into a standardized markdown file located at `_iwish-output
 - **Next Canonical Workflow**: [/make-story | /plan | /idea-challenge]
 - **Action Plan**:
   1. [Mô tả chi tiết bước đi tiếp theo]
-  2. [Mô tả các file cần cập nhật]
+  2. [Mô tả các file cần cập nhật (VD: PRD, Epic, product-strategy.md, project-context.md)]
 
 <!-- coaching-notes-expansion -->
 ```

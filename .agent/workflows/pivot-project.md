@@ -66,12 +66,14 @@ Typical follow-up:
 
 ### 4. Plan
 
-The change invalidates the current roadmap, PRD assumptions, or architecture direction.
+The change invalidates the current roadmap, PRD assumptions, architecture direction, **Product Strategy**, or **Project Context**.
 
 Typical follow-up:
 
 - `plan`
 - `research`
+- `/product-strategy` (to regenerate Go/No-Go and Product Strategy)
+- `/generate-project-context`
 - `bootstrap-existing-project` if context is weak
 - `reconcile-change`
 
