@@ -3,7 +3,7 @@ name: 'step-04-ux-alignment'
 description: 'Check for UX document and validate alignment with PRD and Architecture'
 
 nextStepFile: './step-05-epic-quality-review.md'
-outputFile: '{planning_artifacts}/implementation-readiness-report-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/implementation-readiness-report-{{date}}.md'
 ---
 
 # Step 4: UX Alignment
@@ -59,8 +59,10 @@ I will:
 
 Search patterns:
 
-- `{planning_artifacts}/*ux*.md` (whole document)
-- `{planning_artifacts}/*ux*/index.md` (sharded)
+- `{planning_artifacts}/2. Product Planning/*ux*.md` (whole document)
+- `{planning_artifacts}/2. Product Planning/*ux*/index.md` (sharded)
+- `{planning_artifacts}/*ux*.md` (fallback)
+- `{planning_artifacts}/*ux*/index.md` (fallback sharded)
 - Look for UI-related terms in other documents
 
 ### 3. If UX Document Exists

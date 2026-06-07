@@ -156,6 +156,9 @@ function migrateAgentFrontmatter(destinationContent, sourceContent) {
     return null;
 }
 function getPlanningArtifactsRoot(projectRoot) {
+    if (fs.existsSync(path.join(projectRoot, '_iwish-output'))) {
+        return path.join(projectRoot, '_iwish-output', '1. Idea Discovery');
+    }
     return path.join(projectRoot, '_bmad-output', 'planning');
 }
 function getIdeaChallengeArtifactRoot(projectRoot, projectName) {

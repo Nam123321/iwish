@@ -53,6 +53,7 @@ function getSprintStatusPaths(projectRoot) {
         path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml'),
         path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml'),
         path.join(projectRoot, '_iwish-output', 'bmad-skills', 'sprint-status.yaml'),
+        path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml'),
     ].filter((filePath) => fs.existsSync(filePath));
 }
 function collectIdsFromSprintYaml(doc) {
@@ -141,6 +142,20 @@ function findStoryFileById(projectRoot, id) {
         path.join(projectRoot, '_iwish-output', 'stories'),
         path.join(projectRoot, '_iwish-output', 'bmad-skills', 'stories'),
     ];
+    const devStoryDir = path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+    if (fs.existsSync(devStoryDir)) {
+        candidateDirs.push(devStoryDir);
+        try {
+            const subs = fs.readdirSync(devStoryDir);
+            for (const sub of subs) {
+                const subPath = path.join(devStoryDir, sub);
+                if (fs.statSync(subPath).isDirectory()) {
+                    candidateDirs.push(subPath);
+                }
+            }
+        }
+        catch (e) { }
+    }
     for (const dir of candidateDirs) {
         if (!fs.existsSync(dir)) {
             continue;
@@ -160,11 +175,14 @@ function findStoryFileById(projectRoot, id) {
     return null;
 }
 function loadSourceOfTruth(projectRoot) {
+    const devSprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
     const storiesSprintPath = path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml');
     const skillsSprintPath = path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml');
     const iwishStoriesSprintPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
     const iwishSkillsSprintPath = path.join(projectRoot, '_iwish-output', 'bmad-skills', 'sprint-status.yaml');
-    const storiesSprintDoc = readYamlFile(storiesSprintPath) || readYamlFile(iwishStoriesSprintPath);
+    const storiesSprintDoc = readYamlFile(devSprintPath) ||
+        readYamlFile(storiesSprintPath) ||
+        readYamlFile(iwishStoriesSprintPath);
     const skillsSprintDoc = readYamlFile(skillsSprintPath) || readYamlFile(iwishSkillsSprintPath);
     const sprintStatuses = getSprintStatusPaths(projectRoot).map((filePath) => {
         const doc = readYamlFile(filePath);
@@ -181,6 +199,21 @@ function loadSourceOfTruth(projectRoot) {
             storyCount: ids.storyIds.length,
         };
     });
+    const devStoryDir = path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+    const devStoryDirs = [devStoryDir];
+    if (fs.existsSync(devStoryDir)) {
+        try {
+            const subs = fs.readdirSync(devStoryDir);
+            for (const sub of subs) {
+                const subPath = path.join(devStoryDir, sub);
+                if (fs.statSync(subPath).isDirectory()) {
+                    devStoryDirs.push(subPath);
+                }
+            }
+        }
+        catch (e) { }
+    }
+    const devStoryIds = devStoryDirs.flatMap(dir => collectIdsFromFilenames(dir));
     const storyIds = Array.from(new Set([
         ...collectIdsFromSprintYaml(storiesSprintDoc).storyIds,
         ...collectIdsFromSprintYaml(skillsSprintDoc).storyIds,
@@ -188,6 +221,7 @@ function loadSourceOfTruth(projectRoot) {
         ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'stories')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'bmad-skills', 'stories')),
+        ...devStoryIds,
     ]));
     const epicIds = Array.from(new Set([
         ...collectIdsFromSprintYaml(storiesSprintDoc).epicIds,
@@ -196,10 +230,11 @@ function loadSourceOfTruth(projectRoot) {
         ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'epics')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'epics')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'bmad-skills', 'epics')),
+        ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', '2. Product Planning')),
     ]));
     const reconciliationDir = path.join(projectRoot, '_bmad-output', 'reconciliation');
     const iwishReconciliationDir = path.join(projectRoot, '_iwish-output', 'reconciliation');
-    const reconciliationDirToUse = fs.existsSync(reconciliationDir) ? reconciliationDir : iwishReconciliationDir;
+    const reconciliationDirToUse = fs.existsSync(iwishReconciliationDir) ? iwishReconciliationDir : reconciliationDir;
     const reconciliationScopes = fs.existsSync(reconciliationDirToUse)
         ? fs.readdirSync(reconciliationDirToUse).filter((entry) => entry.endsWith('.md')).map((entry) => path.basename(entry, '.md'))
         : [];

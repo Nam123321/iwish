@@ -127,7 +127,13 @@ describe('Brand Identity & Guideline Workflow Tests', () => {
     expect(fs.existsSync(path.join(packageRoot, 'strategy', 'messaging.md'))).toBe(true);
     expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'svg', 'brand-primary-light.svg'))).toBe(true);
     expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'svg', 'brand-primary-dark.svg'))).toBe(true);
+    expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'svg', 'brand-horizontal-light.svg'))).toBe(true);
+    expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'svg', 'brand-horizontal-dark.svg'))).toBe(true);
+    expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'svg', 'brand-wordmark-light.svg'))).toBe(true);
+    expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'svg', 'brand-wordmark-dark.svg'))).toBe(true);
     expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'mono', 'brand-primary-mono-black.svg'))).toBe(true);
+    expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'mono', 'brand-horizontal-mono-black.svg'))).toBe(true);
+    expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'mono', 'brand-wordmark-mono-black.svg'))).toBe(true);
     expect(fs.existsSync(path.join(packageRoot, 'assets', 'logo', 'app-icon', 'brand-app-icon-light.svg'))).toBe(true);
     expect(fs.existsSync(path.join(packageRoot, 'source', 'design-tokens.json'))).toBe(true);
     expect(fs.existsSync(path.join(packageRoot, 'source', 'export-log.md'))).toBe(true);

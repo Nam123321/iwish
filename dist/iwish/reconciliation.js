@@ -48,6 +48,9 @@ function getWorkItemDir(projectRoot) {
     return path.join((0, constants_1.getRuntimeRoot)(projectRoot, 'iwish'), 'runtime', 'reconciliation-workitems');
 }
 function getSourceOfTruthDir(projectRoot) {
+    if (fs.existsSync(path.join(projectRoot, '_iwish-output'))) {
+        return path.join(projectRoot, '_iwish-output', 'reconciliation');
+    }
     return path.join(projectRoot, '_bmad-output', 'reconciliation');
 }
 function buildWorkItemMarkdown(record) {

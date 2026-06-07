@@ -236,7 +236,12 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   // Find dynamic idea challenges folder
   let ideaChallengeDistillatePath: string | null = null;
   let bizStackPath: string | null = null;
-  const ideaChallengesDir = path.join(projectRoot, '_bmad-output', 'planning', 'idea-challenges');
+  const ideaChallengesDirs = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', 'idea-challenges'),
+    path.join(projectRoot, '_iwish-output', 'planning', 'idea-challenges'),
+    path.join(projectRoot, '_bmad-output', 'planning', 'idea-challenges'),
+  ];
+  const ideaChallengesDir = ideaChallengesDirs.find(d => fs.existsSync(d)) || ideaChallengesDirs[0];
   if (fs.existsSync(ideaChallengesDir)) {
     try {
       const subs = fs.readdirSync(ideaChallengesDir);

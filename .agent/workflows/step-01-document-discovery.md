@@ -3,7 +3,7 @@ name: 'step-01-document-discovery'
 description: 'Discover and inventory all project documents, handling duplicates and organizing file structure'
 
 nextStepFile: './step-02-prd-analysis.md'
-outputFile: '{planning_artifacts}/implementation-readiness-report-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/implementation-readiness-report-{{date}}.md'
 templateFile: './readiness-report-template.md'
 ---
 
@@ -63,23 +63,23 @@ Search for each document type using these patterns:
 
 #### A. PRD Documents
 
-- Whole: `{planning_artifacts}/*prd*.md`
-- Sharded: `{planning_artifacts}/*prd*/index.md` and related files
+- Whole: `{planning_artifacts}/2. Product Planning/*prd*.md` or `{planning_artifacts}/*prd*.md`
+- Sharded: `{planning_artifacts}/2. Product Planning/*prd*/index.md` or `{planning_artifacts}/*prd*/index.md` and related files
 
 #### B. Architecture Documents
 
-- Whole: `{planning_artifacts}/*architecture*.md`
-- Sharded: `{planning_artifacts}/*architecture*/index.md` and related files
+- Whole: `{planning_artifacts}/2. Product Planning/*architecture*.md` or `{planning_artifacts}/*architecture*.md`
+- Sharded: `{planning_artifacts}/2. Product Planning/*architecture*/index.md` or `{planning_artifacts}/*architecture*/index.md` and related files
 
 #### C. Epics & Stories Documents
 
-- Whole: `{planning_artifacts}/*epic*.md`
-- Sharded: `{planning_artifacts}/*epic*/index.md` and related files
+- Whole: `{planning_artifacts}/2. Product Planning/*epic*.md` or `{planning_artifacts}/*epic*.md` or `{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md`
+- Sharded: `{planning_artifacts}/2. Product Planning/*epic*/index.md` or `{planning_artifacts}/*epic*/index.md` and related files
 
 #### D. UX Design Documents
 
-- Whole: `{planning_artifacts}/*ux*.md`
-- Sharded: `{planning_artifacts}/*ux*/index.md` and related files
+- Whole: `{planning_artifacts}/2. Product Planning/*ux*.md` or `{planning_artifacts}/*ux*.md` or `{planning_artifacts}/2. Product Planning/2.3. ui-ux-spec.md`
+- Sharded: `{planning_artifacts}/2. Product Planning/*ux*/index.md` or `{planning_artifacts}/*ux*/index.md` and related files
 
 ### 3. Organize Findings
 

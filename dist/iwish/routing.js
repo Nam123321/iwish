@@ -54,7 +54,22 @@ function countFiles(dirPath) {
     if (!fs.existsSync(dirPath)) {
         return 0;
     }
-    return fs.readdirSync(dirPath).filter((entry) => !entry.startsWith('.')).length;
+    let count = 0;
+    try {
+        const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+        for (const entry of entries) {
+            if (entry.name.startsWith('.'))
+                continue;
+            if (entry.isDirectory()) {
+                count += countFiles(path.join(dirPath, entry.name));
+            }
+            else {
+                count++;
+            }
+        }
+    }
+    catch (e) { }
+    return count;
 }
 function getTargetAgent(canonicalCommand) {
     switch (canonicalCommand) {
@@ -693,9 +708,17 @@ async function routeRequest(projectRoot, request) {
         canonical: entry.canonical,
         source: entry.source,
     }));
-    const storyCount = sourceOfTruth.storyIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'stories')) || countFiles(path.join(projectRoot, '_iwish-output', 'stories'));
-    const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics')) || countFiles(path.join(projectRoot, '_iwish-output', 'epics'));
-    const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) || fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml'));
+    const storyCount = sourceOfTruth.storyIds.length ||
+        countFiles(path.join(projectRoot, '_bmad-output', 'stories')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', 'stories')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story'));
+    const epicCount = sourceOfTruth.epicIds.length ||
+        countFiles(path.join(projectRoot, '_bmad-output', 'epics')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', 'epics')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', '2. Product Planning'));
+    const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', '3. Development', 'bug-tracker.yaml'));
     const routeProfile = routingProfiles.find((profile) => profile.kind === 'workflow' && profile.name === route.canonicalCommand.replace(/^\//, ''));
     const toolDeps = new Set(routeProfile?.tool_dependencies || []);
     if (route.targetAgent === 'ux-agent' ||

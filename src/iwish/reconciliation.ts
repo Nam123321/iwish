@@ -35,6 +35,9 @@ function getWorkItemDir(projectRoot: string): string {
 }
 
 function getSourceOfTruthDir(projectRoot: string): string {
+  if (fs.existsSync(path.join(projectRoot, '_iwish-output'))) {
+    return path.join(projectRoot, '_iwish-output', 'reconciliation');
+  }
   return path.join(projectRoot, '_bmad-output', 'reconciliation');
 }
 

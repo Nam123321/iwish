@@ -369,6 +369,16 @@ async function generateLogoAssets(projectRoot, logoSelection) {
     await fs.writeFile(path.join(assetsLogoMonoDir, 'brand-symbol-mono-white.svg'), svgs.symbolMonoWhite, 'utf8');
     await fs.writeFile(path.join(assetsLogoAppIconDir, 'brand-app-icon-light.svg'), svgs.appIconLight, 'utf8');
     await fs.writeFile(path.join(assetsLogoAppIconDir, 'brand-app-icon-dark.svg'), svgs.appIconDark, 'utf8');
+    // Wordmark Light / Dark & Mono
+    await fs.writeFile(path.join(assetsLogoSvgDir, 'brand-wordmark-light.svg'), svgs.wordmarkLight, 'utf8');
+    await fs.writeFile(path.join(assetsLogoSvgDir, 'brand-wordmark-dark.svg'), svgs.wordmarkDark, 'utf8');
+    await fs.writeFile(path.join(assetsLogoMonoDir, 'brand-wordmark-mono-black.svg'), svgs.wordmarkMonoBlack, 'utf8');
+    await fs.writeFile(path.join(assetsLogoMonoDir, 'brand-wordmark-mono-white.svg'), svgs.wordmarkMonoWhite, 'utf8');
+    // Horizontal Light / Dark & Mono
+    await fs.writeFile(path.join(assetsLogoSvgDir, 'brand-horizontal-light.svg'), svgs.horizontalLight, 'utf8');
+    await fs.writeFile(path.join(assetsLogoSvgDir, 'brand-horizontal-dark.svg'), svgs.horizontalDark, 'utf8');
+    await fs.writeFile(path.join(assetsLogoMonoDir, 'brand-horizontal-mono-black.svg'), svgs.horizontalMonoBlack, 'utf8');
+    await fs.writeFile(path.join(assetsLogoMonoDir, 'brand-horizontal-mono-white.svg'), svgs.horizontalMonoWhite, 'utf8');
     // Write simplified line-art logo SVG in the application folder
     await fs.writeFile(path.join(appsLineartDir, 'logo-lineart.svg'), svgs.symbolMonoBlack, 'utf8');
     // 4. Generate W3C-compliant design-tokens.json
@@ -507,7 +517,7 @@ To use these local assets directly in your development stack:
     // 7. Sync fallback files to root `assets` for developer-tools compatibility
     const assetsDir = path.join(projectRoot, 'assets');
     await fs.ensureDir(assetsDir);
-    await fs.copy(path.join(assetsLogoSvgDir, 'brand-primary-light.svg'), path.join(assetsDir, 'logo.svg'), { overwrite: true });
+    await fs.copy(path.join(assetsLogoSvgDir, 'brand-horizontal-light.svg'), path.join(assetsDir, 'logo.svg'), { overwrite: true });
     await fs.copy(path.join(sourceDir, 'design-tokens.json'), path.join(assetsDir, 'design-tokens.json'), { overwrite: true });
     await fs.copy(path.join(packageDir, 'brand-guidelines.md'), path.join(assetsDir, 'brand-guidelines.md'), { overwrite: true });
 }
@@ -541,7 +551,39 @@ function getLogoSVGs(logoSelection, brandName) {
   <circle cx="50" cy="50" r="10" fill="currentColor" />
   <path d="M 50 10 L 50 90 M 10 50 L 90 50" stroke="currentColor" stroke-width="2" stroke-dasharray="4" />`;
     }
-    const primaryLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+    // 1. Primary Layout (Stacked/Vertical)
+    const primaryLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#f9fafb" rx="8"/>
+  <g transform="translate(70, 20)" color="#0f766e">
+    ${symbolPath}
+  </g>
+  <text x="120" y="150" font-family="${fontFamily}" font-size="24" font-weight="bold" fill="#111827" text-anchor="middle">${brandName}</text>
+  <text x="120" y="175" font-family="${fontFamily}" font-size="11" fill="#6b7280" letter-spacing="1" text-anchor="middle">AI ORCHESTRATION</text>
+</svg>`;
+    const primaryDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#1f2937" rx="8"/>
+  <g transform="translate(70, 20)" color="#14b8a6">
+    ${symbolPath}
+  </g>
+  <text x="120" y="150" font-family="${fontFamily}" font-size="24" font-weight="bold" fill="#f3f4f6" text-anchor="middle">${brandName}</text>
+  <text x="120" y="175" font-family="${fontFamily}" font-size="11" fill="#9ca3af" letter-spacing="1" text-anchor="middle">AI ORCHESTRATION</text>
+</svg>`;
+    const primaryMonoBlack = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="100%" height="100%">
+  <g transform="translate(70, 20)" color="#000000">
+    ${symbolPath}
+  </g>
+  <text x="120" y="150" font-family="${fontFamily}" font-size="24" font-weight="bold" fill="#000000" text-anchor="middle">${brandName}</text>
+  <text x="120" y="175" font-family="${fontFamily}" font-size="11" fill="#000000" letter-spacing="1" text-anchor="middle">AI ORCHESTRATION</text>
+</svg>`;
+    const primaryMonoWhite = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="100%" height="100%">
+  <g transform="translate(70, 20)" color="#ffffff">
+    ${symbolPath}
+  </g>
+  <text x="120" y="150" font-family="${fontFamily}" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">${brandName}</text>
+  <text x="120" y="175" font-family="${fontFamily}" font-size="11" fill="#ffffff" letter-spacing="1" text-anchor="middle">AI ORCHESTRATION</text>
+</svg>`;
+    // 2. Horizontal Layout (Parallel - Side-by-Side)
+    const horizontalLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
   <rect width="100%" height="100%" fill="#f9fafb" rx="8"/>
   <g transform="translate(10, 10)" color="#0f766e">
     ${symbolPath}
@@ -549,7 +591,7 @@ function getLogoSVGs(logoSelection, brandName) {
   <text x="130" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#111827">${brandName}</text>
   <text x="130" y="95" font-family="${fontFamily}" font-size="14" fill="#6b7280" letter-spacing="1">AI ORCHESTRATION</text>
 </svg>`;
-    const primaryDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+    const horizontalDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
   <rect width="100%" height="100%" fill="#1f2937" rx="8"/>
   <g transform="translate(10, 10)" color="#14b8a6">
     ${symbolPath}
@@ -557,25 +599,45 @@ function getLogoSVGs(logoSelection, brandName) {
   <text x="130" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#f3f4f6">${brandName}</text>
   <text x="130" y="95" font-family="${fontFamily}" font-size="14" fill="#9ca3af" letter-spacing="1">AI ORCHESTRATION</text>
 </svg>`;
-    const symbolLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" color="#0f766e">
-  ${symbolPath}
-</svg>`;
-    const symbolDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" color="#14b8a6">
-  ${symbolPath}
-</svg>`;
-    const primaryMonoBlack = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+    const horizontalMonoBlack = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
   <g transform="translate(10, 10)" color="#000000">
     ${symbolPath}
   </g>
   <text x="130" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#000000">${brandName}</text>
   <text x="130" y="95" font-family="${fontFamily}" font-size="14" fill="#000000" letter-spacing="1">AI ORCHESTRATION</text>
 </svg>`;
-    const primaryMonoWhite = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+    const horizontalMonoWhite = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
   <g transform="translate(10, 10)" color="#ffffff">
     ${symbolPath}
   </g>
   <text x="130" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#ffffff">${brandName}</text>
   <text x="130" y="95" font-family="${fontFamily}" font-size="14" fill="#ffffff" letter-spacing="1">AI ORCHESTRATION</text>
+</svg>`;
+    // 3. Wordmark-Only Layout (No Symbol)
+    const wordmarkLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#f9fafb" rx="8"/>
+  <text x="30" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#111827">${brandName}</text>
+  <text x="30" y="95" font-family="${fontFamily}" font-size="14" fill="#6b7280" letter-spacing="1">AI ORCHESTRATION</text>
+</svg>`;
+    const wordmarkDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#1f2937" rx="8"/>
+  <text x="30" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#f3f4f6">${brandName}</text>
+  <text x="30" y="95" font-family="${fontFamily}" font-size="14" fill="#9ca3af" letter-spacing="1">AI ORCHESTRATION</text>
+</svg>`;
+    const wordmarkMonoBlack = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+  <text x="30" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#000000">${brandName}</text>
+  <text x="30" y="95" font-family="${fontFamily}" font-size="14" fill="#000000" letter-spacing="1">AI ORCHESTRATION</text>
+</svg>`;
+    const wordmarkMonoWhite = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+  <text x="30" y="70" font-family="${fontFamily}" font-size="32" font-weight="bold" fill="#ffffff">${brandName}</text>
+  <text x="30" y="95" font-family="${fontFamily}" font-size="14" fill="#ffffff" letter-spacing="1">AI ORCHESTRATION</text>
+</svg>`;
+    // 4. Symbol Only
+    const symbolLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" color="#0f766e">
+  ${symbolPath}
+</svg>`;
+    const symbolDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" color="#14b8a6">
+  ${symbolPath}
 </svg>`;
     const symbolMonoBlack = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" color="#000000">
   ${symbolPath}
@@ -583,6 +645,7 @@ function getLogoSVGs(logoSelection, brandName) {
     const symbolMonoWhite = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" color="#ffffff">
   ${symbolPath}
 </svg>`;
+    // 5. App Icon
     const appIconLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
   <rect width="512" height="512" fill="#0f766e" rx="128"/>
   <g transform="scale(4.2) translate(10, 10)" color="#ffffff">
@@ -606,7 +669,15 @@ function getLogoSVGs(logoSelection, brandName) {
         symbolMonoBlack,
         symbolMonoWhite,
         appIconLight,
-        appIconDark
+        appIconDark,
+        wordmarkLight,
+        wordmarkDark,
+        wordmarkMonoBlack,
+        wordmarkMonoWhite,
+        horizontalLight,
+        horizontalDark,
+        horizontalMonoBlack,
+        horizontalMonoWhite
     };
 }
 // Story 12.2: Logo Brainstorming & Option Breakdown Engine
@@ -944,15 +1015,28 @@ Based on Kapferer's Brand Identity Prism:
 ## 2. Logo System
 The selected logo concept is **${logoName}**.
 
-### A. Visual Representation
+### A. Primary Lockup (Stacked / Vertical)
+The primary lockup places the symbol on top, centered, with the wordmark below it.
 \`\`\`xml
 ${svgs.primaryLight}
 \`\`\`
 
-### B. Geometric Construction & Components
+### B. Horizontal / Parallel Lockup
+The parallel lockup places the symbol on the left, with the wordmark on the right.
+\`\`\`xml
+${svgs.horizontalLight}
+\`\`\`
+
+### C. Wordmark Lockup (Text Only)
+The wordmark lockup contains only the stylized brand name text.
+\`\`\`xml
+${svgs.wordmarkLight}
+\`\`\`
+
+### D. Geometric Construction & Components
 ${logoDesc}
 
-### C. Typography Pairing
+### E. Typography Pairing
 *   **Font**: ${typography}
 *   **Rationale**: ${typographyRationale}
 
@@ -1011,7 +1095,17 @@ All brand assets are packaged under \`_iwish-output/brand-identity/\`:
 - \`brand-guidelines.md\` - Comprehensive markdown guidelines (this file).
 - \`strategy/brand-strategy.md\` - Kapferer's Brand Prism strategy brief.
 - \`strategy/messaging.md\` - Brand taglines and positioning statement.
-- \`assets/logo/svg/\` - Complete vector logo variations (light, dark, symbol-only, reversed, mono).
+- \`assets/logo/svg/\` - Complete vector logo variations:
+  - Stacked Primary (\`brand-primary-light.svg\`, \`brand-primary-dark.svg\`)
+  - Parallel Horizontal (\`brand-horizontal-light.svg\`, \`brand-horizontal-dark.svg\`)
+  - Wordmark-only (\`brand-wordmark-light.svg\`, \`brand-wordmark-dark.svg\`)
+  - Symbol-only (\`brand-symbol-light.svg\`, \`brand-symbol-dark.svg\`)
+- \`assets/logo/mono/\` - Monochrome/reversed silhouettes for dark backgrounds:
+  - Monochrome Stacked (\`brand-primary-mono-black.svg\`, \`brand-primary-mono-white.svg\`)
+  - Monochrome Horizontal (\`brand-horizontal-mono-black.svg\`, \`brand-horizontal-mono-white.svg\`)
+  - Monochrome Wordmark (\`brand-wordmark-mono-black.svg\`, \`brand-wordmark-mono-white.svg\`)
+  - Monochrome Symbol (\`brand-symbol-mono-black.svg\`, \`brand-symbol-mono-white.svg\`)
+- \`assets/logo/app-icon/\` - Square app icons (\`brand-app-icon-light.svg\`, \`brand-app-icon-dark.svg\`)
 - \`source/design-tokens.json\` - Style Dictionary-compliant variables configuration.
 - \`source/figma-notes.md\` - Guidelines on how to import assets into Figma.
 - \`source/export-log.md\` - Verification check log.
@@ -1033,6 +1127,10 @@ function getHTMLGuidelineTemplate(brandName, culture, personality, physique, rel
     const cleanMonoWhite = svgs.primaryMonoWhite.replace(/[\r\n]+/g, ' ');
     const cleanAppIconLight = svgs.appIconLight.replace(/[\r\n]+/g, ' ');
     const cleanAppIconDark = svgs.appIconDark.replace(/[\r\n]+/g, ' ');
+    const cleanWordmarkLight = svgs.wordmarkLight.replace(/[\r\n]+/g, ' ');
+    const cleanWordmarkDark = svgs.wordmarkDark.replace(/[\r\n]+/g, ' ');
+    const cleanHorizontalLight = svgs.horizontalLight.replace(/[\r\n]+/g, ' ');
+    const cleanHorizontalDark = svgs.horizontalDark.replace(/[\r\n]+/g, ' ');
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1498,8 +1596,12 @@ function getHTMLGuidelineTemplate(brandName, culture, personality, physique, rel
         <h3>Official Brandmark: ${logoName}</h3>
         
         <div class="logo-tabs">
-          <button class="logo-tab active" onclick="showLogoTab('primary-light')">Primary Light</button>
-          <button class="logo-tab" onclick="showLogoTab('primary-dark')">Primary Dark</button>
+          <button class="logo-tab active" onclick="showLogoTab('primary-light')">Primary Light (Stacked)</button>
+          <button class="logo-tab" onclick="showLogoTab('primary-dark')">Primary Dark (Stacked)</button>
+          <button class="logo-tab" onclick="showLogoTab('horizontal-light')">Horizontal Light</button>
+          <button class="logo-tab" onclick="showLogoTab('horizontal-dark')">Horizontal Dark</button>
+          <button class="logo-tab" onclick="showLogoTab('wordmark-light')">Wordmark Light</button>
+          <button class="logo-tab" onclick="showLogoTab('wordmark-dark')">Wordmark Dark</button>
           <button class="logo-tab" onclick="showLogoTab('symbol-light')">Symbol Light</button>
           <button class="logo-tab" onclick="showLogoTab('symbol-dark')">Symbol Dark</button>
           <button class="logo-tab" onclick="showLogoTab('mono-black')">Mono Black</button>
@@ -1509,10 +1611,22 @@ function getHTMLGuidelineTemplate(brandName, culture, personality, physique, rel
         </div>
 
         <div id="primary-light-pane" class="logo-view-pane active" style="background:#f9fafb;">
-          ${cleanPrimaryLight}
+          <div style="width: 200px; height: 200px;">${cleanPrimaryLight}</div>
         </div>
         <div id="primary-dark-pane" class="logo-view-pane" style="background:#1f2937;">
-          ${cleanPrimaryDark}
+          <div style="width: 200px; height: 200px;">${cleanPrimaryDark}</div>
+        </div>
+        <div id="horizontal-light-pane" class="logo-view-pane" style="background:#f9fafb;">
+          ${cleanHorizontalLight}
+        </div>
+        <div id="horizontal-dark-pane" class="logo-view-pane" style="background:#1f2937;">
+          ${cleanHorizontalDark}
+        </div>
+        <div id="wordmark-light-pane" class="logo-view-pane" style="background:#f9fafb;">
+          ${cleanWordmarkLight}
+        </div>
+        <div id="wordmark-dark-pane" class="logo-view-pane" style="background:#1f2937;">
+          ${cleanWordmarkDark}
         </div>
         <div id="symbol-light-pane" class="logo-view-pane" style="background:#f9fafb;">
           <div style="width: 100px; height: 100px;">${cleanSymbolLight}</div>
