@@ -260,7 +260,7 @@ After all stories for an epic are written AND before getting user confirmation:
 #### D. Knowledge Graph Update
 - Add new edge case nodes to the appropriate pillar files in `{output_folder}/edge-case-knowledge/pillars/`
 - Update the index at `{output_folder}/edge-case-knowledge/index.md`
-- Generate or update the epic risk matrix using template from `{project-root}/.agent/fragments/risk-matrix-template.md`
+- Generate or update the epic risk matrix at `{output_folder}/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (derive {epic_id} from the epic number, e.g. Epic 1 -> Epic-1) using the template from `{project-root}/.agent/fragments/risk-matrix-template.md`
 
 ### 5. Epic Completion
 
