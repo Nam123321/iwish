@@ -45,6 +45,15 @@ Ask user which portal to create the Design System for:
 | Sales App | Not started / In progress / Complete | 🟡 P1 |
 | SaaS Dashboard | Not started / In progress / Complete | 🟢 P2 |"
 
+### 1.5 Check for Brand Identity & Guidelines
+
+**Agent Actions:**
+1. Check for `_iwish-output/brand-identity/brand-guidelines.md` FIRST (as it is LLM-readable). Only check `_iwish-output/brand-identity/brand-guideline.html` if `.md` is missing.
+2. If it exists, read the guidelines to extract the approved brand identity (colors, typography, logo system, and visual direction). Incorporate this into `active_brand_or_bmad_constraints`.
+3. Check for any image assets in `_iwish-output/brand-identity/assets/` (e.g., logo SVGs, icons) and pass their paths as explicit `Brand Assets` requirements in the Stitch Context Template.
+4. If the user provides a raw logo without a brand guideline, propose running the `/brand` workflow first to ensure consistency.
+5. If no brand guideline exists and the user declines to run `/brand`, proceed with the standard generation flow.
+
 ### 2. Create Stitch Design System Project
 
 **Agent Actions:**
@@ -134,6 +143,7 @@ Style Direction Source: Use the active I-Wish-approved visual direction plus the
 Purpose: Design System component showcase — {category_name}
 Requirements: Show all {category_description} states and variants
 Active Brand / I-Wish Constraints: {active_brand_or_bmad_constraints}
+Brand Assets: {brand_assets_from_step_1_5}
 Active Color Direction: {active_color_direction}
 Active Typography Direction: {active_typography_direction}
 

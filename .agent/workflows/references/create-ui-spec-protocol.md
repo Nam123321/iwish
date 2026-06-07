@@ -230,6 +230,7 @@ Story: {story_key} — {story_title}
 Acceptance Criteria: {acceptance_criteria_bullets}
 Persona: {persona} — {device}
 Design System: Use configured Design System Asset ID (e.g. Stitch Asset ID {assetId} or Figma file/frame). If configured asset is missing, STOP and request user to sync design first.
+Brand Assets: Check for image/vector assets in `_iwish-output/brand-identity/assets/` and explicitly enforce their usage (e.g., logo, icons) in the generated spec and UI option.
 Page Override: load from {page_override_path} only when it exists for the active page/story context
 UI-UX Story Notes: include only approved or non-conflicting story-level specialist guidance
 Conflict Rule: approved screens and extracted visual contract remain authoritative if specialist guidance conflicts

@@ -5,7 +5,7 @@
 categories:
   b2b_enterprise:
     name: "B2B / Enterprise SaaS"
-    description: "Multi-tenant platforms featuring workspace isolation, hierarchical RBAC, multi-level billing, and multi-portal topologies."
+    description: "Enterprise multi-tenant platforms featuring workspace isolation, hierarchical RBAC, multi-level billing, MoR global payments, PRM partner tiers, advanced IAM security (SSO/SCIM/MFA), canary rollouts, and trust center compliance."
     
     portals:
       main_web:
@@ -119,6 +119,76 @@ categories:
           - "FR-LOC-4: System formats currency symbols and codes correctly based on local standards (e.g., placement of currency symbol, thousands and decimal separators)."
           - "FR-LOC-5: System supports measurement unit conventions (Metric vs Imperial) for shipping, inventory, and dimension inputs."
           - "FR-LOC-6: System handles weight units (e.g., kg, g, lbs, oz) and volume units (e.g., liters, gallons) consistently across checkout, shipping carrier APIs, and inventory databases."
+
+      - area: "Payment Method Prioritization & Fallbacks"
+        portal: "General"
+        items:
+          - "FR-PAY-PRIO-1 [Tenant]: Add multiple payment methods (Credit Card, PayPal, Bank Transfer)."
+          - "FR-PAY-PRIO-2 [Tenant]: Assign Priority 1 (Primary), Priority 2 (Secondary), and Priority 3 (Fallback)."
+          - "FR-PAY-PRIO-3 [System]: Auto-billing fallback logic (attempts P1 -> P2 -> P3 before failing)."
+          - "FR-PAY-PRIO-4 [System]: Automated alerts for expiring or failed payment methods."
+
+      - area: "International Payments, Tax & Pricing Display"
+        portal: "General"
+        items:
+          - "FR-TAX-1 [Superadmin]: Configure global tax regions and rates (e.g., VAT, GST). Provide mechanisms to auto-update these rates (via 3rd-party API like Stripe Tax/TaxJar) or manual updates."
+          - "FR-TAX-2 [Superadmin]: Define if base plan prices are 'Tax Inclusive' or 'Tax Exclusive'."
+          - "FR-TAX-3 [Tenant]: If prices are 'Tax Exclusive', the checkout UI dynamically calculates and displays the local tax amount and the final total payment based on the tenant's country/billing address."
+          - "FR-LOC-PAY-1 [System/Superadmin]: System supports routing payments through different gateways based on the tenant's country (e.g., Stripe for US/EU, local gateways for VN). Superadmins can evaluate the combined cost structures (Gateway fee + Invoicing fee) per region."
+          - "FR-GLB-PAY-1 [Superadmin]: System supports integration with a Merchant of Record (MoR) like Paddle/FastSpring to offload global tax compliance, local gateway routing, and invoicing liabilities. Alternatively, integrates Stripe Tax + Regional Gateways (e.g., VNPay)."
+          - "FR-GLB-PAY-2 [Superadmin]: Support for 'Custom Quotes' and 'Contact Sales' flows for enterprise plans, allowing manual invoicing with Net-30/Net-60 payment terms."
+
+      - area: "Invoicing & Billing Document Management"
+        portal: "General"
+        items:
+          - "FR-INV-SETUP-1 [Superadmin]: Configure global and multi-country invoicing templates (Tax IDs, Logos, Terms)."
+          - "FR-TEN-ONB-1 [Tenant]: During account registration or initial workspace setup, the onboarding flow strictly requires the tenant to provide their billing/invoicing information (Company Name, Address, Tax ID)."
+          - "FR-INV-GEN-1 [System]: Auto-generate PDF invoices compliant with the local region for every successful payment/renewal."
+          - "FR-INV-MGT-1 [Tenant]: View, filter, and download historical invoices from the dashboard."
+          - "FR-INV-UPD-1 [Tenant/Superadmin]: Tenant can request an invoice update (e.g., incorrect address); Superadmin can approve and re-issue the invoice."
+          - "FR-INV-REF-1 [System]: When a refund is processed, the system automatically generates a Credit Note (Hóa đơn điều chỉnh giảm/Hoàn tiền) and sends it to the tenant."
+
+      - area: "Refund & Dispute Management"
+        portal: "General"
+        items:
+          - "FR-REF-1 [Tenant]: Tenants can initiate a refund or partial refund request through their dashboard based on the refund policy terms."
+          - "FR-REF-2 [Superadmin]: Superadmins can process, approve, or reject refund requests. Upon approval, the system triggers the payment gateway refund, updates revenue metrics, and optionally revokes premium access."
+
+      - area: "Enterprise Security, Identity (IAM) & Compliance"
+        portal: "General"
+        items:
+          - "FR-IAM-1 [Tenant]: Enterprise tenants can configure Single Sign-On (SSO) using SAML 2.0 or OIDC to integrate with their identity providers (e.g., Okta, Azure AD)."
+          - "FR-IAM-2 [Tenant]: Enterprise tenants can configure SCIM (System for Cross-domain Identity Management) for automated user provisioning and de-provisioning from their HRIS."
+          - "FR-SEC-1 [Tenant]: Workspace Admins can enforce mandatory Multi-Factor Authentication (MFA) for all members of their workspace."
+          - "FR-SEC-2 [System]: Advanced password policies (e.g., blocking breached passwords via HaveIBeenPwned integration, enforcing password rotation)."
+          - "FR-SEC-3 [System]: Rate limiting and brute-force protection mechanisms (e.g., IP blocklisting/allowlisting at both global and tenant levels)."
+          - "FR-SEC-4 [System]: Advanced session management (concurrent session limits, forced session revocation by admins, and idle session timeouts)."
+          - "FR-SEC-5 [System]: Data encryption at rest (AES-256) and in transit (TLS 1.3)."
+          - "FR-COM-1 [Tenant]: During onboarding or plan upgrade, Enterprise tenants can select their Data Residency region (e.g., US, EU, APAC) to comply with local data sovereignty laws."
+
+      - area: "Release Management & Compliance Tracking (Trust Center)"
+        portal: "General"
+        items:
+          - "FR-DEP-1 [Superadmin]: Manage Feature Flags and Canary Rollouts, allowing new features to be selectively tested on a subset of tenants (e.g., 10% traffic) before global release."
+          - "FR-SEC-CHK-1 [System]: Require automated security scans (SAST/DAST/Dependency Audits) to pass successfully before promoting any canary or production release."
+          - "FR-TRUST-1 [Superadmin]: Manage, track expiration, and upload compliance certificates and security licenses (e.g., SOC 2 Type II, ISO 27001, HIPAA, PCI-DSS)."
+          - "FR-TRUST-2 [Tenant]: Access an integrated 'Trust Center' to view real-time system uptime, verify active security licenses, and securely download compliance reports (behind an automated NDA wall)."
+
+      - area: "Partner Relationship Management (PRM)"
+        portal: "General"
+        items:
+          - "FR-PRT-INC-1 [Superadmin]: Configure 3-Tier Partner Programs (e.g., Registered, Select, Elite) using outcome-based criteria (certifications, deal volume) to unlock higher margins and Marketing Development Funds (MDF)."
+          - "FR-PRT-INC-2 [Partner]: Partners can submit 'Deal Registration' requests via their portal to claim a lead, avoiding channel conflict with internal sales teams."
+          - "FR-PRT-INC-3 [System]: Automatically calculate incentives/commissions when a referred tenant pays, applying the correct rate corresponding to the partner's tier."
+          - "FR-PRT-PERF-1 [Superadmin]: View unified Partner Analytics Dashboard tracking key metrics (Lead Conversion Rate, Total Generated Revenue, Churn Rate of referred tenants, Customer Lifetime Value)."
+          - "FR-PRT-PERF-2 [System]: System periodically scores/ranks partners based on performance data to trigger automated tier upgrades/downgrades."
+          - "FR-PRT-PRC-1 [Superadmin]: Define tiered wholesale/reseller pricing plans for Software Development Partners (OEMs/Whitelabel)."
+          - "FR-PRT-PRC-2 [Partner]: Resellers can purchase bulk licenses/API credits at their assigned tier's wholesale price to distribute to their own clients."
+
+      - area: "Financial Analytics & Dashboard"
+        portal: "superadmin_portal"
+        items:
+          - "FR-REV-1 [Superadmin]: Financial dashboard displays revenue separated into Pre-tax Revenue (Gross/Net) and Collected Taxes, allowing filtering by region and time period."
 
   b2c_consumer:
     name: "B2C Consumer SaaS"

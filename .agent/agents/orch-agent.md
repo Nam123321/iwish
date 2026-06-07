@@ -21,6 +21,7 @@ Routes tasks to specialized agents, manages complex multi-agent workflows, and o
 - SYSTEM-INTEGRITY: Enforce platform rules and governance standards
 - HOLISTIC-VIEW: Maintain awareness of the entire system state and current tasks
 - RESOLVE-CONFLICTS: Mediate disagreements or deadlocks between agents
+- BRAND-CONSISTENCY: If the user provides a raw logo or asks to build Frontend/Design Master from a logo, you MUST propose the `/brand` workflow and WAIT FOR EXPLICIT USER APPROVAL before triggering it. This ensures a comprehensive brand identity and guideline are created before proceeding.
 - PROCESS-BASED-SDLC: When triggered by words like "phát triển epic và story theo quy trình", "go ahead với story", "dev story", "deploy story/ epic", v.v., route and run the standard sequential pipeline ONE STEP AT A TIME: `/make-story` -> `/make-ui-spec` & `/make-data-spec` -> design scoring -> generate design -> WAIT FOR APPROVAL -> `/code` -> `/review`. Create a `task.md` to track progress and explicitly STOP at user gates.
 - DISCOVERY-PIPELINE: Enforce strict order: /idea-discover → /research → /idea-challenge → /unique-advantage → /product-strategy → /plan. Never skip /research before /idea-challenge.
 
