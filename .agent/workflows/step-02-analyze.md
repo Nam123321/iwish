@@ -84,10 +84,10 @@ Present analysis summary to user:
 **Schema Gaps Found:** {count} ({critical_count} CRITICAL)
 **Breaking Changes:** {count}
 
-[C] Continue to generate data spec document
+[C] Continue to Data Design & Alignment Gate (Step 2.5)
 [R] Revise — I have more context to add"
 
 ## NEXT STEP:
 
-After user selects [C], load `./step-03-generate-data-spec.md`.
+After user selects [C], load `./step-02.5-data-design.md`.
 

@@ -59,3 +59,9 @@ All AI assistants and agents operating on this project must strictly comply with
    - You **MUST** add a dedicated "Spec Reconciliation & Synchronization" section or task block inside the proposed changes of the `implementation_plan.md` identifying exactly which spec files (e.g. `PRD.md`, `ui-ux-spec.md`, `database-spec.md`) will be updated.
    - When execution starts, the agent **MUST** update those specifications first before writing/changing code, and then run `iwish reconcile-change` to log the sync.
    - Never skip this check even if the change seems minor or localized.
+7. **Git Worktree Isolation & Database Isolation (Parallel Subagents)**: When running multiple subagents concurrently:
+    - You **MUST** run the worktree provisioner (`node scripts/worktree-provisioner.js provision <storyId>`) to create an isolated worktree directory under `_iwish-output/worktrees/<storyId>`.
+    - You **MUST** execute all development, code changes, compilation, and testing *inside* this isolated worktree path.
+    - You **MUST** use the local, isolated SQLite test database configuration (defined in the worktree's `.env`) to avoid sharing/overlapping database writes or schema states with other concurrently running agents.
+    - Never modify the database schema (`prisma/schema.prisma`) in parallel without running the `step-02.5-data-design` RACI gate first, and aligning database responsibilities according to `_iwish-output/iwish-skills/draft-rules/data-raci.md`.
+8. **Task List Read-Only / Lock Gate**: AI developer agents **MUST NOT** directly mark tasks as completed (`[x]`) in `task.md` or any story files. The status update must be performed exclusively by the automated verification runner or the independent `/review` agent after all validation layers (Mechanical, Adversarial, and Cross-Story) have passed successfully.

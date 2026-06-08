@@ -1,6 +1,31 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+function acquireLock(lockPath, timeoutMs = 2000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    try {
+      writeFileSync(lockPath, String(process.pid), { flag: 'wx' });
+      return true;
+    } catch (err) {
+      if (err.code === 'EEXIST') {
+        const sleepStart = Date.now();
+        while (Date.now() - sleepStart < 5) {}
+      } else {
+        throw err;
+      }
+    }
+  }
+  return false;
+}
+
+function releaseLock(lockPath) {
+  try {
+    unlinkSync(lockPath);
+  } catch (err) {}
+}
+
 
 /**
  * @typedef {Object} ProviderInfo
@@ -188,10 +213,17 @@ export class StatsTracker {
    */
   loadStats(filePath) {
     const targetPath = filePath || this.statsPath;
+    const lockPath = targetPath + '.lock';
 
-    if (!existsSync(targetPath)) {
+    const dir = dirname(targetPath);
+    if (!existsSync(dir) || !existsSync(targetPath)) {
       this._stats = {};
       return { loaded: false, modelCount: 0 };
+    }
+
+    const locked = acquireLock(lockPath);
+    if (!locked) {
+      console.warn(`[StatsTracker] Warning: Failed to acquire lock for loading stats at ${targetPath}. Proceeding without lock.`);
     }
 
     try {
@@ -216,6 +248,10 @@ export class StatsTracker {
       );
       this._stats = {};
       return { loaded: false, modelCount: 0 };
+    } finally {
+      if (locked) {
+        releaseLock(lockPath);
+      }
     }
   }
 
@@ -228,14 +264,24 @@ export class StatsTracker {
    */
   saveStats(filePath) {
     const targetPath = filePath || this.statsPath;
+    const lockPath = targetPath + '.lock';
 
+    // Ensure parent directory exists before acquiring the lock file
     try {
-      // Ensure parent directory exists
       const dir = dirname(targetPath);
       if (!existsSync(dir)) {
         mkdirSync(dir, { recursive: true });
       }
+    } catch (err) {
+      // Let it fail at writeFileSync or acquireLock
+    }
 
+    const locked = acquireLock(lockPath);
+    if (!locked) {
+      console.warn(`[StatsTracker] Warning: Failed to acquire lock for saving stats at ${targetPath}. Proceeding without lock.`);
+    }
+
+    try {
       const payload = {
         _meta: {
           version: '1.0.0',
@@ -261,6 +307,10 @@ export class StatsTracker {
         modelCount: Object.keys(this._stats).length,
         path: targetPath
       };
+    } finally {
+      if (locked) {
+        releaseLock(lockPath);
+      }
     }
   }
 
