@@ -27,7 +27,7 @@ function teardownSandbox() {
   }
 }
 
-function runTests() {
+async function runTests() {
   console.log('=== Running Stats Tracker Tests ===\n');
 
   setupSandbox();
@@ -187,7 +187,7 @@ function runTests() {
     const tracker = new StatsTracker({ statsPath: deepPath, env: {} });
 
     tracker.logCall('test-model', 'test-provider', true, 100, 0.001);
-    const result = tracker.saveStats();
+    const result = await tracker.saveStats();
 
     assert.ok(result.saved, 'Should report saved=true');
     assert.equal(result.modelCount, 1);
@@ -218,7 +218,7 @@ function runTests() {
       warningLogged = true;
     };
 
-    const result = tracker.loadStats();
+    const result = await tracker.loadStats();
 
     console.warn = origWarn;
 
@@ -242,7 +242,7 @@ function runTests() {
       env: {}
     });
 
-    const result = tracker.loadStats();
+    const result = await tracker.loadStats();
     assert.equal(result.loaded, false);
     assert.equal(result.modelCount, 0);
   }
@@ -260,11 +260,11 @@ function runTests() {
     tracker1.logCall('gemini-2.5-pro', 'google', true, 150, 0.003);
     tracker1.logCall('gemini-2.5-pro', 'google', false, 400, 0.003);
     tracker1.logCall('gpt-4o', 'openai', true, 250, 0.01);
-    tracker1.saveStats();
+    await tracker1.saveStats();
 
     // Load into a new tracker
     const tracker2 = new StatsTracker({ statsPath: roundTripPath, env: {} });
-    const loadResult = tracker2.loadStats();
+    const loadResult = await tracker2.loadStats();
     assert.equal(loadResult.loaded, true);
     assert.equal(loadResult.modelCount, 2);
 
@@ -350,7 +350,7 @@ function runTests() {
 }
 
 try {
-  runTests();
+  await runTests();
   process.exit(0);
 } catch (error) {
   teardownSandbox();

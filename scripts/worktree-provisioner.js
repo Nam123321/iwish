@@ -131,8 +131,13 @@ export function cleanup(storyId) {
 
   // 2. Delete branch
   try {
-    runCmd(`git branch -D ${branchName}`);
-    console.log(`  ✅ Deleted branch ${branchName}.`);
+    const branchExists = runCmd(`git branch --list ${branchName}`);
+    if (branchExists) {
+      runCmd(`git branch -D ${branchName}`);
+      console.log(`  ✅ Deleted branch ${branchName}.`);
+    } else {
+      console.log(`  ℹ️  Branch ${branchName} does not exist. Skipping delete.`);
+    }
   } catch (err) {
     console.warn(`  ⚠️  Failed to delete branch ${branchName}: ${err.message}`);
   }

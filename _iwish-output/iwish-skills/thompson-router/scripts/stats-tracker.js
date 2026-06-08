@@ -1,8 +1,9 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { setTimeout } from 'node:timers/promises';
 
-function acquireLock(lockPath, timeoutMs = 2000) {
+async function acquireLock(lockPath, timeoutMs = 2000) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     try {
@@ -10,8 +11,7 @@ function acquireLock(lockPath, timeoutMs = 2000) {
       return true;
     } catch (err) {
       if (err.code === 'EEXIST') {
-        const sleepStart = Date.now();
-        while (Date.now() - sleepStart < 5) {}
+        await setTimeout(5);
       } else {
         throw err;
       }
@@ -211,7 +211,7 @@ export class StatsTracker {
    * @param {string} [filePath] - Path to the stats JSON file (defaults to this.statsPath)
    * @returns {{ loaded: boolean, modelCount: number }}
    */
-  loadStats(filePath) {
+  async loadStats(filePath) {
     const targetPath = filePath || this.statsPath;
     const lockPath = targetPath + '.lock';
 
@@ -221,7 +221,7 @@ export class StatsTracker {
       return { loaded: false, modelCount: 0 };
     }
 
-    const locked = acquireLock(lockPath);
+    const locked = await acquireLock(lockPath);
     if (!locked) {
       console.warn(`[StatsTracker] Warning: Failed to acquire lock for loading stats at ${targetPath}. Proceeding without lock.`);
     }
@@ -262,7 +262,7 @@ export class StatsTracker {
    * @param {string} [filePath] - Path to write stats to (defaults to this.statsPath)
    * @returns {{ saved: boolean, modelCount: number, path: string }}
    */
-  saveStats(filePath) {
+  async saveStats(filePath) {
     const targetPath = filePath || this.statsPath;
     const lockPath = targetPath + '.lock';
 
@@ -276,7 +276,7 @@ export class StatsTracker {
       // Let it fail at writeFileSync or acquireLock
     }
 
-    const locked = acquireLock(lockPath);
+    const locked = await acquireLock(lockPath);
     if (!locked) {
       console.warn(`[StatsTracker] Warning: Failed to acquire lock for saving stats at ${targetPath}. Proceeding without lock.`);
     }
@@ -362,7 +362,7 @@ function formatStatsTable(stats) {
  *   log <model> <provider> <success:0|1> <latency_ms> [cost]  - Log a call
  *   show [model]           - Display stats
  */
-function runCLI() {
+async function runCLI() {
   const args = process.argv.slice(2);
   const command = args[0];
 
@@ -378,7 +378,7 @@ Usage:
   }
 
   const tracker = new StatsTracker();
-  tracker.loadStats();
+  await tracker.loadStats();
 
   switch (command) {
     case 'discover': {
@@ -410,7 +410,7 @@ Usage:
 
       const success = successFlag === '1' || successFlag === 'true';
       tracker.logCall(model, provider, success, latencyMs, cost);
-      const result = tracker.saveStats();
+      const result = await tracker.saveStats();
 
       console.log(
         `📝 Logged: ${model} via ${provider} — ${success ? '✅ success' : '❌ failure'} — ${latencyMs}ms — $${cost.toFixed(4)}`
@@ -449,5 +449,8 @@ Usage:
 // Run CLI when executed directly (ESM detection)
 const __filename_current = fileURLToPath(import.meta.url);
 if (process.argv[1] === __filename_current) {
-  runCLI();
+  runCLI().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }

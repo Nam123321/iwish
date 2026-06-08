@@ -21,6 +21,21 @@ function runCmd(cmd) {
   }
 }
 
+function getTestDirs() {
+  const defaultDirs = ['tests', join('_iwish-output', 'iwish-skills', 'tests')];
+  try {
+    if (existsSync('.iwishrc')) {
+      const config = JSON.parse(readFileSync('.iwishrc', 'utf8'));
+      if (config.testDirs && Array.isArray(config.testDirs)) {
+        return config.testDirs;
+      }
+    }
+  } catch (err) {
+    // Ignore error, fallback to defaults
+  }
+  return defaultDirs;
+}
+
 function scanForMockStubs(filePath, content) {
   const issues = [];
   
@@ -122,13 +137,16 @@ function analyzeGitDiff() {
       // Look for a corresponding test file
       const fileName = file.filePath.split('/').pop();
       const baseName = fileName.replace(/\.(js|ts|tsx)$/, '');
+      const testDirs = getTestDirs();
       const potentialTestPaths = [
-        join('tests', `test-${baseName}.js`),
-        join('tests', `test-${baseName}.ts`),
-        join('_iwish-output', 'iwish-skills', 'tests', `test-${baseName}.js`),
         join(file.filePath.replace(fileName, ''), 'tests', `test-${baseName}.js`),
         join(file.filePath.replace(fileName, ''), `test-${baseName}.js`)
       ];
+      
+      for (const dir of testDirs) {
+        potentialTestPaths.push(join(dir, `test-${baseName}.js`));
+        potentialTestPaths.push(join(dir, `test-${baseName}.ts`));
+      }
       
       let testExists = false;
       for (const testPath of potentialTestPaths) {

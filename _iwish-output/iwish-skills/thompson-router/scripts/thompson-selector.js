@@ -406,7 +406,7 @@ function formatBenchmark(result) {
  *   select [taskType]       - Run Thompson Sampling selection
  *   benchmark <iterations>  - Run benchmark with N iterations
  */
-function runCLI() {
+async function runCLI() {
   const args = process.argv.slice(2);
   const command = args[0];
 
@@ -421,14 +421,14 @@ Usage:
   }
 
   const tracker = new StatsTracker();
-  tracker.loadStats();
+  await tracker.loadStats();
   const selector = new ThompsonSelector(tracker);
 
   // Auto-discover and refresh pool
   const poolResult = selector.refreshPool();
   if (poolResult.added.length > 0) {
     console.log(`🔄 Pool refreshed: added ${poolResult.added.length} new model(s): ${poolResult.added.join(', ')}`);
-    tracker.saveStats();
+    await tracker.saveStats();
   }
 
   switch (command) {
@@ -499,5 +499,8 @@ Usage:
 // Run CLI when executed directly (ESM detection)
 const __filename_current = fileURLToPath(import.meta.url);
 if (process.argv[1] === __filename_current) {
-  runCLI();
+  runCLI().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }
