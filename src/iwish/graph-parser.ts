@@ -2,6 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import { loadSourceOfTruth } from './source-of-truth';
+import YAML from 'yaml';
 
 export type GraphNode = {
   id: string;
@@ -919,4 +920,84 @@ export function extractEvolverData(projectRoot: string): any {
     console.warn('Error querying evolver data:', error);
     return {};
   }
+}
+
+export function autoRepairSprintStatus(projectRoot: string): void {
+  const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_bmad-output', 'epics.md'),
+    path.join(projectRoot, 'docs', 'epics.md')
+  ];
+  const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+  
+  if (!epicsPath) {
+    return;
+  }
+
+  const epicsContent = fs.readFileSync(epicsPath, 'utf8');
+  const epicsList: any[] = [];
+  let currentEpic: any = null;
+
+  const lines = epicsContent.split('\n');
+  for (const line of lines) {
+    const epicMatch = line.match(/^#+\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+    if (epicMatch) {
+      currentEpic = {
+        id: `epic-${epicMatch[1]}`,
+        title: epicMatch[2].trim().replace(/\*\*/g, ''),
+        status: 'not_started',
+        stories: []
+      };
+      epicsList.push(currentEpic);
+      continue;
+    }
+
+    const storyMatch = line.match(/^#+\s*Story\s+(\d+\.\d+)[\s:—-]+(.+)$/i);
+    if (storyMatch && currentEpic) {
+      currentEpic.stories.push({
+        id: `story-${storyMatch[1]}`,
+        title: storyMatch[2].trim().replace(/\*\*/g, ''),
+        status: 'not_started'
+      });
+    }
+  }
+
+  const sprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+  let existingData: any = {};
+  if (fs.existsSync(sprintPath)) {
+    try {
+      const existingYaml = fs.readFileSync(sprintPath, 'utf8');
+      existingData = YAML.parse(existingYaml) || {};
+    } catch(e) {}
+  }
+
+  const outputData = {
+    sprint_name: existingData.sprint_name || 'Auto-Repaired Sprint',
+    status: existingData.status || 'planning',
+    start_date: existingData.start_date || new Date().toISOString().split('T')[0],
+    epics: epicsList
+  };
+
+  // Preserve existing statuses if possible
+  if (Array.isArray(existingData.epics)) {
+    for (const newEpic of outputData.epics) {
+      const oldEpic = existingData.epics.find((e: any) => e.id === newEpic.id);
+      if (oldEpic) {
+        newEpic.status = oldEpic.status || 'not_started';
+        for (const newStory of newEpic.stories) {
+          const oldStory = Array.isArray(oldEpic.stories) ? oldEpic.stories.find((s: any) => s.id === newStory.id) : null;
+          if (oldStory) {
+            newStory.status = oldStory.status || 'not_started';
+          }
+        }
+      }
+    }
+  }
+
+  const targetDir = path.dirname(sprintPath);
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirpSync(targetDir);
+  }
+
+  fs.writeFileSync(sprintPath, YAML.stringify(outputData));
 }

@@ -4198,8 +4198,10 @@
             }
         });
         window.nodesEdgesData.edges.forEach(edge => {
-            if (!epicsMap[edge.from]) epicsMap[edge.from] = [];
-            epicsMap[edge.from].push(edge.to);
+            if (edge.relationship === 'BELONGS_TO' || edge.label === 'belongs to') {
+                if (!epicsMap[edge.to]) epicsMap[edge.to] = [];
+                epicsMap[edge.to].push(edge.from);
+            }
         });
       }
 
@@ -4458,12 +4460,12 @@
 
       // Approved node colors
       var groupColors = {
-        FR:         { background: '#4A90D9', border: '#3570B5', font: { color: '#fff' } },
-        Epic:       { background: '#67C23A', border: '#4FA82A', font: { color: '#fff' } },
-        Story:      { background: '#E6A23C', border: '#C9882C', font: { color: '#fff' } },
-        Portal:     { background: '#9B59B6', border: '#7D3C98', font: { color: '#fff' } },
-        DataEntity: { background: '#1ABC9C', border: '#149A80', font: { color: '#fff' } },
-        Event:      { background: '#E91E63', border: '#C2185B', font: { color: '#fff' } }
+        FR:         { background: '#4A90D9', border: '#3570B5', font: { color: '#1f2937' } },
+        Epic:       { background: '#67C23A', border: '#4FA82A', font: { color: '#1f2937' } },
+        Story:      { background: '#E6A23C', border: '#C9882C', font: { color: '#1f2937' } },
+        Portal:     { background: '#9B59B6', border: '#7D3C98', font: { color: '#1f2937' } },
+        DataEntity: { background: '#1ABC9C', border: '#149A80', font: { color: '#1f2937' } },
+        Event:      { background: '#E91E63', border: '#C2185B', font: { color: '#1f2937' } }
       };
 
       function edgeStyle(rel) {

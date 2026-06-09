@@ -25,7 +25,7 @@ import { getReconciliationStatus } from './reconciliation';
 import { generateReviewPack, ReviewPackKind, ReviewPackRole } from './review-pack';
 import { generateRoutingProfile } from './routing-profile';
 import { buildToolSetupPrompts, ToolSetupPrompt } from './tooling';
-import { extractGraphData, extractSprintData, extractAgentTrace, extractIdeaToPrdData, extractCodeGraphData, extractEvolverData, extractFeatureGraphData } from './graph-parser';
+import { extractGraphData, extractSprintData, extractAgentTrace, extractIdeaToPrdData, extractCodeGraphData, extractEvolverData, extractFeatureGraphData, autoRepairSprintStatus } from './graph-parser';
 
 type InstallMode = 'install' | 'update';
 type MaterializeStatus = 'created' | 'kept' | 'updated';
@@ -460,7 +460,13 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
 
   const templateContent = await fs.readFile(templatePath, 'utf8');
   const graphData = extractGraphData(projectRoot);
-  const sprintData = extractSprintData(projectRoot);
+  let sprintData = extractSprintData(projectRoot);
+  
+  if (!sprintData || sprintData.length === 0) {
+    console.log(chalk.yellow('\n⚠️  Đã phát hiện sprint-status.yaml sai định dạng hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
+    autoRepairSprintStatus(projectRoot);
+    sprintData = extractSprintData(projectRoot);
+  }
   const agentTrace = extractAgentTrace(projectRoot);
   const ideaToPrdData = extractIdeaToPrdData(projectRoot);
   const codeGraphData = extractCodeGraphData(projectRoot);
