@@ -6,9 +6,9 @@ export class AnthropicProvider implements LLMProvider {
   private readonly apiKey: string;
   private readonly modelName: string;
 
-  constructor() {
+  constructor(modelName?: string) {
     this.apiKey = process.env.ANTHROPIC_API_KEY || '';
-    this.modelName = process.env.IWISH_ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022';
+    this.modelName = modelName || process.env.IWISH_ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022';
   }
 
   async analyzeSemantic(prompt: string): Promise<SemanticMetadata> {

@@ -6,9 +6,9 @@ export class GeminiProvider implements LLMProvider {
   private readonly apiKey: string;
   private readonly modelName: string;
 
-  constructor() {
+  constructor(modelName?: string) {
     this.apiKey = process.env.GEMINI_API_KEY || '';
-    this.modelName = process.env.IWISH_GEMINI_MODEL || 'gemini-2.5-flash';
+    this.modelName = modelName || process.env.IWISH_GEMINI_MODEL || 'gemini-2.5-flash';
   }
 
   async analyzeSemantic(prompt: string): Promise<SemanticMetadata> {

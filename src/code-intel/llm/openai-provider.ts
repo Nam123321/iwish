@@ -6,9 +6,9 @@ export class OpenAIProvider implements LLMProvider {
   private readonly apiKey: string;
   private readonly modelName: string;
 
-  constructor() {
+  constructor(modelName?: string) {
     this.apiKey = process.env.OPENAI_API_KEY || '';
-    this.modelName = process.env.IWISH_OPENAI_MODEL || 'gpt-4o-mini';
+    this.modelName = modelName || process.env.IWISH_OPENAI_MODEL || 'gpt-4o-mini';
   }
 
   async analyzeSemantic(prompt: string): Promise<SemanticMetadata> {

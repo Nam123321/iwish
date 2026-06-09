@@ -255,6 +255,8 @@ export async function runCli(): Promise<void> {
       .option('--skip-platform-ingest', 'Skip interactive platform skill ingestion and run in pure I-Wish mode')
       .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean; skipPlatformIngest?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
+        const { checkForRegistryUpdates } = await import('../code-intel/registry-updater');
+        await checkForRegistryUpdates(projectRoot).catch(() => {});
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'install');
         await ensureCapabilityPackageTemplates(projectRoot);
@@ -286,6 +288,8 @@ export async function runCli(): Promise<void> {
       .option('--skip-platform-ingest', 'Skip interactive platform skill ingestion and run in pure I-Wish mode')
       .action(async (options: { directory: string; platform: string[]; skipToolSetup?: boolean; skipPlatformIngest?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
+        const { checkForRegistryUpdates } = await import('../code-intel/registry-updater');
+        await checkForRegistryUpdates(projectRoot).catch(() => {});
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'update');
         await ensureCapabilityPackageTemplates(projectRoot);
@@ -531,7 +535,10 @@ export async function runCli(): Promise<void> {
       .argument('<request>', 'User request, slash command, or repository URL')
       .option('--json', 'Output raw JSON route decision')
       .action(async (request: string, options: { directory: string; json?: boolean }) => {
-        const decision = await routeRequest(getProjectRoot(options.directory), request);
+        const projectRoot = getProjectRoot(options.directory);
+        const { checkForRegistryUpdates } = await import('../code-intel/registry-updater');
+        await checkForRegistryUpdates(projectRoot).catch(() => {});
+        const decision = await routeRequest(projectRoot, request);
         if (options.json) {
           console.log(JSON.stringify(decision, null, 2));
           return;
@@ -630,6 +637,9 @@ export async function runCli(): Promise<void> {
         console.log(chalk.gray('━'.repeat(50)));
 
         try {
+          const { checkForRegistryUpdates } = await import('../code-intel/registry-updater');
+          await checkForRegistryUpdates(projectRoot).catch(() => {});
+
           // Step 1: File scanning
           console.log(chalk.cyan('\n📁 Step 1: Scanning files for changes...'));
           const { scanFiles, createBatches } = await import('../code-intel/file-scanner');

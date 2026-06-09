@@ -4,16 +4,17 @@ import { OpenAIProvider } from './openai-provider';
 import { AnthropicProvider } from './anthropic-provider';
 import { CohereProvider } from './cohere-provider';
 import { OpenAICompatibleProvider } from './openai-compatible-provider';
+import { resolveModel } from '../model-registry';
 
 export class LLMFactory {
-  static getProvider(): LLMProvider {
+  static getProvider(projectRoot?: string): LLMProvider {
     const providerName = process.env.IWISH_LLM_PROVIDER?.toLowerCase();
 
     // Map exact provider names
     switch (providerName) {
-      case 'gemini': return new GeminiProvider();
-      case 'openai': return new OpenAIProvider();
-      case 'anthropic': return new AnthropicProvider();
+      case 'gemini': return new GeminiProvider(projectRoot ? resolveModel(projectRoot, 'balanced', 'google').modelId : undefined);
+      case 'openai': return new OpenAIProvider(projectRoot ? resolveModel(projectRoot, 'balanced', 'openai').modelId : undefined);
+      case 'anthropic': return new AnthropicProvider(projectRoot ? resolveModel(projectRoot, 'balanced', 'anthropic').modelId : undefined);
       case 'cohere': return new CohereProvider();
       case 'groq': return new OpenAICompatibleProvider({ providerName: 'groq', envKeyName: 'GROQ_API_KEY', defaultModel: 'llama3-8b-8192', defaultBaseUrl: 'https://api.groq.com/openai/v1/chat/completions' });
       case 'mistral': return new OpenAICompatibleProvider({ providerName: 'mistral', envKeyName: 'MISTRAL_API_KEY', defaultModel: 'mistral-small-latest', defaultBaseUrl: 'https://api.mistral.ai/v1/chat/completions' });
@@ -24,9 +25,9 @@ export class LLMFactory {
     }
 
     // Auto-detect based on available keys if no explicit provider config
-    if (process.env.GEMINI_API_KEY) return new GeminiProvider();
-    if (process.env.OPENAI_API_KEY) return new OpenAIProvider();
-    if (process.env.ANTHROPIC_API_KEY) return new AnthropicProvider();
+    if (process.env.GEMINI_API_KEY) return new GeminiProvider(projectRoot ? resolveModel(projectRoot, 'balanced', 'google').modelId : undefined);
+    if (process.env.OPENAI_API_KEY) return new OpenAIProvider(projectRoot ? resolveModel(projectRoot, 'balanced', 'openai').modelId : undefined);
+    if (process.env.ANTHROPIC_API_KEY) return new AnthropicProvider(projectRoot ? resolveModel(projectRoot, 'balanced', 'anthropic').modelId : undefined);
     if (process.env.COHERE_API_KEY) return new CohereProvider();
     if (process.env.GROQ_API_KEY) return new OpenAICompatibleProvider({ providerName: 'groq', envKeyName: 'GROQ_API_KEY', defaultModel: 'llama3-8b-8192', defaultBaseUrl: 'https://api.groq.com/openai/v1/chat/completions' });
     if (process.env.MISTRAL_API_KEY) return new OpenAICompatibleProvider({ providerName: 'mistral', envKeyName: 'MISTRAL_API_KEY', defaultModel: 'mistral-small-latest', defaultBaseUrl: 'https://api.mistral.ai/v1/chat/completions' });

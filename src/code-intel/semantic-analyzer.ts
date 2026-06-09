@@ -211,7 +211,7 @@ export async function analyzeBatch(projectRoot: string, files: string[]): Promis
 
   let provider;
   try {
-    provider = LLMFactory.getProvider();
+    provider = LLMFactory.getProvider(projectRoot);
   } catch (e: any) {
     console.warn(chalk.yellow(`[semantic-analyzer] ${e.message}. Falling back to STUB metadata.`));
     provider = null;
