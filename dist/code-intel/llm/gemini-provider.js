@@ -5,9 +5,9 @@ class GeminiProvider {
     providerName = 'gemini';
     apiKey;
     modelName;
-    constructor() {
+    constructor(modelName) {
         this.apiKey = process.env.GEMINI_API_KEY || '';
-        this.modelName = process.env.IWISH_GEMINI_MODEL || 'gemini-2.5-flash';
+        this.modelName = modelName || process.env.IWISH_GEMINI_MODEL || 'gemini-2.5-flash';
     }
     async analyzeSemantic(prompt) {
         if (!this.apiKey) {

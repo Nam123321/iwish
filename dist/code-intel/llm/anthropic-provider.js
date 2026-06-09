@@ -5,9 +5,9 @@ class AnthropicProvider {
     providerName = 'anthropic';
     apiKey;
     modelName;
-    constructor() {
+    constructor(modelName) {
         this.apiKey = process.env.ANTHROPIC_API_KEY || '';
-        this.modelName = process.env.IWISH_ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022';
+        this.modelName = modelName || process.env.IWISH_ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022';
     }
     async analyzeSemantic(prompt) {
         if (!this.apiKey) {

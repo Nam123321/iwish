@@ -6,14 +6,15 @@ const openai_provider_1 = require("./openai-provider");
 const anthropic_provider_1 = require("./anthropic-provider");
 const cohere_provider_1 = require("./cohere-provider");
 const openai_compatible_provider_1 = require("./openai-compatible-provider");
+const model_registry_1 = require("../model-registry");
 class LLMFactory {
-    static getProvider() {
+    static getProvider(projectRoot) {
         const providerName = process.env.IWISH_LLM_PROVIDER?.toLowerCase();
         // Map exact provider names
         switch (providerName) {
-            case 'gemini': return new gemini_provider_1.GeminiProvider();
-            case 'openai': return new openai_provider_1.OpenAIProvider();
-            case 'anthropic': return new anthropic_provider_1.AnthropicProvider();
+            case 'gemini': return new gemini_provider_1.GeminiProvider(projectRoot ? (0, model_registry_1.resolveModel)(projectRoot, 'balanced', 'google').modelId : undefined);
+            case 'openai': return new openai_provider_1.OpenAIProvider(projectRoot ? (0, model_registry_1.resolveModel)(projectRoot, 'balanced', 'openai').modelId : undefined);
+            case 'anthropic': return new anthropic_provider_1.AnthropicProvider(projectRoot ? (0, model_registry_1.resolveModel)(projectRoot, 'balanced', 'anthropic').modelId : undefined);
             case 'cohere': return new cohere_provider_1.CohereProvider();
             case 'groq': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'groq', envKeyName: 'GROQ_API_KEY', defaultModel: 'llama3-8b-8192', defaultBaseUrl: 'https://api.groq.com/openai/v1/chat/completions' });
             case 'mistral': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'mistral', envKeyName: 'MISTRAL_API_KEY', defaultModel: 'mistral-small-latest', defaultBaseUrl: 'https://api.mistral.ai/v1/chat/completions' });
@@ -24,11 +25,11 @@ class LLMFactory {
         }
         // Auto-detect based on available keys if no explicit provider config
         if (process.env.GEMINI_API_KEY)
-            return new gemini_provider_1.GeminiProvider();
+            return new gemini_provider_1.GeminiProvider(projectRoot ? (0, model_registry_1.resolveModel)(projectRoot, 'balanced', 'google').modelId : undefined);
         if (process.env.OPENAI_API_KEY)
-            return new openai_provider_1.OpenAIProvider();
+            return new openai_provider_1.OpenAIProvider(projectRoot ? (0, model_registry_1.resolveModel)(projectRoot, 'balanced', 'openai').modelId : undefined);
         if (process.env.ANTHROPIC_API_KEY)
-            return new anthropic_provider_1.AnthropicProvider();
+            return new anthropic_provider_1.AnthropicProvider(projectRoot ? (0, model_registry_1.resolveModel)(projectRoot, 'balanced', 'anthropic').modelId : undefined);
         if (process.env.COHERE_API_KEY)
             return new cohere_provider_1.CohereProvider();
         if (process.env.GROQ_API_KEY)

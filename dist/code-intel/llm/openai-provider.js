@@ -5,9 +5,9 @@ class OpenAIProvider {
     providerName = 'openai';
     apiKey;
     modelName;
-    constructor() {
+    constructor(modelName) {
         this.apiKey = process.env.OPENAI_API_KEY || '';
-        this.modelName = process.env.IWISH_OPENAI_MODEL || 'gpt-4o-mini';
+        this.modelName = modelName || process.env.IWISH_OPENAI_MODEL || 'gpt-4o-mini';
     }
     async analyzeSemantic(prompt) {
         if (!this.apiKey) {

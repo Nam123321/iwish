@@ -434,13 +434,14 @@
 25b. **🔍 Intelligence Graph Refresh (MANDATORY INTELLIGENCE CHECK):**
      - Bắt buộc kiểm tra toolset. Nếu có `add_feature_relationship`:
        - Thêm relationship nếu phát hiện dependency ngầm chưa được ghi nhận.
-     - Nếu có `add_code_to_graph` (CodeGraph):
-       - Refresh CodeGraph với các files đã thay đổi trong quá trình fix:
+     - **TIER 1 HYBRID GRAPH UPDATE:** (Dành cho CodeGraphContext)
+       - Với TỪNG file đã thay đổi (hoặc tạo mới) trong quá trình fix, bạn BẮT BUỘC phải dùng "não" của mình để đánh giá ngữ nghĩa và cập nhật trực tiếp vào đồ thị bằng lệnh CLI:
+         ```bash
+         iwish inject-node --file "<fixed_file_path>" --metadata '{"summary": "Mô tả ngắn gọn về file", "tags": ["tag1", "tag2"], "layer": "business", "complexity": "low"}'
          ```
-         add_code_to_graph("<fixed_file_path>")
-         ```
-       - Áp dụng cho TỪNG file trong danh sách files đã sửa.
-       - Đảm bảo code graph phản ánh trạng thái mới sau fix.
+       - Layers hợp lệ: `presentation`, `business`, `data`, `infrastructure`, `config`, `unknown`
+       - Việc này giúp cập nhật Code Graph tức thời (Real-time) và kết nối chéo trong FalkorDB mà không cần kích hoạt luồng background LLM đắt đỏ (Cost = 0).
+       - Đảm bảo code graph phản ánh trạng thái mới sau fix ngay lập tức.
 
 25c. **🔄 Auto-Decant & Spec Sync Engine (MANDATORY INTEGRATION):**
      - Load `.agent/skills/ag-kit-guides/context-compression-decant.md`.
