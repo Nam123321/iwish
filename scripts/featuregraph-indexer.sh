@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================
-# FeatureGraph Indexer — 4-Step Pipeline (Story 14.3)
+# FeatureGraph Indexer — 4-Step Pipeline
 # Parse PRD, Epics, Stories, Feature-Hierarchy → FalkorDB
 # Includes: IMPACTS parser, dual Story-ID regex, path fallback
 # ==============================================================
@@ -407,7 +407,7 @@ step4_validation() {
 # ==============================================================
 main() {
   echo "=============================================="
-  echo " FeatureGraph Indexer v1.1 (Story 14.3)"
+  echo " FeatureGraph Indexer v1.1"
   echo " Graph: $GRAPH_NAME @ $FALKORDB_HOST:$FALKORDB_PORT"
   echo "=============================================="
 

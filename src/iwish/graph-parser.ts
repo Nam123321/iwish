@@ -707,7 +707,7 @@ export function extractCodeGraphData(projectRoot: string): CodeGraphData | null 
   }
 }
 
-// ===== Feature Graph Data Extraction (Story 14.6) =====
+// ===== Feature Graph Data Extraction =====
 export type FeatureGraphNode = {
   id: string;
   label: string;
