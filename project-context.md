@@ -80,3 +80,29 @@ All AI assistants and agents operating on this project must strictly comply with
       - `done`: Đã pass toàn bộ review và nghiệm thu.
       - `blocked`: Tạm thời bị kẹt do issue bên ngoài (Lưu ý: trên UI Kanban sẽ tạm map về Backlog nếu không chứa các từ khóa tiến độ).
       - `cancelled`: Story bị hủy bỏ.
+11. **Context Drift Detection (Auto-Audit on Update)**: Khi bắt đầu session mới, agent **MUST** thực hiện kiểm tra sau:
+    - Chạy `git log -1 --format=%H -- project-context.md` để lấy hash hiện tại.
+    - So sánh với `last_audited_hash` trong `_iwish/runtime/.context-audit-state.json`.
+    - Nếu hash **khác nhau** (project-context đã thay đổi kể từ lần audit cuối):
+      1. Chạy `git diff <old_hash> <new_hash> -- project-context.md` để xem diff.
+      2. Kiểm tra `## 📋 Changelog` section — nếu có entry mới với `remediation` cụ thể → ưu tiên chạy theo đó.
+      3. Nếu không có changelog entry → agent tự phân tích diff, xác định rule mới/thay đổi, và đề xuất audit scope.
+      4. **THÔNG BÁO user**: "🔔 Phát hiện project-context.md đã thay đổi. [Tóm tắt thay đổi]. Bạn có muốn tôi audit data hiện tại để đảm bảo compliance?"
+      5. **CHỜ user approve** trước khi chạy audit. Agent **KHÔNG ĐƯỢC** tự sửa data mà không có approval.
+      6. Sau khi audit hoàn tất → cập nhật `_iwish/runtime/.context-audit-state.json` với hash mới.
+    - Nếu hash **giống nhau** hoặc file `.context-audit-state.json` chưa tồn tại lần đầu → tạo file với hash hiện tại và bỏ qua audit.
+
+---
+
+## 📋 Changelog (Optional)
+
+Section này ghi nhận các thay đổi rule quan trọng kèm hướng dẫn remediation cụ thể. Agent sử dụng section này kết hợp với git hash tracking để phát hiện và xử lý thay đổi.
+
+> Khi thêm rule mới phức tạp, maintainer **NÊN** (không bắt buộc) thêm entry vào đây để agent biết chính xác cần audit gì.
+
+### v1.1.0 — 2026-06-09
+
+| Rule | Type | Summary | Audit Scope | Remediation |
+|:---|:---|:---|:---|:---|
+| `rule-10` | `added` | Sprint Status Standardization — chỉ cho phép enum values cố định | `_iwish-output/**/sprint-status.yaml` | Scan tất cả `sprint-status.yaml`, thay thế status không chuẩn bằng enum gần nhất theo bảng mapping ở Rule #10 |
+| `rule-11` | `added` | Context Drift Detection — auto-audit khi project-context thay đổi | N/A | Tạo `_iwish/runtime/.context-audit-state.json` nếu chưa có |

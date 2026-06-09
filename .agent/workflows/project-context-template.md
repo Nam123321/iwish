@@ -64,3 +64,29 @@ Every artifact must be written exactly into these folders. Dynamic or dated file
   - You **MUST** add a dedicated "Spec Reconciliation & Synchronization" section or task block inside the proposed changes of the `implementation_plan.md` identifying exactly which spec files (e.g. `PRD.md`, `ui-ux-spec.md`, `database-spec.md`) will be updated.
   - When execution starts, the agent **MUST** update those specifications first before writing/changing code, and then run `iwish reconcile-change` to log the sync.
   - Never skip this check even if the change seems minor or localized.
+
+## 🔔 Context Drift Detection (Auto-Audit on Update)
+- **Trigger**: Khi agent bắt đầu session mới, kiểm tra git hash của `project-context.md`.
+- **Action**:
+  - Chạy `git log -1 --format=%H -- project-context.md` để lấy hash hiện tại.
+  - So sánh với `last_audited_hash` trong `_iwish/runtime/.context-audit-state.json`.
+  - Nếu hash khác nhau → chạy `git diff` để xác định thay đổi.
+  - Kiểm tra `## 📋 Changelog` section — nếu có entry mới với `remediation` → ưu tiên chạy theo đó.
+  - Nếu không có changelog entry → agent tự phân tích diff và đề xuất audit scope.
+  - **THÔNG BÁO user** và **CHỜ approve** trước khi chạy audit.
+  - Sau khi audit xong → cập nhật `.context-audit-state.json`.
+- **QUAN TRỌNG**: Agent KHÔNG ĐƯỢC tự sửa data mà không có user approval.
+
+---
+
+## 📋 Changelog (Optional)
+
+Section này ghi nhận các thay đổi rule quan trọng kèm hướng dẫn remediation cụ thể. Agent sử dụng section này kết hợp với git hash tracking để phát hiện và xử lý thay đổi.
+
+> Khi thêm rule mới phức tạp, maintainer **NÊN** (không bắt buộc) thêm entry vào đây để agent biết chính xác cần audit gì.
+
+### v1.0.0 — {{date}}
+
+| Rule | Type | Summary | Audit Scope | Remediation |
+|:---|:---|:---|:---|:---|
+| _Chưa có entry_ | — | — | — | — |
