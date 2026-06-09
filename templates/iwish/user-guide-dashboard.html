@@ -1592,9 +1592,6 @@
         </div>
       </div>
     </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Tab 1.5: Idea To PRD slide presentation -->
     <div id="tab-idea-to-prd" class="tab-content active">
@@ -1656,16 +1653,16 @@
     </div>
 
     <!-- Tab 2: Feature Hierarchy & Graph -->
-    <div id="tab-features" class="tab-content" style="padding: 0;">
-      <div class="feature-split-view" style="display:flex; height:100%; width:100%; overflow:hidden;">
+    <div id="tab-features" class="tab-content" style="padding: 0; flex-direction: column;">
+      <div class="feature-split-view" style="display:flex; flex:1; width:100%; overflow:hidden; align-items: stretch;">
         
         <!-- Left Pane: Feature Hierarchy Checkbox Tree -->
-        <div class="feature-hierarchy-pane" style="width:35%; min-width:300px; max-width:450px; overflow-y:auto; border-right: 1px solid var(--border-color); padding: 20px; background:var(--panel-bg); flex-shrink:0;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <div class="feature-hierarchy-pane" style="width:35%; min-width:300px; max-width:450px; border-right: 1px solid var(--border-color); padding: 20px; background:var(--panel-bg); flex-shrink:0; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-shrink:0;">
             <h2 style="margin:0; font-size:18px;">Feature Hierarchy</h2>
             <button onclick="if(window.featuresNetwork) window.featuresNetwork.fit()" class="btn-secondary" style="padding:4px 8px; font-size:12px;">Reset View</button>
           </div>
-          <div id="feature-hierarchy-tree" style="font-size:14px; line-height:1.6; color:var(--text-color);">
+          <div id="feature-hierarchy-tree" style="font-size:14px; line-height:1.6; color:var(--text-color); flex:1; overflow-y:auto;">
             <!-- Tree rendered dynamically by JS -->
           </div>
         </div>
@@ -1673,11 +1670,69 @@
         <!-- Right Pane: Feature Graph -->
         <div class="feature-graph-pane" style="flex:1; position:relative; display:flex; flex-direction:column; overflow:hidden;">
           <!-- Blank state when no data -->
-          <div id="features-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;">
-            <div class="card" style="max-width:480px;text-align:center;padding:40px;">
-              <div style="font-size:48px;margin-bottom:16px;">🔗</div>
-              <h2 style="margin-bottom:8px;">FeatureGraph Not Available</h2>
-              <p style="color:var(--text-muted);font-size:14px;line-height:1.6;">Run the featuregraph-index command to visualise cross-feature dependencies.</p>
+          <div id="features-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;overflow-y:auto;">
+            <div class="card" style="max-width:560px;text-align:left;padding:40px;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:20px;">
+              <div style="text-align:center;font-size:48px;margin-bottom:16px;">🔗</div>
+              <h2 style="text-align:center;margin-bottom:8px;">FeatureGraph — Cross-Feature Dependency Map</h2>
+              <p style="color:var(--text-muted);font-size:14px;line-height:1.6;text-align:center;margin-bottom:20px;">
+                FeatureGraph visualises the relationships between Functional Requirements (FRs), Epics, Stories, Portals, Data Entities, and Domain Events as an interactive force-directed network graph.
+              </p>
+              <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px;">
+                <thead>
+                  <tr style="border-bottom:2px solid var(--border-color);">
+                    <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Node Type</th>
+                    <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Color</th>
+                    <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:6px;">FR</td>
+                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#4A90D9;vertical-align:middle;"></span> Blue</td>
+                    <td style="padding:6px;color:var(--text-muted);">Functional Requirement</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:6px;">Epic</td>
+                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#67C23A;vertical-align:middle;"></span> Green</td>
+                    <td style="padding:6px;color:var(--text-muted);">Epic (implementation group)</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:6px;">Story</td>
+                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#E6A23C;vertical-align:middle;"></span> Orange</td>
+                    <td style="padding:6px;color:var(--text-muted);">User Story</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:6px;">Portal</td>
+                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9B59B6;vertical-align:middle;"></span> Purple</td>
+                    <td style="padding:6px;color:var(--text-muted);">Portal / UI Surface</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:6px;">DataEntity</td>
+                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#1ABC9C;vertical-align:middle;"></span> Teal</td>
+                    <td style="padding:6px;color:var(--text-muted);">Shared Data Entity</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:6px;">Event</td>
+                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#E91E63;vertical-align:middle;"></span> Pink</td>
+                    <td style="padding:6px;color:var(--text-muted);">Domain Event</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin-bottom:12px;">
+                <strong>To generate FeatureGraph data:</strong>
+              </p>
+              <div class="cli-box" style="margin-bottom:8px;">
+                <span class="cli-cmd">/feature-hierarchy</span>
+                <button class="cli-copy-btn" onclick="copyCommand('/feature-hierarchy', this)">COPY</button>
+              </div>
+              <div class="cli-box" style="margin-bottom:8px;">
+                <span class="cli-cmd">/create-epics-and-stories</span>
+                <button class="cli-copy-btn" onclick="copyCommand('/create-epics-and-stories', this)">COPY</button>
+              </div>
+              <div class="cli-box">
+                <span class="cli-cmd">iwish featuregraph-index</span>
+                <button class="cli-copy-btn" onclick="copyCommand('iwish featuregraph-index', this)">COPY</button>
+              </div>
             </div>
           </div>
           
@@ -4210,8 +4265,7 @@
       el.style.borderColor = 'var(--primary-color)';
       const story = JSON.parse(el.getAttribute('data-story').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
       document.getElementById('grid-story-title').innerText = story.id;
-      const cleanContent = story.content ? story.content.replace(/^---[\s\S]*?---
-?/, '') : '';
+      const cleanContent = story.content ? story.content.replace(/^---[\\s\\S]*?---\\n?/, '') : '';
       const renderedHtml = cleanContent ? marked.parse(cleanContent) : '<p style="color: var(--text-muted); font-size:14px;">No detailed spec content available.</p>';
       
       document.getElementById('grid-story-desc').innerHTML = `
@@ -4329,143 +4383,7 @@
       initScrollObserver();
     };
 
-    // ===== CODE GRAPH TAB =====
-    (function initCodeGraph() {
-      const codeGraphData = /*CODE_GRAPH_DATA*/ null;
-      if (!codeGraphData) return;
 
-      // Show active view, hide placeholder
-      document.getElementById('code-graph-placeholder').style.display = 'none';
-      var activeView = document.getElementById('code-graph-active');
-      activeView.style.display = 'flex';
-      document.getElementById('code-graph-sidebar').style.display = 'flex';
-
-      var layerColors = {
-        presentation: { background: '#6366f1', border: '#4f46e5', font: { color: '#fff' } },
-        business:     { background: '#0ea5e9', border: '#0284c7', font: { color: '#fff' } },
-        data:         { background: '#f59e0b', border: '#d97706', font: { color: '#fff' } },
-        infrastructure: { background: '#10b981', border: '#059669', font: { color: '#fff' } },
-        config:       { background: '#8b5cf6', border: '#7c3aed', font: { color: '#fff' } },
-        unclassified: { background: '#94a3b8', border: '#64748b', font: { color: '#fff' } },
-        unknown:      { background: '#94a3b8', border: '#64748b', font: { color: '#fff' } }
-      };
-
-      var nodes = new vis.DataSet(codeGraphData.nodes.map(function(n) {
-        return {
-          id: n.id,
-          label: n.label.split('/').pop() || n.label,
-          title: '<b>' + n.label + '</b><br>' + (n.summary || 'No summary') + '<br>Layer: ' + n.layer + '<br>Complexity: ' + n.complexity + '<br>Tags: ' + ((n.tags || []).join(', ') || 'none'),
-          group: n.layer || 'unknown',
-          color: layerColors[n.layer] || layerColors.unknown,
-          font: { size: 12, face: 'Inter' },
-          shape: 'dot',
-          size: n.complexity === 'high' ? 20 : n.complexity === 'medium' ? 14 : 10,
-          _meta: n
-        };
-      }));
-
-      var edges = new vis.DataSet(codeGraphData.edges.map(function(e, i) {
-        return {
-          id: 'cg-edge-' + i,
-          from: e.from,
-          to: e.to,
-          label: e.type || '',
-          arrows: 'to',
-          color: { color: 'rgba(100,116,139,0.3)', highlight: 'var(--primary)' },
-          font: { size: 9, color: '#94a3b8', face: 'Inter' },
-          smooth: { type: 'cubicBezier', forceDirection: 'horizontal', roundness: 0.4 }
-        };
-      }));
-
-      var container = document.getElementById('code-graph-canvas');
-      var options = {
-        physics: {
-          stabilization: { enabled: true, iterations: 200, fit: true },
-          barnesHut: { gravitationalConstant: -3000, centralGravity: 0.1, springLength: 150 }
-        },
-        interaction: { hover: true, tooltipDelay: 200, zoomView: true, dragView: true },
-        layout: { improvedLayout: true }
-      };
-
-      var network = new vis.Network(container, { nodes: nodes, edges: edges }, options);
-      window.codeGraphNetwork = network;
-
-      // Disable physics after stabilization to prevent thread lock
-      network.once('stabilizationIterationsDone', function() {
-        network.setOptions({ physics: { enabled: false } });
-      });
-
-      // Node click handler
-      network.on('click', function(params) {
-        var detailsEl = document.getElementById('code-graph-details');
-        if (params.nodes.length > 0) {
-          var nodeId = params.nodes[0];
-          var node = nodes.get(nodeId);
-          if (node && node._meta) {
-            var m = node._meta;
-            detailsEl.innerHTML =
-              '<h3 style="margin-bottom:8px;font-size:15px;color:var(--text-color);word-break:break-all;">' + (m.label || m.id) + '</h3>' +
-              '<p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">' + (m.summary || 'No semantic analysis available.') + '</p>' +
-              '<div class="code-graph-stat"><span class="label">Layer</span><span class="value">' + (m.layer || 'unknown') + '</span></div>' +
-              '<div class="code-graph-stat"><span class="label">Complexity</span><span class="value">' + (m.complexity || 'unknown') + '</span></div>' +
-              '<div class="code-graph-stat"><span class="label">Tags</span><span class="value">' + ((m.tags || []).join(', ') || 'none') + '</span></div>' +
-              '<div class="code-graph-stat"><span class="label">Group</span><span class="value">' + (m.group || 'file') + '</span></div>';
-          }
-        } else {
-          detailsEl.innerHTML = '<h3 style="color:var(--text-muted);font-size:14px;">Click a node to inspect</h3>';
-        }
-      });
-
-      // Search
-      var searchInput = document.getElementById('code-graph-search');
-      searchInput.addEventListener('input', function() {
-        var query = searchInput.value.toLowerCase().trim();
-        if (!query) {
-          nodes.forEach(function(n) { nodes.update({ id: n.id, opacity: 1 }); });
-          return;
-        }
-        nodes.forEach(function(n) {
-          var m = n._meta;
-          var match = (m.label || '').toLowerCase().indexOf(query) !== -1 || (m.tags || []).some(function(t) { return t.toLowerCase().indexOf(query) !== -1; });
-          nodes.update({ id: n.id, opacity: match ? 1 : 0.15 });
-        });
-      });
-
-      // Layer filter buttons
-      var filterContainer = document.getElementById('code-graph-filters');
-      var layerSet = {};
-      codeGraphData.nodes.forEach(function(n) { layerSet[n.layer || 'unknown'] = true; });
-      var layers = Object.keys(layerSet);
-      layers.forEach(function(layer) {
-        var btn = document.createElement('button');
-        btn.className = 'code-graph-filter-btn';
-        btn.textContent = layer;
-        btn.style.borderLeftColor = (layerColors[layer] || layerColors.unknown).background;
-        btn.style.borderLeftWidth = '3px';
-        btn.addEventListener('click', function() {
-          btn.classList.toggle('active');
-          var activeFilters = Array.from(filterContainer.querySelectorAll('.active')).map(function(b) { return b.textContent; });
-          if (activeFilters.length === 0) {
-            nodes.forEach(function(n) { nodes.update({ id: n.id, hidden: false }); });
-          } else {
-            nodes.forEach(function(n) {
-              var nodeLayer = n._meta.layer || 'unknown';
-              nodes.update({ id: n.id, hidden: activeFilters.indexOf(nodeLayer) === -1 });
-            });
-          }
-        });
-        filterContainer.appendChild(btn);
-      });
-
-      // Stats
-      var statsEl = document.getElementById('code-graph-stats');
-      var meta = codeGraphData.metadata || {};
-      statsEl.innerHTML =
-        '<div class="code-graph-stat"><span class="label">Nodes</span><span class="value">' + (meta.nodeCount || codeGraphData.nodes.length) + '</span></div>' +
-        '<div class="code-graph-stat"><span class="label">Edges</span><span class="value">' + (meta.edgeCount || codeGraphData.edges.length) + '</span></div>' +
-        '<div class="code-graph-stat"><span class="label">Adapter</span><span class="value">' + (meta.adapterUsed || 'unknown') + '</span></div>' +
-        '<div class="code-graph-stat"><span class="label">Generated</span><span class="value">' + (meta.generatedAt ? new Date(meta.generatedAt).toLocaleDateString() : 'N/A') + '</span></div>';
-    })();
 
     // ===== FEATURE GRAPH TAB =====
     (function initFeatureGraph() {
@@ -4587,14 +4505,18 @@
       var treeHtml = '';
       epics.forEach(epic => {
          treeHtml += `<div style="margin-bottom: 8px;">
-            <label style="display:flex; align-items:center; gap:8px; font-weight:700; cursor:pointer;">
-               <input type="checkbox" class="feature-cb" value="${epic.id}"> ${epic.label}
+            <label style="display:flex; align-items:center; gap:8px; font-weight:700; cursor:pointer; color:var(--text-color);">
+               <input type="checkbox" class="feature-cb" value="${epic.id}">
+               <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#67C23A;flex-shrink:0;"></span>
+               ${epic.label}
             </label>`;
          if (storiesMap[epic.id]) {
             treeHtml += `<div style="margin-left: 24px; margin-top: 4px; display:flex; flex-direction:column; gap:4px;">`;
             storiesMap[epic.id].forEach(story => {
                treeHtml += `<label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-muted);">
-                 <input type="checkbox" class="feature-cb" value="${story.id}"> ${story.label}
+                 <input type="checkbox" class="feature-cb" value="${story.id}">
+                 <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E6A23C;flex-shrink:0;"></span>
+                 ${story.label}
                </label>`;
             });
             treeHtml += `</div>`;
