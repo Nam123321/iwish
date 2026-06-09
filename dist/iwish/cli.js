@@ -53,6 +53,7 @@ const inventory_1 = require("./inventory");
 const skill_graph_1 = require("./skill-graph");
 const routing_profile_1 = require("./routing-profile");
 const tournament_runner_1 = require("./tournament-runner");
+const llm_setup_1 = require("./llm-setup");
 function getInvocationName() {
     return process.argv[1]?.split('/').pop() || 'iwish';
 }
@@ -258,6 +259,7 @@ async function runCli() {
         await (0, runtime_1.installRuntime)(projectRoot, targets, 'install');
         await (0, runtime_1.ensureCapabilityPackageTemplates)(projectRoot);
         if (!options.skipToolSetup) {
+            await (0, llm_setup_1.promptLLMSetup)(projectRoot);
             await promptGraphToolSelection(projectRoot);
         }
         else {
@@ -286,6 +288,7 @@ async function runCli() {
         await (0, runtime_1.installRuntime)(projectRoot, targets, 'update');
         await (0, runtime_1.ensureCapabilityPackageTemplates)(projectRoot);
         if (!options.skipToolSetup) {
+            await (0, llm_setup_1.promptLLMSetup)(projectRoot);
             await promptGraphToolSelection(projectRoot);
         }
         else {

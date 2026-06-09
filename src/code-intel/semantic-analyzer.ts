@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import chalk from 'chalk';
+import { LLMFactory } from './llm/llm-factory';
 
 export type SemanticMetadata = {
   summary: string;
@@ -208,42 +209,72 @@ export async function analyzeBatch(projectRoot: string, files: string[]): Promis
   const cache = loadSemanticCache(projectRoot);
   const results: AnalysisResult[] = [];
 
-  for (const filePath of files) {
-    const fullPath = path.resolve(projectRoot, filePath);
+  let provider;
+  try {
+    provider = LLMFactory.getProvider();
+  } catch (e: any) {
+    console.warn(chalk.yellow(`[semantic-analyzer] ${e.message}. Falling back to STUB metadata.`));
+    provider = null;
+  }
 
-    if (!fs.existsSync(fullPath)) {
-      results.push({
-        path: filePath,
-        metadata: { summary: '', tags: [], layer: 'unknown', complexity: 'unknown' },
-        status: 'skipped',
-      });
-      continue;
-    }
+  const BATCH_SIZE = 5;
+  const DELAY_MS = 2000;
 
-    try {
-      const content = await fs.readFile(fullPath, 'utf8');
-      const context = extractFileContext(filePath, content);
+  for (let i = 0; i < files.length; i += BATCH_SIZE) {
+    const batchFiles = files.slice(i, i + BATCH_SIZE);
 
-      // Build prompt for agent reference (not invoked here)
-      buildPrompt(path.basename(filePath), content, context);
+    const batchPromises = batchFiles.map(async (filePath) => {
+      const fullPath = path.resolve(projectRoot, filePath);
 
-      // STUB: Generate reasonable defaults based on file extension and path patterns.
-      // The real LLM invocation will be done by the agent runtime at execution time.
-      const metadata = generateStubMetadata(filePath, content);
-      cache[filePath] = metadata;
+      if (!fs.existsSync(fullPath)) {
+        return {
+          path: filePath,
+          metadata: { summary: '', tags: [], layer: 'unknown', complexity: 'unknown' } as SemanticMetadata,
+          status: 'skipped' as const,
+        };
+      }
 
-      results.push({ path: filePath, metadata, status: 'success' });
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      console.warn(chalk.yellow(`[semantic-analyzer] Failed to analyze ${filePath}: ${message}`));
-      results.push({
-        path: filePath,
-        metadata: { summary: '', tags: [], layer: 'unknown', complexity: 'unknown' },
-        status: 'failed',
-      });
+      try {
+        const content = await fs.readFile(fullPath, 'utf8');
+        const context = extractFileContext(filePath, content);
+        const prompt = buildPrompt(path.basename(filePath), content, context);
+
+        let metadata: SemanticMetadata;
+        if (provider) {
+          try {
+            metadata = await provider.analyzeSemantic(prompt);
+          } catch (llmErr) {
+            console.warn(chalk.yellow(`[semantic-analyzer] LLM Error on ${filePath}: ${llmErr instanceof Error ? llmErr.message : String(llmErr)}`));
+            metadata = generateStubMetadata(filePath, content);
+          }
+        } else {
+          metadata = generateStubMetadata(filePath, content);
+        }
+
+        cache[filePath] = metadata;
+        // Save immediately to avoid losing results if it crashes midway
+        await saveSemanticCache(projectRoot, cache);
+
+        return { path: filePath, metadata, status: 'success' as const };
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn(chalk.yellow(`[semantic-analyzer] Failed to analyze ${filePath}: ${message}`));
+        return {
+          path: filePath,
+          metadata: { summary: '', tags: [], layer: 'unknown', complexity: 'unknown' } as SemanticMetadata,
+          status: 'failed' as const,
+        };
+      }
+    });
+
+    const batchResults = await Promise.all(batchPromises);
+    results.push(...batchResults);
+
+    // Apply delay between batches if using LLM
+    if (provider && i + BATCH_SIZE < files.length) {
+      await new Promise(resolve => setTimeout(resolve, DELAY_MS));
     }
   }
 
-  await saveSemanticCache(projectRoot, cache);
   return results;
 }

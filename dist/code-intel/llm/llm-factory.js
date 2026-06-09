@@ -1,0 +1,49 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LLMFactory = void 0;
+const gemini_provider_1 = require("./gemini-provider");
+const openai_provider_1 = require("./openai-provider");
+const anthropic_provider_1 = require("./anthropic-provider");
+const cohere_provider_1 = require("./cohere-provider");
+const openai_compatible_provider_1 = require("./openai-compatible-provider");
+class LLMFactory {
+    static getProvider() {
+        const providerName = process.env.IWISH_LLM_PROVIDER?.toLowerCase();
+        // Map exact provider names
+        switch (providerName) {
+            case 'gemini': return new gemini_provider_1.GeminiProvider();
+            case 'openai': return new openai_provider_1.OpenAIProvider();
+            case 'anthropic': return new anthropic_provider_1.AnthropicProvider();
+            case 'cohere': return new cohere_provider_1.CohereProvider();
+            case 'groq': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'groq', envKeyName: 'GROQ_API_KEY', defaultModel: 'llama3-8b-8192', defaultBaseUrl: 'https://api.groq.com/openai/v1/chat/completions' });
+            case 'mistral': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'mistral', envKeyName: 'MISTRAL_API_KEY', defaultModel: 'mistral-large-latest', defaultBaseUrl: 'https://api.mistral.ai/v1/chat/completions' });
+            case 'deepseek': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'deepseek', envKeyName: 'DEEPSEEK_API_KEY', defaultModel: 'deepseek-chat', defaultBaseUrl: 'https://api.deepseek.com/chat/completions' });
+            case 'together': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'together', envKeyName: 'TOGETHER_API_KEY', defaultModel: 'meta-llama/Llama-3-8b-chat-hf', defaultBaseUrl: 'https://api.together.xyz/v1/chat/completions' });
+            case 'openrouter': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'openrouter', envKeyName: 'OPENROUTER_API_KEY', defaultModel: 'google/gemini-flash-1.5', defaultBaseUrl: 'https://openrouter.ai/api/v1/chat/completions' });
+            case 'qwen': return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'qwen', envKeyName: 'QWEN_API_KEY', defaultModel: 'qwen-turbo', defaultBaseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions' });
+        }
+        // Auto-detect based on available keys if no explicit provider config
+        if (process.env.GEMINI_API_KEY)
+            return new gemini_provider_1.GeminiProvider();
+        if (process.env.OPENAI_API_KEY)
+            return new openai_provider_1.OpenAIProvider();
+        if (process.env.ANTHROPIC_API_KEY)
+            return new anthropic_provider_1.AnthropicProvider();
+        if (process.env.COHERE_API_KEY)
+            return new cohere_provider_1.CohereProvider();
+        if (process.env.GROQ_API_KEY)
+            return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'groq', envKeyName: 'GROQ_API_KEY', defaultModel: 'llama3-8b-8192', defaultBaseUrl: 'https://api.groq.com/openai/v1/chat/completions' });
+        if (process.env.MISTRAL_API_KEY)
+            return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'mistral', envKeyName: 'MISTRAL_API_KEY', defaultModel: 'mistral-large-latest', defaultBaseUrl: 'https://api.mistral.ai/v1/chat/completions' });
+        if (process.env.DEEPSEEK_API_KEY)
+            return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'deepseek', envKeyName: 'DEEPSEEK_API_KEY', defaultModel: 'deepseek-chat', defaultBaseUrl: 'https://api.deepseek.com/chat/completions' });
+        if (process.env.TOGETHER_API_KEY)
+            return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'together', envKeyName: 'TOGETHER_API_KEY', defaultModel: 'meta-llama/Llama-3-8b-chat-hf', defaultBaseUrl: 'https://api.together.xyz/v1/chat/completions' });
+        if (process.env.OPENROUTER_API_KEY)
+            return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'openrouter', envKeyName: 'OPENROUTER_API_KEY', defaultModel: 'google/gemini-flash-1.5', defaultBaseUrl: 'https://openrouter.ai/api/v1/chat/completions' });
+        if (process.env.QWEN_API_KEY)
+            return new openai_compatible_provider_1.OpenAICompatibleProvider({ providerName: 'qwen', envKeyName: 'QWEN_API_KEY', defaultModel: 'qwen-turbo', defaultBaseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions' });
+        throw new Error('No LLM Provider configured. Run "iwish update" or set an API KEY in your environment.');
+    }
+}
+exports.LLMFactory = LLMFactory;

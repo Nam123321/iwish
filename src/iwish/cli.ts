@@ -36,6 +36,7 @@ import { buildPlatformInventory } from './inventory';
 import { buildSkillGraphReport } from './skill-graph';
 import { generateRoutingProfile, getRoutingProfileSummary } from './routing-profile';
 import { runTournament, mergeTournament, abortTournament } from './tournament-runner';
+import { promptLLMSetup } from './llm-setup';
 
 function getInvocationName(): string {
   return process.argv[1]?.split('/').pop() || 'iwish';
@@ -258,6 +259,7 @@ export async function runCli(): Promise<void> {
         await installRuntime(projectRoot, targets, 'install');
         await ensureCapabilityPackageTemplates(projectRoot);
         if (!options.skipToolSetup) {
+          await promptLLMSetup(projectRoot);
           await promptGraphToolSelection(projectRoot);
         } else {
           console.log(chalk.yellow('Skipped baseline tool setup.'));
@@ -288,6 +290,7 @@ export async function runCli(): Promise<void> {
         await installRuntime(projectRoot, targets, 'update');
         await ensureCapabilityPackageTemplates(projectRoot);
         if (!options.skipToolSetup) {
+          await promptLLMSetup(projectRoot);
           await promptGraphToolSelection(projectRoot);
         } else {
           console.log(chalk.yellow('Skipped baseline tool setup.'));

@@ -72,6 +72,7 @@
     "fs-extra": "^11.3.4",
     "jsdom": "^29.1.1",
     "marked": "^18.0.3",
+    "redis": "^6.0.0",
     "yaml": "^2.8.2"
   },
   "devDependencies": {

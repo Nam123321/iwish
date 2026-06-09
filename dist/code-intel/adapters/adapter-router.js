@@ -42,6 +42,7 @@ const path = __importStar(require("path"));
 const yaml_1 = __importDefault(require("yaml"));
 const cypher_adapter_1 = require("./cypher-adapter");
 const lite_static_adapter_1 = require("./lite-static-adapter");
+const falkordb_adapter_1 = require("./falkordb-adapter");
 function getGraphProfilePath(projectRoot) {
     return path.join(projectRoot, '.iwish', 'runtime', 'graph-profile.yaml');
 }
@@ -64,7 +65,10 @@ function resolveAdapter(projectRoot) {
         return new lite_static_adapter_1.LiteStaticAdapter();
     }
     const adapterKey = profile.graph_surfaces.codebasegraph.toLowerCase();
-    if (adapterKey === 'cypher' || adapterKey === 'falkordb' || adapterKey === 'neo4j' || adapterKey === 'memgraph') {
+    if (adapterKey === 'falkordb' || adapterKey === 'cypher') {
+        return new falkordb_adapter_1.FalkorDBAdapter();
+    }
+    if (adapterKey === 'neo4j' || adapterKey === 'memgraph') {
         return new cypher_adapter_1.CypherAdapter(adapterKey);
     }
     if (adapterKey === 'lite-static' || adapterKey === 'static') {

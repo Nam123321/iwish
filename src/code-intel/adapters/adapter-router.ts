@@ -4,6 +4,7 @@ import YAML from 'yaml';
 import { CodeGraphAdapter } from './adapter-interface';
 import { CypherAdapter } from './cypher-adapter';
 import { LiteStaticAdapter } from './lite-static-adapter';
+import { FalkorDBAdapter } from './falkordb-adapter';
 
 type GraphProfile = {
   graph_surfaces?: {
@@ -39,7 +40,11 @@ export function resolveAdapter(projectRoot: string): CodeGraphAdapter {
 
   const adapterKey = profile.graph_surfaces.codebasegraph.toLowerCase();
 
-  if (adapterKey === 'cypher' || adapterKey === 'falkordb' || adapterKey === 'neo4j' || adapterKey === 'memgraph') {
+  if (adapterKey === 'falkordb' || adapterKey === 'cypher') {
+    return new FalkorDBAdapter();
+  }
+
+  if (adapterKey === 'neo4j' || adapterKey === 'memgraph') {
     return new CypherAdapter(adapterKey);
   }
 
