@@ -286,6 +286,11 @@
       - 🟢/🟡 **SBRP-Lite / Standard:** Ưu tiên **Clean Up** (Boy Scout Rule). Khuyến khích dọn dẹp code thối, thêm type safety xung quanh khu vực fix.
       - **Simplicity First**: Luôn chọn giải pháp đơn giản nhất, không over-engineering.
 
+15b. **Architecture Guardian (God File Prevention):**
+     - Đảm bảo file đang được sửa hoặc tạo mới không vượt quá **ngưỡng 300-500 dòng** (ngoại trừ auto-generated code).
+     - **Workflow Continuity:** Nếu trong quá trình fix, số dòng code tạm thời vượt ngưỡng này, bạn được phép hoàn thành việc sửa lỗi để đảm bảo bug thực sự được giải quyết và code chạy đúng (Make it work).
+     - Tuy nhiên, **trước khi kết thúc Phase 5** (và chuyển sang Phase 6), bạn BẮT BUỘC phải gọi quy trình `/refactor` để bóc tách file lớn đó thành các module nhỏ hơn. Không bao giờ để lại một "God File" sau khi fix bug.
+
 16. **Fix checklist:**
     ```
     □ Fix giải quyết root cause (not symptom)?

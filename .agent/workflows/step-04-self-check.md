@@ -70,13 +70,22 @@ Verify code quality:
 - [ ] Error handling consistent with codebase
 - [ ] No obvious code smells introduced
 
-### 5. Intelligence Graph Refresh (MANDATORY IF AVAILABLE)
+### 5. Architecture Guardian (God File Prevention)
+
+Verify modularity and file length:
+
+- [ ] Run `wc -l` or statically check the files you modified/created during this execution.
+- [ ] Verify that NO file exceeds the **300-500 lines threshold**.
+- [ ] If any file exceeds this threshold, you MUST HALT the self-check, return to the code phase, and bóc tách (modularize) the file into smaller components/services before proceeding.
+- [ ] Verify Separation of Concerns (SoC) - no business logic should be dumped into single monolithic files like `server.js` or `app.js`.
+
+### 6. Intelligence Graph Refresh (MANDATORY IF AVAILABLE)
 
 Verify knowledge graphs are updated with your changes:
 - [ ] **FeatureGraph**: If `add_feature_relationship` MCP tool is available, did you explicitly add any newly discovered dependencies?
 - [ ] **CodeGraphContext**: If `add_code_to_graph` MCP tool is available, did you refresh the graph with ALL files modified or created during this execution?
 
-### 6. Code-to-Spec Parity Check (Hybrid Drift Trigger)
+### 7. Code-to-Spec Parity Check (Hybrid Drift Trigger)
 
 Verify that the implemented code aligns with the original tech-spec or Acceptance Criteria.
 - [ ] Check if significant drift occurred during coding (e.g., new tables, new APIs, changed logic not in spec).

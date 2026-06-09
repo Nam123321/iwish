@@ -512,6 +512,36 @@ async function spawnWave(waveStories, epicId, dag, stateBoard, api, projectRoot)
     return results;
 }
 // ---------------------------------------------------------------------------
+// Helper: Agent Trace Logging
+// ---------------------------------------------------------------------------
+function updateAgentTrace(projectRoot, id, label, duration, tokens, parentId = null) {
+    const tracePath = path.join(projectRoot, '.iwish', 'runtime', 'workflows', 'agent-trace.json');
+    fs.ensureDirSync(path.dirname(tracePath));
+    let trace = [];
+    if (fs.existsSync(tracePath)) {
+        try {
+            trace = fs.readJsonSync(tracePath);
+        }
+        catch (e) { }
+    }
+    const existingIndex = trace.findIndex((t) => t.id === id);
+    const entry = {
+        id,
+        label,
+        group: 'agent',
+        duration: duration,
+        tokens: tokens,
+        parent: parentId
+    };
+    if (existingIndex >= 0) {
+        trace[existingIndex] = entry;
+    }
+    else {
+        trace.push(entry);
+    }
+    fs.writeJsonSync(tracePath, trace, { spaces: 2 });
+}
+// ---------------------------------------------------------------------------
 // Main Entry Point — executeSwarmOrchestration
 // ---------------------------------------------------------------------------
 /**
@@ -528,9 +558,13 @@ async function spawnWave(waveStories, epicId, dag, stateBoard, api, projectRoot)
  * @returns The final swarm state board
  */
 async function executeSwarmOrchestration(epicId, api, options = {}) {
+    const orchStartTime = Date.now();
     const projectRoot = options.projectRoot
         ? path.resolve(options.projectRoot)
         : process.cwd();
+    const orchId = `orch-epic-${epicId}`;
+    // Initialize trace for this orchestration
+    updateAgentTrace(projectRoot, orchId, 'orch-agent', 0, 0, null);
     const timeoutMs = options.storyTimeoutMs || DEFAULT_TIMEOUT_MS;
     // Step 1: Load DAG
     const dagPath = options.dagJsonPath ||
@@ -579,6 +613,19 @@ async function executeSwarmOrchestration(epicId, api, options = {}) {
         const results = await spawnWave(pendingStories, epicId, dag, stateBoard, api, projectRoot);
         // Process results
         for (const result of results) {
+            // Log trace data
+            const entry = stateBoard.getStory(result.storyId);
+            if (entry) {
+                // Calculate duration in seconds (1 decimal place) assuming result.duration is in ms
+                const durationSec = Math.round((result.duration || 0) / 100) / 10;
+                // Fallback to ~150 tokens/sec if result.tokens is missing (0.15 tokens per ms)
+                const estTokens = result.tokens ?? Math.floor((result.duration || 0) * 0.15);
+                // Using result.storyId as the id since conversationId might be mock/error
+                const agentTraceId = result.conversationId && result.conversationId !== 'error'
+                    ? result.conversationId
+                    : `conv-${result.storyId}-${Date.now()}`;
+                updateAgentTrace(projectRoot, agentTraceId, entry.assignedAgent, durationSec, estTokens, orchId);
+            }
             const newlyReady = onStoryComplete(result.storyId, result, stateBoard, dag);
             // If new stories are unblocked, they'll be picked up in their wave
             if (newlyReady.length > 0) {
@@ -589,6 +636,11 @@ async function executeSwarmOrchestration(epicId, api, options = {}) {
     // Final summary
     const finalState = stateBoard.getState();
     printFinalSummary(finalState);
+    // Update orchestrator trace duration
+    const orchDurationMs = Date.now() - orchStartTime;
+    const orchDurationSec = Math.round(orchDurationMs / 100) / 10;
+    const orchTokens = Math.floor(orchDurationMs * 0.05); // Rough token estimate for orch
+    updateAgentTrace(projectRoot, orchId, 'orch-agent', orchDurationSec, orchTokens, null);
     return finalState;
 }
 /**

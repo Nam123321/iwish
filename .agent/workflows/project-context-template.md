@@ -22,6 +22,11 @@ _Documented after discovery phase_
 - **Trigger**: When the user requests to "apply this pattern to the whole project", "use this globally", "áp dụng pattern này cho toàn dự án", "cách này cho toàn dự án" or any similar phrasing during a session.
 - **Action**: You MUST immediately consult `project-context.md`. If the requested pattern or architectural rule is not already documented there, you MUST update `project-context.md` to ensure the pattern is preserved and automatically applied to all future stories and components. Do not rely on session memory for global rules.
 
+### 🛡️ Architecture Guardian (File Length & Modularity)
+- **Hard Limit**: No source code file (e.g., JS, TS, PHP, Python) should exceed the **300-500 lines threshold** unless it is strictly auto-generated (like Prisma clients). 
+- **Modularity**: You MUST strictly adhere to Separation of Concerns (SoC). Never write business logic inside entry points like `server.js` or `app.js`. 
+- **Action**: Follow the "Make it work, Make it right" principle. If your feature implementation pushes a file past this threshold, you may finish the current functional implementation to ensure tests pass. However, you MUST trigger a `/refactor` to split the file into smaller modules **before** concluding the story or passing it to code review.
+
 ### 📁 Standard Phase & Folder Mapping (VERY IMPORTANT)
 
 To prevent agents from hallucinating directories or paths, you MUST strictly adhere to the following mapping between workflow Phases and output folders on disk. Never use natural language phase names to construct directory names (e.g. do not create "2. Domain & Technical Research" or "3. Product Requirements" folders).

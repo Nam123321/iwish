@@ -46,6 +46,9 @@ Trước khi tiến hành đọc logic code, Reviewer phải xác nhận các ki
    - Phát hiện các hàm trống, mock stubs rỗng (`return {}`, `return []`).
    - Kiểm tra xem code có thực sự triển khai đầy đủ các tiêu chí chấp nhận (AC) hay bỏ sót yêu cầu.
    - Tìm kiếm code thừa không nằm trong phạm vi yêu cầu (over-engineering).
+3. **Kiểm tra Architecture Guardian (God File Prevention):**
+   - Rà soát số dòng code của các file bị thay đổi hoặc tạo mới trong PR/Story.
+   - Nếu phát hiện bất kỳ source file nào (không phải file tự sinh) vượt quá **ngưỡng 300-500 dòng**, bạn BẮT BUỘC phải đánh dấu LỖI NGHIÊM TRỌNG (CRITICAL ARCHITECTURE VIOLATION) và TỪ CHỐI (REJECT) bản đánh giá. Yêu cầu tác giả chạy `/refactor` để bóc tách file trước khi submit lại.
 
 ---
 
