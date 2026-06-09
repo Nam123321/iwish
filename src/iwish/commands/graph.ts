@@ -183,7 +183,7 @@ export function registerGraphCommands(
       .description('Run the FeatureGraph indexer to populate FalkorDB with feature dependency data from epics, stories, and feature-hierarchy')
       .action(async (options: { directory: string }) => {
         const projectRoot = getProjectRoot(options.directory);
-        const scriptPath = path.join(projectRoot, 'scripts', 'featuregraph-indexer.sh');
+        const scriptPath = path.join(__dirname, '..', '..', '..', 'scripts', 'featuregraph-indexer.sh');
         const fs = await import('fs');
 
         console.log(chalk.blue('\n🔗 I-Wish FeatureGraph Indexer'));
@@ -332,7 +332,7 @@ export function registerGraphCommands(
 
         // Step 5: Try to run indexer
         console.log(chalk.cyan('\nStep 4: Checking FeatureGraph indexer...'));
-        const scriptPath = path.join(projectRoot, 'scripts', 'featuregraph-indexer.sh');
+        const scriptPath = path.join(__dirname, '..', '..', '..', 'scripts', 'featuregraph-indexer.sh');
 
         if (fs.existsSync(scriptPath)) {
           console.log(chalk.green('  ✓ featuregraph-indexer.sh found'));
