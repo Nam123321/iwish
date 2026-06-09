@@ -37,7 +37,8 @@
 - Portal definitions → Architecture doc `## Portals` or `## System Components` section
 - Tech Stack → Architecture doc per-portal specifications
 - Primary Users → PRD `## Target Users` + Architecture portal user mapping
-- Navigation → Architecture doc or UX Design Specification
+- Navigation → Architecture doc or UX Design Specification (`3. Product Design/` or `ui-spec.md`)
+- High-level constraints → `1. Project Context/project-context.md` and `2. Product Planning/2.2. product-strategy.md`
 
 ## Section 2: Per-Portal Sidebar/Menu Tree
 

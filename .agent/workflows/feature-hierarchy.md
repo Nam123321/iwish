@@ -20,9 +20,11 @@ Before running this workflow, ensure:
 ## Execution Steps
 
 ### Step 1: Load Sources
-1. Read the PRD to extract all Functional Requirements (FR##)
-2. Read Architecture to identify portal/module structure
-3. Read Epics & Stories to map epic→story→FR coverage
+1. Read the PRD (`2. Product Planning/2.1. product-brief-or-prd.md` or `2.1. prd.md`) to extract all Functional Requirements (FR##).
+2. Read `1. Project Context/project-context.md` and `2. Product Planning/2.2. product-strategy.md` (if available) to understand the high-level vision and constraints.
+3. Read Architecture (`4. System Design/4.1. architecture.md` or `architecture.md`) to identify portal/module structure.
+4. Read UI/UX Design Specs (`3. Product Design/` or `ui-spec.md`) if available to match navigation patterns.
+5. Read Epics & Stories (`2. Product Planning/2.4. epics-and-stories.md`) to map epic→story→FR coverage.
 
 ### Step 2: Generate Feature Hierarchy
 Load and follow the generation template:
