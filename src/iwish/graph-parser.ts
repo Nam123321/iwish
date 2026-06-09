@@ -110,12 +110,16 @@ export function extractSprintData(projectRoot: string): any[] {
       }
       return {
         id: record.id,
+        epicId: record.epicId,
+        title: record.title,
         path: record.path,
         status: record.sprintStatus || record.fileStatus || 'backlog',
         readiness: record.readiness,
         hasAcceptanceCriteria: record.hasAcceptanceCriteria,
         hasTaskBreakdown: record.hasTaskBreakdown,
-        content
+        content,
+        uiSpecContent: record.uiSpecContent,
+        dataSpecContent: record.dataSpecContent
       };
     });
   } catch (error) {

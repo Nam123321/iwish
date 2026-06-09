@@ -1662,62 +1662,67 @@
             <h2 style="margin:0; font-size:18px;">Feature Hierarchy</h2>
             <button onclick="if(window.featuresNetwork) window.featuresNetwork.fit()" class="btn-secondary" style="padding:4px 8px; font-size:12px;">Reset View</button>
           </div>
-          <div id="feature-hierarchy-tree" style="font-size:14px; line-height:1.6; color:var(--text-color); flex:1; overflow-y:auto;">
+          <div id="feature-hierarchy-tree" style="font-size:14px; line-height:1.6; color:var(--text-color); flex:1; overflow-y:auto; margin-bottom: 20px;">
             <!-- Tree rendered dynamically by JS -->
+          </div>
+          
+          <!-- Legend Table moved to left pane so it's always visible -->
+          <div style="flex-shrink:0; border-top: 1px solid var(--border-color); padding-top: 15px;">
+            <h3 style="font-size:14px; margin-bottom:10px; color:var(--text-color);">Graph Legend</h3>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead>
+                <tr style="border-bottom:1px solid var(--border-color);">
+                  <th style="text-align:left;padding:6px 4px;color:var(--text-muted);font-weight:700;">Node</th>
+                  <th style="text-align:left;padding:6px 4px;color:var(--text-muted);font-weight:700;">Color</th>
+                  <th style="text-align:left;padding:6px 4px;color:var(--text-muted);font-weight:700;">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px dashed var(--border-color);">
+                  <td style="padding:4px;">FR</td>
+                  <td style="padding:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#4A90D9;vertical-align:middle;margin-right:4px;"></span> Blue</td>
+                  <td style="padding:4px;color:var(--text-muted);">Func. Req</td>
+                </tr>
+                <tr style="border-bottom:1px dashed var(--border-color);">
+                  <td style="padding:4px;">Epic</td>
+                  <td style="padding:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#67C23A;vertical-align:middle;margin-right:4px;"></span> Green</td>
+                  <td style="padding:4px;color:var(--text-muted);">Epic Group</td>
+                </tr>
+                <tr style="border-bottom:1px dashed var(--border-color);">
+                  <td style="padding:4px;">Story</td>
+                  <td style="padding:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#E6A23C;vertical-align:middle;margin-right:4px;"></span> Orange</td>
+                  <td style="padding:4px;color:var(--text-muted);">User Story</td>
+                </tr>
+                <tr style="border-bottom:1px dashed var(--border-color);">
+                  <td style="padding:4px;">Portal</td>
+                  <td style="padding:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#9B59B6;vertical-align:middle;margin-right:4px;"></span> Purple</td>
+                  <td style="padding:4px;color:var(--text-muted);">UI Surface</td>
+                </tr>
+                <tr style="border-bottom:1px dashed var(--border-color);">
+                  <td style="padding:4px;">Entity</td>
+                  <td style="padding:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1ABC9C;vertical-align:middle;margin-right:4px;"></span> Teal</td>
+                  <td style="padding:4px;color:var(--text-muted);">Data Entity</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px;">Event</td>
+                  <td style="padding:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#E91E63;vertical-align:middle;margin-right:4px;"></span> Pink</td>
+                  <td style="padding:4px;color:var(--text-muted);">Domain Event</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         
         <!-- Right Pane: Feature Graph -->
         <div class="feature-graph-pane" style="flex:1; position:relative; display:flex; flex-direction:column; overflow:hidden;">
           <!-- Blank state when no data -->
-          <div id="features-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;overflow-y:auto;">
+          <div id="features-placeholder" style="flex:1;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding-top:60px;">
             <div class="card" style="max-width:560px;text-align:left;padding:40px;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:20px;">
               <div style="text-align:center;font-size:48px;margin-bottom:16px;">🔗</div>
               <h2 style="text-align:center;margin-bottom:8px;">FeatureGraph — Cross-Feature Dependency Map</h2>
               <p style="color:var(--text-muted);font-size:14px;line-height:1.6;text-align:center;margin-bottom:20px;">
                 FeatureGraph visualises the relationships between Functional Requirements (FRs), Epics, Stories, Portals, Data Entities, and Domain Events as an interactive force-directed network graph.
               </p>
-              <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px;">
-                <thead>
-                  <tr style="border-bottom:2px solid var(--border-color);">
-                    <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Node Type</th>
-                    <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Color</th>
-                    <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="border-bottom:1px solid var(--border-color);">
-                    <td style="padding:6px;">FR</td>
-                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#4A90D9;vertical-align:middle;"></span> Blue</td>
-                    <td style="padding:6px;color:var(--text-muted);">Functional Requirement</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid var(--border-color);">
-                    <td style="padding:6px;">Epic</td>
-                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#67C23A;vertical-align:middle;"></span> Green</td>
-                    <td style="padding:6px;color:var(--text-muted);">Epic (implementation group)</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid var(--border-color);">
-                    <td style="padding:6px;">Story</td>
-                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#E6A23C;vertical-align:middle;"></span> Orange</td>
-                    <td style="padding:6px;color:var(--text-muted);">User Story</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid var(--border-color);">
-                    <td style="padding:6px;">Portal</td>
-                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9B59B6;vertical-align:middle;"></span> Purple</td>
-                    <td style="padding:6px;color:var(--text-muted);">Portal / UI Surface</td>
-                  </tr>
-                  <tr style="border-bottom:1px solid var(--border-color);">
-                    <td style="padding:6px;">DataEntity</td>
-                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#1ABC9C;vertical-align:middle;"></span> Teal</td>
-                    <td style="padding:6px;color:var(--text-muted);">Shared Data Entity</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:6px;">Event</td>
-                    <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#E91E63;vertical-align:middle;"></span> Pink</td>
-                    <td style="padding:6px;color:var(--text-muted);">Domain Event</td>
-                  </tr>
-                </tbody>
-              </table>
               <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin-bottom:12px;">
                 <strong>To generate FeatureGraph data:</strong>
               </p>
@@ -4238,7 +4243,7 @@
            stories.forEach(s => {
               const strStory = JSON.stringify(s).replace(/'/g, "&#39;").replace(/"/g, "&quot;");
               html += `<div class="kanban-card" style="cursor:pointer; margin-bottom:8px; padding:8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--panel-bg);" onclick="window.selectGridStory(this)" data-story="${strStory}">
-                 <div style="font-size:11px; font-weight:700; margin-bottom:4px; color:var(--primary-color); word-break: break-all;">${s.id}</div>
+                 <div style="font-size:11px; font-weight:700; margin-bottom:4px; color:var(--primary-color); word-break: break-all;">${s.id} - ${s.title || 'Untitled'}</div>
                  <div style="font-size:12px; display:flex; justify-content:space-between; align-items:center;">
                    <span class="badge badge-status" style="font-size:9px;">${s.status}</span>
                    <div class="readiness-dot readiness-${s.readiness}"></div>
@@ -4264,7 +4269,7 @@
       document.querySelectorAll('.kanban-card').forEach(c => c.style.borderColor = 'var(--border-color)');
       el.style.borderColor = 'var(--primary-color)';
       const story = JSON.parse(el.getAttribute('data-story').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
-      document.getElementById('grid-story-title').innerText = story.id;
+      document.getElementById('grid-story-title').innerText = story.id + " - " + (story.title || 'Untitled');
       const cleanContent = story.content ? story.content.replace(/^---[\\s\\S]*?---\\n?/, '') : '';
       const renderedHtml = cleanContent ? marked.parse(cleanContent) : '<p style="color: var(--text-muted); font-size:14px;">No detailed spec content available.</p>';
       
@@ -4388,7 +4393,64 @@
     // ===== FEATURE GRAPH TAB =====
     (function initFeatureGraph() {
       var featureGraphData = /*FEATURE_GRAPH_DATA*/ null;
-      if (!featureGraphData || !featureGraphData.nodes || featureGraphData.nodes.length === 0) return;
+      var hasData = featureGraphData && featureGraphData.nodes && featureGraphData.nodes.length > 0;
+
+      // Render Hierarchy Tree (Left Pane) even if empty
+      var treeContainer = document.getElementById('feature-hierarchy-tree');
+      if (hasData) {
+         var epics = [];
+         var storiesMap = {}; // Epic ID -> [Story Nodes]
+         
+         featureGraphData.nodes.forEach(n => {
+            if (n.group === 'Epic') epics.push(n);
+            if (n.group === 'Story') {
+               var parentEdge = featureGraphData.edges.find(e => e.to === n.id && e.relationship === 'BELONGS_TO');
+               var parentId = parentEdge ? parentEdge.from : 'Uncategorized';
+               if (!storiesMap[parentId]) storiesMap[parentId] = [];
+               storiesMap[parentId].push(n);
+            }
+         });
+         
+         var treeHtml = '';
+         epics.forEach(epic => {
+            treeHtml += `<div style="margin-bottom: 8px;">
+               <label style="display:flex; align-items:center; gap:8px; font-weight:700; cursor:pointer; color:var(--text-color);">
+                  <input type="checkbox" class="feature-cb" value="${epic.id}">
+                  <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#67C23A;flex-shrink:0;"></span>
+                  ${epic.label}
+               </label>`;
+            if (storiesMap[epic.id]) {
+               treeHtml += `<div style="margin-left: 24px; margin-top: 4px; display:flex; flex-direction:column; gap:4px;">`;
+               storiesMap[epic.id].forEach(story => {
+                  treeHtml += `<label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-muted);">
+                    <input type="checkbox" class="feature-cb" value="${story.id}">
+                    <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E6A23C;flex-shrink:0;"></span>
+                    ${story.label}
+                  </label>`;
+               });
+               treeHtml += `</div>`;
+            }
+            treeHtml += `</div>`;
+         });
+         treeContainer.innerHTML = treeHtml || '<div style="color:var(--text-muted); font-size:13px; font-style:italic; padding:10px;">No epics or stories found in graph.</div>';
+      } else {
+         treeContainer.innerHTML = '<div style="color:var(--text-muted); font-size:13px; font-style:italic; padding:10px;">No feature hierarchy data available.<br><br>Please run <br><code>iwish featuregraph-index</code><br>to generate the graph data.</div>';
+      }
+
+      // Handle checkbox changes (bind even if empty so it doesn't crash)
+      var checkboxes = document.querySelectorAll('.feature-cb');
+      checkboxes.forEach(cb => {
+         cb.addEventListener('change', function() {
+            var selected = Array.from(document.querySelectorAll('.feature-cb:checked')).map(c => c.value);
+            if (window.updateGraphVisibility) window.updateGraphVisibility(selected);
+         });
+      });
+
+      if (!hasData) {
+         document.getElementById('features-placeholder').style.display = 'flex';
+         document.getElementById('features-active').style.display = 'none';
+         return;
+      }
 
       // Hide placeholder, show active view
       document.getElementById('features-placeholder').style.display = 'none';
@@ -4485,54 +4547,7 @@
         });
       }
 
-      // Hierarchy Tree Rendering
-      var treeContainer = document.getElementById('feature-hierarchy-tree');
-      // Build hierarchy: Epics -> Stories (using BELONGS_TO edges)
-      var epics = [];
-      var storiesMap = {}; // Epic ID -> [Story Nodes]
-      
-      featureGraphData.nodes.forEach(n => {
-         if (n.group === 'Epic') epics.push(n);
-         if (n.group === 'Story') {
-            // Find parent epic
-            var parentEdge = featureGraphData.edges.find(e => e.to === n.id && e.relationship === 'BELONGS_TO');
-            var parentId = parentEdge ? parentEdge.from : 'Uncategorized';
-            if (!storiesMap[parentId]) storiesMap[parentId] = [];
-            storiesMap[parentId].push(n);
-         }
-      });
-      
-      var treeHtml = '';
-      epics.forEach(epic => {
-         treeHtml += `<div style="margin-bottom: 8px;">
-            <label style="display:flex; align-items:center; gap:8px; font-weight:700; cursor:pointer; color:var(--text-color);">
-               <input type="checkbox" class="feature-cb" value="${epic.id}">
-               <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#67C23A;flex-shrink:0;"></span>
-               ${epic.label}
-            </label>`;
-         if (storiesMap[epic.id]) {
-            treeHtml += `<div style="margin-left: 24px; margin-top: 4px; display:flex; flex-direction:column; gap:4px;">`;
-            storiesMap[epic.id].forEach(story => {
-               treeHtml += `<label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-muted);">
-                 <input type="checkbox" class="feature-cb" value="${story.id}">
-                 <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#E6A23C;flex-shrink:0;"></span>
-                 ${story.label}
-               </label>`;
-            });
-            treeHtml += `</div>`;
-         }
-         treeHtml += `</div>`;
-      });
-      treeContainer.innerHTML = treeHtml;
-
-      // Handle checkbox changes
-      var checkboxes = document.querySelectorAll('.feature-cb');
-      checkboxes.forEach(cb => {
-         cb.addEventListener('change', function() {
-            var selected = Array.from(document.querySelectorAll('.feature-cb:checked')).map(c => c.value);
-            updateGraphVisibility(selected);
-         });
-      });
+      window.updateGraphVisibility = updateGraphVisibility;
 
       window.switchFeatureModalTab = function(tabName) {
         document.querySelectorAll('.modal-tab-btn').forEach(btn => {
@@ -4595,13 +4610,22 @@
                 storyInfo = window.sprintData.find(s => s.id === m.id);
             }
             if (storyInfo) {
-                var cleanContent = storyInfo.content ? storyInfo.content.replace(/^---[\s\S]*?---\n?/, '') : '';
-                var renderedHtml = cleanContent ? marked.parse(cleanContent) : '<p style="color: var(--text-muted);">No detailed spec content available.</p>';
-                document.getElementById('feature-tab-ui').innerHTML = '<h4>Extracted Content</h4>' + renderedHtml;
-                document.getElementById('feature-tab-data').innerHTML = '<p>See Data dependencies in graph view.</p>';
+                var cleanStory = storyInfo.content ? storyInfo.content.replace(/^---[\s\S]*?---\n?/, '') : '';
+                var renderedStory = cleanStory ? marked.parse(cleanStory) : '<p style="color: var(--text-muted);">No detailed story content available.</p>';
+                
+                var cleanUi = storyInfo.uiSpecContent ? storyInfo.uiSpecContent.replace(/^---[\s\S]*?---\n?/, '') : '';
+                var renderedUi = cleanUi ? marked.parse(cleanUi) : '<p style="color: var(--text-muted);">No UI Spec available.</p>';
+                
+                var cleanData = storyInfo.dataSpecContent ? storyInfo.dataSpecContent.replace(/^---[\s\S]*?---\n?/, '') : '';
+                var renderedData = cleanData ? marked.parse(cleanData) : '<p style="color: var(--text-muted);">No Data Spec available.</p>';
+
+                document.getElementById('feature-tab-story').innerHTML = renderedStory;
+                document.getElementById('feature-tab-ui').innerHTML = renderedUi;
+                document.getElementById('feature-tab-data').innerHTML = renderedData;
             } else {
-                document.getElementById('feature-tab-ui').innerHTML = '<p style="color:var(--text-muted);">No external Spec mapped to this node.</p>';
-                document.getElementById('feature-tab-data').innerHTML = '<p style="color:var(--text-muted);">No external Data Spec mapped.</p>';
+                document.getElementById('feature-tab-story').innerHTML = '<p style="color:var(--text-muted);">No external Story mapped to this node.</p>';
+                document.getElementById('feature-tab-ui').innerHTML = '<p style="color:var(--text-muted);">No external UI Spec mapped to this node.</p>';
+                document.getElementById('feature-tab-data').innerHTML = '<p style="color:var(--text-muted);">No external Data Spec mapped to this node.</p>';
             }
           }
         } else {
