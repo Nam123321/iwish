@@ -35,6 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.promptLLMSetup = promptLLMSetup;
 const readline = __importStar(require("readline"));
+const stream_1 = require("stream");
 const env_manager_1 = require("./env-manager");
 const LLM_PROVIDERS = [
     { id: 'gemini', name: 'Google Gemini', envKey: 'GEMINI_API_KEY' },
@@ -53,6 +54,31 @@ function askQuestion(rl, question) {
         rl.question(question, (answer) => {
             resolve(answer.trim());
         });
+    });
+}
+function askPassword(question) {
+    return new Promise(resolve => {
+        const mutableStdout = new stream_1.Writable({
+            write: function (chunk, encoding, callback) {
+                if (!this.muted) {
+                    process.stdout.write(chunk, encoding);
+                }
+                callback();
+            }
+        });
+        mutableStdout.muted = false;
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: mutableStdout,
+            terminal: true
+        });
+        rl.question(question, (password) => {
+            rl.close();
+            console.log(); // Move to the next line since Enter was swallowed
+            resolve(password.trim());
+        });
+        // Mute output after the prompt is displayed so typed characters are hidden
+        mutableStdout.muted = true;
     });
 }
 async function promptLLMSetup(projectRoot) {
@@ -77,6 +103,9 @@ async function promptLLMSetup(projectRoot) {
     console.log('\n\x1b[36m====================================================\x1b[0m');
     console.log('\x1b[1m\x1b[36m  Configure LLM Provider for I-Wish Code Intelligence\x1b[0m');
     console.log('\x1b[36m====================================================\x1b[0m');
+    console.log('\x1b[32m🛡️  Security Note: Your API Key is kept strictly local.\x1b[0m');
+    console.log('\x1b[32m   It will be saved securely in your project\'s .env file.\x1b[0m');
+    console.log('\x1b[36m----------------------------------------------------\x1b[0m');
     LLM_PROVIDERS.forEach((provider, index) => {
         console.log(`  ${index + 1}. ${provider.name}`);
     });
@@ -105,7 +134,7 @@ async function promptLLMSetup(projectRoot) {
         const provider = LLM_PROVIDERS[selectedProviderIndex - 1];
         let apiKey = '';
         while (!apiKey) {
-            apiKey = await askQuestion(rl, `Enter API Key for ${provider.name} (${provider.envKey}): `);
+            apiKey = await askPassword(`Enter API Key for ${provider.name} (${provider.envKey}) [hidden]: `);
             if (!apiKey) {
                 console.log('\x1b[31mAPI Key is required to configure the provider.\x1b[0m');
             }

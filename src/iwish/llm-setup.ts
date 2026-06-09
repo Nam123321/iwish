@@ -1,4 +1,5 @@
 import * as readline from 'readline';
+import { Writable } from 'stream';
 import { EnvManager } from './env-manager';
 
 const LLM_PROVIDERS = [
@@ -19,6 +20,36 @@ function askQuestion(rl: readline.Interface, question: string): Promise<string> 
     rl.question(question, (answer) => {
       resolve(answer.trim());
     });
+  });
+}
+
+function askPassword(question: string): Promise<string> {
+  return new Promise(resolve => {
+    const mutableStdout = new Writable({
+      write: function(chunk, encoding, callback) {
+        if (!(this as any).muted) {
+          process.stdout.write(chunk, encoding);
+        }
+        callback();
+      }
+    });
+
+    (mutableStdout as any).muted = false;
+
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: mutableStdout,
+      terminal: true
+    });
+
+    rl.question(question, (password) => {
+      rl.close();
+      console.log(); // Move to the next line since Enter was swallowed
+      resolve(password.trim());
+    });
+    
+    // Mute output after the prompt is displayed so typed characters are hidden
+    (mutableStdout as any).muted = true;
   });
 }
 
@@ -45,6 +76,9 @@ export async function promptLLMSetup(projectRoot: string): Promise<void> {
   console.log('\n\x1b[36m====================================================\x1b[0m');
   console.log('\x1b[1m\x1b[36m  Configure LLM Provider for I-Wish Code Intelligence\x1b[0m');
   console.log('\x1b[36m====================================================\x1b[0m');
+  console.log('\x1b[32m🛡️  Security Note: Your API Key is kept strictly local.\x1b[0m');
+  console.log('\x1b[32m   It will be saved securely in your project\'s .env file.\x1b[0m');
+  console.log('\x1b[36m----------------------------------------------------\x1b[0m');
   
   LLM_PROVIDERS.forEach((provider, index) => {
     console.log(`  ${index + 1}. ${provider.name}`);
@@ -77,7 +111,7 @@ export async function promptLLMSetup(projectRoot: string): Promise<void> {
     const provider = LLM_PROVIDERS[selectedProviderIndex - 1];
     let apiKey = '';
     while (!apiKey) {
-      apiKey = await askQuestion(rl, `Enter API Key for ${provider.name} (${provider.envKey}): `);
+      apiKey = await askPassword(`Enter API Key for ${provider.name} (${provider.envKey}) [hidden]: `);
       if (!apiKey) {
         console.log('\x1b[31mAPI Key is required to configure the provider.\x1b[0m');
       }
