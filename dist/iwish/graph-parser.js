@@ -744,10 +744,23 @@ function extractFeatureGraphData(projectRoot) {
         // Scan story files for Cross-Feature Dependencies
         const storiesDir = path.join(projectRoot, '_iwish-output', 'stories');
         if (fs.existsSync(storiesDir)) {
-            const storyFiles = fs.readdirSync(storiesDir).filter(f => f.endsWith('.md'));
-            for (const file of storyFiles) {
-                const storyContent = fs.readFileSync(path.join(storiesDir, file), 'utf8');
-                const storyId = file.replace('.md', '');
+            const storyFiles = [];
+            const walkSync = (dir) => {
+                const files = fs.readdirSync(dir);
+                for (const file of files) {
+                    const filepath = path.join(dir, file);
+                    if (fs.statSync(filepath).isDirectory()) {
+                        walkSync(filepath);
+                    }
+                    else if (filepath.endsWith('.md')) {
+                        storyFiles.push(filepath);
+                    }
+                }
+            };
+            walkSync(storiesDir);
+            for (const filePath of storyFiles) {
+                const storyContent = fs.readFileSync(filePath, 'utf8');
+                const storyId = path.basename(filePath, '.md');
                 // Add story node if referenced
                 const storyTitleMatch = storyContent.match(/^#\s+Story\s+(\d+\.\d+)[\s:—-]+(.+)$/im);
                 if (storyTitleMatch) {
