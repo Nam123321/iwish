@@ -359,6 +359,7 @@ async function compileUserGuideDashboard(projectRoot) {
     const agentTrace = (0, graph_parser_1.extractAgentTrace)(projectRoot);
     const ideaToPrdData = (0, graph_parser_1.extractIdeaToPrdData)(projectRoot);
     const codeGraphData = (0, graph_parser_1.extractCodeGraphData)(projectRoot);
+    const featureGraphData = (0, graph_parser_1.extractFeatureGraphData)(projectRoot);
     const evolverData = (0, graph_parser_1.extractEvolverData)(projectRoot);
     // Load locale files
     const localesDir = path.join(constants_1.TEMPLATES_ROOT, 'locales');
@@ -391,7 +392,8 @@ async function compileUserGuideDashboard(projectRoot) {
         .replace('{EVOLVER_DATA_PLACEHOLDER}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('/*LOCALES_DATA*/ {}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{LOCALES_DATA_PLACEHOLDER}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
-        .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
+        .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null')
+        .replace('/*FEATURE_GRAPH_DATA*/ null', featureGraphData && featureGraphData.nodes.length > 0 ? JSON.stringify(featureGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
     await fs.ensureDir(path.dirname(outputPath));
     await fs.writeFile(outputPath, finalHtml, 'utf8');
     return outputPath;
@@ -471,12 +473,20 @@ function printStatus(projectRoot) {
 }
 function printDoctor(projectRoot) {
     const status = getStatus(projectRoot);
+    // Feature hierarchy canonical path: _iwish-output/2. Product Planning/2.5. feature-hierarchy.md
+    // Fallback: _iwish-output/feature-hierarchy.md (pre-S14.1) or _bmad-output/planning-artifacts/feature-hierarchy.md (legacy)
+    const featureHierarchyExists = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.5. feature-hierarchy.md'),
+        path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
+        path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
+    ].some(p => fs.existsSync(p));
     const checks = [
         ['runtime manifest', status.manifestExists],
         ['graph profile', status.graphProfileExists],
         ['catalog', status.catalogExists],
         ['custom directory', status.customExists],
         ['graph tool selected', Boolean(status.selectedTools.graph)],
+        ['feature hierarchy', featureHierarchyExists],
     ];
     console.log(chalk_1.default.blue('I-Wish doctor report'));
     for (const [label, ok] of checks) {
@@ -487,6 +497,9 @@ function printDoctor(projectRoot) {
     }
     if (status.legacyDetected) {
         console.log(chalk_1.default.yellow('Legacy `_bmad` runtime was detected. Keep compatibility shims enabled until migration is complete.'));
+    }
+    if (!featureHierarchyExists) {
+        console.log(chalk_1.default.yellow('Feature hierarchy not found. Run `/feature-hierarchy` or `iwish featuregraph-retrofit` to generate it.'));
     }
 }
 function printModules() {

@@ -39,7 +39,7 @@ export function registerReconciliationCommands(
             epicId: options.epic || null,
             touchedFiles: options.file || [],
             graphStatus: options.graphStatus,
-            requiredUpdates: ['story_spec', 'epic_linkage', 'featuregraph', 'knowledge_summary'],
+            requiredUpdates: ['story_spec', 'epic_linkage', 'featuregraph', 'knowledge_summary', 'feature_hierarchy'],
             notes: options.note,
           });
 

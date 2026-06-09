@@ -64,6 +64,7 @@ Typical follow-up:
 - `plan`
 - `reconcile-change`
 - *Note: Evaluate if these PRD/Epic changes necessitate updates to `product-strategy.md` or `project-context.md`.*
+- **MANDATORY:** Regenerate `feature-hierarchy.md` after PRD/Epic updates to keep navigation source-of-truth synchronized.
 
 ### 4. Plan
 
@@ -77,6 +78,7 @@ Typical follow-up:
 - `/generate-project-context`
 - `bootstrap-existing-project` if context is weak
 - `reconcile-change`
+- **MANDATORY:** Regenerate `feature-hierarchy.md` after PRD/roadmap updates to keep navigation source-of-truth synchronized.
 
 > [!IMPORTANT]
 > **DOUBLE-LOCK CONTEXT INJECTION:**
@@ -97,9 +99,14 @@ Typical follow-up:
    - You MUST create a persistent audit document detailing the pivot context, severity, root cause, and the required scope changes.
    - Save this file to `_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md`.
    - This ensures traceability and provides context for the subsequent reconciliation.
-6. Record reconciliation and required source-of-truth updates.
+6. Regenerate Feature Hierarchy (MANDATORY for `epic` and `plan` severity).
+   - If pivot severity is `epic` or `plan`, you MUST add `feature-hierarchy.md` to the reconciliation targets.
+   - After PRD/Epic updates are complete, regenerate `{planning_artifacts}/feature-hierarchy.md` to reflect the new feature structure, sidebar positions, and cross-portal navigation changes.
+   - Log: "✅ Feature Hierarchy regenerated after [epic|plan] pivot to synchronize navigation source-of-truth."
+   - If `feature-hierarchy.md` does not yet exist, note that it will be created when `/create-epics-and-stories` runs.
+7. Record reconciliation and required source-of-truth updates.
    - **MANDATORY ENFORCEMENT:** You MUST run the `iwish reconcile-change` CLI command to queue the drift record. Example: `iwish reconcile-change --type feature-tweak --summary "Changed scope to X" --story "1-1-abc" --log "path/to/PIVOT-log.md"`. This ensures the development agent will be blocked from implementation until the specs are updated.
-7. Recommend the next canonical workflow instead of continuing blindly.
+8. Recommend the next canonical workflow instead of continuing blindly.
 
 ## Outputs
 

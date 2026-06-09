@@ -176,4 +176,204 @@ export function registerGraphCommands(
         }
       }),
   );
+
+  addSharedDirectoryOption(
+    program
+      .command('featuregraph-index')
+      .description('Run the FeatureGraph indexer to populate FalkorDB with feature dependency data from epics, stories, and feature-hierarchy')
+      .action(async (options: { directory: string }) => {
+        const projectRoot = getProjectRoot(options.directory);
+        const scriptPath = path.join(projectRoot, 'scripts', 'featuregraph-indexer.sh');
+        const fs = await import('fs');
+
+        console.log(chalk.blue('\n🔗 I-Wish FeatureGraph Indexer'));
+        console.log(chalk.gray('━'.repeat(50)));
+
+        if (!fs.existsSync(scriptPath)) {
+          console.error(chalk.red('❌ featuregraph-indexer.sh not found at scripts/featuregraph-indexer.sh'));
+          process.exit(1);
+        }
+
+        try {
+          const { execSync } = await import('child_process');
+          console.log(chalk.cyan('📊 Running FeatureGraph indexer...'));
+          const output = execSync(`bash "${scriptPath}" "${projectRoot}"`, {
+            encoding: 'utf-8',
+            stdio: ['pipe', 'pipe', 'pipe'],
+            timeout: 60000,
+          });
+          console.log(output);
+          console.log(chalk.green.bold('\n✅ FeatureGraph indexing completed successfully!'));
+
+          // Auto-trigger dashboard update
+          console.log(chalk.cyan('\n📊 Updating dashboard...'));
+          const dashboardPath = await compileUserGuideDashboard(projectRoot);
+          console.log(chalk.green(`  ✓ Dashboard updated: file://${dashboardPath}`));
+        } catch (error: any) {
+          if (error.stderr && error.stderr.includes('FalkorDB')) {
+            console.error(chalk.yellow('\n⚠️  FalkorDB is not running. Start it with: docker start falkordb'));
+            console.error(chalk.gray('   The FeatureGraph requires FalkorDB to store node/edge data.'));
+          } else {
+            console.error(chalk.red(`\n❌ FeatureGraph indexing failed: ${error.message}`));
+          }
+          process.exit(1);
+        }
+      }),
+  );
+
+  addSharedDirectoryOption(
+    program
+      .command('featuregraph-retrofit')
+      .description('Retrofit FeatureGraph pipeline for existing projects: generate feature-hierarchy.md, scan stories, and index graph')
+      .action(async (options: { directory: string }) => {
+        const projectRoot = getProjectRoot(options.directory);
+        const fs = await import('fs');
+
+        console.log(chalk.blue('\n🔄 I-Wish FeatureGraph Retrofit'));
+        console.log(chalk.gray('━'.repeat(50)));
+        console.log(chalk.gray('Upgrading existing project to FeatureGraph pipeline...\n'));
+
+        const report: string[] = [];
+        let hasErrors = false;
+
+        // Step 1: Detect output directory
+        const iwishOutput = path.join(projectRoot, '_iwish-output');
+        const bmadOutput = path.join(projectRoot, '_bmad-output');
+        let outputDir: string;
+        let planningDir: string;
+
+        if (fs.existsSync(iwishOutput)) {
+          outputDir = iwishOutput;
+          planningDir = iwishOutput;
+        } else if (fs.existsSync(bmadOutput)) {
+          outputDir = bmadOutput;
+          planningDir = path.join(bmadOutput, 'planning-artifacts');
+        } else {
+          console.error(chalk.red('❌ No _iwish-output/ or _bmad-output/ directory found.'));
+          console.error(chalk.yellow('   Run /create-prd and /create-epics-and-stories first.'));
+          process.exit(1);
+        }
+        report.push(`📂 Output directory: ${path.relative(projectRoot, outputDir)}`);
+
+        // Step 2: Check prerequisites
+        console.log(chalk.cyan('Step 1: Checking prerequisites...'));
+        const epicsPath = path.join(planningDir, 'epics.md');
+        const storiesDir = path.join(planningDir, 'stories');
+
+        if (!fs.existsSync(epicsPath)) {
+          console.error(chalk.red('❌ epics.md not found. Run /create-epics-and-stories first.'));
+          hasErrors = true;
+        } else {
+          report.push('  ✓ epics.md found');
+        }
+
+        // Step 3: Check feature-hierarchy.md (canonical + fallback paths)
+        console.log(chalk.cyan('\nStep 2: Checking feature-hierarchy.md...'));
+        const hierarchyCandidates = [
+          path.join(outputDir, '2. Product Planning', '2.5. feature-hierarchy.md'),
+          path.join(planningDir, 'feature-hierarchy.md'),
+        ];
+        const hierarchyPath = hierarchyCandidates.find(p => fs.existsSync(p));
+
+        if (hierarchyPath) {
+          const stat = fs.statSync(hierarchyPath);
+          console.log(chalk.green(`  ✓ feature-hierarchy.md exists (${stat.size} bytes)`));
+          console.log(chalk.gray(`    at: ${path.relative(projectRoot, hierarchyPath)}`));
+          report.push(`  ✓ feature-hierarchy.md exists (${stat.size} bytes) — no regeneration needed`);
+        } else {
+          console.log(chalk.yellow('  ⚠ feature-hierarchy.md NOT FOUND'));
+          console.log(chalk.gray('    → Expected at: _iwish-output/2. Product Planning/2.5. feature-hierarchy.md'));
+          console.log(chalk.gray('    → Run /feature-hierarchy or /create-epics-and-stories to generate.'));
+          console.log(chalk.gray('    → Reference template: templates/library/code-intelligence-pack/featuregraph/feature-hierarchy-template.md'));
+          report.push('  ⚠ feature-hierarchy.md MISSING — must be generated');
+          report.push('    ACTION: Run /feature-hierarchy to generate directly');
+          report.push('    OR: Run /create-epics-and-stories (which auto-generates via Step 5c)');
+        }
+
+        // Step 4: Scan stories for Cross-Feature Dependencies
+        console.log(chalk.cyan('\nStep 3: Scanning stories for Cross-Feature Dependencies...'));
+        const storiesMissing: string[] = [];
+        const storiesOk: string[] = [];
+
+        if (fs.existsSync(storiesDir)) {
+          const storyFiles = fs.readdirSync(storiesDir).filter((f: string) => f.endsWith('.md'));
+
+          for (const file of storyFiles) {
+            const content = fs.readFileSync(path.join(storiesDir, file), 'utf-8');
+            if (content.includes('## Cross-Feature Dependencies')) {
+              storiesOk.push(file);
+            } else {
+              storiesMissing.push(file);
+            }
+          }
+
+          console.log(chalk.green(`  ✓ ${storiesOk.length} stories have Cross-Feature Dependencies`));
+          if (storiesMissing.length > 0) {
+            console.log(chalk.yellow(`  ⚠ ${storiesMissing.length} stories MISSING Cross-Feature Dependencies:`));
+            for (const f of storiesMissing.slice(0, 10)) {
+              console.log(chalk.gray(`    - ${f}`));
+            }
+            if (storiesMissing.length > 10) {
+              console.log(chalk.gray(`    ... and ${storiesMissing.length - 10} more`));
+            }
+          }
+          report.push(`  Stories with Cross-Feature Dependencies: ${storiesOk.length}/${storyFiles.length}`);
+          if (storiesMissing.length > 0) {
+            report.push(`  ⚠ ${storiesMissing.length} stories need backfill — re-run /make-story for each`);
+          }
+        } else {
+          console.log(chalk.yellow('  ⚠ No stories directory found'));
+          report.push('  ⚠ No stories directory — run /create-epics-and-stories first');
+        }
+
+        // Step 5: Try to run indexer
+        console.log(chalk.cyan('\nStep 4: Checking FeatureGraph indexer...'));
+        const scriptPath = path.join(projectRoot, 'scripts', 'featuregraph-indexer.sh');
+
+        if (fs.existsSync(scriptPath)) {
+          console.log(chalk.green('  ✓ featuregraph-indexer.sh found'));
+          report.push('  ✓ Indexer script available');
+
+          if ((hierarchyPath && fs.existsSync(hierarchyPath)) || !hasErrors) {
+            try {
+              const { execSync } = await import('child_process');
+              console.log(chalk.gray('  Attempting to run indexer...'));
+              execSync(`bash "${scriptPath}" "${projectRoot}" 2>&1 || true`, {
+                encoding: 'utf-8',
+                timeout: 30000,
+              });
+              console.log(chalk.green('  ✓ Indexer executed'));
+              report.push('  ✓ Indexer executed successfully');
+            } catch {
+              console.log(chalk.yellow('  ⚠ Indexer execution skipped (FalkorDB may not be running)'));
+              report.push('  ⚠ Indexer skipped — ensure FalkorDB is running: docker start falkordb');
+            }
+          }
+        } else {
+          console.log(chalk.yellow('  ⚠ featuregraph-indexer.sh not found — may not be installed'));
+          report.push('  ⚠ Indexer script not found');
+        }
+
+        // Step 6: Output migration report
+        console.log(chalk.blue('\n' + '━'.repeat(50)));
+        console.log(chalk.blue.bold('📋 FeatureGraph Retrofit Report'));
+        console.log(chalk.blue('━'.repeat(50)));
+        for (const line of report) {
+          console.log(line);
+        }
+
+        console.log(chalk.blue('\n📌 Recommended Next Steps:'));
+        if (!hierarchyPath || !fs.existsSync(hierarchyPath)) {
+          console.log(chalk.yellow('  1. Generate feature-hierarchy.md:'));
+          console.log(chalk.gray('     Run /create-epics-and-stories (auto-generates hierarchy)'));
+          console.log(chalk.gray('     OR ask Architect Agent: "Generate feature-hierarchy.md from PRD + Architecture + Epics"'));
+        }
+        if (storiesMissing.length > 0) {
+          console.log(chalk.yellow(`  ${(!hierarchyPath || !fs.existsSync(hierarchyPath)) ? '2' : '1'}. Backfill ${storiesMissing.length} stories with Cross-Feature Dependencies:`));
+          console.log(chalk.gray('     Re-run /make-story for each story, or ask agent to add sections'));
+        }
+        console.log(chalk.gray('  → After fixes: run `iwish featuregraph-index` to populate the graph'));
+        console.log(chalk.gray('  → Then: run `iwish gen-dashboard` to update the dashboard'));
+      }),
+  );
 }

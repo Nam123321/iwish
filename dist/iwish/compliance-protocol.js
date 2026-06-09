@@ -221,6 +221,7 @@ function getWorkflowSchema(workflowId) {
                 'Task',
                 'AC-to-Task Traceability',
                 'QA Simulator Guardian Scorecard',
+                'Cross-Feature Dependencies',
             ],
             minQaScore: 8.5,
         },

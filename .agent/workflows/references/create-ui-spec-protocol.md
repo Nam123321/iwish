@@ -20,7 +20,48 @@ description: Generate per-story UI specification — the Discovery Track artifac
 Before running this workflow:
 1. A story file must exist (created by `create-story` workflow)
 2. The UX Design Specification must exist at `{planning_artifacts}/ux-design-specification.md`
-3. The Feature Hierarchy should exist at `{planning_artifacts}/feature-hierarchy.md`
+3. The Feature Hierarchy MUST exist at `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`
+
+### 🚨 FEATURE HIERARCHY GATE CHECK (HARD PREREQUISITE)
+
+**Before proceeding, the agent MUST verify the Feature Hierarchy exists:**
+
+```
+1. CHECK: Does `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` exist?
+
+IF EXISTS → ✅ Proceed to Feature Hierarchy Navigation Context loading (below)
+IF NOT EXISTS → ❌ HALT with message:
+   "⚠️ Feature Hierarchy chưa tồn tại.
+    Vui lòng chạy /create-epics-and-stories trước để tạo Feature Hierarchy.
+    UI Spec không thể được tạo khi chưa có Feature Hierarchy vì navigation context sẽ bị sai."
+```
+
+**The agent MUST NOT skip this check.** No story UI spec can be created without a Feature Hierarchy — proceeding without it leads to guessed navigation that causes inconsistencies.
+
+### 📂 FEATURE HIERARCHY NAVIGATION CONTEXT (AFTER HIERARCHY GATE)
+
+After the Feature Hierarchy GATE passes, the agent MUST extract navigation context:
+
+```
+1. Read `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` in full using `view_file`
+2. Identify which portal this story belongs to (Admin, Webstore, Sales, SaaS, etc.)
+   - Match the story's portal to the corresponding section in feature-hierarchy.md
+3. Extract the portal's sidebar/menu tree:
+   - Top-level menu groups
+   - Sub-menu items and their hierarchy
+   - Feature placement within the tree
+   - Cross-portal navigation links (if any)
+4. Store the extracted navigation tree as `{portal_nav_tree}` for use in:
+   - Navigation, Routing & Menu Placement section of the UI spec
+   - Breadcrumb path generation
+   - Sibling/parent/child navigation relationships
+   - Sidebar active state determination
+5. The extracted navigation tree is the SOURCE-OF-TRUTH for all navigation
+   decisions in this UI spec. Do NOT guess or infer navigation structure
+   from other sources.
+```
+
+**The agent MUST use `{portal_nav_tree}` when generating the Navigation, Routing & Menu Placement section.**
 
 ### 🚨 DESIGN SYSTEM GATE CHECK (HARD PREREQUISITE)
 
@@ -232,6 +273,7 @@ Persona: {persona} — {device}
 Design System: Use configured Design System Asset ID (e.g. Stitch Asset ID {assetId} or Figma file/frame). If configured asset is missing, STOP and request user to sync design first.
 Brand Assets: Check for image/vector assets in `_iwish-output/brand-identity/assets/` and explicitly enforce their usage (e.g., logo, icons) in the generated spec and UI option.
 Page Override: load from {page_override_path} only when it exists for the active page/story context
+Feature Hierarchy: include the full relevant portal section from feature-hierarchy.md — the complete sidebar/menu tree extracted as {portal_nav_tree} — so the design tool understands the navigation tree and feature placement context
 UI-UX Story Notes: include only approved or non-conflicting story-level specialist guidance
 Conflict Rule: approved screens and extracted visual contract remain authoritative if specialist guidance conflicts
 ```

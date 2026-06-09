@@ -1635,13 +1635,95 @@
 
     <!-- Tab 2: Feature Graph -->
     <div id="tab-features" class="tab-content">
-      <div id="features-canvas" class="canvas-panel"></div>
-      <div class="sidebar">
-        <h2>Feature Graph Details</h2>
+      <!-- Blank state when no data -->
+      <div id="features-placeholder" style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <div class="card" style="max-width:560px;text-align:left;padding:40px;background:var(--panel-bg);border:1px solid var(--border-color);border-radius:20px;">
+          <div style="text-align:center;font-size:48px;margin-bottom:16px;">🔗</div>
+          <h2 style="text-align:center;margin-bottom:8px;">FeatureGraph — Cross-Feature Dependency Map</h2>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.6;text-align:center;margin-bottom:20px;">
+            FeatureGraph visualises the relationships between Functional Requirements (FRs), Epics, Stories, Portals, Data Entities, and Domain Events as an interactive force-directed network graph.
+          </p>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border-color);">
+                <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Node Type</th>
+                <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Color</th>
+                <th style="text-align:left;padding:8px 6px;color:var(--text-muted);font-weight:700;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px;">FR</td>
+                <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#4A90D9;vertical-align:middle;"></span> Blue</td>
+                <td style="padding:6px;color:var(--text-muted);">Functional Requirement</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px;">Epic</td>
+                <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#67C23A;vertical-align:middle;"></span> Green</td>
+                <td style="padding:6px;color:var(--text-muted);">Epic (implementation group)</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px;">Story</td>
+                <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#E6A23C;vertical-align:middle;"></span> Orange</td>
+                <td style="padding:6px;color:var(--text-muted);">User Story</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px;">Portal</td>
+                <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9B59B6;vertical-align:middle;"></span> Purple</td>
+                <td style="padding:6px;color:var(--text-muted);">Portal / UI Surface</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px;">DataEntity</td>
+                <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#1ABC9C;vertical-align:middle;"></span> Teal</td>
+                <td style="padding:6px;color:var(--text-muted);">Shared Data Entity</td>
+              </tr>
+              <tr>
+                <td style="padding:6px;">Event</td>
+                <td style="padding:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#E91E63;vertical-align:middle;"></span> Pink</td>
+                <td style="padding:6px;color:var(--text-muted);">Domain Event</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin-bottom:12px;">
+            <strong>To generate FeatureGraph data:</strong>
+          </p>
+          <div class="cli-box" style="margin-bottom:8px;">
+            <span class="cli-cmd">/feature-hierarchy</span>
+            <button class="cli-copy-btn" onclick="copyCommand('/feature-hierarchy', this)">COPY</button>
+          </div>
+          <div class="cli-box" style="margin-bottom:8px;">
+            <span class="cli-cmd">/create-epics-and-stories</span>
+            <button class="cli-copy-btn" onclick="copyCommand('/create-epics-and-stories', this)">COPY</button>
+          </div>
+          <div class="cli-box">
+            <span class="cli-cmd">iwish featuregraph-index</span>
+            <button class="cli-copy-btn" onclick="copyCommand('iwish featuregraph-index', this)">COPY</button>
+          </div>
+        </div>
+      </div>
+      <!-- Active graph view (hidden until data is injected) -->
+      <div id="features-active" style="display:none;flex:1;height:100%;">
+        <div id="features-canvas" class="canvas-panel"></div>
+      </div>
+      <div id="features-sidebar" class="sidebar" style="display:none;">
+        <input type="text" id="features-search" placeholder="Search nodes by name or ID..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-family:inherit;font-size:14px;margin-bottom:12px;background:var(--panel-bg);">
+        <div style="margin-bottom:12px;">
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Filter by Type</label>
+          <div id="features-filters" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+        </div>
+        <div class="card" style="margin-bottom:12px;">
+          <h3 style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Edge Legend</h3>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:30px;height:2px;background:#999;"></span> BELONGS_TO (solid gray)</div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:30px;height:0;border-top:2px dashed #9B59B6;"></span> DISPLAYED_ON (dashed purple)</div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:30px;height:3px;background:#E53E3E;"></span> IMPACTS (bold red)</div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:30px;height:0;border-top:2px dotted #1ABC9C;"></span> USES_ENTITY (dotted teal)</div>
+          </div>
+        </div>
         <div class="card" id="features-details">
           <h3 id="features-node-title" style="margin-bottom: 10px; color: var(--text-color);">No Node Selected</h3>
           <div id="features-node-desc" style="font-size: 14px; color: var(--text-muted);">
-            Select a feature to inspect its incoming and outgoing code/dependency relationships.
+            Click on any node in the graph to inspect its type, metadata, and connected edges.
           </div>
         </div>
       </div>
@@ -2095,6 +2177,23 @@
                       <div class="meta-line">
                         <span class="meta-label" data-i18n="guide.label_note">Note:</span>
                         <span class="meta-val">Phân rã PRD thành các Epic và User Story độc lập mang lại giá trị cho người dùng.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="command-item">
+                    <div class="cli-box">
+                      <span class="cli-cmd">/feature-hierarchy</span>
+                      <button class="cli-copy-btn" onclick="copyCommand('/feature-hierarchy', this)">COPY</button>
+                    </div>
+                    <div class="command-meta">
+                      <div class="meta-line">
+                        <span class="meta-label" data-i18n="guide.label_output">Output:</span>
+                        <span class="meta-val">📄 <code>2. Product Planning/2.5. feature-hierarchy.md</code></span>
+                      </div>
+                      <div class="meta-line">
+                        <span class="meta-label" data-i18n="guide.label_note">Note:</span>
+                        <span class="meta-val">Tạo Feature Hierarchy — bản đồ portal/tính năng/navigation cho UI Spec, Dev Story, FeatureGraph. Bắt buộc cho deployment.</span>
                       </div>
                     </div>
                   </div>
@@ -4139,45 +4238,9 @@
       });
     }
 
-    // Tab 2: Feature Graph Setup
+    // Tab 2: Feature Graph Setup (rendering now handled by initFeatureGraph IIFE below)
     function renderFeatureGraph() {
-      if (!nodesEdgesData || !Array.isArray(nodesEdgesData.nodes) || !Array.isArray(nodesEdgesData.edges)) return;
-      // Connect technical file dependencies or story links
-      const container = document.getElementById('features-canvas');
-      const data = { 
-        nodes: new vis.DataSet(nodesEdgesData.nodes.filter(n => n.group !== 'idea')), 
-        edges: new vis.DataSet(nodesEdgesData.edges.filter(e => e.from !== 'root-idea')) 
-      };
-      const options = {
-        nodes: {
-          shape: 'dot',
-          size: 16,
-          font: { color: '#1f2937', face: 'Inter' },
-          borderWidth: 2
-        },
-        edges: {
-          arrows: 'to',
-          color: 'rgba(31, 41, 55, 0.2)'
-        },
-        groups: {
-          epic: { color: { background: 'rgba(15, 118, 110, 0.08)', border: '#0f766e', font: { color: '#0f766e' } } },
-          story: { color: { background: 'rgba(29, 78, 216, 0.08)', border: '#1d4ed8', font: { color: '#1d4ed8' } } }
-        }
-      };
-      window.featuresNetwork = new vis.Network(container, data, options);
-      window.featuresNetwork.on("selectNode", function (params) {
-        const id = params.nodes[0];
-        const node = data.nodes.get(id);
-        if (node) {
-          document.getElementById('features-node-title').innerText = node.label;
-          document.getElementById('features-node-desc').innerHTML = `
-            <div class="detail-row">
-              <div class="detail-label">Node ID</div>
-              <div class="detail-value mono">${node.id}</div>
-            </div>
-          `;
-        }
-      });
+      // No-op: replaced by the Feature Graph IIFE which handles blank/active state toggling
     }
 
     // Tab 3: Kanban Sprint Dashboard
@@ -4518,6 +4581,192 @@
         '<div class="code-graph-stat"><span class="label">Edges</span><span class="value">' + (meta.edgeCount || codeGraphData.edges.length) + '</span></div>' +
         '<div class="code-graph-stat"><span class="label">Adapter</span><span class="value">' + (meta.adapterUsed || 'unknown') + '</span></div>' +
         '<div class="code-graph-stat"><span class="label">Generated</span><span class="value">' + (meta.generatedAt ? new Date(meta.generatedAt).toLocaleDateString() : 'N/A') + '</span></div>';
+    })();
+
+    // ===== FEATURE GRAPH TAB =====
+    (function initFeatureGraph() {
+      var featureGraphData = /*FEATURE_GRAPH_DATA*/ null;
+      if (!featureGraphData || !featureGraphData.nodes || featureGraphData.nodes.length === 0) return;
+
+      // Hide placeholder, show active view
+      document.getElementById('features-placeholder').style.display = 'none';
+      document.getElementById('features-active').style.display = 'flex';
+      document.getElementById('features-sidebar').style.display = 'flex';
+
+      // Approved node colors
+      var groupColors = {
+        FR:         { background: '#4A90D9', border: '#3570B5', font: { color: '#fff' } },
+        Epic:       { background: '#67C23A', border: '#4FA82A', font: { color: '#fff' } },
+        Story:      { background: '#E6A23C', border: '#C9882C', font: { color: '#fff' } },
+        Portal:     { background: '#9B59B6', border: '#7D3C98', font: { color: '#fff' } },
+        DataEntity: { background: '#1ABC9C', border: '#149A80', font: { color: '#fff' } },
+        Event:      { background: '#E91E63', border: '#C2185B', font: { color: '#fff' } }
+      };
+
+      // Edge style helper
+      function edgeStyle(rel) {
+        switch (rel) {
+          case 'BELONGS_TO':   return { color: '#999999', dashes: false, width: 1 };
+          case 'DISPLAYED_ON': return { color: '#9B59B6', dashes: [5, 5], width: 1.5 };
+          case 'IMPACTS':      return { color: '#E53E3E', dashes: false, width: 3 };
+          case 'USES_ENTITY':  return { color: '#1ABC9C', dashes: [2, 4], width: 1.5 };
+          case 'CONSUMES':     return { color: '#1ABC9C', dashes: [2, 4], width: 1.5 };
+          default:             return { color: '#cccccc', dashes: false, width: 1 };
+        }
+      }
+
+      var nodes = new vis.DataSet(featureGraphData.nodes.map(function(n) {
+        var col = groupColors[n.group] || groupColors.Story;
+        return {
+          id: n.id,
+          label: n.label,
+          title: '<b>' + n.label + '</b><br>Type: ' + n.group,
+          group: n.group,
+          color: col,
+          font: { size: 12, face: 'Inter', color: col.font.color },
+          shape: n.group === 'Portal' ? 'diamond' : n.group === 'Event' ? 'triangle' : 'dot',
+          size: n.group === 'FR' ? 22 : n.group === 'Portal' ? 20 : n.group === 'Epic' ? 18 : 14,
+          borderWidth: 2,
+          _meta: n
+        };
+      }));
+
+      var edges = new vis.DataSet(featureGraphData.edges.map(function(e, i) {
+        var style = edgeStyle(e.relationship);
+        return {
+          id: 'fg-edge-' + i,
+          from: e.from,
+          to: e.to,
+          label: e.label || e.relationship,
+          arrows: e.relationship === 'IMPACTS' ? { to: { enabled: true, scaleFactor: 1.2 } } : 'to',
+          color: { color: style.color, highlight: style.color },
+          width: style.width,
+          dashes: style.dashes,
+          font: { size: 9, color: '#94a3b8', face: 'Inter' },
+          smooth: { type: 'cubicBezier', forceDirection: 'horizontal', roundness: 0.4 },
+          _rel: e.relationship
+        };
+      }));
+
+      var container = document.getElementById('features-canvas');
+      var useClustering = featureGraphData.nodes.length > 500;
+      var options = {
+        physics: {
+          stabilization: { enabled: true, iterations: useClustering ? 100 : 200, fit: true },
+          barnesHut: { gravitationalConstant: -3000, centralGravity: 0.1, springLength: 150 }
+        },
+        interaction: { hover: true, tooltipDelay: 200, zoomView: true, dragView: true },
+        layout: { improvedLayout: true }
+      };
+
+      var network = new vis.Network(container, { nodes: nodes, edges: edges }, options);
+      window.featuresNetwork = network;
+
+      // Disable physics after stabilization
+      network.once('stabilizationIterationsDone', function() {
+        network.setOptions({ physics: { enabled: false } });
+      });
+
+      // Portal clustering for >500 nodes (AC6)
+      if (useClustering) {
+        var portalGroups = {};
+        featureGraphData.nodes.forEach(function(n) {
+          if (n.group === 'Portal') portalGroups[n.id] = n.label;
+        });
+        featureGraphData.edges.forEach(function(e) {
+          if (e.relationship === 'DISPLAYED_ON' && portalGroups[e.to]) {
+            var clusterId = 'cluster-' + e.to;
+            if (!network.isCluster(clusterId)) {
+              network.cluster({
+                joinCondition: function(nodeOptions) {
+                  return nodeOptions.id === e.from || nodeOptions.id === e.to;
+                },
+                clusterNodeProperties: {
+                  id: clusterId,
+                  label: portalGroups[e.to] + ' (cluster)',
+                  shape: 'diamond',
+                  color: groupColors.Portal,
+                  font: { size: 14, face: 'Inter', color: '#fff' }
+                }
+              });
+            }
+          }
+        });
+      }
+
+      // Click handler — update sidebar with node details
+      network.on('click', function(params) {
+        var titleEl = document.getElementById('features-node-title');
+        var descEl = document.getElementById('features-node-desc');
+        if (params.nodes.length > 0) {
+          var nodeId = params.nodes[0];
+          var node = nodes.get(nodeId);
+          if (node && node._meta) {
+            var m = node._meta;
+            var html = '<div class="code-graph-stat"><span class="label">ID</span><span class="value" style="font-family:monospace;">' + m.id + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Type</span><span class="value">' + m.group + '</span></div>';
+            if (m.metadata) {
+              Object.keys(m.metadata).forEach(function(k) {
+                html += '<div class="code-graph-stat"><span class="label">' + k + '</span><span class="value">' + m.metadata[k] + '</span></div>';
+              });
+            }
+            // Connected edges
+            var connected = edges.get().filter(function(e) { return e.from === m.id || e.to === m.id; });
+            if (connected.length > 0) {
+              html += '<div style="margin-top:12px;font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Connected Edges (' + connected.length + ')</div>';
+              connected.forEach(function(e) {
+                var direction = e.from === m.id ? '→ ' + e.to : '← ' + e.from;
+                html += '<div class="code-graph-stat"><span class="label">' + direction + '</span><span class="value">' + (e._rel || e.label || '') + '</span></div>';
+              });
+            }
+            titleEl.innerText = m.label;
+            descEl.innerHTML = html;
+          }
+        } else {
+          titleEl.innerText = 'No Node Selected';
+          descEl.innerHTML = '<span style="color:var(--text-muted);">Click on any node in the graph to inspect its type, metadata, and connected edges.</span>';
+        }
+      });
+
+      // Search bar
+      var searchInput = document.getElementById('features-search');
+      searchInput.addEventListener('input', function() {
+        var query = searchInput.value.toLowerCase().trim();
+        if (!query) {
+          nodes.forEach(function(n) { nodes.update({ id: n.id, opacity: 1 }); });
+          return;
+        }
+        nodes.forEach(function(n) {
+          var m = n._meta;
+          var match = (m.label || '').toLowerCase().indexOf(query) !== -1 || (m.id || '').toLowerCase().indexOf(query) !== -1;
+          nodes.update({ id: n.id, opacity: match ? 1 : 0.12 });
+        });
+      });
+
+      // Filter checkboxes by node type
+      var filterContainer = document.getElementById('features-filters');
+      var groupSet = {};
+      featureGraphData.nodes.forEach(function(n) { groupSet[n.group] = true; });
+      Object.keys(groupSet).forEach(function(group) {
+        var btn = document.createElement('button');
+        btn.className = 'code-graph-filter-btn';
+        btn.textContent = group;
+        var col = groupColors[group] || groupColors.Story;
+        btn.style.borderLeftColor = col.background;
+        btn.style.borderLeftWidth = '3px';
+        btn.addEventListener('click', function() {
+          btn.classList.toggle('active');
+          var activeFilters = Array.from(filterContainer.querySelectorAll('.active')).map(function(b) { return b.textContent; });
+          if (activeFilters.length === 0) {
+            nodes.forEach(function(n) { nodes.update({ id: n.id, hidden: false }); });
+          } else {
+            nodes.forEach(function(n) {
+              nodes.update({ id: n.id, hidden: activeFilters.indexOf(n._meta.group) === -1 });
+            });
+          }
+        });
+        filterContainer.appendChild(btn);
+      });
     })();
 
     // ===== EVOLVED SKILLS TAB =====

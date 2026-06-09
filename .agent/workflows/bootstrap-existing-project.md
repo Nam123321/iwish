@@ -76,6 +76,18 @@ Based on what is missing:
 - create epics and stories for the immediate delivery horizon
 - create or update sprint tracking
 
+### 5b. Feature Hierarchy & FeatureGraph Setup
+
+After epics and stories exist (from Step 5), check for and generate the feature hierarchy:
+
+- Check if `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` exists
+- If MISSING: Run `iwish featuregraph-retrofit` to assess the gap, then ask the Architect Agent to generate feature-hierarchy.md from PRD + Architecture + Epics using the template at `templates/library/code-intelligence-pack/featuregraph/feature-hierarchy-template.md`
+- If EXISTS: Validate it is not stale (compare FR count with PRD)
+- Optionally run `iwish featuregraph-index` if FalkorDB is configured (from Step 3 graph setup)
+
+> [!NOTE]
+> The feature-hierarchy provides sidebar navigation context for UI Spec generation and Dev Story execution. Without it, agents will produce inconsistent navigation structures.
+
 ### 6. Gate Readiness
 
 Run readiness thinking before implementation:

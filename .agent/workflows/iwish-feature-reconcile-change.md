@@ -28,8 +28,9 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
    - You MUST ensure the updated text is clearly marked as a post-implementation scope change if applicable.
    - Save the changes to the specification files.
 
-5. **UPDATE FEATURE GRAPH & KNOWLEDGE (Optional but Recommended):**
+5. **UPDATE FEATURE GRAPH, FEATURE HIERARCHY & KNOWLEDGE (Recommended):**
    If the changes impact core features, instruct the user to run `/code-graph` or update the `FeatureGraph` after your edits.
+   If the reconciliation work item includes `feature_hierarchy` in its `requiredUpdates`, regenerate `{planning_artifacts}/feature-hierarchy.md` to reflect updated feature structure and navigation hierarchy.
 
 6. **CLEAR WORK ITEMS:**
    Once a work item is completely synced, you MUST delete its `.md` file from `_iwish/runtime/reconciliation-workitems/` and delete its corresponding `.json` file from `_iwish/runtime/reconciliation-queue/`.

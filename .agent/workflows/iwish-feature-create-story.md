@@ -22,6 +22,22 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 5.6. CRITICAL — AC-TO-TASK TRACEABILITY GATE. Before finalizing, generate the AC-Task Traceability Matrix (see `plan-tune-heuristic.md` Part D). Every AC MUST map to at least 1 Task. If any AC has `⚠️ MISSING TASK`, HALT the workflow until a task is assigned.
 5.7. CRITICAL — PROJECT MEMORY GATE. Before drafting story context or Dev Notes, check for `@{project-root}/.agent/memory/PROJECT.md`. If present, load only the sections relevant to the current epic/story and treat them as the primary persistent project memory. Check `@{project-root}/.agent/memory/USER.md` only for stable collaboration preferences. `USER.md` MUST NOT override project constraints, approved architecture, story ACs, workflow instructions, or the current user request. If memory conflicts, resolve in this order: system/safety rules → project instructions/artifacts → workflow/story instructions → current user request → user preferences → historical session notes.
 5.8. CRITICAL — CONTEXT BUDGET FOR MEMORY. Do not paste full memory files into the story by default. Summarize only the relevant project memory as citable Dev Notes, and prefer fresh PRD/architecture/epic artifacts over stale memory.
+5.9. CRITICAL — TRI-AGENT LITE SCAN & CROSS-FEATURE DEPENDENCIES. After ACs and Tasks are generated, you MUST perform the following:
+   a. **Load Template Appendix:** Read the full contents of `@{project-root}/templates/library/code-intelligence-pack/featuregraph/featuregraph-template-appendix.md`. This defines the mandatory section format.
+   b. **Generate Tier 1 Tags:** Scan the generated ACs and Tasks to produce inline Tier 1 tags:
+      - `[DATA: ModelName1, ModelName2]` — for Prisma/DB models created or modified by this story.
+      - `[SEED: description]` — for shared/seed models that other features also use.
+      - `[FLOW-OUT: domain.entity.action]` — for outgoing events or data this story produces.
+      - `[FLOW-IN: domain.entity.action]` — for incoming events or data this story depends on.
+      Place these tags inline next to the relevant AC or Task they describe.
+   c. **Generate Cross-Feature Dependencies Section:** After the QA Scorecard, include a `## Cross-Feature Dependencies` section with exactly these subsections:
+      - `### Impacts` — FRs this story changes that other features depend on, with reason.
+      - `### Consumes` — FRs this story depends on, with what it uses.
+      - `### Shared Entities` — Prisma models shared with other FRs.
+      - `### Cross-Portal` — If the feature appears on multiple portals, list them.
+   d. **Edge Cases:**
+      - If the project PRD has no FR definitions (early-stage or brownfield), still generate Shared Entities and Event Flow tags but skip FR linkage and add a `> NOTE: No FR definitions found in PRD. FR linkage skipped.` note.
+      - If the story has zero cross-feature dependencies (fully self-contained), still include the `## Cross-Feature Dependencies` section with the note: `No cross-feature dependencies identified`.
 6. CRITICAL — QA SIMULATOR GUARDIAN AUDIT. Before finalizing the user story, you MUST execute the Fat-Guardian Simulator mental run. Load the skill from `@{project-root}/.agent/skills/qa-simulator-guardian.md`. Calculate the EXACT 7-row Hybrid Scorecard (6 Core Axes + 1 UX Empathy). Embed the Scorecard directly at the bottom of the story document. `TOTAL AVERAGE` MUST be `>= 8.5/10`. If it fails, HALT workflow and rewrite the story to fix logic gaps.
 6b. CRITICAL — EDGE CASE KNOWLEDGE GRAPH UPDATE. If any new edge cases were identified during the Socratic Review or QA Simulator run, you MUST:
    - Add them as risk nodes to the appropriate pillar files in `@{project-root}/_iwish-output/edge-case-knowledge/pillars/`.

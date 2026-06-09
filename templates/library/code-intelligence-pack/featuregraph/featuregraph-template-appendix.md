@@ -8,6 +8,25 @@ description: 'FeatureGraph template appendix — Cross-Feature Dependencies sect
 
 ---
 
+## Tier 1 Inline Tags
+
+Producer workflows MUST annotate ACs and Tasks with these inline tags so the FeatureGraph Indexer can extract data entities and event flows:
+
+| Tag | Purpose | Format | Example |
+|-----|---------|--------|---------|
+| `[DATA:]` | Prisma/DB models created or modified | `[DATA: Model1, Model2]` | `[DATA: PaymentTransaction, OrderItem]` |
+| `[SEED:]` | Shared/seed models used across features | `[SEED: description]` | `[SEED: shared OrderItem model for cart + checkout]` |
+| `[FLOW-OUT:]` | Outgoing events/data this story produces | `[FLOW-OUT: domain.entity.action]` | `[FLOW-OUT: payment.transaction.created]` |
+| `[FLOW-IN:]` | Incoming events/data this story depends on | `[FLOW-IN: domain.entity.action]` | `[FLOW-IN: pricing.product.priceResolved]` |
+
+**Placement:** Tags are placed inline at the end of the AC or Task line they describe, e.g.:
+
+```markdown
+- **AC2:** Given a valid cart, When checkout completes, Then a PaymentTransaction record is created [DATA: PaymentTransaction] [FLOW-OUT: payment.transaction.created]
+```
+
+---
+
 ## For `/create-story` Template
 
 Add this section **after Acceptance Criteria** and **before Dev Notes**:

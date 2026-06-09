@@ -47,6 +47,7 @@ Before attempting to merge, verify that the story/epic is truly complete:
 |------|--------|
 | **Story file** updated with final status | ☐ |
 | **Sprint status** updated | ☐ |
+| **Feature hierarchy** exists and is current (`2. Product Planning/2.5. feature-hierarchy.md`) | ☐ |
 | **Changelog** entry added (if applicable) | ☐ |
 | **API docs** updated (if API changed) | ☐ |
 | **Migration notes** documented (if DB changed) | ☐ |

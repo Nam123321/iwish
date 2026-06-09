@@ -378,6 +378,21 @@ CRITICAL: BẮT BUỘC phải đưa file `epics-and-stories.md` này vào Knowle
 `iwish inject-node --file "{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md" --metadata '{"summary": "Toàn bộ Epics và Stories của dự án", "tags": ["epic", "story", "planning"], "layer": "documentation", "complexity": "medium"}'`
 Điều này đảm bảo FalkorDB và các AI Agent khác có thể truy xuất ngay lập tức các yêu cầu và user story.
 
+### 6.6. FEATURE HIERARCHY & FEATUREGRAPH INDEXING (MANDATORY)
+
+> [!IMPORTANT]
+> After the Hybrid Graph update, the **Feature Hierarchy** must be generated to ensure portal-level feature mapping and cross-feature relationships are captured before proceeding.
+
+1. **Trigger Feature Hierarchy Generation:**
+   - Execute Step 5c from `step-04-final-validation.md` — generate `feature-hierarchy.md` from PRD, Architecture, and Epics sources.
+   - Save to `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`.
+
+2. **Run FeatureGraph Indexer:**
+   - After `feature-hierarchy.md` is generated, run `iwish featuregraph-index` to parse the hierarchy and index all features, portals, and cross-feature relationships into FalkorDB.
+   - If FalkorDB is not available, the indexer will skip gracefully with a log message — this is non-blocking.
+
+3. **Verification:** Confirm `feature-hierarchy.md` exists and is non-empty before proceeding.
+
 ## TEMPLATE STRUCTURE COMPLIANCE:
 
 The final {outputFile} must follow this structure exactly:

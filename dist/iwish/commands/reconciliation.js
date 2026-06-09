@@ -26,7 +26,7 @@ function registerReconciliationCommands(program, getProjectRoot, addSharedDirect
             epicId: options.epic || null,
             touchedFiles: options.file || [],
             graphStatus: options.graphStatus,
-            requiredUpdates: ['story_spec', 'epic_linkage', 'featuregraph', 'knowledge_summary'],
+            requiredUpdates: ['story_spec', 'epic_linkage', 'featuregraph', 'knowledge_summary', 'feature_hierarchy'],
             notes: options.note,
         });
         console.log(chalk_1.default.green(`Queued reconciliation record ${record.type} at ${record.timestamp}`));

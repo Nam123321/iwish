@@ -36,6 +36,12 @@ At the very beginning of the `/flow` pipeline, you MUST create a `task.md` file 
    - Strictly follow clean architecture guidelines and target constraints.
    - *Update `task.md`.*
 
-5. **Step 5: Code Review & Validation (`/review`)**
+5. **Step 4.5: FeatureGraph Indexing (Optional)**
+   - If the story created or modified features that affect cross-feature dependencies (e.g., new FRs, portal changes, sidebar restructuring, feature-hierarchy.md updates), run `iwish featuregraph-index` to re-index the FeatureGraph.
+   - Also run if `feature-hierarchy.md` was updated by `/edit-prd`, `/make-ui-spec`, or `/reconcile-change` during this pipeline run.
+   - **Graceful Degradation:** If FalkorDB is not available, the indexer will skip with a log message and the pipeline continues without blocking.
+   - *Update `task.md`.*
+
+6. **Step 5: Code Review & Validation (`/review`)**
    - Upon code completion, run tests and perform code quality audits (SAST, security checks, and hybrid scorecard).
    - Report final validation outcomes to the user and mark the pipeline as complete in `task.md`.

@@ -142,6 +142,42 @@ For each epic, review stories in order:
   - You are FORBIDDEN from finalizing the plan or transitioning to implementation until the markers are resolved.
 - If none are found, proceed.
 
+### 5c. Feature Hierarchy Generation (MANDATORY)
+
+> [!IMPORTANT]
+> This step generates `feature-hierarchy.md` — the single source of truth for portal-level feature mapping, sidebar navigation trees, and cross-feature relationships. It is consumed by **14 downstream workflows** including UI Spec generation, Dev Story execution, Impact Analysis, and FeatureGraph indexing.
+
+**After all validation steps pass, generate the Feature Hierarchy document:**
+
+1. **Read Input Sources:**
+   - PRD → extract all FRs with their `Primary Portals` field and Phase/Tier classification
+   - Architecture → extract Portal definitions (tech stack, platform, primary users, navigation pattern)
+   - Epics → extract FR→Epic→Story mapping for traceability
+
+2. **Generate Document Sections:**
+   - **Portal Overview Table:** # | Portal | Tech Stack | Platform | Primary Users | Navigation
+   - **Per-Portal Sidebar/Menu Trees:** Each portal gets a full sidebar tree in ASCII format:
+     ```
+     🖥️ Portal Name
+     │
+     ├── 📊 Menu Group
+     │   ├── Feature Name                    FR## │ E#/S#.# │ Phase │ Tier
+     │   ├── Sub-Feature                     FR## │ E#/S#.# │ Phase │ Tier
+     │   └── ...
+     ```
+   - **Cross-Portal Feature Summary:** Feature count per portal, tier distribution, shared features matrix
+
+3. **Edge Case Handling:**
+   - If project has no portal concept (single-page app) → create single 'App' portal grouping FRs by feature area
+   - If PRD has no 'Primary Portals' field → infer from Architecture portal definitions + FR functional area, flag ambiguous with `[NEEDS REVIEW]`
+   - If epics don't reference FRs → map by Epic title as feature group, flag as `[LEGACY-COMPAT]`
+
+4. **Save Location:** `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`
+
+5. **Reference Template:** Load `templates/library/code-intelligence-pack/featuregraph/feature-hierarchy-template.md` for the canonical document structure.
+
+> **NOTE:** For existing projects upgrading to this I-Wish version, run `iwish featuregraph-retrofit` to generate this document retroactively from existing artifacts.
+
 ### 6. Complete and Save
 
 If all validations pass:

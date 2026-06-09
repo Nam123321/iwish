@@ -71,7 +71,25 @@ Compile the analysis into a standardized markdown file located at `_iwish-output
 <!-- coaching-notes-expansion -->
 ```
 
-### 5. Present A/P/C Menu
+### 5. Regenerate Feature Hierarchy (MANDATORY)
+
+After the expansion report is generated (regardless of routing verdict), the agent MUST regenerate `feature-hierarchy.md` to include the new feature in the correct portal sidebar position:
+
+```
+1. CHECK: Does `{planning_artifacts}/feature-hierarchy.md` exist?
+2. IF EXISTS:
+   - Read the current feature-hierarchy.md
+   - Integrate the new feature/module from the PER into the appropriate portal's sidebar tree
+   - Regenerate the full feature-hierarchy.md with the new feature correctly placed
+   - Log: "✅ Feature Hierarchy regenerated to include [feature-name] in [portal-name] sidebar."
+3. IF NOT EXISTS:
+   - Log warning: "⚠️ feature-hierarchy.md does not exist yet. It will be created when /create-epics-and-stories runs."
+   - Add a note in the PER report that feature-hierarchy.md generation is pending
+```
+
+**This step ensures new features are immediately reflected in the navigation source-of-truth.**
+
+### 6. Present A/P/C Menu
 Present the generated report to the user and request confirmation:
 "I have generated the Project Expansion Review report. What would you like to do?
 
@@ -79,7 +97,7 @@ Present the generated report to the user and request confirmation:
 **[P] Party Mode** - Call the PM, Architect, and Dev Agents to debate the routing verdict.
 **[C] Continue** - Save the report to `PER-[feature-name].md` and redirect execution to the recommended next workflow."
 
-### 6. Process Menu Selection
+### 7. Process Menu Selection
 - **If 'A':** Load `{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml` to deepen elicitation.
 - **If 'P':** Load `{project-root}/_iwish/core/workflows/party-mode/workflow.md` to trigger multi-agent discussion.
 - **If 'C':** Write the file to `_iwish-output/3. Development/project-expansion-review/PER-[feature-name].md` and handoff execution to the proposed next workflow (e.g., `/make-story`, `/plan`, or `/idea-challenge`).
@@ -91,4 +109,5 @@ Present the generated report to the user and request confirmation:
 - ✅ All 4 pillars assessed objectively with user feedback.
 - ✅ Routing level (Low/Medium/High) clearly defined.
 - ✅ Standardized PER report generated and saved under the `3. Development/project-expansion-review/` directory.
+- ✅ Feature Hierarchy regenerated to include the new feature/module.
 - ✅ APC menu processed correctly.

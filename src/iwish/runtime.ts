@@ -25,7 +25,7 @@ import { getReconciliationStatus } from './reconciliation';
 import { generateReviewPack, ReviewPackKind, ReviewPackRole } from './review-pack';
 import { generateRoutingProfile } from './routing-profile';
 import { buildToolSetupPrompts, ToolSetupPrompt } from './tooling';
-import { extractGraphData, extractSprintData, extractAgentTrace, extractIdeaToPrdData, extractCodeGraphData, extractEvolverData } from './graph-parser';
+import { extractGraphData, extractSprintData, extractAgentTrace, extractIdeaToPrdData, extractCodeGraphData, extractEvolverData, extractFeatureGraphData } from './graph-parser';
 
 type InstallMode = 'install' | 'update';
 type MaterializeStatus = 'created' | 'kept' | 'updated';
@@ -464,6 +464,7 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
   const agentTrace = extractAgentTrace(projectRoot);
   const ideaToPrdData = extractIdeaToPrdData(projectRoot);
   const codeGraphData = extractCodeGraphData(projectRoot);
+  const featureGraphData = extractFeatureGraphData(projectRoot);
   const evolverData = extractEvolverData(projectRoot);
 
   // Load locale files
@@ -497,7 +498,8 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
     .replace('{EVOLVER_DATA_PLACEHOLDER}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('/*LOCALES_DATA*/ {}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
     .replace('{LOCALES_DATA_PLACEHOLDER}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
-    .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
+    .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null')
+    .replace('/*FEATURE_GRAPH_DATA*/ null', featureGraphData && featureGraphData.nodes.length > 0 ? JSON.stringify(featureGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
 
   await fs.ensureDir(path.dirname(outputPath));
   await fs.writeFile(outputPath, finalHtml, 'utf8');
@@ -587,12 +589,20 @@ export function printStatus(projectRoot: string): void {
 
 export function printDoctor(projectRoot: string): void {
   const status = getStatus(projectRoot);
+  // Feature hierarchy canonical path: _iwish-output/2. Product Planning/2.5. feature-hierarchy.md
+  // Fallback: _iwish-output/feature-hierarchy.md (pre-S14.1) or _bmad-output/planning-artifacts/feature-hierarchy.md (legacy)
+  const featureHierarchyExists = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.5. feature-hierarchy.md'),
+    path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
+    path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
+  ].some(p => fs.existsSync(p));
   const checks = [
     ['runtime manifest', status.manifestExists],
     ['graph profile', status.graphProfileExists],
     ['catalog', status.catalogExists],
     ['custom directory', status.customExists],
     ['graph tool selected', Boolean(status.selectedTools.graph)],
+    ['feature hierarchy', featureHierarchyExists],
   ];
 
   console.log(chalk.blue('I-Wish doctor report'));
@@ -606,6 +616,10 @@ export function printDoctor(projectRoot: string): void {
 
   if (status.legacyDetected) {
     console.log(chalk.yellow('Legacy `_bmad` runtime was detected. Keep compatibility shims enabled until migration is complete.'));
+  }
+
+  if (!featureHierarchyExists) {
+    console.log(chalk.yellow('Feature hierarchy not found. Run `/feature-hierarchy` or `iwish featuregraph-retrofit` to generate it.'));
   }
 }
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 # ==============================================================
-# FeatureGraph Indexer — 4-Step Pipeline (AC6)
+# FeatureGraph Indexer — 4-Step Pipeline (Story 14.3)
 # Parse PRD, Epics, Stories, Feature-Hierarchy → FalkorDB
+# Includes: IMPACTS parser, dual Story-ID regex, path fallback
 # ==============================================================
 # IMPORTANT: Uses Multi-Graph keyspace "featuregraph"
 # All GRAPH.QUERY commands target "featuregraph", NOT "codegraph"
@@ -14,9 +15,61 @@ FALKORDB_HOST="${FALKORDB_HOST:-localhost}"
 FALKORDB_PORT="${FALKORDB_PORT:-6379}"
 GRAPH_NAME="featuregraph"
 PROJECT_ROOT="${1:-.}"
-PLANNING_DIR="${PROJECT_ROOT}/_bmad-output/planning-artifacts"
-STORIES_DIR="${PROJECT_ROOT}/_bmad-output/stories"
-OUTPUT_LOG="${PROJECT_ROOT}/_bmad-output/featuregraph-index.log"
+
+# --- Path Resolution (AC1): _iwish-output/ first, _bmad-output/ fallback ---
+resolve_paths() {
+  if [ -d "${PROJECT_ROOT}/_iwish-output" ]; then
+    local BASE="${PROJECT_ROOT}/_iwish-output"
+    log "Path resolution: using _iwish-output/"
+  elif [ -d "${PROJECT_ROOT}/_bmad-output" ]; then
+    local BASE="${PROJECT_ROOT}/_bmad-output"
+    warn "Path resolution: falling back to _bmad-output/ (legacy)"
+  else
+    error "No _iwish-output/ or _bmad-output/ directory found at ${PROJECT_ROOT}"
+    exit 1
+  fi
+
+  # Planning artifacts: check for planning-artifacts/ subdirectory, then base
+  if [ -d "${BASE}/planning-artifacts" ]; then
+    PLANNING_DIR="${BASE}/planning-artifacts"
+  else
+    PLANNING_DIR="${BASE}"
+  fi
+
+  # Stories directory
+  if [ -d "${BASE}/stories" ]; then
+    STORIES_DIR="${BASE}/stories"
+  else
+    STORIES_DIR="${BASE}"
+  fi
+
+  OUTPUT_LOG="${BASE}/featuregraph-index.log"
+  REVIEW_QUEUE="${BASE}/featuregraph-review-queue.yaml"
+
+  # Feature Hierarchy: canonical path first, then fallback
+  if [ -f "${BASE}/2. Product Planning/2.5. feature-hierarchy.md" ]; then
+    FEATURE_HIERARCHY_PATH="${BASE}/2. Product Planning/2.5. feature-hierarchy.md"
+  elif [ -f "${PLANNING_DIR}/feature-hierarchy.md" ]; then
+    FEATURE_HIERARCHY_PATH="${PLANNING_DIR}/feature-hierarchy.md"
+  else
+    FEATURE_HIERARCHY_PATH=""
+  fi
+
+  log "  PLANNING_DIR = ${PLANNING_DIR}"
+  log "  STORIES_DIR  = ${STORIES_DIR}"
+  if [ -n "$FEATURE_HIERARCHY_PATH" ]; then
+    log "  FEATURE_HIERARCHY = ${FEATURE_HIERARCHY_PATH}"
+  else
+    warn "  FEATURE_HIERARCHY = NOT FOUND (run /feature-hierarchy to generate)"
+  fi
+}
+
+# Placeholders — set by resolve_paths()
+PLANNING_DIR=""
+STORIES_DIR=""
+OUTPUT_LOG=""
+REVIEW_QUEUE=""
+FEATURE_HIERARCHY_PATH=""
 
 # --- Garbage Filter Lists (IGNORE patterns) ---
 IGNORE_DIRS="archive|templates|drafts|meeting-notes|backups"
@@ -38,6 +91,18 @@ success() { echo -e "${GREEN}[OK]${NC} $1"; }
 cypher_query() {
   redis-cli -h "$FALKORDB_HOST" -p "$FALKORDB_PORT" \
     GRAPH.QUERY "$GRAPH_NAME" "$1" 2>&1
+}
+
+# --- FalkorDB Availability Check (AC6) ---
+check_falkordb() {
+  log "Checking FalkorDB availability at ${FALKORDB_HOST}:${FALKORDB_PORT}..."
+  if ! redis-cli -h "$FALKORDB_HOST" -p "$FALKORDB_PORT" PING 2>/dev/null | grep -qi "PONG"; then
+    error "FalkorDB is not reachable at ${FALKORDB_HOST}:${FALKORDB_PORT}"
+    error "Please start FalkorDB first:  docker start falkordb"
+    error "Or run:  docker run -d --name falkordb -p 6379:6379 falkordb/falkordb"
+    exit 1
+  fi
+  success "FalkorDB is running"
 }
 
 # ==============================================================
@@ -125,9 +190,9 @@ step2_extraction() {
   # --- Parse feature-hierarchy.md → Portal nodes ---
   log "  Parsing feature-hierarchy.md for Portal nodes..."
   PORTAL_COUNT=0
-  if [ -f "$PLANNING_DIR/feature-hierarchy.md" ]; then
+  if [ -n "$FEATURE_HIERARCHY_PATH" ]; then
     for portal in "admin" "webstore" "sales-web" "sales-app" "driver-app"; do
-      if grep -qi "$portal" "$PLANNING_DIR/feature-hierarchy.md"; then
+      if grep -qi "$portal" "$FEATURE_HIERARCHY_PATH"; then
         cypher_query "MERGE (p:Portal {name: '${portal}'}) SET p.updated_at = timestamp()" > /dev/null
         PORTAL_COUNT=$((PORTAL_COUNT + 1))
       fi
@@ -135,12 +200,14 @@ step2_extraction() {
   fi
   success "  Extracted $PORTAL_COUNT Portal nodes"
 
-  # --- Parse story files → Story nodes ---
+  # --- Parse story files → Story nodes (AC3: dual-format Story ID) ---
   log "  Parsing story files..."
   STORY_COUNT=0
   if [ -d "$STORIES_DIR" ]; then
     find "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
-      STORY_ID=$(grep -oE 'S[0-9]+\.[0-9]+' "$story_file" | head -1 || echo "")
+      # AC3: Accept both "Story {N}.{M}" and "S{N}.{M}" formats, normalize to S{N}.{M}
+      RAW_ID=$(grep -oE '(Story[[:space:]]+|S)[0-9]+\.[0-9]+' "$story_file" | head -1 || echo "")
+      STORY_ID=$(echo "$RAW_ID" | sed -E 's/^Story[[:space:]]+/S/')
       STORY_NAME=$(head -5 "$story_file" | grep -E '^#' | head -1 | sed 's/^#*[[:space:]]*//' | xargs)
       EPIC_REF=$(grep -oE 'E[0-9]+' "$story_file" | head -1 || echo "")
       
@@ -196,10 +263,82 @@ step3_mapping() {
           " > /dev/null 2>&1
         done
       fi
-    done < "$PLANNING_DIR/feature-hierarchy.md"
+    done < "$FEATURE_HIERARCHY_PATH"
   fi
 
-  success "  Mapping complete"
+  success "  BELONGS_TO + DISPLAYED_ON mapping complete"
+
+  # --- Step 3b: FR → FR IMPACTS relationships from stories (AC2/AC5) ---
+  log "  Parsing Cross-Feature Dependencies → IMPACTS..."
+  IMPACTS_COUNT=0
+  if [ -d "$STORIES_DIR" ]; then
+    find "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
+      in_impacts=false
+      while IFS= read -r line; do
+        # Detect "## Cross-Feature Dependencies" section
+        if echo "$line" | grep -qiE '^##[[:space:]]+Cross-Feature Dependencies'; then
+          in_impacts=false  # Wait for ### Impacts sub-heading
+          continue
+        fi
+        # Detect "### Impacts" sub-section
+        if echo "$line" | grep -qiE '^###[[:space:]]+Impacts'; then
+          in_impacts=true
+          continue
+        fi
+        # Exit on next heading of same or higher level
+        if $in_impacts && echo "$line" | grep -qE '^#{1,3}[[:space:]]'; then
+          in_impacts=false
+          continue
+        fi
+
+        if $in_impacts && echo "$line" | grep -qE 'FR[0-9]+'; then
+          # Extract all FR references on this line
+          fr_refs=$(echo "$line" | grep -oE 'FR[0-9]+' | sort -u)
+          # Extract reason text (after the FR ref, strip markdown bullets/dashes)
+          reason=$(echo "$line" | sed -E 's/^[[:space:]]*[-*][[:space:]]*//' | sed "s/['\"]//g" | xargs)
+
+          # Determine the source FR from the story filename (story-{epic}.{story}.md)
+          story_basename=$(basename "$story_file" .md)
+          story_num=$(echo "$story_basename" | grep -oE '[0-9]+\.[0-9]+' | head -1 || echo "")
+          # Try to find the source FR from the story's epic context
+          source_fr=$(grep -oE 'FR[0-9]+' "$story_file" | head -1 || echo "")
+
+          if [ -z "$source_fr" ]; then
+            continue
+          fi
+
+          for target_fr in $fr_refs; do
+            if [ "$target_fr" = "$source_fr" ]; then
+              continue  # Skip self-references
+            fi
+
+            # AC5: Check if target FR exists in the graph
+            fr_exists=$(cypher_query "MATCH (fr:FR {id: '${target_fr}'}) RETURN count(fr)" | grep -oE '[0-9]+' | tail -1 || echo "0")
+
+            if [ "$fr_exists" = "0" ] || [ -z "$fr_exists" ]; then
+              # AC5: Unknown FR — create edge with warning flag
+              warn "  IMPACTS target ${target_fr} not found in PRD — adding with warning"
+              cypher_query "
+                MERGE (src:FR {id: '${source_fr}'})
+                MERGE (tgt:FR {id: '${target_fr}'})
+                MERGE (src)-[:IMPACTS {reason: '${reason}', confidence: 0.5, source: 'story-metadata', warning: 'FR not found in PRD'}]->(tgt)
+              " > /dev/null 2>&1
+              # Append to review queue
+              echo "- fr: ${target_fr}, source: ${source_fr}, story: ${story_basename}, reason: '${reason}'" >> "$REVIEW_QUEUE"
+            else
+              # Normal IMPACTS edge
+              cypher_query "
+                MATCH (src:FR {id: '${source_fr}'}), (tgt:FR {id: '${target_fr}'})
+                MERGE (src)-[:IMPACTS {reason: '${reason}', confidence: 0.9, source: 'story-metadata'}]->(tgt)
+              " > /dev/null 2>&1
+            fi
+            IMPACTS_COUNT=$((IMPACTS_COUNT + 1))
+          done
+        fi
+      done < "$story_file"
+    done
+  fi
+  success "  Created $IMPACTS_COUNT IMPACTS relationships"
 }
 
 # ==============================================================
@@ -259,9 +398,12 @@ step4_validation() {
 # ==============================================================
 main() {
   echo "=============================================="
-  echo " FeatureGraph Indexer v1.0"
+  echo " FeatureGraph Indexer v1.1 (Story 14.3)"
   echo " Graph: $GRAPH_NAME @ $FALKORDB_HOST:$FALKORDB_PORT"
   echo "=============================================="
+
+  check_falkordb
+  resolve_paths
   
   step1_discovery
   step2_extraction  

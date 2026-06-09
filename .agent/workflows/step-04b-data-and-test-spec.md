@@ -78,6 +78,8 @@ Scan {outputFile} and collect ALL Tier 1 tags into a summary table:
 |------|-------|---------|------------|-----------|-----------|---------|-------------|----------|
 ```
 
+> **Feature Hierarchy Context:** If `{planning_artifacts}/feature-hierarchy.md` exists (generated in Step 5c of `step-04-final-validation.md`), load it alongside the tag inventory. Use portal-level groupings to contextualize which data models and events belong to which portal — this improves conflict detection and dependency mapping accuracy in Phases A and B.
+
 Present to user: "Đây là toàn bộ tags từ Tier 1. Sẽ dùng làm input cho 3 phases tiếp theo."
 
 ### 2. Phase A: 🗄️ Kira++ Full Data Specification
