@@ -634,7 +634,7 @@
     <!-- 🔍 Intelligence Graph Refresh (MANDATORY IF AVAILABLE) -->
     <critical>INTELLIGENCE CAPABILITY CHECK: You MUST update codebase graphs if you have the corresponding MCP tools!</critical>
     <action>If FeatureGraph is available: Did you discover any new implicit dependencies during implementation? If yes, use `add_feature_relationship` to document them in the graph.</action>
-    <action>If CodeGraphContext is available: Refresh CodeGraph with ALL files changed during this story. For EACH modified/created file, use `add_code_to_graph("<file_path>")`.</action>
+    <action>TIER 1 HYBRID GRAPH UPDATE: Refresh CodeGraph with ALL files changed during this story. For EACH modified/created file, MUST use the CLI command: `iwish inject-node --file "&lt;file_path&gt;" --metadata '{"summary": "...", "tags": ["..."], "layer": "...", "complexity": "..."}'`. Do NOT use `add_code_to_graph` MCP tool.</action>
     <output>🔍 **Intelligence Graphs Updated**</output>
   </step>
 

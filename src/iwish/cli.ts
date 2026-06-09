@@ -680,6 +680,69 @@ export async function runCli(): Promise<void> {
 
   addSharedDirectoryOption(
     program
+      .command('inject-node')
+      .description('Inject semantic metadata for a file directly into the local cache and merge the graph (Tier 1 IDE Agent Hybrid mode)')
+      .requiredOption('-f, --file <path>', 'File path relative to project root')
+      .requiredOption('-m, --metadata <json>', 'JSON string of SemanticMetadata')
+      .action(async (options: { directory: string; file: string; metadata: string }) => {
+        const projectRoot = getProjectRoot(options.directory);
+        console.log(chalk.blue('\n💉 I-Wish Tier 1 Hybrid Graph Injection'));
+        console.log(chalk.gray('━'.repeat(50)));
+
+        try {
+          const { loadSemanticCache, saveSemanticCache } = await import('../code-intel/semantic-analyzer');
+          let parsed: any;
+          try {
+            parsed = JSON.parse(options.metadata);
+          } catch (e) {
+            console.error(chalk.red('❌ Failed to parse metadata JSON.'));
+            process.exit(1);
+          }
+
+          const metadata = {
+            summary: parsed.summary || 'Injected via Hybrid Tier 1',
+            tags: Array.isArray(parsed.tags) ? parsed.tags : [],
+            layer: parsed.layer || 'unknown',
+            complexity: parsed.complexity || 'unknown'
+          } as any;
+
+          const cache = loadSemanticCache(projectRoot);
+          
+          let targetFile = options.file;
+          const path = await import('path');
+          if (path.isAbsolute(targetFile)) {
+             targetFile = path.relative(projectRoot, targetFile);
+          }
+          
+          cache[targetFile] = metadata;
+          await saveSemanticCache(projectRoot, cache);
+          console.log(chalk.green(`  ✓ Injected metadata for ${targetFile} into semantic cache.`));
+
+          console.log(chalk.cyan('\n📁 Scanning files for technical dependencies...'));
+          const { scanFiles } = await import('../code-intel/file-scanner');
+          await scanFiles(projectRoot);
+
+          console.log(chalk.cyan('\n🔀 Merging technical graph with semantic metadata...'));
+          const { mergeGraphs } = await import('../code-intel/graph-merger');
+          const graph = await mergeGraphs(projectRoot);
+          console.log(chalk.green(`  ✓ Hybrid graph generated: ${graph.metadata.nodeCount} nodes, ${graph.metadata.edgeCount} edges`));
+
+          console.log(chalk.cyan('\n📊 Updating dashboard...'));
+
+          const dashboardPath = await compileUserGuideDashboard(projectRoot);
+          console.log(chalk.green(`  ✓ Dashboard updated: file://${dashboardPath}`));
+
+          console.log(chalk.green.bold('\n✅ Tier 1 Hybrid Injection completed successfully!'));
+        } catch (error: any) {
+          const chalk = (await import('chalk')).default;
+          console.error(chalk.red(`\n❌ Injection failed: ${error.message}`));
+          process.exit(1);
+        }
+      }),
+  );
+
+  addSharedDirectoryOption(
+    program
       .command('scaffold-solution-research')
       .description('Create or resume the runtime artifacts for the research-solution-sources workflow')
       .requiredOption('--name <name>', 'Research run name')

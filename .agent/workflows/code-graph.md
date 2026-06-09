@@ -23,3 +23,11 @@ iwish code-graph
 Options:
 - `--scan-only`: Runs the file scanner only, skipping LLM analysis and merger.
 - `--batch-size <size>`: Configures the batch size for LLM analysis (default is 10).
+
+## Tier 1 Hybrid Update (Single Node Injection)
+
+Đối với các node đơn lẻ, đặc biệt là các tài liệu sinh ra từ agent (Epics, Stories, PRDs, Review), **BẮT BUỘC** sử dụng Tier 1 Hybrid Update thay vì chạy toàn bộ pipeline. Lệnh này sẽ bypass `Semantic Analyzer` (LLM) và ghi trực tiếp vào metadata cache, sau đó trigger tự động Graph Merger:
+
+```bash
+iwish inject-node --file "<file_path>" --metadata '{"summary": "...", "tags": ["..."], "layer": "...", "complexity": "..."}'
+```

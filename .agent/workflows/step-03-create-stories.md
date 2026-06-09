@@ -372,6 +372,12 @@ After all epics and stories are generated:
 - Confirm all FRs are covered
 - Check formatting consistency
 
+### 6.5. TIER 1 HYBRID GRAPH UPDATE (MANDATORY)
+
+CRITICAL: BẮT BUỘC phải đưa file `epics-and-stories.md` này vào Knowledge Graph ngay khi hoàn thành bằng lệnh CLI:
+`iwish inject-node --file "{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md" --metadata '{"summary": "Toàn bộ Epics và Stories của dự án", "tags": ["epic", "story", "planning"], "layer": "documentation", "complexity": "medium"}'`
+Điều này đảm bảo FalkorDB và các AI Agent khác có thể truy xuất ngay lập tức các yêu cầu và user story.
+
 ## TEMPLATE STRUCTURE COMPLIANCE:
 
 The final {outputFile} must follow this structure exactly:

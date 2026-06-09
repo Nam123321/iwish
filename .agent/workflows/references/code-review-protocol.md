@@ -73,3 +73,5 @@ Reviewer phải kết luận đợt đánh giá bằng các thông tin sau:
 1. **Hybrid Scorecard:** Tạo bảng điểm Hybrid Scorecard (6 Core Axes + 1 UX Empathy) theo tiêu chuẩn `qa-simulator-guardian`.
 2. **Trust Score:** Gán nhãn độ tin cậy `Trust Score: High / Medium / Low`.
    - Nếu `Trust Score` là `Low`, đợt đánh giá bị **BÁC BỎ (REJECTED)**.
+3. **Tier 1 Hybrid Graph Update:** BẮT BUỘC lưu lại kết quả Review (đặc biệt là Scorecard và Disposition) vào Knowledge Graph qua CLI:
+   `iwish inject-node --file "_iwish-output/reviews/<tên-file-review>.md" --metadata '{"summary": "Code Review Scorecard", "tags": ["review", "audit"], "layer": "quality-control", "complexity": "medium"}'`

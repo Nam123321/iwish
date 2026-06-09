@@ -27,6 +27,7 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
    - Add them as risk nodes to the appropriate pillar files in `@{project-root}/_iwish-output/edge-case-knowledge/pillars/`.
    - Update the index file at `@{project-root}/_iwish-output/edge-case-knowledge/index.md`.
    - Update the epic risk matrix at `@{project-root}/_iwish-output/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (derive {epic_id} from the first digit of the story ID, e.g. 1-1-user-auth -> Epic-1) using the template from `@{project-root}/.agent/fragments/risk-matrix-template.md`.
+6c. CRITICAL — TIER 1 HYBRID GRAPH UPDATE. Sau khi hoàn thiện toàn bộ văn bản của story file, bạn BẮT BUỘC phải "bơm" trực tiếp tóm tắt story này vào Knowledge Graph bằng lệnh CLI: `iwish inject-node --file "_iwish-output/stories/[epic]/[story].md" --metadata '{"summary": "Mô tả ngắn gọn về tính năng", "tags": ["story", "planning"], "layer": "documentation", "complexity": "low"}'`. Lệnh này giúp FalkorDB nhận diện được node tài liệu này ngay lập tức.
 7. SMART NAVIGATION MENU (OPTION B). At the very end of story creation, analyze the generated story content. If the story is tagged with `[UI]` (Frontend) or `[DATA]` (Database/Schema), print a clear Next Steps Navigation Menu in the chat:
    - Explain what design files are needed based on the story tags.
    - Present clickable shortcuts for the user to trigger: `/make-ui-spec` (if UI tagged), `/make-data-spec` (if DATA tagged), or `/code` to skip design and proceed directly to coding.
