@@ -205,16 +205,21 @@ export async function saveSemanticCache(projectRoot: string, cache: Record<strin
   await fs.writeJson(cachePath, cache, { spaces: 2 });
 }
 
-export async function analyzeBatch(projectRoot: string, files: string[]): Promise<AnalysisResult[]> {
+export async function analyzeBatch(projectRoot: string, files: string[], options?: { heuristicOnly?: boolean }): Promise<AnalysisResult[]> {
   const cache = loadSemanticCache(projectRoot);
   const results: AnalysisResult[] = [];
 
   let provider;
-  try {
-    provider = LLMFactory.getProvider(projectRoot);
-  } catch (e: any) {
-    console.warn(chalk.yellow(`[semantic-analyzer] ${e.message}. Falling back to STUB metadata.`));
+  if (!options?.heuristicOnly) {
+    try {
+      provider = LLMFactory.getProvider(projectRoot);
+    } catch (e: any) {
+      console.warn(chalk.yellow(`[semantic-analyzer] ${e.message}. Falling back to STUB metadata.`));
+      provider = null;
+    }
+  } else {
     provider = null;
+    console.log(chalk.yellow(`[semantic-analyzer] Tier 1 Heuristic Mode enabled. Bypassing LLM API.`));
   }
 
   const BATCH_SIZE = 5;

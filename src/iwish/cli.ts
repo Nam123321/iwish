@@ -630,8 +630,9 @@ export async function runCli(): Promise<void> {
       .command('code-graph')
       .description('Run the Semantic Code Intelligence pipeline: scan files, analyze with LLM, merge graph, and update dashboard')
       .option('--scan-only', 'Only run the file scanner without LLM analysis')
+      .option('--fast', 'Tier 1 Mode: Use regex heuristic instead of LLM to bypass rate limits (ideal for bulk ingest)')
       .option('--batch-size <size>', 'Number of files per LLM analysis batch', '10')
-      .action(async (options: { directory: string; scanOnly?: boolean; batchSize: string }) => {
+      .action(async (options: { directory: string; scanOnly?: boolean; fast?: boolean; batchSize: string }) => {
         const projectRoot = getProjectRoot(options.directory);
         console.log(chalk.blue('\n🔬 I-Wish Semantic Code Intelligence Pipeline'));
         console.log(chalk.gray('━'.repeat(50)));
@@ -663,7 +664,7 @@ export async function runCli(): Promise<void> {
             const { analyzeBatch } = await import('../code-intel/semantic-analyzer');
             for (const batch of batches) {
               console.log(chalk.gray(`  Processing batch ${batch.batchIndex + 1}/${batch.totalBatches} (${batch.files.length} files)...`));
-              await analyzeBatch(projectRoot, batch.files);
+              await analyzeBatch(projectRoot, batch.files, { heuristicOnly: options.fast });
             }
             console.log(chalk.green(`  ✓ Semantic analysis complete`));
           }
