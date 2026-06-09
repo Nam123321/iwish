@@ -55,6 +55,15 @@ resolve_paths() {
     FEATURE_HIERARCHY_PATH=""
   fi
 
+  # Epics file: canonical path first, then fallback
+  if [ -f "${BASE}/2. Product Planning/2.4. epics-and-stories.md" ]; then
+    EPICS_FILE_PATH="${BASE}/2. Product Planning/2.4. epics-and-stories.md"
+  elif [ -f "${PLANNING_DIR}/epics.md" ]; then
+    EPICS_FILE_PATH="${PLANNING_DIR}/epics.md"
+  else
+    EPICS_FILE_PATH=""
+  fi
+
   log "  PLANNING_DIR = ${PLANNING_DIR}"
   log "  STORIES_DIR  = ${STORIES_DIR}"
   if [ -n "$FEATURE_HIERARCHY_PATH" ]; then
@@ -172,9 +181,9 @@ step2_extraction() {
   success "  Extracted $FR_COUNT FR nodes from prd.md"
 
   # --- Parse epics.md → Epic nodes ---
-  log "  Parsing epics.md for Epic nodes..."
+  log "  Parsing epics file for Epic nodes..."
   EPIC_COUNT=0
-  if [ -f "$PLANNING_DIR/epics.md" ]; then
+  if [ -n "$EPICS_FILE_PATH" ]; then
     while IFS= read -r line; do
       if echo "$line" | grep -qE '^#+\s*Epic\s+[0-9]+'; then
         EPIC_ID=$(echo "$line" | grep -oE '[0-9]+' | head -1)
@@ -183,7 +192,7 @@ step2_extraction() {
         cypher_query "MERGE (e:Epic {id: 'E${EPIC_ID}'}) SET e.name = '${EPIC_NAME}', e.updated_at = timestamp()" > /dev/null
         EPIC_COUNT=$((EPIC_COUNT + 1))
       fi
-    done < "$PLANNING_DIR/epics.md"
+    done < "$EPICS_FILE_PATH"
   fi
   success "  Extracted $EPIC_COUNT Epic nodes"
 
@@ -226,9 +235,9 @@ step2_extraction() {
 step3_mapping() {
   log "Step 3: MAPPING — Building relationships..."
   
-  # --- FR → Epic relationships from epics.md ---
+  # --- FR → Epic relationships from epics file ---
   log "  Mapping FR → Epic (BELONGS_TO)..."
-  if [ -f "$PLANNING_DIR/epics.md" ]; then
+  if [ -n "$EPICS_FILE_PATH" ]; then
     current_epic=""
     while IFS= read -r line; do
       if echo "$line" | grep -qE '^#+\s*Epic\s+[0-9]+'; then
@@ -242,7 +251,7 @@ step3_mapping() {
           " > /dev/null 2>&1
         done
       fi
-    done < "$PLANNING_DIR/epics.md"
+    done < "$EPICS_FILE_PATH"
   fi
 
   # --- FR → Portal relationships from feature-hierarchy.md ---

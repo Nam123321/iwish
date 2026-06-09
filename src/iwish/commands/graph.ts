@@ -257,14 +257,18 @@ export function registerGraphCommands(
 
         // Step 2: Check prerequisites
         console.log(chalk.cyan('Step 1: Checking prerequisites...'));
-        const epicsPath = path.join(planningDir, 'epics.md');
+        const epicsCandidates = [
+          path.join(outputDir, '2. Product Planning', '2.4. epics-and-stories.md'),
+          path.join(planningDir, 'epics.md'),
+        ];
+        const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
         const storiesDir = path.join(planningDir, 'stories');
 
-        if (!fs.existsSync(epicsPath)) {
-          console.error(chalk.red('❌ epics.md not found. Run /create-epics-and-stories first.'));
+        if (!epicsPath) {
+          console.error(chalk.red('❌ epics file not found. Run /create-epics-and-stories first.'));
           hasErrors = true;
         } else {
-          report.push('  ✓ epics.md found');
+          report.push(`  ✓ epics file found: ${path.basename(epicsPath)}`);
         }
 
         // Step 3: Check feature-hierarchy.md (canonical + fallback paths)

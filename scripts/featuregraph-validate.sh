@@ -13,6 +13,15 @@ PROJECT_ROOT="${1:-.}"
 PLANNING_DIR="${PROJECT_ROOT}/_bmad-output/planning-artifacts"
 REVIEW_QUEUE="${PROJECT_ROOT}/_bmad-output/featuregraph-review-queue.yaml"
 
+# Epics file: canonical path first, then fallback
+if [ -f "${PROJECT_ROOT}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md" ]; then
+  EPICS_FILE_PATH="${PROJECT_ROOT}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md"
+elif [ -f "${PLANNING_DIR}/epics.md" ]; then
+  EPICS_FILE_PATH="${PLANNING_DIR}/epics.md"
+else
+  EPICS_FILE_PATH=""
+fi
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -102,9 +111,13 @@ GRAPH_PORTALS=$(cypher_query "MATCH (p:Portal) RETURN count(p) AS c" | grep -oE 
 echo -e "Graph has ${GREEN}$GRAPH_PORTALS${NC} portals"
 
 # 2c. Epic Count Match
-echo -n "  Epic count: Graph vs epics.md... "
+echo -n "  Epic count: Graph vs epics file... "
 GRAPH_EPICS=$(cypher_query "MATCH (e:Epic) RETURN count(e) AS c" | grep -oE '[0-9]+' | tail -1 || echo "0")
-EPICS_FILE=$(grep -cE '^\s*#{1,3}\s*Epic\s+[0-9]+' "$PLANNING_DIR/epics.md" 2>/dev/null || echo "0")
+if [ -n "$EPICS_FILE_PATH" ]; then
+  EPICS_FILE=$(grep -cE '^\s*#{1,3}\s*Epic\s+[0-9]+' "$EPICS_FILE_PATH" 2>/dev/null || echo "0")
+else
+  EPICS_FILE="0"
+fi
 if [ "$GRAPH_EPICS" = "$EPICS_FILE" ]; then
   echo -e "${GREEN}✅ Match ($GRAPH_EPICS)${NC}"
 else

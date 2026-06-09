@@ -25,8 +25,13 @@ export function extractGraphData(projectRoot: string): GraphResult {
   const nodes: GraphNode[] = [];
   const edges: GraphEdge[] = [];
 
-  const epicsFile = path.join(projectRoot, '_iwish-output', 'epics.md');
-  if (!fs.existsSync(epicsFile)) {
+  const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_iwish-output', 'epics.md')
+  ];
+  const epicsFile = epicsCandidates.find(p => fs.existsSync(p));
+  
+  if (!epicsFile) {
     return { nodes, edges };
   }
 
