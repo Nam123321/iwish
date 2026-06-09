@@ -412,7 +412,6 @@ main() {
   echo "=============================================="
 
   check_falkordb
-  resolve_paths
   
   step1_discovery
   step2_extraction  
@@ -423,4 +422,5 @@ main() {
   success "🎉 FeatureGraph indexing complete!"
 }
 
+resolve_paths
 main "$@" 2>&1 | tee "$OUTPUT_LOG"
