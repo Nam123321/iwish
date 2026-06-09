@@ -66,3 +66,17 @@ All AI assistants and agents operating on this project must strictly comply with
     - Never modify the database schema (`prisma/schema.prisma`) in parallel without running the `step-02.5-data-design` RACI gate first, and aligning database responsibilities according to `_iwish-output/iwish-skills/draft-rules/data-raci.md`.
 8. **Task List Read-Only / Lock Gate**: AI developer agents **MUST NOT** directly mark tasks as completed (`[x]`) in `task.md` or any story files. The status update must be performed exclusively by the automated verification runner or the independent `/review` agent after all validation layers (Mechanical, Adversarial, and Cross-Story) have passed successfully.
 9. **Mandatory Schema Cross-Reference (Anti-Silo Rule)**: When generating Data Specs or database models (e.g., Prisma), the agent **MUST** cross-reference the project's source of truth (e.g., `schema.prisma`) to ensure correct ID naming (avoiding LLM biases like generic `storeId` if `shopId` is the project standard). Additionally, all relational IDs **MUST** include proper Foreign Key bindings (e.g., `@relation(fields: [...], references: [...])`) to allow compiler-level validation and prevent silent errors.
+10. **Mandatory Sprint Status Standardization (Kanban Integrity Rule)**: When updating or generating `sprint-status.yaml`, agents **MUST STRICTLY USE** only the following enum values for `status` or `sprintStatus` fields. Using arbitrary strings is strictly prohibited as it breaks the User Guide Dashboard Kanban parser.
+    - **For Epics:**
+      - `backlog`: Đã lên kế hoạch nhưng chưa thực thi.
+      - `in_progress`: Đang có story được code.
+      - `done`: Đã hoàn thành toàn bộ story trong epic.
+      - `cancelled`: Đã hủy bỏ.
+    - **For Stories:**
+      - `backlog`: Nằm trong backlog nhưng chưa đủ điều kiện code.
+      - `ready`: Đã có đủ specs, Acceptance Criteria và sẵn sàng cho dev-agent xử lý (tương đương với ready-for-dev-agent).
+      - `in_progress`: Đang trong quá trình viết code / triển khai.
+      - `in_review`: Đã code xong, đang chờ review (QA / Security / Adversarial).
+      - `done`: Đã pass toàn bộ review và nghiệm thu.
+      - `blocked`: Tạm thời bị kẹt do issue bên ngoài (Lưu ý: trên UI Kanban sẽ tạm map về Backlog nếu không chứa các từ khóa tiến độ).
+      - `cancelled`: Story bị hủy bỏ.
