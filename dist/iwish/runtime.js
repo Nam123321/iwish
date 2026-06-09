@@ -355,7 +355,12 @@ async function compileUserGuideDashboard(projectRoot) {
     }
     const templateContent = await fs.readFile(templatePath, 'utf8');
     const graphData = (0, graph_parser_1.extractGraphData)(projectRoot);
-    const sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
+    let sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
+    if (!sprintData || sprintData.length === 0) {
+        console.log(chalk_1.default.yellow('\n⚠️  Đã phát hiện sprint-status.yaml sai định dạng hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
+        (0, graph_parser_1.autoRepairSprintStatus)(projectRoot);
+        sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
+    }
     const agentTrace = (0, graph_parser_1.extractAgentTrace)(projectRoot);
     const ideaToPrdData = (0, graph_parser_1.extractIdeaToPrdData)(projectRoot);
     const codeGraphData = (0, graph_parser_1.extractCodeGraphData)(projectRoot);

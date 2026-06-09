@@ -200,7 +200,7 @@ export function registerGraphCommands(
           const output = execSync(`bash "${scriptPath}" "${projectRoot}"`, {
             encoding: 'utf-8',
             stdio: ['pipe', 'pipe', 'pipe'],
-            timeout: 60000,
+            timeout: 300000,
           });
           console.log(output);
           console.log(chalk.green.bold('\n✅ FeatureGraph indexing completed successfully!'));

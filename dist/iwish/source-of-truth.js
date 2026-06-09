@@ -52,7 +52,7 @@ function findFileRecursively(dir, predicate) {
             if (match)
                 return match;
         }
-        else if (predicate(file)) {
+        else if (predicate(file, fullPath)) {
             return fullPath;
         }
     }
@@ -176,7 +176,18 @@ function findStoryFileById(projectRoot, id) {
         if (fs.existsSync(exact))
             return exact;
         // Then try recursive search for this ID
-        const match = findFileRecursively(dir, (name) => name === `${id}.md` || (name.endsWith('.md') && name.startsWith(`${id}-`)));
+        const match = findFileRecursively(dir, (name, fullPath) => {
+            if (name === `${id}.md` || (name.endsWith('.md') && name.startsWith(`${id}-`)))
+                return true;
+            if (name === 'story.md') {
+                const dirName = path.basename(path.dirname(fullPath));
+                if (dirName.toLowerCase().replace(/-/g, '.') === id.toLowerCase().replace(/-/g, '.'))
+                    return true;
+                if (dirName.toLowerCase() === id.toLowerCase())
+                    return true;
+            }
+            return false;
+        });
         if (match)
             return match;
     }
@@ -219,7 +230,17 @@ function loadSourceOfTruth(projectRoot) {
                 if (fs.statSync(fullPath).isDirectory()) {
                     collectStoryFiles(fullPath);
                 }
-                else if (file.endsWith('.md') && !file.includes('spec')) {
+                else if (file === 'story.md') {
+                    const dirName = path.basename(dir);
+                    const parts = dirName.match(/^Story-(\d+)-(\d+)$/i);
+                    if (parts) {
+                        devStoryIds.push(`story-${parts[1]}.${parts[2]}`);
+                    }
+                    else {
+                        devStoryIds.push(dirName.toLowerCase());
+                    }
+                }
+                else if (file.endsWith('.md') && !file.includes('spec') && !file.startsWith('review')) {
                     devStoryIds.push(path.basename(file, '.md'));
                 }
             }
@@ -274,7 +295,7 @@ function loadSourceOfTruth(projectRoot) {
         let dataSpecContent = '';
         if (resolvedPath) {
             const storyDir = path.dirname(resolvedPath);
-            const uiSpecMatch = findFileRecursively(storyDir, (name) => name === 'ui-spec.md' || name === 'uiux-spec.md');
+            const uiSpecMatch = findFileRecursively(storyDir, (name) => name === 'ui-spec.md' || name === 'uiux-spec.md' || name === 'ui-ux-spec.md');
             if (uiSpecMatch)
                 uiSpecContent = fs.readFileSync(uiSpecMatch, 'utf8');
             const dataSpecMatch = findFileRecursively(storyDir, (name) => name === 'data-spec.md' || name === 'database-spec.md');

@@ -146,7 +146,7 @@ step1_discovery() {
     fi
     
     VALID_FILES+=("$file")
-  done < <(find "$PLANNING_DIR" "$STORIES_DIR" -name "*.md" -o -name "*.yaml" 2>/dev/null)
+  done < <(find -L "$PLANNING_DIR" "$STORIES_DIR" -name "*.md" -o -name "*.yaml" 2>/dev/null)
   
   success "Discovery complete: ${#VALID_FILES[@]} valid files found"
 }
@@ -170,7 +170,7 @@ step2_extraction() {
     # Extract FR ID and name (pattern: FR## — Name or FR##: Name)
     if echo "$line" | grep -qE '^[#]*\s*FR[0-9]+'; then
       FR_ID=$(echo "$line" | grep -oE 'FR[0-9]+' | head -1)
-      FR_NAME=$(echo "$line" | sed "s/.*${FR_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs)
+      FR_NAME=$(echo "$line" | sed "s/.*${FR_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs || true)
       
       if [ -n "$FR_ID" ] && [ -n "$FR_NAME" ]; then
         cypher_query "MERGE (fr:FR {id: '${FR_ID}'}) SET fr.name = '${FR_NAME}', fr.updated_at = timestamp()" > /dev/null
@@ -187,7 +187,7 @@ step2_extraction() {
     while IFS= read -r line; do
       if echo "$line" | grep -qE '^#+\s*Epic\s+[0-9]+'; then
         EPIC_ID=$(echo "$line" | grep -oE '[0-9]+' | head -1)
-        EPIC_NAME=$(echo "$line" | sed "s/.*Epic[[:space:]]*${EPIC_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs)
+        EPIC_NAME=$(echo "$line" | sed "s/.*Epic[[:space:]]*${EPIC_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs || true)
         
         cypher_query "MERGE (e:Epic {id: 'E${EPIC_ID}'}) SET e.name = '${EPIC_NAME}', e.updated_at = timestamp()" > /dev/null
         EPIC_COUNT=$((EPIC_COUNT + 1))
@@ -213,11 +213,11 @@ step2_extraction() {
   log "  Parsing story files..."
   STORY_COUNT=0
   if [ -d "$STORIES_DIR" ]; then
-    find "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
+    find -L "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
       # AC3: Accept both "Story {N}.{M}" and "S{N}.{M}" formats, normalize to S{N}.{M}
       RAW_ID=$(grep -oE '(Story[[:space:]]+|S)[0-9]+\.[0-9]+' "$story_file" | head -1 || echo "")
       STORY_ID=$(echo "$RAW_ID" | sed -E 's/^Story[[:space:]]+/S/')
-      STORY_NAME=$(head -5 "$story_file" | grep -E '^#' | head -1 | sed 's/^#*[[:space:]]*//' | xargs)
+      STORY_NAME=$(head -20 "$story_file" | grep -E '^#' | head -1 | sed 's/^#*[[:space:]]*//' | xargs || true)
       EPIC_REF=$(grep -oE 'E[0-9]+' "$story_file" | head -1 || echo "")
       
       if [ -n "$STORY_ID" ]; then
@@ -254,6 +254,18 @@ step3_mapping() {
     done < "$EPICS_FILE_PATH"
   fi
 
+  # --- Epic → Story relationships ---
+  log "  Mapping Story → Epic and FR → Story..."
+  cypher_query "
+    MATCH (e:Epic), (s:Story) WHERE s.epic_id = e.id
+    MERGE (s)-[:BELONGS_TO]->(e)
+  " > /dev/null 2>&1
+
+  cypher_query "
+    MATCH (fr:FR)-[:BELONGS_TO]->(e:Epic)<-[:BELONGS_TO]-(s:Story)
+    MERGE (fr)-[:IMPLEMENTED_BY]->(s)
+  " > /dev/null 2>&1
+
   # --- FR → Portal relationships from feature-hierarchy.md ---
   log "  Mapping FR → Portal (DISPLAYED_ON)..."
   if [ -f "$PLANNING_DIR/feature-hierarchy.md" ]; then
@@ -281,45 +293,34 @@ step3_mapping() {
   log "  Parsing Cross-Feature Dependencies → IMPACTS..."
   IMPACTS_COUNT=0
   if [ -d "$STORIES_DIR" ]; then
-    find "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
-      in_impacts=false
-      while IFS= read -r line; do
-        # Detect "## Cross-Feature Dependencies" section
-        if echo "$line" | grep -qiE '^##[[:space:]]+Cross-Feature Dependencies'; then
-          in_impacts=false  # Wait for ### Impacts sub-heading
-          continue
-        fi
-        # Detect "### Impacts" sub-section
-        if echo "$line" | grep -qiE '^###[[:space:]]+Impacts'; then
-          in_impacts=true
-          continue
-        fi
-        # Exit on next heading of same or higher level
-        if $in_impacts && echo "$line" | grep -qE '^#{1,3}[[:space:]]'; then
-          in_impacts=false
-          continue
-        fi
+    while IFS= read -r story_file; do
+      # Fast check if file has 'Impacts' heading
+      if ! grep -qiE '^###[[:space:]]+Impacts' "$story_file"; then
+        continue
+      fi
 
-        if $in_impacts && echo "$line" | grep -qE 'FR[0-9]+'; then
+      impact_lines=$(awk '
+        /^###[[:space:]]+Impacts/ {flag=1; next}
+        /^#{1,3}[[:space:]]/ && flag {flag=0; exit}
+        flag {print}
+      ' "$story_file")
+
+      if [ -z "$impact_lines" ]; then continue; fi
+
+      # Determine the source FR from the story filename (story-{epic}.{story}.md)
+      story_basename=$(basename "$story_file" .md)
+      source_fr=$(grep -oE 'FR[0-9]+' "$story_file" | head -1 || echo "")
+      if [ -z "$source_fr" ]; then continue; fi
+
+      while IFS= read -r line; do
+        if echo "$line" | grep -qE 'FR[0-9]+'; then
           # Extract all FR references on this line
           fr_refs=$(echo "$line" | grep -oE 'FR[0-9]+' | sort -u)
           # Extract reason text (after the FR ref, strip markdown bullets/dashes)
-          reason=$(echo "$line" | sed -E 's/^[[:space:]]*[-*][[:space:]]*//' | sed "s/['\"]//g" | xargs)
-
-          # Determine the source FR from the story filename (story-{epic}.{story}.md)
-          story_basename=$(basename "$story_file" .md)
-          story_num=$(echo "$story_basename" | grep -oE '[0-9]+\.[0-9]+' | head -1 || echo "")
-          # Try to find the source FR from the story's epic context
-          source_fr=$(grep -oE 'FR[0-9]+' "$story_file" | head -1 || echo "")
-
-          if [ -z "$source_fr" ]; then
-            continue
-          fi
+          reason=$(echo "$line" | sed -E 's/^[[:space:]]*[-*][[:space:]]*//' | sed "s/['\"]//g" | xargs || true)
 
           for target_fr in $fr_refs; do
-            if [ "$target_fr" = "$source_fr" ]; then
-              continue  # Skip self-references
-            fi
+            if [ "$target_fr" = "$source_fr" ]; then continue; fi
 
             # AC5: Check if target FR exists in the graph
             fr_exists=$(cypher_query "MATCH (fr:FR {id: '${target_fr}'}) RETURN count(fr)" | grep -oE '[0-9]+' | tail -1 || echo "0")
@@ -344,8 +345,8 @@ step3_mapping() {
             IMPACTS_COUNT=$((IMPACTS_COUNT + 1))
           done
         fi
-      done < "$story_file"
-    done
+      done <<< "$impact_lines"
+    done < <(find -L "$STORIES_DIR" -name "*.md" -not -path "*archive*")
   fi
   success "  Created $IMPACTS_COUNT IMPACTS relationships"
 }

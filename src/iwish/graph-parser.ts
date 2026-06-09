@@ -734,6 +734,28 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
   const nodes: FeatureGraphNode[] = [];
   const edges: FeatureGraphEdge[] = [];
   const nodeIds = new Set<string>();
+
+  // Pre-load Epics
+  const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_iwish-output', 'epics.md')
+  ];
+  const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+  if (epicsPath) {
+    const epicsContent = fs.readFileSync(epicsPath, 'utf8');
+    const lines = epicsContent.split('\n');
+    for (const line of lines) {
+      const epicMatch = line.match(/^#+\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+      if (epicMatch) {
+        const id = `epic-${epicMatch[1]}`;
+        if (!nodeIds.has(id)) {
+           nodes.push({ id, label: `Epic ${epicMatch[1]}: ${epicMatch[2].trim().replace(/\*\*/g, '')}`, group: 'Epic' });
+           nodeIds.add(id);
+        }
+      }
+    }
+  }
+
   // Locate feature-hierarchy.md
   const candidates = [
     path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
@@ -741,7 +763,7 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
   ];
   const hierarchyPath = candidates.find(p => fs.existsSync(p));
   if (!hierarchyPath) {
-    return { nodes: [], edges: [] };
+    return { nodes, edges };
   }
 
   try {
@@ -751,9 +773,9 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
     let currentFR: string | null = null;
 
     for (const line of lines) {
-      // Portal sections: ## Portal: Dashboard / ## Portal — Dashboard
-      const portalMatch = line.match(/^##\s+Portal[\s:—-]+(.+)$/i);
-      if (portalMatch) {
+      // Portal sections: ## 1. SaaS Dashboard (app.distro.vn) OR ## Portal: Dashboard
+      const portalMatch = line.match(/^##\s+(?:Portal[\s:—-]+)?(?:\d+\.\s+)?([^(\n]+)(?:\s+\(|(?:$))/i);
+      if (portalMatch && !line.includes('Overview') && !line.includes('Cross-Portal')) {
         const label = portalMatch[1].trim();
         const id = 'portal-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         if (!nodeIds.has(id)) {
@@ -764,7 +786,42 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
         continue;
       }
 
-      // FR references: ### FR01: ... / ### FR-01: ... / - FR01: ...
+      // Feature matching: - Connect & SSO Redirect (`FR7, FR43`) → `E1/S1.1` [MVP] (Free)
+      const featureMatch = line.match(/-\s+(.*?)\s+\(`?(FR[^`]+)`?\)\s*→\s*`?E(\d+)\/S(\d+\.\d+)`?/i);
+      if (featureMatch) {
+        const featureName = featureMatch[1].trim();
+        const frsString = featureMatch[2];
+        const epicNum = featureMatch[3];
+        const storyNum = featureMatch[4];
+        const storyId = `story-${storyNum}`;
+        const epicId = `epic-${epicNum}`;
+
+        // Parse FRs
+        const frNumbers = frsString.replace(/FR/g, '').split(',').map(s => s.trim());
+        for (const num of frNumbers) {
+          if (!num) continue;
+          const frId = `fr-${num}`;
+          if (!nodeIds.has(frId)) {
+             nodes.push({ id: frId, label: `FR${num}`, group: 'FR', metadata: { frNumber: num } });
+             nodeIds.add(frId);
+          }
+          currentFR = frId;
+          
+          if (currentPortal) {
+            edges.push({ from: frId, to: currentPortal, relationship: 'DISPLAYED_ON', label: 'displayed on' });
+          }
+          
+          // Connect Epic to FR directly
+          if (nodeIds.has(epicId)) {
+             edges.push({ from: epicId, to: frId, relationship: 'BELONGS_TO', label: 'implements' });
+             // Also link story to epic
+             edges.push({ from: storyId, to: epicId, relationship: 'BELONGS_TO', label: 'belongs to' });
+          }
+        }
+        continue;
+      }
+
+      // FR references (old format): ### FR01: ...
       const frMatch = line.match(/^(?:###|-)\s*FR[-_]?(\d+)[\s:—-]+(.+)$/i);
       if (frMatch) {
         const num = frMatch[1];
@@ -781,7 +838,7 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
         continue;
       }
 
-      // Epic references within hierarchy: #### Epic N: ... / - Epic N: ...
+      // Epic references within hierarchy (old format)
       const epicMatch = line.match(/^(?:####|-\s+)\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
       if (epicMatch) {
         const num = epicMatch[1];
@@ -827,7 +884,10 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
 
     // Scan story files for Cross-Feature Dependencies
     const storiesDir = path.join(projectRoot, '_iwish-output', 'stories');
-    if (fs.existsSync(storiesDir)) {
+    const newStoriesDir = path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+    const activeStoriesDir = fs.existsSync(newStoriesDir) ? newStoriesDir : (fs.existsSync(storiesDir) ? storiesDir : null);
+
+    if (activeStoriesDir) {
       const storyFiles: string[] = [];
       const walkSync = (dir: string) => {
         const files = fs.readdirSync(dir);
@@ -840,11 +900,11 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
           }
         }
       };
-      walkSync(storiesDir);
+      walkSync(activeStoriesDir);
 
       for (const filePath of storyFiles) {
         const storyContent = fs.readFileSync(filePath, 'utf8');
-        const storyId = path.basename(filePath, '.md');
+        const storyIdBase = path.basename(filePath, '.md');
 
         // Add story node if referenced
         const storyTitleMatch = storyContent.match(/^#\s+Story\s+(\d+\.\d+)[\s:—-]+(.+)$/im);
@@ -862,44 +922,40 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
           }
         }
 
-        // Find ## Cross-Feature Dependencies section
-        const depSection = storyContent.match(/##\s*Cross-Feature Dependencies([\s\S]*?)(?=\n##\s|\n---|\Z)/i);
-        if (!depSection) continue;
-        const depContent = depSection[1];
+        const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyIdBase;
 
-        // Parse IMPACTS: story-X.Y IMPACTS story-A.B
-        const impactsMatches = depContent.matchAll(/(?:IMPACTS|impacts)\s*[:\s]+\s*(?:story[-\s]?)?(\d+\.\d+)/gi);
-        for (const m of impactsMatches) {
-          const targetId = `story-${m[1]}`;
-          const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyId;
-          edges.push({ from: sourceId, to: targetId, relationship: 'IMPACTS', label: 'impacts', confidence: 0.8 });
-        }
+        // Find cross dependencies section
+        const depSectionMatch = storyContent.match(/##[^\n]*Dependencies([^\n]*\n)([\s\S]*?)(?=\n##|\n---|\Z)/i);
+        if (depSectionMatch) {
+           const depContent = depSectionMatch[2];
+           const impactsMatches = depContent.matchAll(/(?:IMPACTS|impacts)\s*[:\s]+\s*(?:story[-\s]?)?(\d+\.\d+)/gi);
+           for (const m of impactsMatches) {
+             const targetId = `story-${m[1]}`;
+             edges.push({ from: sourceId, to: targetId, relationship: 'IMPACTS', label: 'impacts', confidence: 0.8 });
+           }
 
-        // Parse CONSUMES references
-        const consumesMatches = depContent.matchAll(/(?:CONSUMES|consumes)\s*[:\s]+\s*(?:entity[-\s]?)?([A-Za-z0-9_-]+)/gi);
-        for (const m of consumesMatches) {
-          const entityId = 'entity-' + m[1].toLowerCase().replace(/[^a-z0-9]+/g, '-');
-          const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyId;
-          edges.push({ from: sourceId, to: entityId, relationship: 'CONSUMES', label: 'consumes' });
-        }
+           const consumesMatches = depContent.matchAll(/(?:CONSUMES|consumes)\s*[:\s]+\s*(?:entity[-\s]?)?([A-Za-z0-9_-]+)/gi);
+           for (const m of consumesMatches) {
+             const entityId = 'entity-' + m[1].toLowerCase().replace(/[^a-z0-9]+/g, '-');
+             edges.push({ from: sourceId, to: entityId, relationship: 'CONSUMES', label: 'consumes' });
+           }
 
-        // Parse SHARED_ENTITIES
-        const sharedMatches = depContent.matchAll(/(?:SHARED_ENTITIES?|shared_entit(?:y|ies))\s*[:\s]+\s*([A-Za-z0-9_-]+)/gi);
-        for (const m of sharedMatches) {
-          const entityLabel = m[1].trim();
-          const entityId = 'entity-' + entityLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-          if (!nodeIds.has(entityId)) {
-            nodes.push({ id: entityId, label: `Entity: ${entityLabel}`, group: 'DataEntity', metadata: { entityName: entityLabel } });
-            nodeIds.add(entityId);
-          }
-          const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyId;
-          edges.push({ from: sourceId, to: entityId, relationship: 'USES_ENTITY', label: 'shared entity' });
+           const sharedMatches = depContent.matchAll(/(?:SHARED_ENTITIES?|shared_entit(?:y|ies))\s*[:\s]+\s*([A-Za-z0-9_-]+)/gi);
+           for (const m of sharedMatches) {
+             const entityLabel = m[1].trim();
+             const entityId = 'entity-' + entityLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+             if (!nodeIds.has(entityId)) {
+               nodes.push({ id: entityId, label: `Entity: ${entityLabel}`, group: 'DataEntity', metadata: { entityName: entityLabel } });
+               nodeIds.add(entityId);
+             }
+             edges.push({ from: sourceId, to: entityId, relationship: 'USES_ENTITY', label: 'shared entity' });
+           }
         }
       }
     }
   } catch (error) {
     console.warn('Error extracting feature graph data:', error);
-    return { nodes: [], edges: [] };
+    return { nodes, edges };
   }
 
   return { nodes, edges };

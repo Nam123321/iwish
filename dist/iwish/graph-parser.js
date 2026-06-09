@@ -32,6 +32,9 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractGraphData = extractGraphData;
 exports.extractSprintData = extractSprintData;
@@ -40,10 +43,12 @@ exports.extractIdeaToPrdData = extractIdeaToPrdData;
 exports.extractCodeGraphData = extractCodeGraphData;
 exports.extractFeatureGraphData = extractFeatureGraphData;
 exports.extractEvolverData = extractEvolverData;
+exports.autoRepairSprintStatus = autoRepairSprintStatus;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
 const child_process_1 = require("child_process");
 const source_of_truth_1 = require("./source-of-truth");
+const yaml_1 = __importDefault(require("yaml"));
 function extractGraphData(projectRoot) {
     const nodes = [];
     const edges = [];
@@ -661,14 +666,34 @@ function extractFeatureGraphData(projectRoot) {
     const nodes = [];
     const edges = [];
     const nodeIds = new Set();
+    // Pre-load Epics
+    const epicsCandidates = [
+        require('path').join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+        require('path').join(projectRoot, '_iwish-output', 'epics.md')
+    ];
+    const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+    if (epicsPath) {
+        const epicsContent = fs.readFileSync(epicsPath, 'utf8');
+        const lines = epicsContent.split('\n');
+        for (const line of lines) {
+            const epicMatch = line.match(/^#+\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+            if (epicMatch) {
+                const id = `epic-${epicMatch[1]}`;
+                if (!nodeIds.has(id)) {
+                    nodes.push({ id, label: `Epic ${epicMatch[1]}: ${epicMatch[2].trim().replace(/\*\*/g, '')}`, group: 'Epic' });
+                    nodeIds.add(id);
+                }
+            }
+        }
+    }
     // Locate feature-hierarchy.md
     const candidates = [
-        path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
-        path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
+        require('path').join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
+        require('path').join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
     ];
     const hierarchyPath = candidates.find(p => fs.existsSync(p));
     if (!hierarchyPath) {
-        return { nodes: [], edges: [] };
+        return { nodes, edges };
     }
     try {
         const content = fs.readFileSync(hierarchyPath, 'utf8');
@@ -676,9 +701,9 @@ function extractFeatureGraphData(projectRoot) {
         let currentPortal = null;
         let currentFR = null;
         for (const line of lines) {
-            // Portal sections: ## Portal: Dashboard / ## Portal — Dashboard
-            const portalMatch = line.match(/^##\s+Portal[\s:—-]+(.+)$/i);
-            if (portalMatch) {
+            // Portal sections: ## 1. SaaS Dashboard (app.distro.vn) OR ## Portal: Dashboard
+            const portalMatch = line.match(/^##\s+(?:Portal[\s:—-]+)?(?:\d+\.\s+)?([^(\n]+)(?:\s+\(|(?:$))/i);
+            if (portalMatch && !line.includes('Overview') && !line.includes('Cross-Portal')) {
                 const label = portalMatch[1].trim();
                 const id = 'portal-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
                 if (!nodeIds.has(id)) {
@@ -688,7 +713,39 @@ function extractFeatureGraphData(projectRoot) {
                 currentPortal = id;
                 continue;
             }
-            // FR references: ### FR01: ... / ### FR-01: ... / - FR01: ...
+            // Feature matching: - Connect & SSO Redirect (`FR7, FR43`) → `E1/S1.1` [MVP] (Free)
+            const featureMatch = line.match(/-\s+(.*?)\s+\(`?(FR[^`]+)`?\)\s*→\s*`?E(\d+)\/S(\d+\.\d+)`?/i);
+            if (featureMatch) {
+                const featureName = featureMatch[1].trim();
+                const frsString = featureMatch[2];
+                const epicNum = featureMatch[3];
+                const storyNum = featureMatch[4];
+                const storyId = `story-${storyNum}`;
+                const epicId = `epic-${epicNum}`;
+                // Parse FRs
+                const frNumbers = frsString.replace(/FR/g, '').split(',').map(s => s.trim());
+                for (const num of frNumbers) {
+                    if (!num)
+                        continue;
+                    const frId = `fr-${num}`;
+                    if (!nodeIds.has(frId)) {
+                        nodes.push({ id: frId, label: `FR${num}`, group: 'FR', metadata: { frNumber: num } });
+                        nodeIds.add(frId);
+                    }
+                    currentFR = frId;
+                    if (currentPortal) {
+                        edges.push({ from: frId, to: currentPortal, relationship: 'DISPLAYED_ON', label: 'displayed on' });
+                    }
+                    // Connect Epic to FR directly
+                    if (nodeIds.has(epicId)) {
+                        edges.push({ from: epicId, to: frId, relationship: 'BELONGS_TO', label: 'implements' });
+                        // Also link story to epic
+                        edges.push({ from: storyId, to: epicId, relationship: 'BELONGS_TO', label: 'belongs to' });
+                    }
+                }
+                continue;
+            }
+            // FR references (old format): ### FR01: ...
             const frMatch = line.match(/^(?:###|-)\s*FR[-_]?(\d+)[\s:—-]+(.+)$/i);
             if (frMatch) {
                 const num = frMatch[1];
@@ -704,7 +761,7 @@ function extractFeatureGraphData(projectRoot) {
                 }
                 continue;
             }
-            // Epic references within hierarchy: #### Epic N: ... / - Epic N: ...
+            // Epic references within hierarchy (old format)
             const epicMatch = line.match(/^(?:####|-\s+)\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
             if (epicMatch) {
                 const num = epicMatch[1];
@@ -746,13 +803,16 @@ function extractFeatureGraphData(projectRoot) {
             }
         }
         // Scan story files for Cross-Feature Dependencies
-        const storiesDir = path.join(projectRoot, '_iwish-output', 'stories');
-        if (fs.existsSync(storiesDir)) {
+        const pathLib = require('path');
+        const storiesDir = pathLib.join(projectRoot, '_iwish-output', 'stories');
+        const newStoriesDir = pathLib.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+        const activeStoriesDir = fs.existsSync(newStoriesDir) ? newStoriesDir : (fs.existsSync(storiesDir) ? storiesDir : null);
+        if (activeStoriesDir) {
             const storyFiles = [];
             const walkSync = (dir) => {
                 const files = fs.readdirSync(dir);
                 for (const file of files) {
-                    const filepath = path.join(dir, file);
+                    const filepath = pathLib.join(dir, file);
                     if (fs.statSync(filepath).isDirectory()) {
                         walkSync(filepath);
                     }
@@ -761,10 +821,10 @@ function extractFeatureGraphData(projectRoot) {
                     }
                 }
             };
-            walkSync(storiesDir);
+            walkSync(activeStoriesDir);
             for (const filePath of storyFiles) {
                 const storyContent = fs.readFileSync(filePath, 'utf8');
-                const storyId = path.basename(filePath, '.md');
+                const storyIdBase = pathLib.basename(filePath, '.md');
                 // Add story node if referenced
                 const storyTitleMatch = storyContent.match(/^#\s+Story\s+(\d+\.\d+)[\s:—-]+(.+)$/im);
                 if (storyTitleMatch) {
@@ -780,43 +840,38 @@ function extractFeatureGraphData(projectRoot) {
                         edges.push({ from: sId, to: epicId, relationship: 'BELONGS_TO', label: 'belongs to' });
                     }
                 }
-                // Find ## Cross-Feature Dependencies section
-                const depSection = storyContent.match(/##\s*Cross-Feature Dependencies([\s\S]*?)(?=\n##\s|\n---|\Z)/i);
-                if (!depSection)
-                    continue;
-                const depContent = depSection[1];
-                // Parse IMPACTS: story-X.Y IMPACTS story-A.B
-                const impactsMatches = depContent.matchAll(/(?:IMPACTS|impacts)\s*[:\s]+\s*(?:story[-\s]?)?(\d+\.\d+)/gi);
-                for (const m of impactsMatches) {
-                    const targetId = `story-${m[1]}`;
-                    const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyId;
-                    edges.push({ from: sourceId, to: targetId, relationship: 'IMPACTS', label: 'impacts', confidence: 0.8 });
-                }
-                // Parse CONSUMES references
-                const consumesMatches = depContent.matchAll(/(?:CONSUMES|consumes)\s*[:\s]+\s*(?:entity[-\s]?)?([A-Za-z0-9_-]+)/gi);
-                for (const m of consumesMatches) {
-                    const entityId = 'entity-' + m[1].toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                    const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyId;
-                    edges.push({ from: sourceId, to: entityId, relationship: 'CONSUMES', label: 'consumes' });
-                }
-                // Parse SHARED_ENTITIES
-                const sharedMatches = depContent.matchAll(/(?:SHARED_ENTITIES?|shared_entit(?:y|ies))\s*[:\s]+\s*([A-Za-z0-9_-]+)/gi);
-                for (const m of sharedMatches) {
-                    const entityLabel = m[1].trim();
-                    const entityId = 'entity-' + entityLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                    if (!nodeIds.has(entityId)) {
-                        nodes.push({ id: entityId, label: `Entity: ${entityLabel}`, group: 'DataEntity', metadata: { entityName: entityLabel } });
-                        nodeIds.add(entityId);
+                const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyIdBase;
+                // Find cross dependencies section
+                const depSectionMatch = storyContent.match(/##[^\n]*Dependencies([^\n]*\n)([\s\S]*?)(?=\n##|\n---|\Z)/i);
+                if (depSectionMatch) {
+                    const depContent = depSectionMatch[2];
+                    const impactsMatches = depContent.matchAll(/(?:IMPACTS|impacts)\s*[:\s]+\s*(?:story[-\s]?)?(\d+\.\d+)/gi);
+                    for (const m of impactsMatches) {
+                        const targetId = `story-${m[1]}`;
+                        edges.push({ from: sourceId, to: targetId, relationship: 'IMPACTS', label: 'impacts', confidence: 0.8 });
                     }
-                    const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyId;
-                    edges.push({ from: sourceId, to: entityId, relationship: 'USES_ENTITY', label: 'shared entity' });
+                    const consumesMatches = depContent.matchAll(/(?:CONSUMES|consumes)\s*[:\s]+\s*(?:entity[-\s]?)?([A-Za-z0-9_-]+)/gi);
+                    for (const m of consumesMatches) {
+                        const entityId = 'entity-' + m[1].toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                        edges.push({ from: sourceId, to: entityId, relationship: 'CONSUMES', label: 'consumes' });
+                    }
+                    const sharedMatches = depContent.matchAll(/(?:SHARED_ENTITIES?|shared_entit(?:y|ies))\s*[:\s]+\s*([A-Za-z0-9_-]+)/gi);
+                    for (const m of sharedMatches) {
+                        const entityLabel = m[1].trim();
+                        const entityId = 'entity-' + entityLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                        if (!nodeIds.has(entityId)) {
+                            nodes.push({ id: entityId, label: `Entity: ${entityLabel}`, group: 'DataEntity', metadata: { entityName: entityLabel } });
+                            nodeIds.add(entityId);
+                        }
+                        edges.push({ from: sourceId, to: entityId, relationship: 'USES_ENTITY', label: 'shared entity' });
+                    }
                 }
             }
         }
     }
     catch (error) {
         console.warn('Error extracting feature graph data:', error);
-        return { nodes: [], edges: [] };
+        return { nodes, edges };
     }
     return { nodes, edges };
 }
@@ -836,4 +891,75 @@ function extractEvolverData(projectRoot) {
         console.warn('Error querying evolver data:', error);
         return {};
     }
+}
+function autoRepairSprintStatus(projectRoot) {
+    const epicsCandidates = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+        path.join(projectRoot, '_bmad-output', 'epics.md'),
+        path.join(projectRoot, 'docs', 'epics.md')
+    ];
+    const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+    if (!epicsPath) {
+        return;
+    }
+    const epicsContent = fs.readFileSync(epicsPath, 'utf8');
+    const epicsList = [];
+    let currentEpic = null;
+    const lines = epicsContent.split('\n');
+    for (const line of lines) {
+        const epicMatch = line.match(/^#+\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+        if (epicMatch) {
+            currentEpic = {
+                id: `epic-${epicMatch[1]}`,
+                title: epicMatch[2].trim().replace(/\*\*/g, ''),
+                status: 'not_started',
+                stories: []
+            };
+            epicsList.push(currentEpic);
+            continue;
+        }
+        const storyMatch = line.match(/^#+\s*Story\s+(\d+\.\d+)[\s:—-]+(.+)$/i);
+        if (storyMatch && currentEpic) {
+            currentEpic.stories.push({
+                id: `story-${storyMatch[1]}`,
+                title: storyMatch[2].trim().replace(/\*\*/g, ''),
+                status: 'not_started'
+            });
+        }
+    }
+    const sprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+    let existingData = {};
+    if (fs.existsSync(sprintPath)) {
+        try {
+            const existingYaml = fs.readFileSync(sprintPath, 'utf8');
+            existingData = yaml_1.default.parse(existingYaml) || {};
+        }
+        catch (e) { }
+    }
+    const outputData = {
+        sprint_name: existingData.sprint_name || 'Auto-Repaired Sprint',
+        status: existingData.status || 'planning',
+        start_date: existingData.start_date || new Date().toISOString().split('T')[0],
+        epics: epicsList
+    };
+    // Preserve existing statuses if possible
+    if (Array.isArray(existingData.epics)) {
+        for (const newEpic of outputData.epics) {
+            const oldEpic = existingData.epics.find((e) => e.id === newEpic.id);
+            if (oldEpic) {
+                newEpic.status = oldEpic.status || 'not_started';
+                for (const newStory of newEpic.stories) {
+                    const oldStory = Array.isArray(oldEpic.stories) ? oldEpic.stories.find((s) => s.id === newStory.id) : null;
+                    if (oldStory) {
+                        newStory.status = oldStory.status || 'not_started';
+                    }
+                }
+            }
+        }
+    }
+    const targetDir = path.dirname(sprintPath);
+    if (!fs.existsSync(targetDir)) {
+        fs.mkdirpSync(targetDir);
+    }
+    fs.writeFileSync(sprintPath, yaml_1.default.stringify(outputData));
 }
