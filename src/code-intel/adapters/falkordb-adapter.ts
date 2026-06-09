@@ -51,7 +51,7 @@ export class FalkorDBAdapter implements CodeGraphAdapter {
       const nodesResponse = await client.sendCommand([
         'GRAPH.RO_QUERY', 
         graphName, 
-        'MATCH (n) RETURN n.id, labels(n)[0], n.path, n.type'
+        'MATCH (n) RETURN ID(n), labels(n)[0], n.path, n.type'
       ]) as any;
 
       if (nodesResponse && nodesResponse[1]) {
@@ -70,7 +70,7 @@ export class FalkorDBAdapter implements CodeGraphAdapter {
       const edgesResponse = await client.sendCommand([
         'GRAPH.RO_QUERY', 
         graphName, 
-        'MATCH (a)-[r]->(b) RETURN a.id, b.id, type(r)'
+        'MATCH (a)-[r]->(b) RETURN ID(a), ID(b), type(r)'
       ]) as any;
 
       if (edgesResponse && edgesResponse[1]) {
