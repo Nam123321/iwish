@@ -18,7 +18,7 @@ description: Index codebase into a knowledge graph using CodeGraphContext (CGC) 
 |-----------|----------------------------------|---------------------|
 | **Install** | `pip3 install codegraphcontext` | `npm install -g gitnexus` |
 | **Backend** | FalkorDB (Docker) hoặc KùzuDB | LadybugDB (built-in) |
-| **Index** | `cgc index .` | `npx gitnexus analyze` |
+| **Index** | `FALKORDB_PORT=<PORT> cgc index .` | `npx gitnexus analyze` |
 | **MCP Tools** | `find_callers`, `find_callees`, `find_call_chain`, `search`, `get_file_symbols`, `add_code_to_graph` | `context`, `impact`, `detect_changes`, `query`, `cypher` |
 | **Auto-watch** | ✅ `ENABLE_AUTO_WATCH=true` (watchdog) | ❌ Manual re-index |
 | **IGNORE_DIRS** | ⚠️ CRITICAL — phải sync với `.gitignore` | Tự động từ `.gitignore` |
@@ -47,9 +47,19 @@ description: Index codebase into a knowledge graph using CodeGraphContext (CGC) 
 bash .agent/skills/magika-binary-filter/scripts/magika-filter.sh . .gitignore
 ```
 
+### Step A0.5: Isolate FalkorDB Connection (CRITICAL MULTI-TENANT RULE)
+> [!WARNING]
+> **KHÔNG BAO GIỜ** chạy `cgc index` trực tiếp mà không khai báo cấu hình. Mặc định `cgc` sẽ đọc tệp cấu hình toàn cục tại `~/.codegraphcontext/.env` và ghi đè/trộn lẫn dữ liệu vào database của dự án khác (ví dụ Light DMS).
+
+Bạn BẮT BUỘC phải thực hiện cách ly database cho dự án hiện tại bằng một trong hai cách:
+1. **Tạo `.env` cục bộ**: Tạo tệp `.env` tại root của dự án, khai báo rõ `FALKORDB_PORT=6383` (chỉ định đúng cổng của container FalkorDB dành riêng cho dự án này).
+2. **Truyền biến môi trường trực tiếp (Inline Env)**: Chạy lệnh `cgc index` với tiền tố biến môi trường.
+
 ### Step A1: Index the Codebase
 ```bash
-cgc index --force .
+# Khuyến nghị chạy bằng Inline Env Variables để đảm bảo tính tuyệt đối:
+FALKORDB_PORT=<DEDICATED_PORT> cgc index --force .
+# Ví dụ: FALKORDB_PORT=6383 cgc index --force .
 ```
 
 > [!WARNING]
@@ -180,7 +190,7 @@ impact({target: "AuthGuard", direction: "downstream", maxDepth: 2})
 |-------|--------|-------|---------|
 | Layer 1 | `ENABLE_AUTO_WATCH=true` (watchdog) | System (automatic) | Realtime — khi file thay đổi |
 | Layer 2 | `add_code_to_graph("<file>")` per file | **dev-agent** (Dev Agent) | Cuối `/dev-story` và `/fix-bug` |
-| Layer 3 | `cgc index --force .` full re-index | **Master Roshi** (SM) | Đầu sprint (`/sprint-planning`) và cuối epic (`/retrospective`) |
+| Layer 3 | `FALKORDB_PORT=<PORT> cgc index --force .` full re-index | **Master Roshi** (SM) | Đầu sprint (`/sprint-planning`) và cuối epic (`/retrospective`) |
 | IGNORE_DIRS sync | `sync-ignore-dirs.sh --check` | **Master Roshi** (SM) | Đầu mỗi sprint |
 
 ---
@@ -193,7 +203,7 @@ impact({target: "AuthGuard", direction: "downstream", maxDepth: 2})
 | Sau thêm modules/packages mới | Both | ✅ Nên chạy |
 | Đầu mỗi sprint | CGC | ✅ Bắt buộc (via `/sprint-planning` Step 5b) |
 | Sau epic hoàn thành | CGC | ✅ Bắt buộc (via `/retrospective` Step 7c) |
-| Graph DB bị corrupt | CGC | `cgc clean` rồi `cgc index` |
+| Graph DB bị corrupt | CGC | `cgc clean` rồi `FALKORDB_PORT=<PORT> cgc index` |
 | `.gitnexus/` bị xóa | GitNexus | `npx gitnexus analyze` |
 
 ---
