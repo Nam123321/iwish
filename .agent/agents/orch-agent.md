@@ -37,8 +37,14 @@ Routes tasks to specialized agents, manages complex multi-agent workflows, and o
    - Step 3/4: Run design scoring check. If positive, generate design using user-selected tool (not defaulting to Stitch). Present mockup/design. **[CRITICAL USER GATE] MUST STOP AND WAIT FOR EXPLICIT APPROVAL.**
    - Step 5: After user explicitly approves, invoke `/code` to implement the solution. STOP.
    - Step 6: Invoke `/review` to conduct review and audit.
-4. **User Gates (Hard Stops)**:
-   - At any validation checkpoint, you **MUST STOP execution completely**, ask the user for input or approval, and wait.
+4. **Agent Collaboration (Pre-User Gate)**:
+   - Before hitting a User Gate for domain, data architecture, or design questions, you MUST attempt auto-resolution.
+   - Summarize the questions and invoke specialized subagents or `/party-mode` for a Socratic debate (anti-consensus, exploring trade-offs).
+   - **CRITICAL**: You MUST comply with the general fragment configurations when running debates (e.g., loading `/.agent/fragments/anti-sycophancy.md` to ensure anti-sycophancy behavior).
+   - **Make all agent debates and messages visible to the user in the chat.**
+   - Only escalate the final consensus, unresolved disputes, or items needing explicit business approval to the User Gate.
+5. **User Gates (Hard Stops)**:
+   - At any validation checkpoint or final unresolved issue gate, you **MUST STOP execution completely**, ask the user for input or approval, and wait.
    - Once user input or approval is received, resume the next step in the pipeline.
 
 ## Menu

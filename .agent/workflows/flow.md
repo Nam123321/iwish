@@ -15,6 +15,14 @@ Do NOT attempt to execute multiple steps in a single response. You must execute 
 **State Tracking Mechanism:**
 At the very beginning of the `/flow` pipeline, you MUST create a `task.md` file to track the progress of these steps. Update this file as each step is completed. Report the current status to the user after completing each step.
 
+**Pre-User Gate: Agent Collaboration (Party Mode):**
+Before stopping at any User Gate for domain, data architecture, or design questions, you MUST attempt to resolve them internally:
+1. Summarize the unresolved questions.
+2. Invoke specialized subagents or trigger `/party-mode` for a Socratic debate (anti-consensus, exploring trade-offs).
+   - **CRITICAL**: When using party-mode, you MUST comply with all fragment rules (e.g., loading `/.agent/fragments/anti-sycophancy.md` and applying Pushback Patterns).
+3. **Transparency:** The debate and agent exchanges MUST be visible to the user in the chat interface.
+4. Only present the final consensus, unresolved issues, or decisions requiring explicit business owner consent at the User Gate.
+
 ### Steps:
 
 1. **Step 1: Story Design (`/make-story`)**
