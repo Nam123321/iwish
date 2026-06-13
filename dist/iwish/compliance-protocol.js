@@ -42,6 +42,7 @@ exports.appendAuditEntry = appendAuditEntry;
 exports.queryAuditTrail = queryAuditTrail;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
+const child_process_1 = require("child_process");
 const constants_1 = require("./constants");
 const routing_profile_1 = require("./routing-profile");
 // ---------------------------------------------------------------------------
@@ -225,6 +226,26 @@ function getWorkflowSchema(workflowId) {
             ],
             minQaScore: 8.5,
         },
+        'create-ui-spec': {
+            workflowId: 'create-ui-spec',
+            requiredSections: [
+                'Component Hierarchy',
+                'Responsive Layout',
+                'Design Tokens',
+                'Design Consultation Report',
+            ],
+            minQaScore: 8.5,
+        },
+        'make-ui-spec': {
+            workflowId: 'make-ui-spec',
+            requiredSections: [
+                'Component Hierarchy',
+                'Responsive Layout',
+                'Design Tokens',
+                'Design Consultation Report',
+            ],
+            minQaScore: 8.5,
+        },
         'dev-story': {
             workflowId: 'dev-story',
             requiredSections: [
@@ -269,6 +290,46 @@ function getWorkflowSchema(workflowId) {
     };
 }
 /**
+ * Helper function to locate the project root directory
+ */
+function getProjectRoot() {
+    let dir = process.cwd();
+    while (dir !== path.parse(dir).root) {
+        if (fs.existsSync(path.join(dir, '.agent')) || fs.existsSync(path.join(dir, 'package.json'))) {
+            return dir;
+        }
+        dir = path.dirname(dir);
+    }
+    return process.cwd();
+}
+function findDesignMdRecursive(dir, depth = 0) {
+    if (depth > 4)
+        return null;
+    if (!fs.existsSync(dir))
+        return null;
+    try {
+        const entries = fs.readdirSync(dir);
+        for (const entry of entries) {
+            if (entry.startsWith('.') || entry === 'node_modules')
+                continue;
+            const fullPath = path.join(dir, entry);
+            const stat = fs.statSync(fullPath);
+            if (stat.isDirectory()) {
+                const found = findDesignMdRecursive(fullPath, depth + 1);
+                if (found)
+                    return found;
+            }
+            else if (entry.toLowerCase() === 'design.md') {
+                return fullPath;
+            }
+        }
+    }
+    catch (e) {
+        // ignore
+    }
+    return null;
+}
+/**
  * Validate a sub-agent's output against the expected workflow schema.
  *
  * Checks that all required sections are present in the output text
@@ -301,7 +362,37 @@ function validateWorkflowOutput(workflowId, output) {
             qaScorePassed = false;
         }
     }
-    const valid = missingSections.length === 0 && qaScorePassed;
+    // Check design compliance if workflow is a UI spec
+    let designCompliancePassed = true;
+    let designComplianceDetails = '';
+    const isUiSpec = ['create-ui-spec', 'make-ui-spec'].includes(workflowId.replace(/^\//, '').toLowerCase());
+    if (isUiSpec) {
+        const root = getProjectRoot();
+        const designMdPath = findDesignMdRecursive(root);
+        if (designMdPath) {
+            const tempSpecDir = path.join(root, '_iwish-output', 'temp');
+            fs.ensureDirSync(tempSpecDir);
+            const tempSpecPath = path.join(tempSpecDir, 'temp-ui-spec.md');
+            fs.writeFileSync(tempSpecPath, output, 'utf8');
+            const scannerPath = path.join(root, '.agent', 'scripts', 'design-compliance-scanner.js');
+            if (fs.existsSync(scannerPath)) {
+                try {
+                    (0, child_process_1.execSync)(`node "${scannerPath}" --spec "${tempSpecPath}" --design "${designMdPath}"`, { stdio: 'pipe' });
+                }
+                catch (error) {
+                    designCompliancePassed = false;
+                    designComplianceDetails = error.stdout ? error.stdout.toString() : 'Design compliance check failed.';
+                }
+                finally {
+                    try {
+                        fs.unlinkSync(tempSpecPath);
+                    }
+                    catch (e) { }
+                }
+            }
+        }
+    }
+    const valid = missingSections.length === 0 && qaScorePassed && designCompliancePassed;
     let details;
     if (valid) {
         details = `Output validation PASSED for workflow "${workflowId}". ` +
@@ -319,6 +410,9 @@ function validateWorkflowOutput(workflowId, output) {
             issues.push(qaScoreFound !== null
                 ? `QA Score ${qaScoreFound}/10 is below minimum ${schema.minQaScore}/10`
                 : `QA Scorecard score not found in output`);
+        }
+        if (!designCompliancePassed) {
+            issues.push(`Design Compliance violations:\n${designComplianceDetails}`);
         }
         details = `Output validation FAILED for workflow "${workflowId}". Issues: ${issues.join('; ')}.`;
     }

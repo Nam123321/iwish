@@ -225,6 +225,52 @@ class SwarmStateBoardManager {
     }
 }
 exports.SwarmStateBoardManager = SwarmStateBoardManager;
+/**
+ * Helper to recursively find a DESIGN.md file in the workspace
+ */
+function findDesignMdRecursive(dir, depth = 0) {
+    if (depth > 4)
+        return null;
+    if (!fs.existsSync(dir))
+        return null;
+    try {
+        const entries = fs.readdirSync(dir);
+        for (const entry of entries) {
+            if (entry.startsWith('.') || entry === 'node_modules')
+                continue;
+            const fullPath = path.join(dir, entry);
+            const stat = fs.statSync(fullPath);
+            if (stat.isDirectory()) {
+                const found = findDesignMdRecursive(fullPath, depth + 1);
+                if (found)
+                    return found;
+            }
+            else if (entry.toLowerCase() === 'design.md') {
+                return fullPath;
+            }
+        }
+    }
+    catch (e) {
+        // ignore
+    }
+    return null;
+}
+/**
+ * Extracts design token snippet from a DESIGN.md file
+ */
+function getDesignTokensSnippet(designMdPath) {
+    try {
+        const content = fs.readFileSync(designMdPath, 'utf8');
+        const colorSectionMatch = content.match(/## 🎨[\s\S]*?(?:##|$)/i);
+        if (colorSectionMatch) {
+            return colorSectionMatch[0].trim();
+        }
+        return content.substring(0, 2000).trim();
+    }
+    catch (e) {
+        return 'Could not read Design System tokens.';
+    }
+}
 // ---------------------------------------------------------------------------
 // Task 2: buildSubagentPrompt — Persona & Workflow Injection (AC2)
 // ---------------------------------------------------------------------------
@@ -256,6 +302,23 @@ function buildSubagentPrompt(storyId, epicId, projectRoot) {
     if (fs.existsSync(personaPath)) {
         personaContent = fs.readFileSync(personaPath, 'utf8');
     }
+    // Find Design System constraints
+    const designMdPath = findDesignMdRecursive(projectRoot);
+    let designConstraintSection = '';
+    if (designMdPath) {
+        const relativeDesignPath = path.relative(projectRoot, designMdPath);
+        const designSnippet = getDesignTokensSnippet(designMdPath);
+        designConstraintSection = `
+### Active Design System Constraints (MANDATORY)
+You MUST strictly follow the design guidelines and color tokens defined in the project's Master Design System at: \`${relativeDesignPath}\`.
+Using default I-Wish colors (such as Electric Violet \`#7C3AED\`) is strictly prohibited unless specifically permitted.
+Here is the design system specification:
+
+\`\`\`markdown
+${designSnippet}
+\`\`\`
+`;
+    }
     // Construct compliant prompt (follows Compliance Protocol patterns)
     const prompt = `## Mission: Implement Story ${storyNum} — ${storyTitle}
 
@@ -271,6 +334,7 @@ You MUST follow the I-Wish development workflow:
 5. Verify compilation: \`npx tsc --noEmit\`
 6. Self-review against all ACs
 7. Generate QA Simulator Guardian Scorecard
+${designConstraintSection}
 
 ### Write-Lock Rules
 - You may ONLY write to files in your assigned module scope

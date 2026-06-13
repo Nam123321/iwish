@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import YAML from 'yaml';
+import { execSync } from 'child_process';
 
 import { I_WISH_OUTPUT_DIR } from './constants';
 import { loadRoutingProfiles, RoutingProfile } from './routing-profile';
@@ -317,6 +318,26 @@ export function getWorkflowSchema(workflowId: string): WorkflowOutputSchema {
       ],
       minQaScore: 8.5,
     },
+    'create-ui-spec': {
+      workflowId: 'create-ui-spec',
+      requiredSections: [
+        'Component Hierarchy',
+        'Responsive Layout',
+        'Design Tokens',
+        'Design Consultation Report',
+      ],
+      minQaScore: 8.5,
+    },
+    'make-ui-spec': {
+      workflowId: 'make-ui-spec',
+      requiredSections: [
+        'Component Hierarchy',
+        'Responsive Layout',
+        'Design Tokens',
+        'Design Consultation Report',
+      ],
+      minQaScore: 8.5,
+    },
     'dev-story': {
       workflowId: 'dev-story',
       requiredSections: [
@@ -363,6 +384,42 @@ export function getWorkflowSchema(workflowId: string): WorkflowOutputSchema {
 }
 
 /**
+ * Helper function to locate the project root directory
+ */
+function getProjectRoot(): string {
+  let dir = process.cwd();
+  while (dir !== path.parse(dir).root) {
+    if (fs.existsSync(path.join(dir, '.agent')) || fs.existsSync(path.join(dir, 'package.json'))) {
+      return dir;
+    }
+    dir = path.dirname(dir);
+  }
+  return process.cwd();
+}
+
+function findDesignMdRecursive(dir: string, depth = 0): string | null {
+  if (depth > 4) return null;
+  if (!fs.existsSync(dir)) return null;
+  try {
+    const entries = fs.readdirSync(dir);
+    for (const entry of entries) {
+      if (entry.startsWith('.') || entry === 'node_modules') continue;
+      const fullPath = path.join(dir, entry);
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        const found = findDesignMdRecursive(fullPath, depth + 1);
+        if (found) return found;
+      } else if (entry.toLowerCase() === 'design.md') {
+        return fullPath;
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+/**
  * Validate a sub-agent's output against the expected workflow schema.
  *
  * Checks that all required sections are present in the output text
@@ -398,7 +455,37 @@ export function validateWorkflowOutput(workflowId: string, output: string): Outp
     }
   }
 
-  const valid = missingSections.length === 0 && qaScorePassed;
+  // Check design compliance if workflow is a UI spec
+  let designCompliancePassed = true;
+  let designComplianceDetails = '';
+
+  const isUiSpec = ['create-ui-spec', 'make-ui-spec'].includes(workflowId.replace(/^\//, '').toLowerCase());
+  if (isUiSpec) {
+    const root = getProjectRoot();
+    const designMdPath = findDesignMdRecursive(root);
+    if (designMdPath) {
+      const tempSpecDir = path.join(root, '_iwish-output', 'temp');
+      fs.ensureDirSync(tempSpecDir);
+      const tempSpecPath = path.join(tempSpecDir, 'temp-ui-spec.md');
+      fs.writeFileSync(tempSpecPath, output, 'utf8');
+
+      const scannerPath = path.join(root, '.agent', 'scripts', 'design-compliance-scanner.js');
+      if (fs.existsSync(scannerPath)) {
+        try {
+          execSync(`node "${scannerPath}" --spec "${tempSpecPath}" --design "${designMdPath}"`, { stdio: 'pipe' });
+        } catch (error: any) {
+          designCompliancePassed = false;
+          designComplianceDetails = error.stdout ? error.stdout.toString() : 'Design compliance check failed.';
+        } finally {
+          try {
+            fs.unlinkSync(tempSpecPath);
+          } catch (e) {}
+        }
+      }
+    }
+  }
+
+  const valid = missingSections.length === 0 && qaScorePassed && designCompliancePassed;
 
   let details: string;
   if (valid) {
@@ -418,6 +505,9 @@ export function validateWorkflowOutput(workflowId: string, output: string): Outp
           ? `QA Score ${qaScoreFound}/10 is below minimum ${schema.minQaScore}/10`
           : `QA Scorecard score not found in output`
       );
+    }
+    if (!designCompliancePassed) {
+      issues.push(`Design Compliance violations:\n${designComplianceDetails}`);
     }
     details = `Output validation FAILED for workflow "${workflowId}". Issues: ${issues.join('; ')}.`;
   }
