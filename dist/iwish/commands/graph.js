@@ -279,12 +279,77 @@ function registerGraphCommands(program, getProjectRoot, addSharedDirectoryOption
         report.push(`📂 Output directory: ${path.relative(projectRoot, outputDir)}`);
         // Step 2: Check prerequisites
         console.log(chalk_1.default.cyan('Step 1: Checking prerequisites...'));
+        // Helper to find a file matching pattern recursively in a dir (excluding node_modules, .git, drafts, archive, etc.)
+        const findFile = (dir, pattern) => {
+            if (!fs.existsSync(dir))
+                return null;
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                    if (entry.name !== 'node_modules' &&
+                        !entry.name.startsWith('.') &&
+                        entry.name !== 'scratch' &&
+                        entry.name !== 'archive' &&
+                        entry.name !== 'templates' &&
+                        entry.name !== 'drafts') {
+                        const found = findFile(fullPath, pattern);
+                        if (found)
+                            return found;
+                    }
+                }
+                else if (entry.name.endsWith('.md') && pattern.test(entry.name)) {
+                    return fullPath;
+                }
+            }
+            return null;
+        };
+        // Stories directory finder
+        const findStoriesDir = (base) => {
+            // Standard candidates first
+            const standard = path.join(base, 'stories');
+            if (fs.existsSync(standard))
+                return standard;
+            const deepPath = path.join(base, '3. Development', '1. Epic & Story');
+            if (fs.existsSync(deepPath))
+                return deepPath;
+            // Helper to find directory
+            const findDir = (dir) => {
+                if (!fs.existsSync(dir))
+                    return null;
+                const entries = fs.readdirSync(dir, { withFileTypes: true });
+                for (const entry of entries) {
+                    const fullPath = path.join(dir, entry.name);
+                    if (entry.isDirectory()) {
+                        if (entry.name === 'stories' || entry.name === 'Epic & Story') {
+                            return fullPath;
+                        }
+                        if (entry.name !== 'node_modules' &&
+                            !entry.name.startsWith('.') &&
+                            entry.name !== 'scratch' &&
+                            entry.name !== 'archive' &&
+                            entry.name !== 'templates' &&
+                            entry.name !== 'drafts') {
+                            const found = findDir(fullPath);
+                            if (found)
+                                return found;
+                        }
+                    }
+                }
+                return null;
+            };
+            return findDir(base) || base; // Fallback to base
+        };
         const epicsCandidates = [
             path.join(outputDir, '2. Product Planning', '2.4. epics-and-stories.md'),
             path.join(planningDir, 'epics.md'),
         ];
-        const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
-        const storiesDir = path.join(planningDir, 'stories');
+        let epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+        if (!epicsPath) {
+            epicsPath = findFile(outputDir, /^epics(-and-stories|-list)?\.md$/i) ||
+                findFile(outputDir, /epics.*\.md$/i) || undefined;
+        }
+        const storiesDir = findStoriesDir(outputDir);
         if (!epicsPath) {
             console.error(chalk_1.default.red('❌ epics file not found. Run /create-epics-and-stories first.'));
             hasErrors = true;
@@ -296,9 +361,14 @@ function registerGraphCommands(program, getProjectRoot, addSharedDirectoryOption
         console.log(chalk_1.default.cyan('\nStep 2: Checking feature-hierarchy.md...'));
         const hierarchyCandidates = [
             path.join(outputDir, '2. Product Planning', '2.5. feature-hierarchy.md'),
+            path.join(outputDir, '2. Product Planning', '2.8. feature-hierarchy.md'),
             path.join(planningDir, 'feature-hierarchy.md'),
         ];
-        const hierarchyPath = hierarchyCandidates.find(p => fs.existsSync(p));
+        let hierarchyPath = hierarchyCandidates.find(p => fs.existsSync(p));
+        if (!hierarchyPath) {
+            hierarchyPath = findFile(outputDir, /^feature-hierarchy\.md$/i) ||
+                findFile(outputDir, /hierarchy\.md$/i) || undefined;
+        }
         if (hierarchyPath) {
             const stat = fs.statSync(hierarchyPath);
             console.log(chalk_1.default.green(`  ✓ feature-hierarchy.md exists (${stat.size} bytes)`));

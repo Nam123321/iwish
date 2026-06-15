@@ -80,7 +80,7 @@ Based on what is missing:
 
 After epics and stories exist (from Step 5), check for and generate the feature hierarchy:
 
-- Check if `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` exists
+- Check if `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` (or dynamic fallback like `2.8. feature-hierarchy.md`) exists
 - If MISSING: Run `iwish featuregraph-retrofit` to assess the gap, then ask the Architect Agent to generate feature-hierarchy.md from PRD + Architecture + Epics using the template at `templates/library/code-intelligence-pack/featuregraph/feature-hierarchy-template.md`
 - If EXISTS: Validate it is not stale (compare FR count with PRD)
 - Optionally run `iwish featuregraph-index` if FalkorDB is configured (from Step 3 graph setup)

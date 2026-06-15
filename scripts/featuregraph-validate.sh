@@ -10,17 +10,83 @@ FALKORDB_HOST="${FALKORDB_HOST:-localhost}"
 FALKORDB_PORT="${FALKORDB_PORT:-6379}"
 GRAPH_NAME="featuregraph"
 PROJECT_ROOT="${1:-.}"
-PLANNING_DIR="${PROJECT_ROOT}/_bmad-output/planning-artifacts"
-REVIEW_QUEUE="${PROJECT_ROOT}/_bmad-output/featuregraph-review-queue.yaml"
 
-# Epics file: canonical path first, then fallback
-if [ -f "${PROJECT_ROOT}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md" ]; then
-  EPICS_FILE_PATH="${PROJECT_ROOT}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md"
-elif [ -f "${PLANNING_DIR}/epics.md" ]; then
-  EPICS_FILE_PATH="${PLANNING_DIR}/epics.md"
-else
-  EPICS_FILE_PATH=""
-fi
+# --- Path Resolution (AC1): _iwish-output/ first, _bmad-output/ fallback ---
+resolve_paths() {
+  if [ -d "${PROJECT_ROOT}/_iwish-output" ]; then
+    local BASE="${PROJECT_ROOT}/_iwish-output"
+  elif [ -d "${PROJECT_ROOT}/_bmad-output" ]; then
+    local BASE="${PROJECT_ROOT}/_bmad-output"
+  else
+    echo "No _iwish-output/ or _bmad-output/ directory found at ${PROJECT_ROOT}"
+    exit 1
+  fi
+
+  # Planning artifacts: check for planning-artifacts/ subdirectory, then base
+  if [ -d "${BASE}/planning-artifacts" ]; then
+    PLANNING_DIR="${BASE}/planning-artifacts"
+  else
+    PLANNING_DIR="${BASE}"
+  fi
+
+  # Stories directory: check standard path first, then custom path, then find
+  if [ -d "${BASE}/stories" ]; then
+    STORIES_DIR="${BASE}/stories"
+  elif [ -d "${BASE}/3. Development/1. Epic & Story" ]; then
+    STORIES_DIR="${BASE}/3. Development/1. Epic & Story"
+  else
+    # Dynamic find for any directory named "stories" or containing "Epic & Story"
+    local FOUND_STORIES
+    FOUND_STORIES=$(find "${BASE}" -type d \( -name "stories" -o -name "*Epic & Story*" \) -print -quit 2>/dev/null || true)
+    if [ -n "$FOUND_STORIES" ]; then
+      STORIES_DIR="$FOUND_STORIES"
+    else
+      STORIES_DIR="${BASE}"
+    fi
+  fi
+
+  REVIEW_QUEUE="${BASE}/featuregraph-review-queue.yaml"
+
+  # PRD Path: canonical first, then custom, then fallback, then search
+  if [ -f "${PLANNING_DIR}/prd.md" ]; then
+    PRD_PATH="${PLANNING_DIR}/prd.md"
+  elif [ -f "${BASE}/2. Product Planning/2.1. product-brief-or-prd.md" ]; then
+    PRD_PATH="${BASE}/2. Product Planning/2.1. product-brief-or-prd.md"
+  else
+    # Dynamic search for any file containing prd or product-brief, excluding templates/archives
+    local FOUND_PRD
+    FOUND_PRD=$(find "${BASE}" -type f \( -name "*prd*.md" -o -name "*product-brief*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_PRD" ]; then
+      PRD_PATH="$FOUND_PRD"
+    else
+      PRD_PATH="${PLANNING_DIR}/prd.md" # ultimate fallback
+    fi
+  fi
+
+  # Epics file: canonical path first, then fallback
+  if [ -f "${BASE}/2. Product Planning/2.4. epics-and-stories.md" ]; then
+    EPICS_FILE_PATH="${BASE}/2. Product Planning/2.4. epics-and-stories.md"
+  elif [ -f "${PLANNING_DIR}/epics.md" ]; then
+    EPICS_FILE_PATH="${PLANNING_DIR}/epics.md"
+  else
+    # Dynamic find for epics file
+    local FOUND_EPICS
+    FOUND_EPICS=$(find "${BASE}" -type f \( -name "*epics-and-stories*.md" -o -name "*epics*.md" -o -name "*epics-list*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_EPICS" ]; then
+      EPICS_FILE_PATH="$FOUND_EPICS"
+    else
+      EPICS_FILE_PATH=""
+    fi
+  fi
+}
+
+PLANNING_DIR=""
+REVIEW_QUEUE=""
+EPICS_FILE_PATH=""
+PRD_PATH=""
+STORIES_DIR=""
+
+resolve_paths
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -97,7 +163,7 @@ echo -e "\n${YELLOW}=== LỚP 2: Data Cross-Check ===${NC}"
 # 2a. FR Count Match
 echo -n "  FR count: Graph vs PRD... "
 GRAPH_FR=$(cypher_query "MATCH (fr:FR) RETURN count(fr) AS c" | grep -oE '[0-9]+' | tail -1 || echo "0")
-PRD_FR=$(grep -cE '^\s*#{1,4}\s*FR[0-9]+' "$PLANNING_DIR/prd.md" 2>/dev/null || echo "0")
+PRD_FR=$(grep -cE '^\s*#{1,4}\s*FR[0-9]+' "$PRD_PATH" 2>/dev/null || echo "0")
 if [ "$GRAPH_FR" = "$PRD_FR" ]; then
   echo -e "${GREEN}✅ Match ($GRAPH_FR)${NC}"
 else

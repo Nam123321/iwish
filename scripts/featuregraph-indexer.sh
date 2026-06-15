@@ -36,40 +36,87 @@ resolve_paths() {
     PLANNING_DIR="${BASE}"
   fi
 
-  # Stories directory
+  # Stories directory: check standard path first, then custom path, then find
   if [ -d "${BASE}/stories" ]; then
     STORIES_DIR="${BASE}/stories"
+  elif [ -d "${BASE}/3. Development/1. Epic & Story" ]; then
+    STORIES_DIR="${BASE}/3. Development/1. Epic & Story"
   else
-    STORIES_DIR="${BASE}"
+    # Dynamic find for any directory named "stories" or containing "Epic & Story"
+    local FOUND_STORIES
+    FOUND_STORIES=$(find "${BASE}" -type d \( -name "stories" -o -name "*Epic & Story*" \) -print -quit 2>/dev/null || true)
+    if [ -n "$FOUND_STORIES" ]; then
+      STORIES_DIR="$FOUND_STORIES"
+    else
+      STORIES_DIR="${BASE}"
+    fi
   fi
 
   OUTPUT_LOG="${BASE}/featuregraph-index.log"
   REVIEW_QUEUE="${BASE}/featuregraph-review-queue.yaml"
 
-  # Feature Hierarchy: canonical path first, then fallback
+  # PRD Path: canonical first, then custom, then fallback, then search
+  if [ -f "${PLANNING_DIR}/prd.md" ]; then
+    PRD_PATH="${PLANNING_DIR}/prd.md"
+  elif [ -f "${BASE}/2. Product Planning/2.1. product-brief-or-prd.md" ]; then
+    PRD_PATH="${BASE}/2. Product Planning/2.1. product-brief-or-prd.md"
+  else
+    # Dynamic search for any file containing prd or product-brief, excluding templates/archives
+    local FOUND_PRD
+    FOUND_PRD=$(find "${BASE}" -type f \( -name "*prd*.md" -o -name "*product-brief*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_PRD" ]; then
+      PRD_PATH="$FOUND_PRD"
+    else
+      PRD_PATH="${PLANNING_DIR}/prd.md" # ultimate fallback
+    fi
+  fi
+
+  # Feature Hierarchy: canonical path first, then custom, then fallback
   if [ -f "${BASE}/2. Product Planning/2.5. feature-hierarchy.md" ]; then
     FEATURE_HIERARCHY_PATH="${BASE}/2. Product Planning/2.5. feature-hierarchy.md"
+  elif [ -f "${BASE}/2. Product Planning/2.8. feature-hierarchy.md" ]; then
+    FEATURE_HIERARCHY_PATH="${BASE}/2. Product Planning/2.8. feature-hierarchy.md"
   elif [ -f "${PLANNING_DIR}/feature-hierarchy.md" ]; then
     FEATURE_HIERARCHY_PATH="${PLANNING_DIR}/feature-hierarchy.md"
   else
-    FEATURE_HIERARCHY_PATH=""
+    # Dynamic find for hierarchy file
+    local FOUND_HIERARCHY
+    FOUND_HIERARCHY=$(find "${BASE}" -type f \( -name "*feature-hierarchy*.md" -o -name "*hierarchy*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_HIERARCHY" ]; then
+      FEATURE_HIERARCHY_PATH="$FOUND_HIERARCHY"
+    else
+      FEATURE_HIERARCHY_PATH=""
+    fi
   fi
 
-  # Epics file: canonical path first, then fallback
+  # Epics file: canonical path first, then custom, then fallback
   if [ -f "${BASE}/2. Product Planning/2.4. epics-and-stories.md" ]; then
     EPICS_FILE_PATH="${BASE}/2. Product Planning/2.4. epics-and-stories.md"
   elif [ -f "${PLANNING_DIR}/epics.md" ]; then
     EPICS_FILE_PATH="${PLANNING_DIR}/epics.md"
   else
-    EPICS_FILE_PATH=""
+    # Dynamic find for epics file
+    local FOUND_EPICS
+    FOUND_EPICS=$(find "${BASE}" -type f \( -name "*epics-and-stories*.md" -o -name "*epics*.md" -o -name "*epics-list*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_EPICS" ]; then
+      EPICS_FILE_PATH="$FOUND_EPICS"
+    else
+      EPICS_FILE_PATH=""
+    fi
   fi
 
   log "  PLANNING_DIR = ${PLANNING_DIR}"
   log "  STORIES_DIR  = ${STORIES_DIR}"
+  log "  PRD_PATH     = ${PRD_PATH}"
   if [ -n "$FEATURE_HIERARCHY_PATH" ]; then
     log "  FEATURE_HIERARCHY = ${FEATURE_HIERARCHY_PATH}"
   else
     warn "  FEATURE_HIERARCHY = NOT FOUND (run /feature-hierarchy to generate)"
+  fi
+  if [ -n "$EPICS_FILE_PATH" ]; then
+    log "  EPICS_FILE_PATH   = ${EPICS_FILE_PATH}"
+  else
+    warn "  EPICS_FILE_PATH   = NOT FOUND"
   fi
 }
 
@@ -79,6 +126,7 @@ STORIES_DIR=""
 OUTPUT_LOG=""
 REVIEW_QUEUE=""
 FEATURE_HIERARCHY_PATH=""
+PRD_PATH=""
 
 # --- Garbage Filter Lists (IGNORE patterns) ---
 IGNORE_DIRS="archive|templates|drafts|meeting-notes|backups"
@@ -121,8 +169,8 @@ step1_discovery() {
   log "Step 1: DISCOVERY — Scanning planning artifacts..."
   
   # Validate required files exist
-  if [ ! -f "$PLANNING_DIR/prd.md" ]; then
-    error "prd.md not found at $PLANNING_DIR/prd.md"
+  if [ ! -f "$PRD_PATH" ]; then
+    error "prd.md not found at $PRD_PATH"
     exit 1
   fi
 
@@ -177,7 +225,7 @@ step2_extraction() {
         FR_COUNT=$((FR_COUNT + 1))
       fi
     fi
-  done < "$PLANNING_DIR/prd.md"
+  done < "$PRD_PATH"
   success "  Extracted $FR_COUNT FR nodes from prd.md"
 
   # --- Parse epics.md → Epic nodes ---
@@ -268,7 +316,7 @@ step3_mapping() {
 
   # --- FR → Portal relationships from feature-hierarchy.md ---
   log "  Mapping FR → Portal (DISPLAYED_ON)..."
-  if [ -f "$PLANNING_DIR/feature-hierarchy.md" ]; then
+  if [ -n "$FEATURE_HIERARCHY_PATH" ] && [ -f "$FEATURE_HIERARCHY_PATH" ]; then
     current_portal=""
     while IFS= read -r line; do
       for portal in "admin" "webstore" "sales-web" "sales-app" "driver-app"; do
@@ -383,7 +431,7 @@ step4_validation() {
   # --- Lớp 2: FR Count Cross-Check ---
   log "  Cross-checking FR count..."
   GRAPH_FR_COUNT=$(cypher_query "MATCH (fr:FR) RETURN count(fr)" | grep -oE '[0-9]+' | tail -1 || echo "0")
-  PRD_FR_COUNT=$(grep -cE '^[#]*\s*FR[0-9]+' "$PLANNING_DIR/prd.md" 2>/dev/null || echo "0")
+  PRD_FR_COUNT=$(grep -cE '^[#]*\s*FR[0-9]+' "$PRD_PATH" 2>/dev/null || echo "0")
   
   if [ "$GRAPH_FR_COUNT" != "$PRD_FR_COUNT" ]; then
     warn "  FR count mismatch: Graph=$GRAPH_FR_COUNT vs PRD=$PRD_FR_COUNT"
