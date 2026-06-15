@@ -16,13 +16,13 @@ IWISH_RUNTIME_MAPPINGS=(
 
 LEGACY_BMAD_RUNTIME_MAPPINGS=(
   "_iwish/core/tasks/workflow.xml|.agent/workflows/workflow-engine.xml|core engine|copy"
-  "_iwish/delivery/workflows/4-implementation/create-story/workflow.yaml|.agent/workflows/iwish-feature-create-story.md|workflow config|manifest:create-story"
-  "_iwish/delivery/workflows/4-implementation/code-review/workflow.yaml|.agent/workflows/iwish-feature-code-review.md|workflow config|manifest:code-review"
-  "_iwish/delivery/workflows/4-implementation/Vegeta-story/workflow.yaml|.agent/workflows/iwish-feature-dev-story.md|workflow config|manifest:Vegeta-story"
+  "_iwish/delivery/workflows/4-implementation/make-story/workflow.yaml|.agent/workflows/iwish-feature-create-story.md|workflow config|manifest:make-story"
+  "_iwish/delivery/workflows/4-implementation/review/workflow.yaml|.agent/workflows/iwish-feature-code-review.md|workflow config|manifest:review"
+  "_iwish/delivery/workflows/4-implementation/code/workflow.yaml|.agent/workflows/iwish-feature-dev-story.md|workflow config|manifest:code"
   "_iwish/delivery/workflows/4-implementation/sprint-planning/workflow.yaml|.agent/workflows/iwish-feature-sprint-planning.md|workflow config|manifest:sprint-planning"
-  "_iwish/delivery/workflows/4-implementation/sprint-status/workflow.yaml|.agent/workflows/iwish-feature-sprint-status.md|workflow config|manifest:sprint-status"
+  "_iwish/delivery/workflows/4-implementation/status/workflow.yaml|.agent/workflows/iwish-feature-sprint-status.md|workflow config|manifest:status"
   "_iwish/delivery/workflows/4-implementation/correct-course/workflow.yaml|.agent/workflows/iwish-feature-correct-course.md|workflow config|manifest:correct-course"
-  "_iwish/delivery/workflows/4-implementation/retrospective/workflow.yaml|.agent/workflows/iwish-feature-retrospective.md|workflow config|manifest:retrospective"
+  "_iwish/delivery/workflows/4-implementation/retro/workflow.yaml|.agent/workflows/iwish-feature-retrospective.md|workflow config|manifest:retro"
 )
 
 runtime_mappings_print() {
