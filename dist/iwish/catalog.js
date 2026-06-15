@@ -75,6 +75,7 @@ const CANONICAL_COMMANDS = [
     { command: '/tournament', description: 'Parallel A/B Tournament execution for multiple plugins/workflows', tags: ['command', 'testing', 'tournament', 'ab-test'] },
     { command: '/brand', description: 'Brand identity, logo and brand guideline creation and refactoring flow', tags: ['command', 'design', 'strategy', 'brand'] },
     { command: '/flow', description: 'Automated Epic/Story SDLC pipeline workflow', tags: ['command', 'sdlc', 'automation', 'pipeline'] },
+    { command: '/update-knowledge-formatter', description: 'Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard', tags: ['command', 'maintenance', 'okf'] },
 ];
 function readYaml(filePath) {
     return yaml_1.default.parse(fs.readFileSync(filePath, 'utf8'));
@@ -88,7 +89,8 @@ function loadAliasRegistry(projectRoot) {
 function loadKnowledgeNodes() {
     const graphPath = path.join(constants_1.REPO_ROOT, '.agent', 'knowledge-graph.yaml');
     if (!fs.existsSync(graphPath)) {
-        return [];
+        const emptyNodes = [];
+        return emptyNodes;
     }
     const doc = readYaml(graphPath);
     return doc.nodes || [];

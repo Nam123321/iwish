@@ -103,6 +103,7 @@ function getTargetAgent(canonicalCommand) {
         case '/brand':
             return 'creative-agent';
         case '/flow':
+        case '/update-knowledge-formatter':
             return 'orch-agent';
         default:
             return 'orch-agent';
@@ -169,6 +170,14 @@ function detectCommand(normalizedRequest) {
             legacyAliasMatched: null,
             targetAgent: 'pm-agent',
             routeReason: 'Project expansion or impact evaluation intent detected',
+        };
+    }
+    if (/\b(retrofit okf|upgrade okf|update okf|update knowledge formatter|migrate okf|retrofit-okf|upgrade-okf|update-knowledge-formatter)\b/i.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/update-knowledge-formatter',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Open Knowledge Format retrofit or upgrade intent detected',
         };
     }
     if (/\b(course correct|course-correct|pivot|rescope|scope drift|major change|significant change|mid sprint|mid-sprint|wrong direction|re-route|reroute|change navigation)\b/.test(normalizedRequest)) {
@@ -351,7 +360,8 @@ function getGraphStatus(projectRoot) {
 function loadRecentRouteDecisions(projectRoot, limit = 3) {
     const dir = path.join((0, constants_1.getRuntimeRoot)(projectRoot, 'iwish'), 'runtime', 'route-decisions');
     if (!fs.existsSync(dir)) {
-        return [];
+        const emptyDecisions = [];
+        return emptyDecisions;
     }
     return fs
         .readdirSync(dir)
@@ -363,7 +373,8 @@ function loadRecentRouteDecisions(projectRoot, limit = 3) {
             return fs.readJsonSync(path.join(dir, entry));
         }
         catch {
-            return {};
+            const emptyObj = {};
+            return emptyObj;
         }
     });
 }

@@ -80,6 +80,7 @@ const CANONICAL_COMMANDS: Array<{ command: string; description: string; tags: st
   { command: '/tournament', description: 'Parallel A/B Tournament execution for multiple plugins/workflows', tags: ['command', 'testing', 'tournament', 'ab-test'] },
   { command: '/brand', description: 'Brand identity, logo and brand guideline creation and refactoring flow', tags: ['command', 'design', 'strategy', 'brand'] },
   { command: '/flow', description: 'Automated Epic/Story SDLC pipeline workflow', tags: ['command', 'sdlc', 'automation', 'pipeline'] },
+  { command: '/update-knowledge-formatter', description: 'Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard', tags: ['command', 'maintenance', 'okf'] },
 ];
 
 function readYaml<T>(filePath: string): T {
@@ -96,7 +97,8 @@ export function loadAliasRegistry(projectRoot: string): AliasRegistry {
 export function loadKnowledgeNodes(): KnowledgeNode[] {
   const graphPath = path.join(REPO_ROOT, '.agent', 'knowledge-graph.yaml');
   if (!fs.existsSync(graphPath)) {
-    return [];
+    const emptyNodes: KnowledgeNode[] = [];
+    return emptyNodes;
   }
 
   const doc = readYaml<{ nodes?: KnowledgeNode[] }>(graphPath);

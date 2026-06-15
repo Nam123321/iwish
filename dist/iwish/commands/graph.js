@@ -486,4 +486,194 @@ function registerGraphCommands(program, getProjectRoot, addSharedDirectoryOption
             console.log(chalk_1.default.green.bold('\n✅ All OKF files are valid!'));
         }
     }));
+    addSharedDirectoryOption(program
+        .command('update-knowledge-formatter')
+        .description('Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard')
+        .action(async (options) => {
+        const projectRoot = getProjectRoot(options.directory);
+        const { validateOKFDocument } = await Promise.resolve().then(() => __importStar(require('../schema-validator')));
+        const { formatOKFUri, generateOKFHeader } = await Promise.resolve().then(() => __importStar(require('../okf-helper')));
+        const fs = await Promise.resolve().then(() => __importStar(require('fs-extra')));
+        console.log(chalk_1.default.blue('\n🔄 I-Wish Knowledge Formatter Retrofit'));
+        console.log(chalk_1.default.gray('━'.repeat(50)));
+        const iwishOutputDir = path.join(projectRoot, '_iwish-output');
+        const bmadOutputDir = path.join(projectRoot, '_bmad-output');
+        let outputDir = iwishOutputDir;
+        if (!fs.existsSync(iwishOutputDir)) {
+            if (fs.existsSync(bmadOutputDir)) {
+                outputDir = bmadOutputDir;
+            }
+            else {
+                console.error(chalk_1.default.red('❌ No _iwish-output/ or _bmad-output/ directory found.'));
+                process.exit(1);
+            }
+        }
+        console.log(chalk_1.default.cyan(`📁 Scanning folder: ${path.relative(projectRoot, outputDir)}`));
+        const markdownFiles = [];
+        const collectFiles = (dir) => {
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                    if (entry.name !== 'node_modules' && entry.name !== 'scratch' && !entry.name.startsWith('.')) {
+                        collectFiles(fullPath);
+                    }
+                }
+                else if (entry.name.endsWith('.md') && !entry.name.endsWith('DESIGN.md') && !entry.name.endsWith('user-guide.md')) {
+                    markdownFiles.push(fullPath);
+                }
+            }
+        };
+        collectFiles(outputDir);
+        if (markdownFiles.length === 0) {
+            console.log(chalk_1.default.yellow('No markdown files found to format.'));
+            return;
+        }
+        let updatedCount = 0;
+        let alreadyCompliantCount = 0;
+        let failCount = 0;
+        for (const file of markdownFiles) {
+            const relativePath = path.relative(projectRoot, file);
+            try {
+                const content = fs.readFileSync(file, 'utf8');
+                const hasFrontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+                let needsUpdate = false;
+                let existingMeta = {};
+                if (hasFrontmatter) {
+                    try {
+                        const YAML = await Promise.resolve().then(() => __importStar(require('yaml')));
+                        existingMeta = YAML.parse(hasFrontmatter[1]) || {};
+                        // Check if it is missing any of the 4 required OKF fields
+                        if (!existingMeta.type || !existingMeta.title || !existingMeta.timestamp || !existingMeta.links_to) {
+                            needsUpdate = true;
+                        }
+                    }
+                    catch {
+                        needsUpdate = true; // Malformed frontmatter
+                    }
+                }
+                else {
+                    needsUpdate = true; // No frontmatter
+                }
+                if (!needsUpdate) {
+                    alreadyCompliantCount++;
+                    continue;
+                }
+                // Infer type
+                let inferredType = 'I-Wish Concept';
+                const normalizedPath = relativePath.replace(/\\/g, '/');
+                if (normalizedPath.includes('/stories/') || path.basename(file).startsWith('story-')) {
+                    inferredType = 'I-Wish Story';
+                }
+                else if (normalizedPath.includes('/Product Planning/2.1.') || normalizedPath.includes('/prd') || normalizedPath.includes('product-brief')) {
+                    inferredType = 'I-Wish PRD';
+                }
+                else if (normalizedPath.includes('/Functional Design/3.2. ui') || normalizedPath.includes('ui-spec')) {
+                    inferredType = 'I-Wish UI Spec';
+                }
+                else if (normalizedPath.includes('/Functional Design/3.3. data') || normalizedPath.includes('data-spec')) {
+                    inferredType = 'I-Wish Data Spec';
+                }
+                else if (normalizedPath.includes('/Functional Design/3.1. architecture') || normalizedPath.includes('architecture-spec')) {
+                    inferredType = 'I-Wish Architecture Spec';
+                }
+                else if (normalizedPath.includes('/bug-reports/') || path.basename(file).startsWith('bug-')) {
+                    inferredType = 'I-Wish Bug Report';
+                }
+                else if (normalizedPath.includes('/reconciliation/') || normalizedPath.includes('reconciliation')) {
+                    inferredType = 'I-Wish Reconciliation Work Item';
+                }
+                else if (normalizedPath.includes('/reviews/') || normalizedPath.includes('review')) {
+                    inferredType = 'I-Wish Concept';
+                }
+                // Extract H1 title
+                let title = existingMeta.title;
+                if (!title) {
+                    const h1Match = content.match(/^#\s+(.+)$/m);
+                    title = h1Match ? h1Match[1].trim() : path.basename(file, '.md');
+                }
+                // Extract description
+                let description = existingMeta.description;
+                if (!description) {
+                    // Get first non-empty line after title
+                    const lines = content.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#') && !l.startsWith('---') && !l.startsWith('*'));
+                    if (lines.length > 0) {
+                        description = lines[0].slice(0, 150);
+                    }
+                }
+                const links_to = Array.isArray(existingMeta.links_to) ? existingMeta.links_to : [];
+                const tags = Array.isArray(existingMeta.tags) ? existingMeta.tags : [];
+                const timestamp = existingMeta.timestamp || new Date().toISOString();
+                const header = generateOKFHeader({
+                    type: existingMeta.type || inferredType,
+                    title,
+                    description,
+                    resource: existingMeta.resource || relativePath,
+                    tags,
+                    timestamp,
+                    links_to,
+                }, projectRoot);
+                // Replace or insert frontmatter
+                let newContent = '';
+                if (hasFrontmatter) {
+                    newContent = content.replace(/^---\n([\s\S]*?)\n---/, header);
+                }
+                else {
+                    newContent = `${header}\n\n${content}`;
+                }
+                // Clean double blank lines at top if any
+                newContent = newContent.replace(/^\n+/, '');
+                // Validate using schema validator
+                validateOKFDocument(newContent, file, projectRoot);
+                // Write back to disk
+                fs.writeFileSync(file, newContent, 'utf8');
+                console.log(chalk_1.default.green(`  ✓ Retrofitted & validated: ${relativePath} (${inferredType})`));
+                updatedCount++;
+            }
+            catch (e) {
+                console.error(chalk_1.default.red(`  ✗ Failed to retrofit ${relativePath}: ${e.message}`));
+                failCount++;
+            }
+        }
+        console.log(chalk_1.default.cyan('\n📊 Retrofit Summary:'));
+        console.log(`  - Updated: ${updatedCount}`);
+        console.log(`  - Already compliant: ${alreadyCompliantCount}`);
+        console.log(`  - Failures: ${failCount}`);
+        if (failCount > 0) {
+            console.error(chalk_1.default.red.bold('\n❌ Retrofit completed with errors.'));
+            process.exit(1);
+        }
+        // Trigger indexing
+        console.log(chalk_1.default.cyan('\n🔗 Running FeatureGraph indexing...'));
+        const { isGraphDBOnline, scanOKFMarkdownFiles, upsertOKFNodeInDB } = await Promise.resolve().then(() => __importStar(require('../graph-db')));
+        const online = await isGraphDBOnline();
+        if (online) {
+            const okfNodes = scanOKFMarkdownFiles(outputDir, projectRoot);
+            let indexedCount = 0;
+            for (const node of okfNodes) {
+                try {
+                    await upsertOKFNodeInDB(node);
+                    indexedCount++;
+                }
+                catch (e) {
+                    console.warn(chalk_1.default.yellow(`  ⚠️  Failed to index OKF node ${node.title}: ${e.message}`));
+                }
+            }
+            console.log(chalk_1.default.green(`  ✓ Indexed ${indexedCount} OKF nodes in database.`));
+        }
+        else {
+            console.log(chalk_1.default.yellow('  ⚠️  Graph Database is offline. Skipping database indexing.'));
+        }
+        // Refresh dashboard
+        console.log(chalk_1.default.cyan('\n📊 Updating dashboard...'));
+        try {
+            const { compileUserGuideDashboard } = await Promise.resolve().then(() => __importStar(require('../runtime')));
+            const dashboardPath = await compileUserGuideDashboard(projectRoot);
+            console.log(chalk_1.default.green(`  ✓ Dashboard updated: file://${dashboardPath}`));
+        }
+        catch (error) {
+            console.error(chalk_1.default.red(`  Failed to refresh dashboard: ${error.message}`));
+        }
+        console.log(chalk_1.default.green.bold('\n✅ Knowledge Formatter Upgrade completed successfully!'));
+    }));
 }

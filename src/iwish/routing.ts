@@ -115,6 +115,7 @@ function getTargetAgent(canonicalCommand: string): string {
     case '/brand':
       return 'creative-agent';
     case '/flow':
+    case '/update-knowledge-formatter':
       return 'orch-agent';
     default:
       return 'orch-agent';
@@ -194,6 +195,15 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
       legacyAliasMatched: null,
       targetAgent: 'pm-agent',
       routeReason: 'Project expansion or impact evaluation intent detected',
+    };
+  }
+
+  if (/\b(retrofit okf|upgrade okf|update okf|update knowledge formatter|migrate okf|retrofit-okf|upgrade-okf|update-knowledge-formatter)\b/i.test(normalizedRequest)) {
+    return {
+      canonicalCommand: '/update-knowledge-formatter',
+      legacyAliasMatched: null,
+      targetAgent: 'orch-agent',
+      routeReason: 'Open Knowledge Format retrofit or upgrade intent detected',
     };
   }
 
@@ -410,7 +420,8 @@ function getGraphStatus(projectRoot: string): 'available' | 'degraded' | 'unavai
 function loadRecentRouteDecisions(projectRoot: string, limit = 3): Array<{ canonicalCommand?: string; contextScope?: { matchedStories?: string[]; matchedEpics?: string[] } }> {
   const dir = path.join(getRuntimeRoot(projectRoot, 'iwish'), 'runtime', 'route-decisions');
   if (!fs.existsSync(dir)) {
-    return [];
+    const emptyDecisions: any[] = [];
+    return emptyDecisions;
   }
 
   return fs
@@ -422,7 +433,8 @@ function loadRecentRouteDecisions(projectRoot: string, limit = 3): Array<{ canon
       try {
         return fs.readJsonSync(path.join(dir, entry)) as { canonicalCommand?: string; contextScope?: { matchedStories?: string[]; matchedEpics?: string[] } };
       } catch {
-        return {};
+        const emptyObj = {};
+        return emptyObj;
       }
     });
 }

@@ -1,0 +1,17 @@
+id: workflow-update-knowledge-formatter
+name: update-knowledge-formatter
+kind: workflow
+shape: workflow
+role: supportive
+phases: [solution]
+stages: [retrofit-audit, metadata-migration, indexing-verification]
+triggers: [upgrade okf, update knowledge format, retrofit okf, migrate okf, format knowledge, update-knowledge-formatter]
+anti_triggers: [single isolated typo fix]
+primary_agents: [orch-agent]
+primary_workflows: [update-knowledge-formatter]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Must check for existing files under _iwish-output/ or _bmad-output/ and inject missing YAML frontmatter blocks based on the file type.
+source_path: /.agent/workflows/update-knowledge-formatter.md
+tags: [retrofit, okf, migration, maintenance]
