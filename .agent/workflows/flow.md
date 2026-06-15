@@ -13,7 +13,7 @@ The standard, automated end-to-end development pipeline of I-Wish.
 Do NOT attempt to execute multiple steps in a single response. You must execute exactly ONE step, report the status, and then STOP.
 
 **State Tracking Mechanism:**
-At the very beginning of the `/flow` pipeline, you MUST create a `task.md` file to track the progress of these steps. Update this file as each step is completed. Report the current status to the user after completing each step.
+At the very beginning of the `/flow` pipeline, you MUST create a `task.md` file to track the progress of these steps. This task list/checklist MUST explicitly include checking and ensuring that all newly generated or modified documents (like stories, specs, etc.) have valid OKF YAML frontmatter. Update this file as each step is completed. Report the current status to the user after completing each step.
 
 **Pre-User Gate: Agent Collaboration (Party Mode):**
 Before stopping at any User Gate for domain, data architecture, or design questions, you MUST attempt to resolve them internally:
@@ -27,11 +27,13 @@ Before stopping at any User Gate for domain, data architecture, or design questi
 
 1. **Step 1: Story Design (`/make-story`)**
    - Analyze requirements and generate the target user story file (`story.md`).
+   - **OKF Header:** Ensure the generated story file starts with a valid OKF YAML frontmatter block.
    - *Update `task.md` and STOP if there are User Gates or clarifying questions.*
    
 2. **Step 2: Specification Generation**
    - Run `/make-ui-spec` if the story contains frontend/UI changes.
    - Run `/make-data-spec` if the story updates database schemas or API contracts.
+   - **OKF Header:** Ensure all generated specification files start with a valid OKF YAML frontmatter block.
    - *Update `task.md` and STOP if there are User Gates.*
 
 3. **Step 3: Design Scoring & Mockup Generation**
