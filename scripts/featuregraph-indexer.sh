@@ -265,8 +265,25 @@ step2_extraction() {
       # AC3: Accept both "Story {N}.{M}" and "S{N}.{M}" formats, normalize to S{N}.{M}
       RAW_ID=$(grep -oE '(Story[[:space:]]+|S)[0-9]+\.[0-9]+' "$story_file" | head -1 || echo "")
       STORY_ID=$(echo "$RAW_ID" | sed -E 's/^Story[[:space:]]+/S/')
+      
+      if [ -z "$STORY_ID" ]; then
+        # Fallback: parse from filename (e.g., story-1.1-auth.md -> S1.1)
+        local filename
+        filename=$(basename "$story_file")
+        if [[ "$filename" =~ [sS](tory)?-?([0-9]+\.[0-9]+) ]]; then
+          STORY_ID="S${BASH_REMATCH[2]}"
+        fi
+      fi
+      
       STORY_NAME=$(head -20 "$story_file" | grep -E '^#' | head -1 | sed 's/^#*[[:space:]]*//' | xargs || true)
       EPIC_REF=$(grep -oE 'E[0-9]+' "$story_file" | head -1 || echo "")
+      
+      if [ -z "$EPIC_REF" ] && [ -n "$STORY_ID" ]; then
+        # Extract Epic ID from STORY_ID (e.g., S1.2 -> E1, S10.3 -> E10)
+        if [[ "$STORY_ID" =~ S([0-9]+)\. ]]; then
+          EPIC_REF="E${BASH_REMATCH[1]}"
+        fi
+      fi
       
       if [ -n "$STORY_ID" ]; then
         cypher_query "MERGE (s:Story {id: '${STORY_ID}'}) SET s.name = '${STORY_NAME}', s.epic_id = '${EPIC_REF}', s.updated_at = timestamp()" > /dev/null

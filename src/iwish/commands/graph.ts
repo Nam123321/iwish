@@ -395,14 +395,38 @@ export function registerGraphCommands(
         const storiesOk: string[] = [];
 
         if (fs.existsSync(storiesDir)) {
-          const storyFiles = fs.readdirSync(storiesDir).filter((f: string) => f.endsWith('.md'));
+          const getStoryFilesRecursively = (dir: string): string[] => {
+            let results: string[] = [];
+            const list = fs.readdirSync(dir, { withFileTypes: true });
+            for (const file of list) {
+              const fullPath = path.join(dir, file.name);
+              if (file.isDirectory()) {
+                if (
+                  file.name !== 'node_modules' &&
+                  !file.name.startsWith('.') &&
+                  file.name !== 'scratch' &&
+                  file.name !== 'archive' &&
+                  file.name !== 'templates' &&
+                  file.name !== 'drafts'
+                ) {
+                  results = results.concat(getStoryFilesRecursively(fullPath));
+                }
+              } else if (file.name.endsWith('.md')) {
+                results.push(fullPath);
+              }
+            }
+            return results;
+          };
+
+          const storyFiles = getStoryFilesRecursively(storiesDir);
 
           for (const file of storyFiles) {
-            const content = fs.readFileSync(path.join(storiesDir, file), 'utf-8');
+            const content = fs.readFileSync(file, 'utf-8');
+            const relativeStoryName = path.relative(storiesDir, file);
             if (content.includes('## Cross-Feature Dependencies')) {
-              storiesOk.push(file);
+              storiesOk.push(relativeStoryName);
             } else {
-              storiesMissing.push(file);
+              storiesMissing.push(relativeStoryName);
             }
           }
 
