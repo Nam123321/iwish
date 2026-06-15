@@ -38,6 +38,7 @@ exports.getReconciliationStatus = getReconciliationStatus;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
 const constants_1 = require("./constants");
+const okf_helper_1 = require("./okf-helper");
 function nowIso() {
     return new Date().toISOString();
 }
@@ -53,7 +54,7 @@ function getSourceOfTruthDir(projectRoot) {
     }
     return path.join(projectRoot, '_bmad-output', 'reconciliation');
 }
-function buildWorkItemMarkdown(record) {
+function buildWorkItemMarkdown(record, projectRoot) {
     const touchedFiles = record.touchedFiles.length > 0 ? record.touchedFiles.map((file) => `- ${file}`).join('\n') : '- None provided';
     const requiredUpdates = record.requiredUpdates.map((item) => `- ${item}`).join('\n');
     const links = [
@@ -62,7 +63,24 @@ function buildWorkItemMarkdown(record) {
     ]
         .filter(Boolean)
         .join('\n');
-    return `# Reconciliation Work Item\n\n## Summary\n- Timestamp: ${record.timestamp}\n- Type: ${record.type}\n- Graph Status: ${record.graphStatus}\n- Summary: ${record.summary}\n\n## Linked Scope\n${links || '- No story or epic linked'}\n\n## Touched Files\n${touchedFiles}\n\n## Required Updates\n${requiredUpdates}\n\n## Notes\n${record.notes || 'None'}\n`;
+    const links_to = [];
+    if (record.storyId) {
+        links_to.push(record.storyId);
+    }
+    if (record.epicId) {
+        links_to.push(record.epicId);
+    }
+    for (const file of record.touchedFiles) {
+        links_to.push(file);
+    }
+    const okfHeader = (0, okf_helper_1.generateOKFHeader)({
+        type: 'I-Wish Reconciliation Work Item',
+        title: `Reconciliation Work Item: ${record.summary.slice(0, 50)}`,
+        description: record.summary,
+        timestamp: record.timestamp,
+        links_to,
+    }, projectRoot);
+    return `${okfHeader}\n\n# Reconciliation Work Item\n\n## Summary\n- Timestamp: ${record.timestamp}\n- Type: ${record.type}\n- Graph Status: ${record.graphStatus}\n- Summary: ${record.summary}\n\n## Linked Scope\n${links || '- No story or epic linked'}\n\n## Touched Files\n${touchedFiles}\n\n## Required Updates\n${requiredUpdates}\n\n## Notes\n${record.notes || 'None'}\n`;
 }
 async function queueReconciliation(projectRoot, input) {
     const record = {
@@ -78,7 +96,7 @@ async function queueReconciliation(projectRoot, input) {
     const filename = `${record.timestamp.replace(/[:.]/g, '-')}-${record.type}.json`;
     const basename = filename.replace(/\.json$/, '');
     await fs.writeJson(path.join(queueDir, filename), record, { spaces: 2 });
-    await fs.writeFile(path.join(workItemDir, `${basename}.md`), buildWorkItemMarkdown(record), 'utf8');
+    await fs.writeFile(path.join(workItemDir, `${basename}.md`), buildWorkItemMarkdown(record, projectRoot), 'utf8');
     const scopeName = record.storyId || record.epicId || 'general';
     const sourceOfTruthPath = path.join(sourceOfTruthDir, `${scopeName}.md`);
     if (!fs.existsSync(sourceOfTruthPath)) {

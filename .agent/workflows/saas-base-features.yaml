@@ -190,6 +190,19 @@ categories:
         items:
           - "FR-REV-1 [Superadmin]: Financial dashboard displays revenue separated into Pre-tax Revenue (Gross/Net) and Collected Taxes, allowing filtering by region and time period."
 
+      - area: "Product-Led Growth (PLG) & Telemetry Integrations"
+        portal: "General"
+        items:
+          - "FR-PLG-1 [Superadmin]: Configure global tracking IDs and snippets (e.g., GTM, Segment, PostHog) to inject scripts automatically into the <head> or Data Layer of all tenant pages."
+          - "FR-PLG-2 [System]: Auto-push standard core events (e.g., User Signed Up, Workspace Created, Payment Succeeded) to the Data Layer for third-party tools (Mixpanel, Appcues) to trigger in-app tutorials."
+
+      - area: "Customer Success, Support & Feedback"
+        portal: "General"
+        items:
+          - "FR-SUP-1 [Superadmin]: Impersonation Mode (Login as User). Allows customer support to access a tenant's account for debugging. Must enforce strict Audit Logging (Admin A accessed as User B) and display a permanent warning banner on the UI."
+          - "FR-SUP-2 [Superadmin/System]: Changelog & In-app Announcements Widget. Support rendering release notes from third-party platforms (Beamer, AnnounceKit) or native modals for new build announcements."
+          - "FR-SUP-3 [Tenant]: Report Bug & Feedback Widget. Users can submit feedback from the UI, automatically capturing their UserID, OS, Browser, and current URL to send to a Helpdesk (Jira/Zendesk)."
+
   b2c_consumer:
     name: "B2C Consumer SaaS"
     description: "Single-user subscription apps focusing on personal usage, social features, and consumer billing."

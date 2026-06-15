@@ -668,8 +668,8 @@ function extractFeatureGraphData(projectRoot) {
     const nodeIds = new Set();
     // Pre-load Epics
     const epicsCandidates = [
-        require('path').join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
-        require('path').join(projectRoot, '_iwish-output', 'epics.md')
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+        path.join(projectRoot, '_iwish-output', 'epics.md')
     ];
     const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
     if (epicsPath) {
@@ -688,8 +688,8 @@ function extractFeatureGraphData(projectRoot) {
     }
     // Locate feature-hierarchy.md
     const candidates = [
-        require('path').join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
-        require('path').join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
+        path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
+        path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
     ];
     const hierarchyPath = candidates.find(p => fs.existsSync(p));
     if (!hierarchyPath) {
@@ -803,16 +803,15 @@ function extractFeatureGraphData(projectRoot) {
             }
         }
         // Scan story files for Cross-Feature Dependencies
-        const pathLib = require('path');
-        const storiesDir = pathLib.join(projectRoot, '_iwish-output', 'stories');
-        const newStoriesDir = pathLib.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+        const storiesDir = path.join(projectRoot, '_iwish-output', 'stories');
+        const newStoriesDir = path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
         const activeStoriesDir = fs.existsSync(newStoriesDir) ? newStoriesDir : (fs.existsSync(storiesDir) ? storiesDir : null);
         if (activeStoriesDir) {
             const storyFiles = [];
             const walkSync = (dir) => {
                 const files = fs.readdirSync(dir);
                 for (const file of files) {
-                    const filepath = pathLib.join(dir, file);
+                    const filepath = path.join(dir, file);
                     if (fs.statSync(filepath).isDirectory()) {
                         walkSync(filepath);
                     }
@@ -824,7 +823,7 @@ function extractFeatureGraphData(projectRoot) {
             walkSync(activeStoriesDir);
             for (const filePath of storyFiles) {
                 const storyContent = fs.readFileSync(filePath, 'utf8');
-                const storyIdBase = pathLib.basename(filePath, '.md');
+                const storyIdBase = path.basename(filePath, '.md');
                 // Add story node if referenced
                 const storyTitleMatch = storyContent.match(/^#\s+Story\s+(\d+\.\d+)[\s:—-]+(.+)$/im);
                 if (storyTitleMatch) {

@@ -222,7 +222,8 @@ async function materializeRuntimeTemplates(projectRoot, overwrite = false) {
 function getAgentAssetFiles() {
     const agentRoot = path.join(constants_1.REPO_ROOT, '.agent');
     if (!fs.existsSync(agentRoot)) {
-        return [];
+        const empty = [];
+        return empty;
     }
     const files = [];
     const visit = (directory) => {
@@ -385,6 +386,7 @@ async function compileUserGuideDashboard(projectRoot) {
         }
     }
     const finalHtml = templateContent
+        .replace('/*PROJECT_ROOT*/ ""', JSON.stringify(projectRoot).replace(/<\/script>/ig, '<\\/script>'))
         .replace('/*NODES_EDGES*/ {}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('/*SPRINT_DATA*/ {}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
@@ -485,6 +487,36 @@ function printDoctor(projectRoot) {
         path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
         path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
     ].some(p => fs.existsSync(p));
+    // Perform OKF schema validation on output directory files
+    const iwishOutputDir = path.join(projectRoot, '_iwish-output');
+    const okfValidationErrors = [];
+    let okfFileCount = 0;
+    if (fs.existsSync(iwishOutputDir)) {
+        const collectAndValidate = (dir) => {
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                    if (entry.name !== 'scratch' && entry.name !== 'node_modules' && !entry.name.startsWith('.')) {
+                        collectAndValidate(fullPath);
+                    }
+                }
+                else if (entry.name.endsWith('.md') && !entry.name.endsWith('DESIGN.md') && !entry.name.endsWith('user-guide.md')) {
+                    try {
+                        const content = fs.readFileSync(fullPath, 'utf8');
+                        if (content.match(/^---\n([\s\S]*?)\n---/)) {
+                            okfFileCount++;
+                            (0, schema_validator_1.validateOKFDocument)(content, fullPath, projectRoot);
+                        }
+                    }
+                    catch (error) {
+                        okfValidationErrors.push(`${path.relative(projectRoot, fullPath)}: ${error.message}`);
+                    }
+                }
+            }
+        };
+        collectAndValidate(iwishOutputDir);
+    }
     const checks = [
         ['runtime manifest', status.manifestExists],
         ['graph profile', status.graphProfileExists],
@@ -492,6 +524,7 @@ function printDoctor(projectRoot) {
         ['custom directory', status.customExists],
         ['graph tool selected', Boolean(status.selectedTools.graph)],
         ['feature hierarchy', featureHierarchyExists],
+        ['OKF validation', okfValidationErrors.length === 0],
     ];
     console.log(chalk_1.default.blue('I-Wish doctor report'));
     for (const [label, ok] of checks) {
@@ -505,6 +538,15 @@ function printDoctor(projectRoot) {
     }
     if (!featureHierarchyExists) {
         console.log(chalk_1.default.yellow('Feature hierarchy not found. Run `/feature-hierarchy` or `iwish featuregraph-retrofit` to generate it.'));
+    }
+    if (okfValidationErrors.length > 0) {
+        console.log(chalk_1.default.yellow(`\n⚠️  Found ${okfValidationErrors.length} OKF validation errors:`));
+        for (const err of okfValidationErrors) {
+            console.log(chalk_1.default.yellow(`  - ${err}`));
+        }
+    }
+    else if (okfFileCount > 0) {
+        console.log(chalk_1.default.green(`\n✨ Successfully validated ${okfFileCount} OKF documents!`));
     }
 }
 function printModules() {

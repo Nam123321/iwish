@@ -38,6 +38,16 @@ Synthesize the verified details into a structured markdown document and write it
 Use the following template:
 
 ```markdown
+---
+type: I-Wish Idea
+title: "[Tên dự án/Ý tưởng]"
+description: "[Tuyên bố giá trị độc bản trong 1 câu]"
+resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/1. Idea Discovery/1.1. idea-discovery.md"
+tags: ["idea", "discovery"]
+timestamp: "[ISO-8601]"
+links_to: []
+---
+
 # Idea Discovery: [Tên dự án/Ý tưởng]
 
 ## 1. Executive Summary & Core Value

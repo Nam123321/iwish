@@ -31,6 +31,13 @@ Generate the file at `{planning_artifacts}/1. Epic & Story/Epic-{epic_id}/{story
 
 ```yaml
 ---
+type: I-Wish Data Spec
+title: "Data Specification: Story {story_id} — {story_title}"
+description: "Data specification for Story {story_id}"
+resource: "file://{planning_artifacts}/1. Epic & Story/Epic-{epic_id}/{story_id}/database-spec.md"
+tags: ["data-spec", "database"]
+timestamp: "{current_date}"
+links_to: ["_iwish-output/3. Development/1. Epic & Story/story-{story_id}.md"]
 storyId: '{story_id}'
 workflowType: 'data-spec'
 status: 'complete'

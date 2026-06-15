@@ -1,0 +1,10 @@
+---
+name: research-solution-sources-trust-template
+description: Run the I-Wish research-solution-sources-trust-template workflow
+---
+[I-Wish Workflow: research-solution-sources-trust-template]
+You are running within the I-Wish framework.
+You MUST read, adhere to, and strictly execute the instructions defined in this workflow file: .agent/workflows/research-solution-sources-trust-template.md
+Do NOT skip steps.
+
+Input Context/Arguments: $ARGUMENTS

@@ -120,11 +120,11 @@ function createMockAPI(failStories = []) {
         });
     });
     (0, vitest_1.describe)('buildSubagentPrompt', () => {
-        (0, vitest_1.it)('should produce a prompt with workflow binding', () => {
+        (0, vitest_1.it)('should produce a prompt with workflow binding', async () => {
             // Create minimal story file
             fs.ensureDirSync(path.join(TEMP_DIR, '_iwish-output', 'stories'));
             fs.writeFileSync(path.join(TEMP_DIR, '_iwish-output', 'stories', 'story-1.1.md'), '# Story 1.1: Test Story\n## AC\n- AC1: Test', 'utf8');
-            const config = (0, swarm_orchestrator_1.buildSubagentPrompt)('story-1.1', '1', TEMP_DIR);
+            const config = await (0, swarm_orchestrator_1.buildSubagentPrompt)('story-1.1', '1', TEMP_DIR);
             (0, vitest_1.expect)(config.storyId).toBe('story-1.1');
             (0, vitest_1.expect)(config.typeName).toBe('story_developer');
             (0, vitest_1.expect)(config.workspace).toBe('branch');

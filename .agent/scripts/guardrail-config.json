@@ -17,6 +17,7 @@
     ".agent/fragments",
     ".agent/memory",
     ".agent/templates",
+    ".agent/references",
     "docs/data-strategy-upgrade",
     "docs/ux-pro-max-integration",
     "docs/data-architecture",

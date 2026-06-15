@@ -55,6 +55,7 @@ exports.spawnWave = spawnWave;
 exports.executeSwarmOrchestration = executeSwarmOrchestration;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
+const okf_helper_1 = require("./okf-helper");
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -283,7 +284,7 @@ function getDesignTokensSnippet(designMdPath) {
  * @param projectRoot - Project root path
  * @returns The constructed prompt for the sub-agent
  */
-function buildSubagentPrompt(storyId, epicId, projectRoot) {
+async function buildSubagentPrompt(storyId, epicId, projectRoot) {
     const storyNum = storyId.replace('story-', '');
     const storyPath = path.join(projectRoot, '_iwish-output', 'stories', `story-${storyNum}.md`);
     // Read story content
@@ -319,6 +320,32 @@ ${designSnippet}
 \`\`\`
 `;
     }
+    // Perform dynamic context compression using depth-2 graph traversal
+    let contextSection = '';
+    try {
+        const storyUri = (0, okf_helper_1.formatOKFUri)(storyPath, projectRoot);
+        const { getCompressedContextURIs } = await Promise.resolve().then(() => __importStar(require('./graph-db')));
+        const adjacentUris = await getCompressedContextURIs(storyUri, projectRoot);
+        if (adjacentUris && adjacentUris.length > 0) {
+            contextSection = `\n### Dynamic Context Compression (Related Graph Nodes within Depth-2)\n`;
+            for (const uri of adjacentUris) {
+                if (uri.startsWith('file:///')) {
+                    let resolvedPath = decodeURIComponent(uri.replace('file://', ''));
+                    if (process.platform === 'win32' && resolvedPath.startsWith('/')) {
+                        resolvedPath = resolvedPath.substring(1);
+                    }
+                    if (fs.existsSync(resolvedPath)) {
+                        const fileContent = fs.readFileSync(resolvedPath, 'utf8');
+                        const relativePath = path.relative(projectRoot, resolvedPath);
+                        contextSection += `\n#### File: ${relativePath}\n\`\`\`markdown\n${fileContent.substring(0, 1500)}\n\`\`\`\n`;
+                    }
+                }
+            }
+        }
+    }
+    catch (err) {
+        console.warn(`[Context Compression] Warning: Failed to load depth-2 context: ${err.message}`);
+    }
     // Construct compliant prompt (follows Compliance Protocol patterns)
     const prompt = `## Mission: Implement Story ${storyNum} — ${storyTitle}
 
@@ -335,6 +362,7 @@ You MUST follow the I-Wish development workflow:
 6. Self-review against all ACs
 7. Generate QA Simulator Guardian Scorecard
 ${designConstraintSection}
+${contextSection}
 
 ### Write-Lock Rules
 - You may ONLY write to files in your assigned module scope
@@ -513,11 +541,11 @@ async function spawnWave(waveStories, epicId, dag, stateBoard, api, projectRoot)
     const results = [];
     const waveNum = stateBoard.getState().currentWave;
     // Build spawn configs for each story
-    const configs = waveStories.map((storyId) => {
-        const config = buildSubagentPrompt(storyId, epicId, projectRoot);
+    const configs = await Promise.all(waveStories.map(async (storyId) => {
+        const config = await buildSubagentPrompt(storyId, epicId, projectRoot);
         config.wave = waveNum;
         return config;
-    });
+    }));
     // AC6: Platform capability check
     const isParallel = api.supportsParallel();
     if (isParallel) {

@@ -97,6 +97,18 @@ Typical follow-up:
    - if yes, route into `absorb-repo`
 5. Generate Pivot Audit Log.
    - You MUST create a persistent audit document detailing the pivot context, severity, root cause, and the required scope changes.
+   - The file MUST begin with a valid OKF YAML frontmatter block:
+     ```yaml
+     ---
+     type: I-Wish Pivot Log
+     title: "Pivot Log: [summary]"
+     description: "[Brief description of the pivot cause]"
+     resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md"
+     tags: ["pivot", "development"]
+     timestamp: "[ISO-8601]"
+     links_to: [] # links to affected stories, PRD or architecture specs
+     ---
+     ```
    - Save this file to `_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md`.
    - This ensures traceability and provides context for the subsequent reconciliation.
 6. Regenerate Feature Hierarchy (MANDATORY for `epic` and `plan` severity).

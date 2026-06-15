@@ -378,10 +378,21 @@
 ### 7a. SBRP Report File Rules
 
 - Tìm file SBRP report hiện tại của session: `_iwish-output/bug-reports/YYYY-MM-sbrp-round{N}.md`
-- **Nếu chưa có file cho session này** → tạo file mới, N = max(existing rounds) + 1
-- **Nếu đã có file cho session này** → append bug mới vào file hiện tại
+- **Nếu chưa có file cho session này** → tạo file mới, N = max(existing rounds) + 1. File mới BẮT BUỘC phải bắt đầu bằng khối OKF YAML frontmatter:
+  ```yaml
+  ---
+  type: I-Wish Bug Report
+  title: "SBRP Bug Report Round {N}"
+  description: "Bug report log for session round {N}"
+  resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/bug-reports/YYYY-MM-sbrp-round{N}.md"
+  tags: ["bug-report", "development"]
+  timestamp: "[ISO-8601]"
+  links_to: []
+  ---
+  ```
+- **Nếu đã có file cho session này** → append bug mới vào file hiện tại và cập nhật danh sách `links_to` trong frontmatter (để liên kết với story hoặc file bị ảnh hưởng).
 - **Nếu session fix > 10 bugs** → tách file mới với round N+1
-- Header bắt buộc: Date, Tier, Session scope, Bug count summary
+- Header bắt buộc: Khối OKF YAML Frontmatter ở đầu file, Date, Tier, Session scope, Bug count summary
 - Naming convention: `YYYY-MM-sbrp-round{N}.md`
 
 ### 7b. Lesson Extraction & Auto-Immune Knowledge

@@ -209,6 +209,28 @@ function registerGraphCommands(program, getProjectRoot, addSharedDirectoryOption
             });
             console.log(output);
             console.log(chalk_1.default.green.bold('\n✅ FeatureGraph indexing completed successfully!'));
+            // Index OKF frontmatter files to DB if online
+            const { isGraphDBOnline, scanOKFMarkdownFiles, upsertOKFNodeInDB } = await Promise.resolve().then(() => __importStar(require('../graph-db')));
+            const online = await isGraphDBOnline();
+            if (online) {
+                console.log(chalk_1.default.cyan('\n🔍 Indexing OKF frontmatter to Graph Database...'));
+                const iwishOutputDir = path.join(projectRoot, '_iwish-output');
+                const okfNodes = scanOKFMarkdownFiles(iwishOutputDir, projectRoot);
+                let indexedCount = 0;
+                for (const node of okfNodes) {
+                    try {
+                        await upsertOKFNodeInDB(node);
+                        indexedCount++;
+                    }
+                    catch (e) {
+                        console.warn(chalk_1.default.yellow(`  ⚠️  Failed to index OKF node ${node.title}: ${e.message}`));
+                    }
+                }
+                console.log(chalk_1.default.green(`  ✓ Indexed ${indexedCount} OKF nodes and relationships in database.`));
+            }
+            else {
+                console.log(chalk_1.default.yellow('\n⚠️  Graph Database is offline. Skipping OKF database indexing.'));
+            }
             // Auto-trigger dashboard update
             console.log(chalk_1.default.cyan('\n📊 Updating dashboard...'));
             const dashboardPath = await (0, runtime_1.compileUserGuideDashboard)(projectRoot);
@@ -372,5 +394,96 @@ function registerGraphCommands(program, getProjectRoot, addSharedDirectoryOption
         }
         console.log(chalk_1.default.gray('  → After fixes: run `iwish featuregraph-index` to populate the graph'));
         console.log(chalk_1.default.gray('  → Then: run `iwish gen-dashboard` to update the dashboard'));
+    }));
+    addSharedDirectoryOption(program
+        .command('validate-okf')
+        .description('Validate one or more OKF files against their corresponding JSON Schemas')
+        .option('-f, --file <path>', 'Path to a specific file or folder to validate')
+        .action(async (options) => {
+        const projectRoot = getProjectRoot(options.directory);
+        const { validateOKFDocument } = await Promise.resolve().then(() => __importStar(require('../schema-validator')));
+        const fs = await Promise.resolve().then(() => __importStar(require('fs-extra')));
+        let filesToValidate = [];
+        if (options.file) {
+            const targetPath = path.isAbsolute(options.file) ? options.file : path.resolve(projectRoot, options.file);
+            if (!fs.existsSync(targetPath)) {
+                console.error(chalk_1.default.red(`❌ File or directory not found: ${options.file}`));
+                process.exit(1);
+            }
+            const stat = fs.statSync(targetPath);
+            if (stat.isFile()) {
+                filesToValidate.push(targetPath);
+            }
+            else {
+                const collectFiles = (dir) => {
+                    const entries = fs.readdirSync(dir, { withFileTypes: true });
+                    for (const entry of entries) {
+                        const fullPath = path.join(dir, entry.name);
+                        if (entry.isDirectory()) {
+                            if (entry.name !== 'node_modules' && !entry.name.startsWith('.')) {
+                                collectFiles(fullPath);
+                            }
+                        }
+                        else if (entry.name.endsWith('.md')) {
+                            filesToValidate.push(fullPath);
+                        }
+                    }
+                };
+                collectFiles(targetPath);
+            }
+        }
+        else {
+            const iwishOutputDir = path.join(projectRoot, '_iwish-output');
+            if (fs.existsSync(iwishOutputDir)) {
+                const collectFiles = (dir) => {
+                    const entries = fs.readdirSync(dir, { withFileTypes: true });
+                    for (const entry of entries) {
+                        const fullPath = path.join(dir, entry.name);
+                        if (entry.isDirectory()) {
+                            if (entry.name !== 'scratch' && entry.name !== 'node_modules' && !entry.name.startsWith('.')) {
+                                collectFiles(fullPath);
+                            }
+                        }
+                        else if (entry.name.endsWith('.md') && !entry.name.endsWith('DESIGN.md') && !entry.name.endsWith('user-guide.md')) {
+                            filesToValidate.push(fullPath);
+                        }
+                    }
+                };
+                collectFiles(iwishOutputDir);
+            }
+            else {
+                console.log(chalk_1.default.yellow('  _iwish-output directory does not exist yet. Nothing to validate.'));
+                return;
+            }
+        }
+        if (filesToValidate.length === 0) {
+            console.log(chalk_1.default.yellow('  No markdown files found to validate.'));
+            return;
+        }
+        console.log(chalk_1.default.cyan(`🔍 Validating ${filesToValidate.length} OKF files...`));
+        let errorCount = 0;
+        for (const file of filesToValidate) {
+            try {
+                const content = fs.readFileSync(file, 'utf8');
+                if (content.match(/^---\n([\s\S]*?)\n---/)) {
+                    validateOKFDocument(content, file, projectRoot);
+                    console.log(chalk_1.default.green(`  ✓ ${path.relative(projectRoot, file)} is valid`));
+                }
+                else {
+                    console.log(chalk_1.default.gray(`  - ${path.relative(projectRoot, file)} skipped (no frontmatter)`));
+                }
+            }
+            catch (error) {
+                console.error(chalk_1.default.red(`  ✗ ${path.relative(projectRoot, file)}: ${error.message}`));
+                errorCount++;
+            }
+        }
+        if (errorCount > 0) {
+            console.error(chalk_1.default.red.bold(`\n❌ Validation failed: ${errorCount} errors found.`));
+            process.exit(1);
+        }
+        else {
+            console.log(chalk_1.default.green.bold('\n✅ All OKF files are valid!'));
+        }
     }));
 }

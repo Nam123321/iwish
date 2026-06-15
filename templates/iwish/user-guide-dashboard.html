@@ -1532,7 +1532,8 @@
         <button class="tab-btn active" onclick="switchTab('idea-to-prd')" data-i18n="tabs.idea_to_prd">Idea To PRD</button>
         <button class="tab-btn" onclick="switchTab('idea')" data-i18n="tabs.epic_story_map">Epic & story map</button>
         <button class="tab-btn" onclick="switchTab('features')" data-i18n="tabs.feature_graph">Feature graph</button>
-                <button class="tab-btn" onclick="switchTab('orchestration')" data-i18n="tabs.orchestration">Orchestration Graph</button>
+        <button class="tab-btn" onclick="switchTab('orchestration')" data-i18n="tabs.orchestration">Orchestration Graph</button>
+        <button class="tab-btn" onclick="switchTab('code-graph')" data-i18n="tabs.code_graph">Code Graph</button>
         <button class="tab-btn" onclick="switchTab('iwish-guide')" data-i18n="tabs.iwish_guide">I-Wish Guide</button>
                 <button class="tab-btn" onclick="switchTab('evolver')" data-i18n="tabs.evolver">Evolved Skills</button>
         <button class="tab-btn" onclick="switchTab('plugins')" data-i18n="tabs.plugins">Plugins & Tournaments</button>
@@ -2881,17 +2882,26 @@
       </div>
     </div>
 
+    <!-- Tab 6: Code Graph -->
+    <div id="tab-code-graph" class="tab-content" style="padding: 0; flex-direction: row; height: 100%;">
+      <!-- Placeholder when no data -->
+      <div id="code-graph-placeholder" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;">
+        <div class="card" style="max-width: 480px; text-align: center; padding: 40px; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 20px;">
+          <div style="font-size: 48px; margin-bottom: 16px;">🕸️</div>
+          <h2 style="margin-bottom: 8px;" data-i18n="fallbacks.code_graph_not_available">Code Graph Not Available</h2>
+          <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;" data-i18n="fallbacks.code_graph_not_available_desc">Run the code-graph generation command to visualise your project's architecture as an interactive dependency graph.</p>
         </div>
       </div>
+
       <!-- Active graph view (hidden until data is injected) -->
-      <div id="code-graph-active" style="display:none;flex:1;height:100%;">
+      <div id="code-graph-active" style="display: none; flex: 1; height: 100%;">
         <div id="code-graph-canvas" class="canvas-panel"></div>
       </div>
-      <div id="code-graph-sidebar" class="sidebar" style="display:none;">
-        <input type="text" id="code-graph-search" placeholder="Search nodes by name or tag..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-family:inherit;font-size:14px;margin-bottom:16px;background:var(--panel-bg);">
-        <div id="code-graph-filters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;"></div>
+      <div id="code-graph-sidebar" class="sidebar" style="display: none;">
+        <input type="text" id="code-graph-search" placeholder="Search nodes by name or tag..." style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 14px; margin-bottom: 16px; background: var(--panel-bg);">
+        <div id="code-graph-filters" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;"></div>
         <div class="card" id="code-graph-details">
-          <h3 style="color:var(--text-muted);font-size:14px;">Click a node to inspect</h3>
+          <h3 style="color: var(--text-muted); font-size: 14px;" data-i18n="fallbacks.no_node_selected">Click a node to inspect</h3>
         </div>
         <div class="card">
           <h2>Graph Stats</h2>
@@ -3241,6 +3251,7 @@
 
   <script type="text/javascript">
     // Injected placeholders
+    var projectRoot = /*PROJECT_ROOT*/ "";
     const nodesEdgesData = /*NODES_EDGES*/ {};
     window.nodesEdgesData = nodesEdgesData;
     const sprintData = /*SPRINT_DATA*/ {};
@@ -4382,10 +4393,15 @@
 
 
 
+    function renderCodeGraph() {
+      // No-op: handled by the Code Graph IIFE
+    }
+
     // Initialize all renders on load
     window.onload = () => {
       renderIdeaTree();
       renderFeatureGraph();
+      renderCodeGraph();
       renderOrchestrationGraph();
       initIdeaToPrdPresentation();
       
@@ -4657,6 +4673,214 @@
           modal.style.right = '-50%';
           var selected = Array.from(document.querySelectorAll('.feature-cb:checked')).map(c => c.value);
           updateGraphVisibility(selected);
+        }
+      });
+    })();
+
+    // ===== CODE GRAPH TAB =====
+    (function initCodeGraph() {
+      var codeGraphData = /*CODE_GRAPH_DATA*/ null;
+      var hasData = codeGraphData && codeGraphData.nodes && codeGraphData.nodes.length > 0;
+
+      if (!hasData) {
+         document.getElementById('code-graph-placeholder').style.display = 'flex';
+         document.getElementById('code-graph-active').style.display = 'none';
+         document.getElementById('code-graph-sidebar').style.display = 'none';
+         return;
+      }
+
+      // Hide placeholder, show active view
+      document.getElementById('code-graph-placeholder').style.display = 'none';
+      document.getElementById('code-graph-active').style.display = 'flex';
+      document.getElementById('code-graph-sidebar').style.display = 'block';
+
+      // Define Node Group colors/styles
+      var layerColors = {
+        core:           { background: '#3b82f6', border: '#1d4ed8', font: { color: '#ffffff' } },
+        application:    { background: '#10b981', border: '#047857', font: { color: '#ffffff' } },
+        infrastructure: { background: '#f59e0b', border: '#b45309', font: { color: '#ffffff' } },
+        interface:      { background: '#8b5cf6', border: '#6d28d9', font: { color: '#ffffff' } },
+        unknown:        { background: '#6b7280', border: '#374151', font: { color: '#ffffff' } }
+      };
+
+      function getLayerColor(layer) {
+        var key = (layer || 'unknown').toLowerCase();
+        return layerColors[key] || layerColors.unknown;
+      }
+
+      var nodes = new vis.DataSet(codeGraphData.nodes.map(function(n) {
+        var col = getLayerColor(n.layer);
+        return {
+          id: n.id,
+          label: n.label,
+          title: '<b>' + n.label + '</b><br>Layer: ' + n.layer + '<br>Complexity: ' + n.complexity + '<br>Tags: ' + (n.tags ? n.tags.join(', ') : 'none'),
+          group: n.group,
+          color: col,
+          font: { size: 12, face: 'Inter', color: col.font.color },
+          shape: n.group === 'root' ? 'box' : 'dot',
+          size: n.group === 'root' ? 20 : 15,
+          borderWidth: 2,
+          _meta: n
+        };
+      }));
+
+      var edges = new vis.DataSet(codeGraphData.edges.map(function(e, i) {
+        return {
+          id: 'cg-edge-' + i,
+          from: e.from,
+          to: e.to,
+          label: e.label || e.type,
+          arrows: 'to',
+          color: { color: 'rgba(156, 163, 175, 0.5)', highlight: '#1d4ed8' },
+          width: 1.5,
+          font: { size: 9, color: '#94a3b8', face: 'Inter' },
+          smooth: { type: 'cubicBezier', forceDirection: 'horizontal', roundness: 0.4 },
+          _rel: e.type
+        };
+      }));
+
+      var container = document.getElementById('code-graph-canvas');
+      var disablePhysicsImmediately = codeGraphData.nodes.length > 1000;
+      
+      var options = {
+        physics: {
+          enabled: !disablePhysicsImmediately,
+          stabilization: { enabled: true, iterations: 150, fit: true },
+          barnesHut: { gravitationalConstant: -3000, centralGravity: 0.1, springLength: 150 }
+        },
+        interaction: { hover: true, tooltipDelay: 200, zoomView: true, dragView: true },
+        layout: { improvedLayout: true }
+      };
+
+      var network = new vis.Network(container, { nodes: nodes, edges: edges }, options);
+      window.codeGraphNetwork = network;
+
+      if (!disablePhysicsImmediately) {
+        network.once('stabilizationIterationsDone', function() {
+          network.setOptions({ physics: { enabled: false } });
+        });
+      }
+
+      // Populate filters dynamically based on unique node groups
+      var filterContainer = document.getElementById('code-graph-filters');
+      var uniqueGroups = new Set();
+      codeGraphData.nodes.forEach(function(n) { if (n.group) uniqueGroups.add(n.group); });
+      
+      var filtersHtml = '';
+      uniqueGroups.forEach(function(g) {
+        filtersHtml += '<button class="code-graph-filter-btn active" data-filter="' + g + '" onclick="toggleCodeGraphFilter(\'' + g + '\')">' + g + '</button>';
+      });
+      filterContainer.innerHTML = filtersHtml;
+
+      var activeFilters = new Set(uniqueGroups);
+      window.toggleCodeGraphFilter = function(group) {
+        var btn = document.querySelector('.code-graph-filter-btn[data-filter="' + group + '"]');
+        if (activeFilters.has(group)) {
+          activeFilters.delete(group);
+          btn.classList.remove('active');
+          btn.style.opacity = '0.5';
+        } else {
+          activeFilters.add(group);
+          btn.classList.add('active');
+          btn.style.opacity = '1';
+        }
+        applyFilters();
+      };
+
+      // Filter input search box logic
+      var searchInput = document.getElementById('code-graph-search');
+      searchInput.addEventListener('input', function() {
+        applyFilters();
+      });
+
+      function applyFilters() {
+        var searchVal = searchInput.value.toLowerCase().trim();
+        nodes.forEach(function(n) {
+          var matchesSearch = !searchVal || n.label.toLowerCase().includes(searchVal) || (n._meta.tags && n._meta.tags.some(t => t.toLowerCase().includes(searchVal)));
+          var matchesGroup = activeFilters.has(n.group);
+          
+          nodes.update({ id: n.id, hidden: !(matchesSearch && matchesGroup) });
+        });
+      }
+
+      // Click handler - details sidebar & connection highlighting
+      network.on('click', function(params) {
+        var detailsEl = document.getElementById('code-graph-details');
+        if (params.nodes.length > 0) {
+          var nodeId = params.nodes[0];
+          var node = nodes.get(nodeId);
+          if (node && node._meta) {
+            var m = node._meta;
+            var complexityColor = m.complexity === 'high' ? 'var(--error)' : m.complexity === 'medium' ? 'var(--warning)' : 'var(--success)';
+            
+            var fileLink = '';
+            if (projectRoot) {
+              var absPath = projectRoot + '/' + m.id;
+              var fileUri = 'file://' + absPath;
+              fileLink = '<div style="margin-top:12px;"><a href="' + fileUri + '" class="tab-btn" style="display:inline-block;text-decoration:none;text-align:center;padding:6px 12px;font-size:12px;" target="_blank">Open in IDE</a></div>';
+            }
+
+            var html = '<h3 style="margin-bottom:12px;font-size:16px;color:var(--text-color);word-break:break-all;">' + m.label + '</h3>' +
+              '<div class="code-graph-stat"><span class="label">Path</span><span class="value" style="font-family:monospace;word-break:break-all;font-size:12px;">' + m.id + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Layer</span><span class="value" style="text-transform:capitalize;">' + m.layer + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Group</span><span class="value">' + m.group + '</span></div>' +
+              '<div class="code-graph-stat"><span class="label">Complexity</span><span class="value" style="color:' + complexityColor + ';text-transform:uppercase;font-weight:700;">' + m.complexity + '</span></div>';
+            
+            if (m.tags && m.tags.length > 0) {
+              html += '<div class="code-graph-stat"><span class="label">Tags</span><span class="value">' + m.tags.join(', ') + '</span></div>';
+            }
+            if (m.summary) {
+              html += '<div style="margin-top:12px;font-size:13px;line-height:1.5;color:var(--text-muted);background:rgba(0,0,0,0.02);padding:10px;border-radius:6px;border-left:3px solid var(--primary);">' + m.summary + '</div>';
+            }
+
+            html += fileLink;
+
+            // List connected imports
+            var connectedEdges = edges.get().filter(function(e) { return e.from === m.id || e.to === m.id; });
+            if (connectedEdges.length > 0) {
+              html += '<div style="margin-top:16px;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Connected Dependencies (' + connectedEdges.length + ')</div>';
+              html += '<div style="max-height:200px;overflow-y:auto;margin-top:8px;display:flex;flex-direction:column;gap:6px;">';
+              connectedEdges.forEach(function(e) {
+                var direction = e.from === m.id ? 'Imports → ' + e.to : 'Imported by ← ' + e.from;
+                html += '<div class="code-graph-stat" style="padding:4px 0;"><span class="label" style="font-size:11px;">' + direction + '</span></div>';
+              });
+              html += '</div>';
+            }
+
+            detailsEl.innerHTML = html;
+
+            // Highlight node & neighbors
+            var neighborhood = new Set([nodeId]);
+            edges.forEach(function(e) {
+              if (e.from === nodeId) neighborhood.add(e.to);
+              if (e.to === nodeId) neighborhood.add(e.from);
+            });
+            nodes.forEach(function(n) {
+              if (neighborhood.has(n.id)) {
+                nodes.update({ id: n.id, color: getLayerColor(n._meta.layer) });
+              } else {
+                nodes.update({ id: n.id, color: { background: 'rgba(200,200,200,0.1)', border: 'rgba(200,200,200,0.2)', font: { color: 'rgba(0,0,0,0.1)' } } });
+              }
+            });
+          }
+        } else {
+          // Reset highlights
+          nodes.forEach(function(n) {
+            nodes.update({ id: n.id, color: getLayerColor(n._meta.layer) });
+          });
+          detailsEl.innerHTML = '<h3 style="color:var(--text-muted);font-size:14px;" data-i18n="fallbacks.no_node_selected">Click a node to inspect</h3>';
+        }
+      });
+
+      // Double-click navigation handler
+      network.on('doubleClick', function(params) {
+        if (params.nodes.length > 0) {
+          var nodeId = params.nodes[0];
+          var node = nodes.get(nodeId);
+          if (node && node._meta && projectRoot) {
+            var absolutePath = projectRoot + '/' + node._meta.id;
+            window.location.href = 'file://' + absolutePath;
+          }
         }
       });
     })();

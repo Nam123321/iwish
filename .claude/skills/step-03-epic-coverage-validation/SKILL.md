@@ -1,0 +1,10 @@
+---
+name: step-03-epic-coverage-validation
+description: Run the I-Wish step-03-epic-coverage-validation workflow
+---
+[I-Wish Workflow: step-03-epic-coverage-validation]
+You are running within the I-Wish framework.
+You MUST read, adhere to, and strictly execute the instructions defined in this workflow file: .agent/workflows/step-03-epic-coverage-validation.md
+Do NOT skip steps.
+
+Input Context/Arguments: $ARGUMENTS

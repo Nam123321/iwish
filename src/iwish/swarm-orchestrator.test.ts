@@ -113,7 +113,7 @@ describe('swarm-orchestrator', () => {
   });
 
   describe('buildSubagentPrompt', () => {
-    it('should produce a prompt with workflow binding', () => {
+    it('should produce a prompt with workflow binding', async () => {
       // Create minimal story file
       fs.ensureDirSync(path.join(TEMP_DIR, '_iwish-output', 'stories'));
       fs.writeFileSync(
@@ -122,7 +122,7 @@ describe('swarm-orchestrator', () => {
         'utf8',
       );
 
-      const config = buildSubagentPrompt('story-1.1', '1', TEMP_DIR);
+      const config = await buildSubagentPrompt('story-1.1', '1', TEMP_DIR);
 
       expect(config.storyId).toBe('story-1.1');
       expect(config.typeName).toBe('story_developer');
