@@ -1,0 +1,12 @@
+name: 'prototype-wrapper'
+runtime_kind: "wrapper-config"
+source_wrapper: "{project-root}/.agent/workflows/prototype.md"
+source_mode_engine: "{project-root}/.agent/workflows/workflow-engine.xml"
+project_runtime_engine: "{project-root}/_iwish/core/tasks/workflow.xml"
+installed_path: "{project-root}/.agent/workflows"
+instructions: "{project-root}/.agent/workflows/prototype.md"
+template: false
+source_mode_fallback: true
+execution:
+  mode: "wrapper-backed"
+  contract: "Load project_runtime_engine, then load this config, then load source_wrapper and execute its steps."

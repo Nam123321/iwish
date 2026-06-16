@@ -1,0 +1,18 @@
+id: workflow-prd-purpose
+name: prd-purpose
+kind: workflow
+shape: workflow
+role: foundational
+phases: [plan]
+stages: [prd-quality, traceability, requirement-discipline]
+triggers: [prd purpose, prd quality, requirement traceability]
+anti_triggers: [run-e2e]
+primary_agents: [King-Kai-agent, orch-agent]
+primary_workflows: [prd-purpose]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Foundational guidance asset for planning quality; not a direct implementation owner.
+source_path: /.agent/workflows/prd-purpose.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, foundational, planning]

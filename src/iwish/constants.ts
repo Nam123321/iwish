@@ -131,6 +131,7 @@ export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
   '/brand-id': '/brand',
   '/brand-guideline': '/brand',
   '/logo': '/brand',
+  '/edge-case-guardiant': '/edge-case-guardian',
 };
 
 export function getCanonicalHome(): string {

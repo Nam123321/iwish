@@ -1,0 +1,17 @@
+id: workflow-project-expansion-review
+name: project-expansion-review
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [plan, solution]
+stages: [scope-analysis, pivot-review]
+triggers: [project-expansion-review, project expansion review, per, expansion review, evaluate expansion, new feature review]
+anti_triggers: []
+primary_agents: [orch-agent, King-Kai-agent, Bulma-agent]
+primary_workflows: [project-expansion-review]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+review_pack: docs/iwish-introduction.md
+source_path: /.agent/workflows/project-expansion-review.md
+tags: [planning, per, pivot, scope, feature-expansion]

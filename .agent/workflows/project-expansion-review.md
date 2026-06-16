@@ -30,6 +30,7 @@ Evaluate the proposed change against the 4 pillars by analyzing the codebase, PR
 - **Research & Context Alignment:** Does it shift any assumptions from past market, competitor, or domain research?
 - **Pivot Likelihood:** Is this an incremental add-on, or does it trigger a potential Zoom-In/Zoom-Out/Customer/Tech pivot?
 - **Technical & Architectural Impact:** Does it alter the database schema (ERD), API contracts, or require new third-party integrations/libraries?
+  - **MANDATORY LIGHT RISK SCAN:** You MUST load the Review Agent (`/.agent/agents/review-agent.md`) using the Edge Case Guardian skill (`/.agent/skills/edge-case-guardian/SKILL.md`) to run a quick scan on **P4 (Data Integrity)**, **P5 (Integration Failure)**, and **P6 (Permission & Security)** to identify major architectural risks before finalizing the impact level.
 - **UX & UI Complexity:** Does it make the primary user flows too complicated? Does it violate YAGNI?
 
 ### 3. Determine Routing Level

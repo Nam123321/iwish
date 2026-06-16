@@ -81,6 +81,7 @@ const CANONICAL_COMMANDS: Array<{ command: string; description: string; tags: st
   { command: '/brand', description: 'Brand identity, logo and brand guideline creation and refactoring flow', tags: ['command', 'design', 'strategy', 'brand'] },
   { command: '/flow', description: 'Automated Epic/Story SDLC pipeline workflow', tags: ['command', 'sdlc', 'automation', 'pipeline'] },
   { command: '/update-knowledge-formatter', description: 'Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard', tags: ['command', 'maintenance', 'okf'] },
+  { command: '/edge-case-guardian', description: 'Edge Case Guardian 8-Pillar scan and risk analysis workflow', tags: ['command', 'review', 'quality'] },
 ];
 
 function readYaml<T>(filePath: string): T {

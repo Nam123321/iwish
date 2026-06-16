@@ -1,0 +1,19 @@
+id: workflow-create-tool-usage-pack
+name: create-tool-usage-pack
+kind: workflow
+shape: workflow
+role: supportive
+phases: [operate-learn]
+stages: [tool-research, usage-pack-design, tool-orchestration-registration]
+triggers: [new tool, canva, design tool, browser tool, graph tool, tool usage pack]
+anti_triggers: [ordinary story implementation]
+primary_agents: [capability-agent, orch-agent]
+primary_workflows: [create-tool-usage-pack]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - A tool adapter alone is not enough for full orchestration support.
+review_pack: docs/open-modules/create-tool-usage-pack-integration-guide.md
+source_path: /.agent/workflows/create-tool-usage-pack.md
+story_refs: [story-1.8]
+tags: [open-tool, supportive]

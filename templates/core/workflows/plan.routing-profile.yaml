@@ -1,0 +1,19 @@
+id: workflow-plan
+name: plan
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [plan]
+stages: [product-brief, prd, roadmap]
+triggers: [plan, prd, roadmap, brief, strategy]
+anti_triggers: [raw-code-patch]
+primary_agents: [King-Kai-agent, orch-agent]
+primary_workflows: [plan]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Prefer before solutioning or implementation when request is still under-scoped.
+review_pack: docs/open-modules/plan-integration-guide.md
+source_path: /.agent/workflows/plan.md
+story_refs: [story-1.7]
+tags: [planning, canonical]

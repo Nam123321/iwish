@@ -1,0 +1,19 @@
+id: workflow-bootstrap-existing-project
+name: bootstrap-existing-project
+kind: workflow
+shape: workflow
+role: supportive
+phases: [discover, plan, solution]
+stages: [brownfield-assessment, context-normalization, bootstrap-handoff]
+triggers: [brownfield, existing project, legacy codebase, document project, project context, bootstrap project]
+anti_triggers: [single isolated typo fix]
+primary_agents: [orch-agent, Piccolo-agent, capability-agent]
+primary_workflows: [bootstrap-existing-project]
+supportive_skills: [repo-absorption, github-deep-research]
+tool_dependencies: [graph]
+constraints:
+  - Must classify whether the project is context-light, context-partial, or context-rich before deciding how much planning/source-of-truth to generate.
+review_pack: docs/open-modules/bootstrap-existing-project-integration-guide.md
+source_path: /.agent/workflows/bootstrap-existing-project.md
+story_refs: [story-1.11]
+tags: [brownfield, supportive, bootstrap]

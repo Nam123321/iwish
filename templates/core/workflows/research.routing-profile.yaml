@@ -1,0 +1,19 @@
+id: workflow-research
+name: research
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discover]
+stages: [market-research, competitor-research, domain-research, technical-research]
+triggers: [research, analyze, market, competitor, domain, technical]
+anti_triggers: [final-code-patch]
+primary_agents: [research-agent, orch-agent]
+primary_workflows: [research]
+supportive_skills: [github-deep-research]
+tool_dependencies: [graph]
+constraints:
+  - Prefer before planning or implementation when facts are missing.
+review_pack: docs/open-modules/research-integration-guide.md
+source_path: /.agent/workflows/research.md
+story_refs: [story-1.7]
+tags: [research, canonical]

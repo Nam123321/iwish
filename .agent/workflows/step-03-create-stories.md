@@ -175,7 +175,7 @@ For each story in the epic:
 
 - Use Given/When/Then format
 - Each AC should be independently testable
-- 🛡️ **EDGE CASES:** After writing happy-path ACs, the Edge Case Guardian SKILL (`{project-root}/.agent/skills/review-agent/SKILL.md`) will be invoked to systematically identify edge cases using the 8-Pillar Taxonomy. Edge case ACs will be tagged with `[EDGE-CASE]` prefix.
+- 🛡️ **EDGE CASES:** After writing happy-path ACs, the Review Agent (`{project-root}/.agent/agents/review-agent.md`) loading the Edge Case Guardian SKILL (`{project-root}/.agent/skills/edge-case-guardian/SKILL.md`) will be invoked to systematically identify edge cases using the 8-Pillar Taxonomy. Edge case ACs will be tagged with `[EDGE-CASE]` prefix.
 - Reference specific requirements when applicable
 
 #### D. Collaborative Review
@@ -241,7 +241,7 @@ Ask User: "Plan Tune hoàn tất. Xác nhận phương án tách/gộp trước 
 
 After all stories for an epic are written AND before getting user confirmation:
 
-**CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/.agent/agents/review-agent.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
+**CRITICAL: Invoke the Review Agent (`{project-root}/.agent/agents/review-agent.md`) loading the Edge Case Guardian SKILL (`{project-root}/.agent/skills/edge-case-guardian/SKILL.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
 
 #### A. Research Phase
 - Use the Research Prompt Library (`{project-root}/.agent/fragments/research-prompt-library.md`) to search for known edge cases related to this epic's features

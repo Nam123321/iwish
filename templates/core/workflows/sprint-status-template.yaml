@@ -1,0 +1,18 @@
+# Sprint Status Template
+# This is an EXAMPLE showing the expected format
+# The actual file will be generated with all epics/stories from your epic files
+
+sprint_name: "Sprint 1"
+status: planning
+start_date: 'YYYY-MM-DD'
+epics:
+  - id: epic-1
+    title: "Example Epic Title"
+    status: backlog
+    stories:
+      - id: story-1.1
+        title: "Example Story Title"
+        status: backlog
+      - id: story-1.2
+        title: "Example Story Title 2"
+        status: backlog

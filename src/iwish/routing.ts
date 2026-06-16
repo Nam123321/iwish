@@ -91,6 +91,7 @@ function getTargetAgent(canonicalCommand: string): string {
     case '/project-expansion-review':
       return 'pm-agent';
     case '/review':
+    case '/edge-case-guardian':
       return 'review-agent';
     case '/make-ui-spec':
       return 'ux-agent';
@@ -268,6 +269,15 @@ function detectCommand(normalizedRequest: string): { canonicalCommand: string; l
       legacyAliasMatched: null,
       targetAgent: 'review-agent',
       routeReason: 'Review intent detected',
+    };
+  }
+
+  if (/\b(edge-case-guardian|edge-case-guardiant|edge case guardian|edge case guardiant|8-pillar|fmea)\b/.test(normalizedRequest)) {
+    return {
+      canonicalCommand: '/edge-case-guardian',
+      legacyAliasMatched: null,
+      targetAgent: 'review-agent',
+      routeReason: 'Edge Case Guardian / 8-Pillar scan intent detected',
     };
   }
 
@@ -623,6 +633,14 @@ function buildRecommendations(
       workflowChain: ['/pivot-project', '/research', '/plan'],
       supportiveSkills: ['socratic-review', 'unique-advantage-evaluator', 'pivot-guardian'],
       artifactChain: ['pivot notes', 'impact analysis', 'updated plan / story / epic context'],
+    };
+  }
+
+  if (canonicalCommand === '/edge-case-guardian') {
+    return {
+      workflowChain: ['/edge-case-guardian'],
+      supportiveSkills: ['edge-case-guardian'],
+      artifactChain: ['risk-matrix', 'knowledge-graph'],
     };
   }
 

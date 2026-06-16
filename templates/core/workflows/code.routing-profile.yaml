@@ -1,0 +1,19 @@
+id: workflow-code
+name: code
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [implement]
+stages: [Vegeta-execution, bug-fix, patching]
+triggers: [implement, code, bugfix, patch, refactor, feature]
+anti_triggers: [prd, roadmap, market-research]
+primary_agents: [Vegeta-agent, orch-agent]
+primary_workflows: [code]
+supportive_skills: [pivot-guardian]
+tool_dependencies: [graph]
+constraints:
+  - Requires reconciliation when implementation changes source-of-truth.
+review_pack: docs/open-modules/code-integration-guide.md
+source_path: /.agent/workflows/code.md
+story_refs: [story-1.7]
+tags: [implementation, canonical]

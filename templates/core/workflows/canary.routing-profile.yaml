@@ -1,0 +1,15 @@
+id: workflow-canary
+name: canary
+role: devops-agent
+kind: workflow
+shape: process
+phases: [delivery]
+stages: [deploy]
+triggers:
+  - /canary
+tags:
+  - canary
+  - release
+  - deployment
+source_path: /.agent/workflows/canary.md
+review_pack: /.agent/skills/canary/SKILL.md

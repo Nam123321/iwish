@@ -1,0 +1,17 @@
+id: workflow-edge-case-guardian
+name: edge-case-guardian
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [planning, review]
+stages: [risk-assessment, edge-case-analysis]
+triggers: [/edge-case-guardian, /edge-case-guardiant, edge-case-guardian, edge-case-guardiant, edge case scan, edge case analysis, risk scan, 8-pillar scan]
+anti_triggers: [greenfield-planning]
+primary_agents: [review-agent, orch-agent]
+primary_workflows: [edge-case-guardian]
+supportive_skills: [edge-case-guardian]
+tool_dependencies: []
+constraints:
+  - Systematically identify edge cases using the 8-Pillar Taxonomy.
+source_path: /.agent/workflows/edge-case-guardian.md
+tags: [review, quality, edge-case]

@@ -1,0 +1,19 @@
+id: workflow-review
+name: review
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [validate]
+stages: [review, audit, risk-check]
+triggers: [review, audit, feedback, quality, defects]
+anti_triggers: [create-prd]
+primary_agents: [review-agent, orch-agent]
+primary_workflows: [review]
+supportive_skills: [Tien-Shinhan-simulator-guardian]
+tool_dependencies: [browser]
+constraints:
+  - Findings-first posture; avoid replacing implementation or planning flows.
+review_pack: docs/open-modules/review-integration-guide.md
+source_path: /.agent/workflows/review.md
+story_refs: [story-1.7]
+tags: [review, canonical]

@@ -1,0 +1,19 @@
+id: skill-visual-fidelity-gate
+name: visual-fidelity-gate
+kind: skill
+shape: skill
+role: foundational
+phases: [solution, validate]
+stages: [visual-validation, master-design-alignment]
+triggers: [visual fidelity, master design, design gate, figma, stitch, canva, claude-design]
+anti_triggers: [backend-only-refactor]
+primary_agents: [ux-agent, review-agent, Vegeta-agent]
+primary_workflows: [make-ui-spec, review, code]
+supportive_skills: []
+tool_dependencies: [design]
+constraints:
+  - Use as the generic design validation gate across design platforms.
+review_pack: docs/open-modules/visual-fidelity-gate-integration-guide.md
+source_path: /.agent/skills/visual-fidelity-gate/SKILL.md
+story_refs: [story-1.8]
+tags: [visual, generic-gate]

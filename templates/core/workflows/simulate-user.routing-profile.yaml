@@ -1,0 +1,18 @@
+id: workflow-simulate-user
+name: simulate-user
+kind: workflow
+shape: workflow
+role: supportive
+phases: [validate]
+stages: [persona-simulation, flow-walkthrough, user-friction-check]
+triggers: [simulate user, user simulation, persona walkthrough]
+anti_triggers: [backend-schema-only]
+primary_agents: [ux-agent, research-agent]
+primary_workflows: [simulate-user]
+supportive_skills: []
+tool_dependencies: [browser]
+constraints:
+  - Best results require browser evidence rather than static reasoning alone.
+source_path: /.agent/workflows/simulate-user.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, browser, simulation]

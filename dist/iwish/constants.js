@@ -154,6 +154,7 @@ exports.LEGACY_COMMAND_ALIASES = {
     '/brand-id': '/brand',
     '/brand-guideline': '/brand',
     '/logo': '/brand',
+    '/edge-case-guardiant': '/edge-case-guardian',
 };
 function getCanonicalHome() {
     return process.env.IWISH_HOME || path.join(os.homedir(), '.iwish');
