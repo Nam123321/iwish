@@ -407,8 +407,8 @@ async function compileUserGuideDashboard(projectRoot) {
 }
 async function installRuntime(projectRoot, installTargets, mode) {
     const existing = loadExistingManifest(projectRoot);
-    const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'update');
-    const agentAssetResults = await materializeAgentAssets(projectRoot, mode === 'update');
+    const templateResults = await materializeRuntimeTemplates(projectRoot, true);
+    const agentAssetResults = await materializeAgentAssets(projectRoot, true);
     await materializeInstallTargetDirs(projectRoot, installTargets);
     await writeInstallTargetMarkers(projectRoot, installTargets);
     const manifest = buildManifest(projectRoot, installTargets, existing);

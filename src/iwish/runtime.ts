@@ -516,8 +516,8 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
 
 export async function installRuntime(projectRoot: string, installTargets: string[], mode: InstallMode): Promise<void> {
   const existing = loadExistingManifest(projectRoot);
-  const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'update');
-  const agentAssetResults = await materializeAgentAssets(projectRoot, mode === 'update');
+  const templateResults = await materializeRuntimeTemplates(projectRoot, true);
+  const agentAssetResults = await materializeAgentAssets(projectRoot, true);
   await materializeInstallTargetDirs(projectRoot, installTargets);
   await writeInstallTargetMarkers(projectRoot, installTargets);
 

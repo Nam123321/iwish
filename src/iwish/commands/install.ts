@@ -22,7 +22,7 @@ export function registerInstallCommands(
         await checkForRegistryUpdates(projectRoot).catch(() => {});
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'install');
-        await ensureCapabilityPackageTemplates(projectRoot);
+        await ensureCapabilityPackageTemplates(projectRoot, true);
         if (!options.skipToolSetup) {
           await promptLLMSetup(projectRoot);
           await promptGraphToolSelection(projectRoot);
@@ -85,7 +85,7 @@ export function registerInstallCommands(
         const projectRoot = getProjectRoot(options.directory);
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'install');
-        await ensureCapabilityPackageTemplates(projectRoot);
+        await ensureCapabilityPackageTemplates(projectRoot, true);
       }),
   );
 }
