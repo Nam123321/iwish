@@ -26,8 +26,6 @@ Forces every feature design and UI spec through the lens of **real users in real
 | `/create-ui-spec` | Before finalizing UI spec | ✅ MANDATORY |
 | `/Vegeta-agent-story` | When implementing interaction patterns | ✅ MANDATORY |
 | `/review` | Reviewing user-facing features | ✅ MANDATORY |
-| `/simulate-user` | Dedicated user simulation workflow | ✅ MANDATORY |
-| `/create-epics-and-stories` | Writing acceptance criteria | ⚡ RECOMMENDED |
 | `/creative-agent` | Ideation sessions | ⚡ RECOMMENDED |
 
 ---
@@ -146,6 +144,8 @@ Các mẫu hành vi thực tế cần giả định:
 ---
 
 ## 3. Scenario System
+
+Scenarios are stored in `{project-root}/.agent/skills/user-simulation-guardian/scenarios/`.
 
 ### Scenario Selection
 

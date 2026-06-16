@@ -516,8 +516,8 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
 
 export async function installRuntime(projectRoot: string, installTargets: string[], mode: InstallMode): Promise<void> {
   const existing = loadExistingManifest(projectRoot);
-  const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'install' ? false : false);
-  const agentAssetResults = await materializeAgentAssets(projectRoot, mode === 'install' ? false : false);
+  const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'update');
+  const agentAssetResults = await materializeAgentAssets(projectRoot, mode === 'update');
   await materializeInstallTargetDirs(projectRoot, installTargets);
   await writeInstallTargetMarkers(projectRoot, installTargets);
 
@@ -1331,7 +1331,7 @@ export function getToolSetupStatus(projectRoot: string): ToolSetupPrompt[] {
   return buildToolSetupPrompts(['graph'], selections);
 }
 
-export async function ensureCapabilityPackageTemplates(projectRoot: string): Promise<void> {
+export async function ensureCapabilityPackageTemplates(projectRoot: string, overwrite = false): Promise<void> {
   const destinationRoot = path.join(getRuntimeRoot(projectRoot, 'iwish'), 'capability-package');
   const sourceFiles = fs
     .readdirSync(CAPABILITY_TEMPLATE_ROOT, { recursive: true })
@@ -1343,7 +1343,7 @@ export async function ensureCapabilityPackageTemplates(projectRoot: string): Pro
     const relative = path.relative(CAPABILITY_TEMPLATE_ROOT, sourceFile);
     const destination = path.join(destinationRoot, relative);
     const content = await fs.readFile(sourceFile, 'utf8');
-    await writeIfMissing(destination, content, false);
+    await writeIfMissing(destination, content, overwrite);
   }
 }
 

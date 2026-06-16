@@ -85,7 +85,7 @@ function registerInstallCommands(program, getProjectRoot, addSharedDirectoryOpti
         await checkForRegistryUpdates(projectRoot).catch(() => { });
         const targets = await (0, install_helpers_1.resolveInstallTargets)(options.platform);
         await (0, runtime_1.installRuntime)(projectRoot, targets, 'update');
-        await (0, runtime_1.ensureCapabilityPackageTemplates)(projectRoot);
+        await (0, runtime_1.ensureCapabilityPackageTemplates)(projectRoot, true);
         if (!options.skipToolSetup) {
             await (0, llm_setup_1.promptLLMSetup)(projectRoot);
             await (0, install_helpers_1.promptGraphToolSelection)(projectRoot);

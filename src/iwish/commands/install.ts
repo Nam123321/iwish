@@ -55,7 +55,7 @@ export function registerInstallCommands(
         await checkForRegistryUpdates(projectRoot).catch(() => {});
         const targets = await resolveInstallTargets(options.platform);
         await installRuntime(projectRoot, targets, 'update');
-        await ensureCapabilityPackageTemplates(projectRoot);
+        await ensureCapabilityPackageTemplates(projectRoot, true);
         if (!options.skipToolSetup) {
           await promptLLMSetup(projectRoot);
           await promptGraphToolSelection(projectRoot);
