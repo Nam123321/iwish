@@ -1,5 +1,5 @@
 ---
-name: 'reconcile-change'
+legacy_name: 'reconcile-change-legacy'
 description: 'Process the reconciliation queue to synchronize requirement changes back to source specifications (PRD, UI Specs, Stories)'
 disable-model-invocation: true
 ---

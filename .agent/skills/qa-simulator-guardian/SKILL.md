@@ -1,5 +1,5 @@
 ---
-name: 'qa-simulator-guardian-wrapper'
+name: 'qa-simulator-guardian'
 description: "Use when validating a story's completeness by mentally simulating edge cases, state integrity, and generating the 7-row Hybrid Scorecard."
 ---
 

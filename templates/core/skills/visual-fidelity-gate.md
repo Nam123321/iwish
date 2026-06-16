@@ -1,5 +1,5 @@
 ---
-name: 'visual-fidelity-gate-wrapper'
+name: 'visual-fidelity-gate'
 description: Visual enforcement gate that rigidly validates UI implementations against the Approved Master Design Source (Figma, Penpot, Stitch, or UI Kit). Ensures developers use DOM-driven layout instead of Schema-driven layout.
 ---
 

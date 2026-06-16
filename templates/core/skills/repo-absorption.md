@@ -1,5 +1,5 @@
 ---
-name: 'repo-absorption-wrapper'
+name: 'repo-absorption'
 description: "Core engine for deep-learning an external repository in 5 phases: INGEST (pack with Repomix), INDEX (Dual-Indexer with Hybrid Resolution), MAP (Graph-Directed architecture mapping), DISSECT (Dual-Layer priority-based deep reading), and DOCUMENT (generate repo-dna.md with Symlink)."
 ---
 

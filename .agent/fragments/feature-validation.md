@@ -26,39 +26,37 @@
 □ PASS/FAIL: At least 1 non-linear user path identified and designed
   Examples: jump between pages, abandon + return, interrupt + resume
 □ PASS/FAIL: Copy-paste path designed (not just click/type path)
-  - Zalo message paste for NVBH/CTV
-  - Recipe paste for Consumer
-□ PASS/FAIL: Voice/shortcut path considered (if applicable)
+  - Copy-paste of external context (e.g., text, code, message, or file imports)
+□ PASS/FAIL: Voice/shortcut/quick-action path considered (if applicable)
 ```
 
 ### Step 4: Repeat & Reorder
 ```
-□ PASS/FAIL: "Reorder/repeat" path designed for applicable features
-□ PASS/N/A: "Lấy lại đơn cũ" flow exists for order-related features
+□ PASS/FAIL: "Reorder/repeat/history" path designed for applicable features
+□ PASS/N/A: Quick re-use/template/duplicate flow exists for transactional/form-heavy features
 ```
 
 ### Step 5: Edge Behaviors
 ```
-□ PASS/FAIL: Very large input (100+ items, long text) tested
-□ PASS/FAIL: Very small input (1 item, 1 word) tested
-□ PASS/FAIL: Interrupted flow (app kill, network drop) handled
+□ PASS/FAIL: Very large input (100+ items, long text, bulk upload) tested
+□ PASS/FAIL: Very small input (1 item, 1 word, blank state) tested
+□ PASS/FAIL: Interrupted flow (app kill, network drop, tab switch) handled
 □ PASS/FAIL: Error recovery does NOT require restart from beginning
 ```
 
 ### Step 6: Language & Accessibility
 ```
-□ PASS/FAIL: Vietnamese abbreviations handled (HH, NC, NM, CK)
-□ PASS/FAIL: Emoji in input handled gracefully (🍜, ❌, ✅)
-□ PASS/FAIL: Regional language variants considered (trái/quả)
-□ PASS/FAIL: Vague input has clarification flow ("vài thùng" → "bao nhiêu?")
+□ PASS/FAIL: Domain-specific abbreviations handled (e.g. CR/HD for coworking, HH/NC/CK for retail)
+□ PASS/FAIL: Emoji/non-standard chars in input handled gracefully (🍜, ❌, ✅)
+□ PASS/FAIL: Regional language variants and typos considered
+□ PASS/FAIL: Vague/ambiguous input has a clarification or autocomplete flow
 ```
 
-### Step 7: Industry-Specific (if applicable)
+### Step 7: Domain & Industry-Specific (if applicable)
 ```
-□ PASS/N/A: Meal planning intent handled (for food industry)
-□ PASS/N/A: Diet/restriction handling (keto, chay, allergen)
-□ PASS/N/A: Budget-aware suggestions (for consumer features)
-□ PASS/N/A: Seasonal product awareness (for fresh food)
+□ PASS/N/A: Domain-specific integration rules followed (e.g., meal-planning for food, room-booking for real estate)
+□ PASS/N/A: Customer preferences or restriction handling (budget, diet, room size, auth level)
+□ PASS/N/A: Quick-filter and batch-update capabilities tailored to the target customer segment
 ```
 
 ## Gate Result

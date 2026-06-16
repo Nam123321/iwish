@@ -15,23 +15,20 @@ description: 'Run 1st-Principle user simulation on a feature or UI spec using th
 // turbo-all
 
 1. Load SKILL: `{project-root}/.agent/skills/user-simulation-guardian/SKILL.md`
-2. Identify the **feature/UI spec** to simulate:
-   - Read the story file or UI spec being reviewed
-   - Identify which portals are involved (Webstore, Sales Web, Admin Portal)
+2. Identify the **target users / customers** for the current project:
+   - **Scan Project Documentation**: Read project files to extract the actual target users, target customers, focus groups, customer personas, and roles. Look specifically under:
+     - `📄 2. Product Planning/2.1. product-brief-or-prd.md` (or `prd.md`/`product-brief.md`) -> Look for `## Target Users`, `## Target Customers`, `## Focus Groups`, or `## Customer Persona` sections.
+     - `📄 1. Idea Discovery/` files (e.g., `idea-discovery.md`, `product-strategy.md`) or `📄 project-context.md`.
+     - Check `{project-root}/.agent/skills/user-simulation-guardian/personas/` or `{project-root}/docs/personas/` for any project-specific persona files.
+   - **Identify target portals and actors**: Read the story file or UI spec being reviewed, identify which portals are involved (e.g., Member Web, Manager App, Admin Portal), and map the corresponding target users who will use each portal.
+   - **Resolve the simulation persona group**: Select a minimum of 3 personas. Must include at least 1 persona representing the main target customer/user segment for each portal involved.
+   - *Note on Fallbacks*: If no project-specific target users are defined yet in the documentation, perform a zero-shot estimation of the personas based on the project description and portals, and ask the user for confirmation. Do NOT fallback to DMS/grocery roles unless the project is actually a B2B/B2C retail/grocery distribution project.
 
-3. Select **personas** (MINIMUM 3):
-   - MUST include at least 1 persona per portal involved
-   - For Webstore → MUST include P1 (Chủ tiệm) AND/OR P5 (Consumer)
-   - For Sales Web → MUST include P2 (NVBH — pick relevant sub-type)
-   - For Admin Portal → MUST include P3 (Admin) AND/OR P4 (Supervisor)
-   
-4. Select **scenarios** (MINIMUM 2):
-   - MUST include at least 1 stress scenario (rush-hour OR low-connectivity)
-   - If food industry features → MUST include meal-planning scenario
+3. Select **scenarios** (MINIMUM 2):
+   - MUST include at least 1 stress scenario (e.g., rush-hour, high-concurrency, or low-connectivity) relevant to the project's environment.
+   - Load scenario files from `{project-root}/.agent/skills/user-simulation-guardian/scenarios/` if they exist.
 
-5. Load selected persona and scenario files from:
-   - `{project-root}/.agent/skills/user-simulation-guardian/personas/`
-   - `{project-root}/.agent/skills/user-simulation-guardian/scenarios/`
+4. Load selected persona and scenario files.
 
 ---
 
@@ -41,10 +38,10 @@ For EACH selected persona × scenario combination:
 
 1. **Walk through ALL 8 dimensions** of REAL-USER Protocol:
    ```
-   R — Reality Context: Where is this user? What device? What business context?
+   R — Reality Context: Where is this user? What device? What business context? (ngành hàng, kênh phân phối, vai trò thực tế)
    E — Emotion & Motivation: Why are they using the app RIGHT NOW?
-   A — Action Pattern: How do they ACTUALLY interact? (NOT the designed flow)
-   L — Language & Literacy: What words/abbreviations do they use?
+   A — Action Pattern: How do they ACTUALLY interact? (NOT the designed flow - JUMP, ABANDON, VOICE, COPY-PASTE)
+   L — Language & Literacy: What words/abbreviations do they use? (regional terms, abbreviations)
    U — Unexpected Paths: What breaks? What's weird?
    S — Social Context: Who's watching? What pressure?
    E — Edge Behaviors: Extremes (very large, very small, interrupted)
@@ -56,14 +53,15 @@ For EACH selected persona × scenario combination:
    - ❌ What the current design MISSES
    - 💡 Specific improvement suggestion
 
-3. **Focus areas based on persona:**
-   - **Chủ tiệm (P1):** Reorder flow, viết tắt, 3G performance
-   - **NVBH-Offline (P2a):** Multitask, route-based, voice
-   - **CTV-Online (P2b):** Batch order, livestream, copy-paste
-   - **MLM (P2c):** Context-switch sell↔manage, commission check
-   - **Admin (P3):** Form fatigue, keyboard nav, session timeout
-   - **Supervisor (P4):** Quick glance, batch approve, anomaly drill-down
-   - **Consumer (P5):** Meal planning, diet, budget, recipe-to-order
+3. **Focus areas based on persona (adapt dynamically to the project's domain):**
+   - Translate user habits to the project's actual industry (e.g., Coworking space: member multitasking on mobile, manager dealing with quick approvals).
+   - *B2B Retail Reference Examples (Do not apply directly to non-retail projects)*:
+     - **Chủ tiệm:** Reorder flow, viết tắt, 3G performance
+     - **NVBH-Offline:** Multitask, route-based, voice
+     - **CTV-Online:** Batch order, livestream, copy-paste
+     - **Admin:** Form fatigue, keyboard nav, session timeout
+     - **Supervisor:** Quick glance, batch approve, anomaly drill-down
+     - **Consumer:** Meal planning, diet, budget, recipe-to-order
 
 ---
 

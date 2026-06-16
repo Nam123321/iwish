@@ -26,8 +26,6 @@ Forces every feature design and UI spec through the lens of **real users in real
 | `/create-ui-spec` | Before finalizing UI spec | ✅ MANDATORY |
 | `/dev-agent-story` | When implementing interaction patterns | ✅ MANDATORY |
 | `/review` | Reviewing user-facing features | ✅ MANDATORY |
-| `/simulate-user` | Dedicated user simulation workflow | ✅ MANDATORY |
-| `/create-epics-and-stories` | Writing acceptance criteria | ⚡ RECOMMENDED |
 | `/creative-agent` | Ideation sessions | ⚡ RECOMMENDED |
 
 ---
@@ -41,137 +39,107 @@ Forces every feature design and UI spec through the lens of **real users in real
 ```
 Trả lời BẮT BUỘC trước khi thiết kế:
 
-BUSINESS CONTEXT (ngành hàng & kênh phân phối):
-□ Client đang kinh doanh ngành hàng gì? (thực phẩm tươi sống, FMCG, 
-  gia vị, đồ uống, nông sản, hóa mỹ phẩm, khác?)
-□ Sản phẩm bán có đặc thù gì? (dễ hỏng, cần bảo quản lạnh, mùa vụ,
-  đơn vị tính phức tạp: kg/thùng/bó/con?)
-□ Kênh phân phối: bán cho đại lý (B2B), người tiêu dùng (B2C), hay cả hai?
-□ Webstore: ai đang dùng? Đại lý đặt sỉ hay người tiêu dùng mua lẻ?
-□ Sales App/Web: NVBH đang phục vụ đại lý hay directly serve consumers?
+BUSINESS CONTEXT (ngành hàng, kênh phân phối, nhóm đối tượng):
+□ Dự án đang kinh doanh trong ngành hàng/lĩnh vực gì? (SaaS, Coworking, Retail, EdTech, Healthcare, khác?)
+□ Phân khúc khách hàng mục tiêu là ai? (Đại lý B2B, Người tiêu dùng B2C, Doanh nghiệp lớn, Freelancer, nhóm Focus Group đặc thù?)
+□ Kênh phân phối & tương tác: Trực tuyến, trực tiếp, hay hybrid?
+□ Portal/ứng dụng: Ai là người dùng trực tiếp của từng màn hình/tính năng?
 
 USER CONTEXT (người dùng lúc này):
-□ Người dùng đang ở ĐÂU? (ngoài đường, trong kho, nhà bếp, văn phòng?)
-□ Đang dùng THIẾT BỊ gì? (điện thoại tay ướt, tablet trong xe tải, PC?)
-□ Mức tập trung? (đang multitask? đang gấp? đang relaxed?)
-□ MÔI TRƯỜNG? (ồn ào ngoài chợ? yên tĩnh văn phòng? nắng không thấy màn hình?)
+□ Người dùng đang ở ĐÂU khi dùng tính năng này? (ngoài đường, trong kho, nhà bếp, văn phòng, phòng hội họp?)
+□ Đang dùng THIẾT BỊ gì? (điện thoại tay ướt/bận, tablet di động, PC màn hình rộng?)
+□ Mức tập trung? (đang multitask? đang vội/rush-hour? đang thong thả?)
+□ MÔI TRƯỜNG? (ồn ào, nắng chói khó nhìn màn hình, văn phòng yên tĩnh?)
 ```
 
 ### E — Emotion & Motivation (Động cơ cảm xúc)
 
 ```
-□ TẠI SAO mở app LÚC NÀY? 
-  → Hết hàng gấp cần đặt? Routine hàng ngày? Boss yêu cầu?
-  → Đang browse xem hàng mới? Kiểm tra đơn đã đặt?
-  → Lên thực đơn gia đình cho tuần? So sánh giá?
-□ Cảm xúc? 
-  → Frustrated vì UI phức tạp? Rushed vì khách đang chờ?
-  → Relaxed lúc rảnh? Curious khám phá tính năng mới?
-□ Kỳ vọng?
-  → "Nhanh, chính xác, không cần nghĩ nhiều"
-  → "Muốn AI hiểu tôi, đề xuất đúng thứ tôi cần"
+□ TẠI SAO mở app LÚC NÀY?
+  → Giải quyết sự cố gấp? Routine công việc hàng ngày? Boss yêu cầu báo cáo?
+  → So sánh giá/lựa chọn? Đặt dịch vụ/sản phẩm?
+□ Cảm xúc của họ?
+  → Frustrated (bực bội vì UI chậm/lỗi)? Rushed (áp lực thời gian)?
+  → Relaxed (tìm hiểu lúc rảnh)? Curious (khám phá tính năng mới)?
+□ Kỳ vọng chính?
+  → "Nhanh, chính xác, không lỗi, không cần hướng dẫn"
+  → "Muốn hệ thống tự hiểu nhu cầu và gợi ý thông minh"
 ```
 
 ### A — Action Pattern (Hành vi thực tế — KHÔNG tuyến tính)
 
 ```
-🚨 CRITICAL: Người dùng KHÔNG BAO GIỜ follow flow designer vẽ.
+🚨 CRITICAL: Người dùng KHÔNG BAO GIỜ follow flow tuyến tính mà designer vẽ ra.
 
-Patterns thực tế phải simulate:
-□ JUMP: User nhảy giữa pages (catalog → orders → catalog)
-□ ABANDON: Bỏ giữa chừng, quay lại sau 2 giờ
-□ MULTI-TAB: Mở nhiều tab so sánh
-□ COPY-PASTE: Paste tin nhắn Zalo/SMS thay vì gõ lại
-□ VOICE-FIRST: Nói trước, gõ sau (NVBH ngoài đường)
-□ REPEAT: 80% đơn hàng giống tuần trước → "lấy lại đơn cũ"
-□ APPEND: "À thêm 2 thùng bia nữa" → thêm vào đơn đã tạo?
-□ INTERRUPT: Đang đặt hàng → điện thoại gọi đến → quay lại → state mất?
-□ BATCH: Không đặt từng món — muốn đặt cả danh sách 1 lần
+Các mẫu hành vi thực tế cần giả định:
+□ JUMP: User nhảy liên tục giữa các trang/tab để so sánh thông tin.
+□ ABANDON: Đang làm dở thì tắt app/khóa màn hình, 2-3 tiếng sau mới quay lại hoàn thành.
+□ COPY-PASTE: Copy văn bản từ ứng dụng ngoài (Zalo, SMS, Excel, Email) rồi dán vào thay vì nhập tay từng trường.
+□ VOICE-FIRST: Thích dùng giọng nói/tìm kiếm giọng nói hơn gõ chữ (khi đang di chuyển).
+□ REPEAT: 80% hành động/đơn đặt hàng là lặp lại đơn cũ hoặc theo thói quen cũ.
+□ INTERRUPT: Đang nhập liệu → có cuộc gọi đến/mất mạng đột ngột → quay lại có giữ được state không?
+□ BATCH: Thích thao tác hàng loạt (batch action) thay vì bấm từng dòng.
 ```
 
 ### L — Language & Literacy (Ngôn ngữ thực tế)
 
 ```
-□ Tiếng Việt viết tắt: "HH" = Hảo Hảo, "NC" = nước cam, "NM" = nước mắm
-□ Emoji trong chat: "🍜 x 5" = 5 thùng mì?
-□ Lỗi chính tả: "nước mấm" → nước mắm
-□ Giọng vùng miền: "trái" vs "quả", "bao" vs "bịch"
-□ Mix: tin nhắn trộn đơn hàng + câu hỏi giá + emoji
-□ Số liệu mơ hồ: "vài thùng" = 3? 5? "mấy ký" = bao nhiêu?
-□ Context-dependent: "chai nhỏ" nhỏ là bao nhiêu ml?
+□ Từ viết tắt chuyên ngành/thói quen của tập khách hàng này (ví dụ: "CK" = chiết khấu, "CR" = conference room, "HD" = hot desk).
+□ Lỗi gõ phím/chính tả phổ biến trong tiếng Việt (ví dụ: dấu hỏi/ngã, lỗi Telex).
+□ Trộn lẫn ngôn ngữ: Tiếng Anh bồi, từ lóng vùng miền (trái/quả, bao/bịch).
+□ Cách ghi số lượng mơ hồ: "cho vài cái", "mấy thùng", "lấy y hệt hôm qua".
 ```
 
 ### U — Unexpected Paths (Đường đi không mong đợi)
 
 ```
-□ Back button giữa chừng → state mất?
-□ Xoay ngang/dọc thiết bị → layout vỡ?
-□ Double-tap / double-click → duplicate action?
-□ Internet chập chờn → retry → duplicate order?
-□ App bị kill (OOM, OS) → quay lại → resume from where?
-□ Đổi tab browser → SSE stream mất?
-□ Multiple devices: bắt đầu trên điện thoại, hoàn tất trên PC
+□ Bấm nút Back vật lý của điện thoại giữa chừng → mất dữ liệu đã nhập?
+□ Xoay ngang màn hình đột ngột → UI bị vỡ layout?
+□ Double-tap / double-click vào nút Submit → gửi trùng yêu cầu?
+□ Mất mạng chập chờn → tự động lưu nháp hay bắt làm lại từ đầu?
 ```
 
 ### S — Social Context (Bối cảnh xã hội)
 
 ```
-□ NVBH đang đứng trước mặt khách → cần nhanh, nhìn chuyên nghiệp
-□ Client chủ tiệm → khó tính về giá, so sánh, muốn deal tốt
-□ Consumer mua cho gia đình → cân nhắc dinh dưỡng, budget, preference
-□ Supervisor đang họp → cần summary nhanh, không chi tiết
-□ CTV online → đang livestream + nhận order song song
-□ MLM/trưởng nhánh → vừa bán hàng vừa quản lý team
+□ Áp lực đồng nghiệp/khách hàng xung quanh (ví dụ: đang check-in cho khách đứng chờ trước mặt).
+□ Người kiểm duyệt/sếp đang theo dõi (cần hiển thị tóm tắt trực quan để duyệt nhanh).
+□ Áp lực của Focus Group hoặc Stakeholder liên quan.
 ```
 
 ### E — Edge Behaviors (Hành vi biên)
 
 ```
-□ Đơn hàng rất lớn (100+ items) → scroll performance? input time?
-□ Đơn hàng 1 item → overkill UI? bypass flow?
-□ 3 đơn liên tiếp → fatigue, muốn shortcut
-□ Sản phẩm hết hàng giữa lúc đặt → UX khi OOS?
-□ Giá thay đổi giữa lúc browse và confirm → surprise?
-□ Quay lại đơn cũ → "lấy lại đơn tuần trước cho bà Năm"
-□ Đặt hàng cho người khác → "đặt cho chi nhánh Bình Dương"
+□ Dữ liệu cực lớn (100+ dòng, text siêu dài) → hiệu năng render và scroll?
+□ Dữ liệu trống / 1 món → UI có bị trống trải quá mức?
+□ Thao tác liên tiếp nhiều lần gây mỏi mắt/nhàm chán → cần phím tắt (shortcuts).
 ```
 
 ### R — Repeat Patterns (Pattern lặp lại)
 
 ```
-□ 80% đơn hàng giống tuần trước → "reorder" phải là flow #1
-□ "Lấy y hệt đơn hôm qua" = use case phổ biến nhất
-□ Thứ 2 heading, thứ 6 summary → daily/weekly rhythm
-□ Tháng đầu → "Đơn hàng đầu tiên" = onboarding moment
-□ Mùa lễ → volume tăng 3-5x → AI phải handle scale
-□ Chu kỳ mua hàng: D2/D3 mua theo tuần, consumer mua theo ngày/bữa
+□ Daily/Weekly Rhythm: Các tác vụ lặp lại theo chu kỳ ngày/tuần/tháng của người dùng.
+□ Thói quen "lấy lại cấu hình cũ" hoặc "sử dụng lịch sử gần nhất".
 ```
 
 ---
 
 ## 2. Persona System
 
-Personas are stored in `{project-root}/.agent/skills/user-simulation-guardian/personas/`.
+### Scanning & Loading Protocol
 
-### Loading Protocol
+🚨 **DO NOT use hardcoded personas.** The agent MUST scan the target project dynamically to extract target users/customers:
+1. **Locate Target Users**: Scan `📄 2. Product Planning/2.1. product-brief-or-prd.md` (or `prd.md`/`product-brief.md`), `📄 1. Idea Discovery/` files, or `📄 project-context.md` for headings like `## Target Users`, `## Target Customers`, `## Focus Groups`, or `## Customer Persona`.
+2. **Read Specific Persona Files**: Check if custom personas are saved under `{project-root}/.agent/skills/user-simulation-guardian/personas/` or `{project-root}/docs/personas/`.
+3. **Select Minimum 3 Personas**: Make sure the selected personas cover the key customer segments and portals involved in the feature.
+4. **Fallback Zero-Shot Deduction**: If no project-specific target users are defined yet in the documentation, deduce the user roles based on the target portals and features, and ask the user for confirmation.
 
-```
-1. Identify which personas are relevant for the feature being analyzed
-2. Load MINIMUM 3 personas per feature
-3. For each persona, walk through the FULL REAL-USER Protocol
-4. Document gaps/conflicts between persona experiences
-5. If feature is multi-portal → MUST include personas from EACH portal
-```
-
-### Persona Registry
-
-| ID | File | Portal | Type | Priority |
-|----|------|--------|------|----------|
-| P1 | `tiem-tap-hoa.md` | Webstore | B2B Customer | ⭐ Always |
-| P2 | `nvbh-comprehensive.md` | Sales Web/App | B2B/B2C Sales | ⭐ Always |
-| P3 | `admin-van-phong.md` | Admin Portal | Internal | When admin features |
-| P4 | `supervisor-giam-sat.md` | Admin Portal | Internal | When management features |
-| P5 | `consumer-end-user.md` | Webstore | B2C Consumer | ⭐ Always for webstore |
+### Reference Examples (B2B Retail / Grocery DMS Domain Only)
+*Use these only as guidance for how to build personas for your specific project domain:*
+- **Chủ tiệm (B2B Customer):** Nhạy cảm giá, thích reorder nhanh, viết tắt nhiều, dùng mạng 3G yếu ngoài chợ.
+- **NVBH (B2B Sales Agent):** Thường xuyên di chuyển ngoài đường, cần voice-first hoặc thao tác 1 tay, multitask.
+- **Consumer (B2C End-user):** Mua lẻ, quan tâm tới giao diện đẹp, budget, gợi ý món ăn, dễ sử dụng không cần training.
+- **Admin/Supervisor (Internal roles):** Quản lý vận hành, cần xem báo cáo nhanh, thao tác hàng loạt bằng bàn phím PC, ít thời gian.
 
 ---
 
@@ -181,22 +149,15 @@ Scenarios are stored in `{project-root}/.agent/skills/user-simulation-guardian/s
 
 ### Scenario Selection
 
-```
-MANDATORY: Every feature MUST be tested against AT LEAST 2 scenarios.
-RECOMMENDED: Cross-test persona × scenario combinations.
+MANDATORY: Every feature MUST be tested against AT LEAST 2 scenarios relevant to the project's domain.
 
-Example grid:
-┌──────────────┬──────────┬──────────┬────────────┬──────────────┐
-│ Persona \     │ Rush     │ Low      │ First-time │ Meal         │
-│ Scenario     │ Hour     │ Connect  │ User       │ Planning     │
-├──────────────┼──────────┼──────────┼────────────┼──────────────┤
-│ Chủ tiệm     │ ✅ Must  │ ⚡ Should│ ⚡ Should  │ ❌ N/A       │
-│ NVBH         │ ✅ Must  │ ✅ Must  │ ⚡ Should  │ ❌ N/A       │
-│ Consumer     │ ⚡ Should│ ⚡ Should│ ✅ Must    │ ✅ Must      │
-│ Admin        │ ❌ N/A   │ ❌ N/A   │ ⚡ Should  │ ❌ N/A       │
-│ Supervisor   │ ⚡ Should│ ❌ N/A   │ ❌ N/A     │ ❌ N/A       │
-└──────────────┴──────────┴──────────┴────────────┴──────────────┘
-```
+1. **Stress Scenario**: A scenario where the user/customer is under pressure (e.g., rush-hour bookings, low-connectivity offline operations, high-traffic sales events).
+2. **Onboarding / First-Time Customer Scenario**: A scenario testing how a first-time user navigates the flow without prior training.
+3. **Routine Scenario**: Typical daily or weekly usage.
+
+*Example Grid (Adapt dynamically to your project's customer segments and scenarios):*
+- Build a custom evaluation grid comparing your project's target customers (e.g., Tenant, Landlord, Admin) against domain-specific scenarios (e.g., lease expiration, system offline, onboarding).
+
 
 ---
 

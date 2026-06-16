@@ -1,5 +1,5 @@
 ---
-name: 'socratic-review-wrapper'
+name: 'socratic-review'
 description: 'Use when generating an implementation plan to evaluate architectural drift, database migrations, and backward compatibility before execution.'
 version: "1.0.0"
 author: "I-Wish Architecture Team"

@@ -1,5 +1,5 @@
 ---
-name: 'security-guardian-wrapper'
+name: 'security-guardian'
 description: The obligatory Phase 0 security checkpoint for the Repo Absorption Protocol. Analyzes remote and local context across 4 layers (Trust Signal, Secret Scan, Dependency Audit, Behavioral Analysis) to determine if a repository is safe to absorb.
 ---
 

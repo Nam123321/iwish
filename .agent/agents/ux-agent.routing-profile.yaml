@@ -1,5 +1,5 @@
 id: agent-ux-agent
-name: 'ux-agent-wrapper'
+name: 'ux-agent'
 kind: agent
 shape: agent
 role: process-primary

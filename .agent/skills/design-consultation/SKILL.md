@@ -1,5 +1,5 @@
 ---
-name: 'design-consultation-wrapper'
+name: 'design-consultation'
 description: 'Use when validating UI component implementations against design principles (typography, color, layout) to detect UX regressions.'
 ---
 
