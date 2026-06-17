@@ -120,11 +120,66 @@ So that {value_benefit}.
 **And** {additional_criteria}
 ```
 
-**✅ GOOD STORY EXAMPLES:**
+**📊 BUSINESS FLOW ANALYSIS (NEW — MANDATORY per story):**
+
+After the Acceptance Criteria, EVERY story MUST include a Business Flow Analysis section:
+
+```
+#### Business Flow Analysis
+
+**Flow:** {step-by-step business flow with arrows}
+  Example: User creates channel → POST /api/channels → DB insert → WS broadcast → Sidebar update
+
+**API Routes:**
+  {METHOD} {path} → {InputType} → {OutputType}
+  Example: POST /api/v1/channels → CreateChannelInput → ChannelResponse
+
+**DB Impact:**
+  {CREATE/ALTER} {TableName} — {brief description of fields}
+  Example: CREATE chat_channel (id, tenant_id, name, visibility, created_by)
+
+**WebSocket Events:** (if applicable)
+  ← server: {event.name} { payload }
+  → client: {event.name} { payload }
+  Example: ← server: channel.created { channelId, name }
+
+**State Machine:** (if applicable)
+  {STATE_A} → {STATE_B} → {STATE_C}
+  Example: CREATED → ACTIVE → ARCHIVED → DELETED
+
+**RBAC Rules:**
+  - {action}: {allowed_roles}
+  Example: Create channel: Admin, Owner
+
+**Error Boundaries:**
+  | Error | HTTP | Handling |
+  | {error_case} | {status_code} | {user-facing behavior} |
+  Example: Duplicate name → 409 → Toast "Tên kênh đã tồn tại"
+```
+
+**🚨 DATA SPEC GATE (NEW — MANDATORY):**
+
+Before a story can be marked as `ready-for-dev`, its Business Flow Analysis must have:
+- ✅ At least 1 API route with input/output types
+- ✅ At least 1 DB table referenced (CREATE or ALTER)
+- ✅ At least 1 error boundary defined
+- ✅ RBAC rules if the feature has role-based access
+
+Stories that are **purely UI-only** (no API calls, no DB) are suspicious — challenge with:
+"Does this story truly deliver user value if there's no data persistence or API contract?"
+
+If genuinely UI-only (e.g., keyboard shortcut, CSS animation), mark with `[UI-ONLY]` tag and document WHY no API/DB is needed.
+
+**✅ GOOD STORY EXAMPLES (with Business Flow Analysis):**
 
 _Epic 1: User Authentication_
 
 - Story 1.1: User Registration with Email
+  - Flow: Form submit → POST /api/auth/register → hash password → DB insert User → send verification email → redirect
+  - API: POST /api/auth/register → RegisterInput → UserResponse
+  - DB: CREATE User (id, email, passwordHash, verified)
+  - Error: Duplicate email → 409, Weak password → 400
+
 - Story 1.2: User Login with Password
 - Story 1.3: Password Reset via Email
 
@@ -140,7 +195,8 @@ _Epic 2: Content Creation_
 - Story: "Create all models" (too large, no user value)
 - Story: "Build authentication system" (too large)
 - Story: "Login UI (depends on Story 1.3 API endpoint)" (future dependency!)
-- Story: "Edit post (requires Story 1.4 to be implemented first)" (wrong order!)
+- Story: "Chat UI Shell" — AC only says "hiển thị giao diện chat" with 0 API routes, 0 DB tables (shell-only violation!)
+- Story: "Kanban + Chat + Credentials Gateway" — Mixes 3 domains in 1 epic (domain ownership violation!)
 
 ### 3. Process Epics Sequentially
 

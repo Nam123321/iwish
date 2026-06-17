@@ -37,6 +37,30 @@ The template produces:
 - **Per-Portal Sidebar/Menu Tree** — navigation hierarchy with FR##/E#/S#.# traceability
 - **Cross-Portal Feature Summary** — shared entities, events, and cross-cutting features
 
+### Step 2.5: Quality Gates (NEW — MANDATORY)
+
+Before saving the generated hierarchy, validate against these rules:
+
+**🌲 ASCII Tree Format Gate:**
+- ✅ MUST use `├──`, `│`, `└──` tree characters — NOT bullet lists
+- ✅ MUST go 3-4 levels deep minimum (Group → Feature → Sub-feature → Detail)
+- ❌ REJECT flat bullet lists or numbered lists
+
+**📋 FR Traceability Gate:**
+- ✅ EVERY leaf-level feature MUST have FR annotation: `FR## │ E#/S#.# │ Phase │ Tier`
+- ✅ Count total FRs in hierarchy vs total FRs in PRD — coverage must be ≥ 95%
+- ❌ If any feature node is missing FR annotation → add it before save
+- ❌ If coverage < 95% → identify missing FRs and add them to appropriate portal tree
+
+**🏠 Domain Completeness Gate:**
+- ✅ Every PRD domain/section MUST appear in at least one portal tree
+- ✅ Cross-portal features MUST appear in Section 3 Shared Features table
+- ❌ If a PRD domain has 0 representation in the hierarchy → flag as gap
+
+**📊 Summary Statistics Gate:**
+- ✅ MUST include total feature count, FR coverage %, Phase distribution, Tier distribution
+- ✅ MUST match actual counts (not estimated)
+
 ### Step 3: Save & Index
 1. Save to `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`
 2. Run `iwish featuregraph-index` to populate FalkorDB (if available)

@@ -131,6 +131,54 @@ For each epic, review stories in order:
 - ❌ WRONG: Story references features not yet implemented
 - ✅ RIGHT: Each story builds only on previous stories
 
+### 5a. Data Spec Gate Validation (NEW — CRITICAL)
+
+**For EVERY story in EVERY epic, verify Business Flow Analysis completeness:**
+
+```
+Scan each story for the "#### Business Flow Analysis" section.
+For each story, check:
+  ✅ Has "API Routes:" with at least 1 route (unless tagged [UI-ONLY])
+  ✅ Has "DB Impact:" with at least 1 table (unless tagged [UI-ONLY])
+  ✅ Has "Error Boundaries:" with at least 1 error case
+  ✅ Has "RBAC Rules:" if the feature involves role-based access
+```
+
+**Validation result table:**
+
+```
+| Story  | API Routes | DB Impact | Errors | RBAC | Status |
+|--------|-----------|-----------|--------|------|--------|
+| 1.1    | 2 routes  | 1 table   | 3      | Yes  | ✅ PASS |
+| 1.2    | 0         | 0         | 0      | No   | ❌ FAIL — missing all specs |
+| 1.3    | [UI-ONLY] | [UI-ONLY] | 1      | No   | ✅ PASS (UI-ONLY justified) |
+```
+
+🛑 **If ANY story FAILS the Data Spec Gate without [UI-ONLY] justification:**
+- HALT validation
+- Present the failing stories to user
+- Return to Step 3 to add missing Business Flow Analysis
+- FORBIDDEN to proceed to Feature Hierarchy generation with incomplete stories
+
+### 5ab. Domain Ownership Validation (NEW — CRITICAL)
+
+**For EVERY epic, verify single-domain ownership:**
+
+1. **Single Concern Test**: Describe each epic's domain in ≤ 3 words
+   - If description requires "and" or "+" → flag as domain violation
+2. **FR Scatter Check**: Do all FRs in this epic come from ≤ 2 PRD sections?
+   - If FRs span 3+ sections → flag for re-clustering
+3. **Story Placement Check**: For each story, does it logically belong to this epic's domain?
+   - If a story would fit better in another epic → flag for relocation
+
+Present domain validation table:
+```
+| Epic | Domain (≤3 words) | FR Sections | Stories | Status |
+|------|-------------------|-------------|---------|--------|
+| E-01 | User authentication | 1 section   | 5       | ✅ PASS |
+| E-04 | Kanban + Chat + OAuth | 3+ sections | 8     | ❌ FAIL — 3 domains |
+```
+
 ### 5b. Spec Clarification Validation Gate (CRITICAL)
 
 **Check for unresolved clarification markers:**

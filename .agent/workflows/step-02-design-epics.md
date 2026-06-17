@@ -77,23 +77,38 @@ Load {outputFile} and review:
 3. **Incremental Delivery**: Each epic should deliver value independently
 4. **Logical Flow**: Natural progression from user's perspective
 5. **🔗 Dependency-Free Within Epic**: Stories within an epic must NOT depend on future stories
+6. **🏠 Domain Ownership (NEW)**: Each epic must own EXACTLY ONE user-facing domain. Never mix 2+ unrelated domains in one epic.
+7. **📐 Story Cap (NEW)**: Each epic SHOULD have 4-8 stories. If >8, split into sub-epics by user-value phase (e.g., Epic-CH-A: Core Chat, Epic-CH-B: Channels).
+8. **🔀 Vertical Slicing (NEW)**: Each story must cut vertically through FE + BE + DB. NO horizontal "shell-only" (FE-only) or "infra-only" (DB-only) stories.
 
 **⚠️ CRITICAL PRINCIPLE:**
-Organize by USER VALUE, not technical layers:
+Organize by USER VALUE and DOMAIN, not technical layers:
 
-**✅ CORRECT Epic Examples (Standalone & Enable Future Epics):**
+**✅ CORRECT Epic Examples (Standalone, Single Domain, Vertical):**
 
-- Epic 1: User Authentication & Profiles (users can register, login, manage profiles) - **Standalone: Complete auth system**
-- Epic 2: Content Creation (users can create, edit, publish content) - **Standalone: Uses auth, creates content**
-- Epic 3: Social Interaction (users can follow, comment, like content) - **Standalone: Uses auth + content**
-- Epic 4: Search & Discovery (users can find content and other users) - **Standalone: Uses all previous**
+- Epic 1: User Authentication & Profiles (users can register, login, manage profiles) - **Standalone: Complete auth system, 1 domain**
+- Epic 2: Content Creation (users can create, edit, publish content) - **Standalone: Uses auth, creates content, 1 domain**
+- Epic 3: Social Interaction (users can follow, comment, like content) - **Standalone: 1 domain**
+- Epic 4: Search & Discovery (users can find content and other users) - **Standalone: 1 domain**
 
-**❌ WRONG Epic Examples (Technical Layers or Dependencies):**
+**❌ WRONG Epic Examples (Technical Layers, Mixed Domains, or Dependencies):**
 
 - Epic 1: Database Setup (creates all tables upfront) - **No user value**
 - Epic 2: API Development (builds all endpoints) - **No user value**
 - Epic 3: Frontend Components (creates reusable components) - **No user value**
-- Epic 4: Deployment Pipeline (CI/CD setup) - **No user value**
+- Epic 4: "Kanban + Chat + Credentials" (3 unrelated domains!) - **Domain violation: Kanban ≠ Chat ≠ OAuth**
+- Epic 5: "Chat UI Shell" (FE-only, no API/DB/WS) - **Horizontal slice violation**
+
+**🏠 DOMAIN CLUSTERING RULES (NEW):**
+
+Before finalizing the epic list, validate EVERY epic against these rules:
+
+1. **Single Concern Test**: Can you describe the epic's domain in ≤ 3 words? (e.g., "Chat messaging", "Kanban board", "Agent orchestration")
+   - If you need "and" or "+" → split into 2 epics
+2. **FR Scatter Test**: Do ALL FRs in this epic share the same PRD section/domain code?
+   - If FRs come from 3+ different PRD sections → re-cluster
+3. **Story Ownership Test**: If a story logically belongs to domain A but is placed in epic B → move it to epic A's epic
+4. **Cross-Epic Dependency**: If story X.Y depends on epic Z's domain model → declare explicit dependency, don't merge epics
 
 **🔗 DEPENDENCY RULES:**
 

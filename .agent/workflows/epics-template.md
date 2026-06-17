@@ -61,4 +61,32 @@ So that {{value_benefit}}.
 **Then** {{expected_outcome}}
 **And** {{additional_criteria}}
 
+#### Business Flow Analysis
+
+**Flow:** {{step_by_step_business_flow}}
+
+**API Routes:**
+<!-- for each API route -->
+  {{METHOD}} {{path}} → {{InputType}} → {{OutputType}}
+
+**DB Impact:**
+<!-- for each table created or altered -->
+  {{CREATE/ALTER}} {{TableName}} — {{fields_description}}
+
+**WebSocket Events:** <!-- if applicable, otherwise write "N/A" -->
+  ← server: {{event.name}} { {{payload}} }
+  → client: {{event.name}} { {{payload}} }
+
+**State Machine:** <!-- if applicable, otherwise write "N/A" -->
+  {{STATE_A}} → {{STATE_B}} → {{STATE_C}}
+
+**RBAC Rules:**
+  - {{action}}: {{allowed_roles}}
+
+**Error Boundaries:**
+  | Error | HTTP | Handling |
+  |-------|------|----------|
+  | {{error_case}} | {{status_code}} | {{user_facing_behavior}} |
+
 <!-- End story repeat -->
+
