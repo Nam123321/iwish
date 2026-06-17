@@ -1,0 +1,34 @@
+sprint:
+  name: "I-Wish and Autoresearch Core Integration"
+  status: "completed"
+  stories:
+    - id: "story-1.1"
+      title: "Git Sandbox Wrapper for Skill Mutations"
+      status: "DONE"
+      files:
+        - ".agent/skills/iwish-evolver/scripts/git-sandbox-wrapper.sh"
+    - id: "story-1.2"
+      title: "SQLite and File Lineage Sync"
+      status: "DONE"
+      files:
+        - ".agent/skills/iwish-evolver/scripts/lineage-sync.py"
+    - id: "story-2.1"
+      title: "Warm-up Overhead Filtering & Time-Budget Enforcement"
+      status: "DONE"
+      files:
+        - ".agent/skills/iwish-evolver/scripts/time-budget-filter.py"
+    - id: "story-2.2"
+      title: "Prompt Density & Token Telemetry"
+      status: "DONE"
+      files:
+        - ".agent/skills/iwish-evolver/scripts/prompt-density-calculator.py"
+    - id: "story-3.1"
+      title: "Stack Trace Parser & Reflection Loop"
+      status: "DONE"
+      files:
+        - ".agent/skills/iwish-evolver/scripts/traceback-parser.py"
+    - id: "story-3.2"
+      title: "Hermes Curator Recommendation Generator"
+      status: "DONE"
+      files:
+        - ".agent/skills/iwish-evolver/scripts/recommendation-generator.py"

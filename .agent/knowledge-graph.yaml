@@ -1081,3 +1081,25 @@ nodes:
   - sdlc
   - automation
   depends_on: []
+
+- id: skill-credential-redactor
+  type: skill
+  path: /_iwish-output/iwish-skills/credential-redactor/SKILL.md
+  description: Detects and redacts credentials (e.g. API keys, JWTs, private keys) in text payloads or data objects before logging or persistence.
+  tags:
+  - security
+  - redaction
+  - compliance
+  - pii
+  depends_on: []
+
+- id: skill-policy-evaluator
+  type: skill
+  path: /_iwish-output/iwish-skills/policy-evaluator/SKILL.md
+  description: Validates agentic actions and inputs against Cedar or Rego security policies, returning enforcement verdicts and parameter transforms.
+  tags:
+  - security
+  - policy
+  - validation
+  - compliance
+  depends_on: []

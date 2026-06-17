@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Guide: agent-governance-toolkit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(22, 28, 45, 0.4);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --primary-accent: #38bdf8;
+            --secondary-accent: #a855f7;
+            --accent-gradient: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            --success-color: #34d399;
+            --warning-color: #fbbf24;
+            --danger-color: #f87171;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .gradient-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge.active::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background-color: var(--success-color);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary-accent);
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        p, ul, ol {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .alert-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1rem;
+        }
+
+        .alert-box p {
+            color: var(--warning-color);
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="gradient-title">Adoption Review Pack</h1>
+            <p class="subtitle">Integration Guide & Route Specifications for microsoft/agent-governance-toolkit</p>
+            <div class="badge-container">
+                <span class="badge active">Awaiting Promotion</span>
+                <span class="badge">Shape: skill-attachment / skill</span>
+                <span class="badge">Role: supportive / foundational</span>
+            </div>
+        </header>
+
+        <div class="section-card">
+            <h2>1. What is it / Tổng quan</h2>
+            <p><strong>Bản hướng dẫn tích hợp</strong> dành cho Module mở rộng hấp thụ chọn lọc từ <code>microsoft/agent-governance-toolkit</code>.</p>
+            <ul>
+                <li><strong>Current State:</strong> Draft assets prepared under <code>_iwish-output/iwish-skills/</code></li>
+                <li><strong>Extracted Components:</strong> Cedar/Rego Policy Evaluators, Cost Budget Monitors, and recursive Credential Redactor.</li>
+                <li><strong>Skipped Components:</strong> Soft Python Sandbox (frame breakout vulnerability), VS Code Webviews, and multi-language FFI bindings (.NET, Rust, Go).</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>2. Why it exists / Lý do áp dụng</h2>
+            <p>Để ngăn chặn các rủi ro bảo mật thuộc **OWASP Agentic AI Top 10** trong hệ thống I-Wish:</p>
+            <ul>
+                <li><strong>Gap Filled:</strong> Bổ sung khả năng kiểm duyệt tự động hành vi của Agent (ABAC/RBAC) và cắt giảm chi phí (Auto-throttle cost) khi Agent bị lặp vô hạn.</li>
+                <li><strong>PII/CRI Safety:</strong> Tự động làm sạch các khoá API nhạy cảm trước khi lưu vết logs.</li>
+            </ul>
+        </div>
+
+        <div class="section-card">
+            <h2>3. Input -> Process -> Output / Luồng xử lý</h2>
+            <p><strong>Input:</strong> Tên tool gọi, tham số gọi (payload), và nhãn nhạy cảm (context).</p>
+            <p><strong>Process:</strong> Chạy qua bộ kiểm duyệt Cedar, rà quét regex khoá bảo mật, và đối chiếu hạn mức chi phí còn lại.</p>
+            <p><strong>Output:</strong> Quyết định thực thi (allow / deny / warn / transform) cùng payload đã được làm sạch.</p>
+        </div>
+
+        <div class="section-card">
+            <h2>4. Use cases / Trường hợp sử dụng</h2>
+            <div class="grid-2">
+                <div>
+                    <h3 class="highlight">Nên dùng / Core Use Cases</h3>
+                    <ul>
+                        <li>Redact OpenAI, AWS, và JWT keys khỏi logs.</li>
+                        <li>Giới hạn số lượng tool call tối đa cho mỗi tác vụ phụ của subagent.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="highlight" style="color: var(--danger-color)">Không nên dùng / Do-Not-Use</h3>
+                    <ul>
+                        <li>Không chạy các dòng mã nguy hiểm thông qua Python soft-sandbox.</li>
+                        <li>Không biên dịch chéo các SDK đa ngôn ngữ khác.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>5. Risks & Stress Cases / Hạn chế & Rủi ro</h2>
+            <ul>
+                <li><strong>Regex Backtracking (ReDoS):</strong> Quét các văn bản quá lớn (>10MB) bằng regex phức tạp có thể gây treo CPU. Biện pháp: Cài đặt timeout cố định cho tiến trình quét.</li>
+                <li><strong>SSRF Bypass:</strong> Agent sử dụng URL redirect để truy cập IP local. Biện pháp: Phân giải DNS và kiểm tra IP đích trước khi gửi request.</li>
+            </ul>
+            <div class="alert-box">
+                <p>⚠️ <strong>Lưu ý:</strong> Toàn bộ tài sản tích hợp phải tuân thủ nghiêm ngặt tính cô lập dự án, không ghi đè vào thư mục chung của hệ thống.</p>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>6. Review Questions / Câu hỏi phản hồi cần quyết định</h2>
+            <ol>
+                <li>Hệ thống có nên tự động ẩn khoá nhạy cảm trên Console output hay chỉ ẩn trong file log lưu trữ?</li>
+                <li>Hạn mức chi phí tối đa mặc định cho mỗi nhiệm vụ của Subagent là bao nhiêu (ví dụ: $5.00 hoặc 50 cuộc gọi)?</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

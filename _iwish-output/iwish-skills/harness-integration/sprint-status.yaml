@@ -1,0 +1,23 @@
+sprint_name: Harness Integration
+status: planning
+start_date: '2026-06-06'
+epics:
+  - id: epic-13
+    title: Harness Protocol Integration
+    status: not_started
+    stories:
+      - id: story-13.1
+        title: Architecture Matrix Integration
+        status: not_started
+      - id: story-13.2
+        title: 3-Layer Progressive Disclosure
+        status: not_started
+      - id: story-13.3
+        title: With vs Without Validation
+        status: not_started
+      - id: story-13.4
+        title: Incremental Boundary Cross-Checks
+        status: not_started
+      - id: story-13.5
+        title: Review and Re-validate Current Skill System
+        status: not_started

@@ -1,0 +1,22 @@
+sprint:
+  name: "MetaGPT Selective Extraction Integration"
+  status: "completed"
+  stories:
+    - id: "story-1.1"
+      title: "Sequential Turn Fragment Draft"
+      status: "DONE"
+      files: 
+        - "_iwish-output/iwish-skills/story-1.1-metagpt-integration.md"
+        - ".agent/fragments/sop-sequential-execution.md"
+    - id: "story-2.1"
+      title: "Secure XML ActionNode Parser Draft"
+      status: "DONE"
+      files: 
+        - "_iwish-output/iwish-skills/story-2.1-metagpt-integration.md"
+        - ".agent/skills/safe-xml-parser/SKILL.md"
+    - id: "story-3.1"
+      title: "Fast-Track Self-Healing Draft"
+      status: "DONE"
+      files: 
+        - "_iwish-output/iwish-skills/story-3.1-metagpt-integration.md"
+        - ".agent/skills/fast-track-self-healing/SKILL.md"
