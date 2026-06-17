@@ -5,7 +5,7 @@ description: 'Standardized task naming conventions, phased task structures, and 
 
 # Task Scaffolding Policy & Parallelization Governance
 
-This document governs how task lists (`task.md`) are created during `/sprint-planning` or `/create-story`, and how they are executed by development agents.
+This document governs how task lists (`task.md`) are created during `/sprint-planning` or `/create-story` (which MUST be written strictly to the story-specific subdirectory `_iwish-output/stories/Epic-{epic_id}/{story_id}/task.md` or the session-specific artifact directory, NEVER at the workspace root directory), and how they are executed by development agents.
 
 ---
 
@@ -72,8 +72,7 @@ If in `AG_MAO` mode:
 2. **Spawn Subagents**: Call the `invoke_subagent` tool.
    - Set the `Workspace` option to **`share`** (this allows the subagent to work on a git worktree/clone sharing the same repo directory).
    - Construct a highly targeted subagent prompt (see prompting template below).
-3. **Yield Parent Control**: Use the `schedule` tool or call no more tools (go idle) to yield execution while subagents run.
-4. **Coordinate and Resume**: Wake up when subagent notifications arrive. Verify that the task checklist in `task.md` was updated, and pop/integrate any stashed files if needed.
+4. **Coordinate and Resume**: Wake up when subagent notifications arrive. Verify that the task checklist in the story-specific or session artifact `task.md` was updated, and pop/integrate any stashed files if needed.
 
 #### Prompting Template for Subagent Spawning:
 ```markdown
@@ -87,7 +86,7 @@ Your task is to execute the following task item: {{TASK_DESCRIPTION}}.
 
 ### Deliverables:
 - Implement the requested code and verify via test execution.
-- Update the specific task in task.md to [x].
+- Update the specific task in the story-specific or session artifact task.md to [x].
 - Send a message back to the parent agent using `send_message` with your results.
 ```
 

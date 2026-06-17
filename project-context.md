@@ -42,7 +42,7 @@ Every artifact must be written exactly into these folders. Dynamic or dated file
 
 All AI assistants and agents operating on this project must strictly comply with the following behavior:
 
-1. **No SDLC Leakage**: Never write implementation plans, tasks, checklists (like `task.md`), or story files to the root directory or inside `src/` or `.agent/workflows/`. These belong in `_iwish-output/` or the designated workspace artifact directory.
+1. **No SDLC Leakage**: Never write implementation plans, tasks, checklists (like `task.md`), or story files to the root directory or inside `src/` or `.agent/workflows/`. Specifically, `task.md` MUST be written to the story-specific subdirectory (`_iwish-output/stories/Epic-{epic_id}/{story_id}/task.md`) or the dynamic session artifact directory (`<appDataDir>/brain/<conversation-id>/task.md` under Antigravity), NEVER at the workspace root directory. This prevents conflict and overwrites when multiple agents run concurrently in a shared workspace.
 2. **Commit Integrity**: Ensure that internal development logs, databases, or test output files are not tracked by git. Always check `.gitignore` before creating new directories.
 3. **NPM Package Safety**: The `package.json` uses an explicit `"files"` allowlist. When adding new core modules or assets that must be shipped to users, verify they are added to the `files` array. If they are internal-only dev tools, leave them out.
 4. **Consistency Across Sessions**: When starting a new development thread or story, read this file (`project-context.md`) first to align on the development boundaries.

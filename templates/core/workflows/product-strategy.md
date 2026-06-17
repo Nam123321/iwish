@@ -29,18 +29,18 @@ Before starting, the agent **MUST** verify these files exist. If any required fi
 ### Required Files
 
 ```
-_iwish-output/1. Idea Discovery/1.1. idea-discovery.md
-_iwish-output/1. Idea Discovery/1.3. idea-challenge-*.md   (or distillate)
-_iwish-output/1. Idea Discovery/1.4. research/market-research.md
-_iwish-output/1. Idea Discovery/1.4. research/competitor-research.md
-_iwish-output/1. Idea Discovery/1.4. research/technical-research.md
+- Canonical: `_iwish-output/1. Idea Discovery/1.1. idea-discovery.md` or fallback to any file matching `*discovery*.md` in `_iwish-output/` resolved dynamically via keyword search.
+- Canonical: `_iwish-output/1. Idea Discovery/1.3. idea-challenge-*.md` (or distillate) or fallback to any file matching `*challenge*.md` in `_iwish-output/` resolved dynamically.
+- Canonical: `_iwish-output/1. Idea Discovery/1.4. research/market-research.md` or fallback to any file matching `*market-research*.md` in `_iwish-output/` resolved dynamically.
+- Canonical: `_iwish-output/1. Idea Discovery/1.4. research/competitor-research.md` or fallback to any file matching `*competitor-research*.md` in `_iwish-output/` resolved dynamically.
+- Canonical: `_iwish-output/1. Idea Discovery/1.4. research/technical-research.md` or fallback to any file matching `*technical-research*.md` in `_iwish-output/` resolved dynamically.
 ```
 
 ### Optional Files (enhance quality if present)
 
 ```
-_iwish-output/1. Idea Discovery/biz-stack.md               (from /unique-advantage)
-_iwish-output/1. Idea Discovery/1.4. research/domain-research.md
+- Canonical: `_iwish-output/1. Idea Discovery/biz-stack.md` (from `/unique-advantage`) or fallback to any file matching `*biz-stack*.md` resolved dynamically.
+- Canonical: `_iwish-output/1. Idea Discovery/1.4. research/domain-research.md` or fallback to any file matching `*domain-research*.md` resolved dynamically.
 ```
 
 ## Execution Steps
@@ -115,7 +115,7 @@ Apply the verdict logic in this exact order:
 ## Output
 
 ```
-_iwish-output/1. Idea Discovery/product-strategy.md
+`_iwish-output/1. Idea Discovery/product-strategy.md` (or dynamic fallback `_iwish-output/product-strategy.md`)
 ```
 
 This file becomes a **first-class input** for:

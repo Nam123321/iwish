@@ -33,7 +33,7 @@ Bộ quy tắc này hướng dẫn tác nhân (Agent) cách quản lý Context W
 ### 🔴 Cấp độ 3: Session Checkpoint (Điểm kiểm tra phiên)
 *   **Mục tiêu:** Bảo toàn tri thức cốt lõi và trạng thái của cả phiên làm việc khi phiên kéo dài >20 lượt chat hoặc khi cần tiếp tục trong session mới.
 *   **Nguyên tắc:**
-    *   Khi phiên chat quá dài hoặc trước khi chuyển giao, Agent cập nhật file `task.md` hoặc một file checkpoint tạm để lưu trữ một **Session Checkpoint Block** chứa:
+    *   Khi phiên chat quá dài hoặc trước khi chuyển giao, Agent cập nhật file `task.md` (lưu tại thư mục story-specific hoặc session artifact) hoặc một file checkpoint tạm để lưu trữ một **Session Checkpoint Block** chứa:
         *   **Current Delta:** Diff code thực tế đã thay đổi.
         *   **Architecture decisions:** Các quyết định kiến trúc then chốt đã được thống nhất hoặc cần user phê duyệt.
         *   **Verification Status:** Lỗi test/compile cuối cùng chưa được giải quyết.

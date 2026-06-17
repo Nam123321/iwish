@@ -11,7 +11,7 @@ description: 'Experimental workflow for testing ideas on throwaway branches'
 <steps CRITICAL="TRUE">
 1. **Dirty Check**: Run `git status --porcelain`. If there are changes, run `git stash -u` to save them.
 2. **Branch Creation**: Create a new branch named `proto/[short-description]`.
-3. **Task Initialization**: Create or update `task.md` with `[MODE: PROTOTYPE]`.
+3. **Task Initialization**: Create or update `task.md` (written strictly to the dynamic session artifact directory or a specific sub-folder, NEVER at the workspace root directory) with `[MODE: PROTOTYPE]`.
 4. **Implementation**: Build your experiment.
 5. **Evaluation**:
    - If SUCCESS: Use `git diff` to extract logic and prepare for promotion.

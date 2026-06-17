@@ -10,9 +10,9 @@ Generate or update the `feature-hierarchy.md` document — the canonical portal-
 ## Prerequisites
 
 Before running this workflow, ensure:
-- PRD (`2. Product Planning/2.1. product-brief-or-prd.md`) exists
+- PRD (canonical: `2. Product Planning/2.1. product-brief-or-prd.md` or any file matching `*prd*.md` or `*product-brief*.md` via keyword/glob search) exists
 - Architecture document exists (if applicable)
-- Epics & Stories (`2. Product Planning/2.4. epics-and-stories.md`) exist
+- Epics & Stories (canonical: `2. Product Planning/2.4. epics-and-stories.md` or any file matching `*epic*.md`, `*stories*.md` or `epics.md` via keyword/glob search) exist
 
 > [!IMPORTANT]
 > If epics and stories do not exist yet, run `/create-epics-and-stories` first — it will auto-generate the feature hierarchy as part of Step 5c.
@@ -20,11 +20,11 @@ Before running this workflow, ensure:
 ## Execution Steps
 
 ### Step 1: Load Sources
-1. Read the PRD (`2. Product Planning/2.1. product-brief-or-prd.md` or `*. prd.md`) to extract all Functional Requirements (FR##).
+1. Read the PRD (canonical: `2. Product Planning/2.1. product-brief-or-prd.md` or any file matching `*prd*.md` or `*product-brief*.md` resolved dynamically via keyword/glob search) to extract all Functional Requirements (FR##).
 2. Read project context (`*project-context.md`) and strategy (`*product-strategy.md`) (if available) to understand the high-level vision and constraints.
 3. Read Architecture (`*architecture.md` e.g. `4.1. architecture.md` or `2.0. architecture.md`) to identify portal/module structure.
 4. Read UI/UX Design Specs (`3. Product Design/` or `*ui-spec.md`) if available to match navigation patterns.
-5. Read Epics & Stories (`2. Product Planning/2.4. epics-and-stories.md`) to map epic→story→FR coverage.
+5. Read Epics & Stories (canonical: `2. Product Planning/2.4. epics-and-stories.md` or any file matching `*epic*.md`, `*stories*.md` or `epics.md` resolved dynamically via keyword/glob search) to map epic→story→FR coverage.
 
 ### Step 2: Generate Feature Hierarchy
 Load and follow the generation template:

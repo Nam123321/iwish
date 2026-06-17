@@ -13,7 +13,7 @@ If the question is broader than project-pack selection and includes finding exte
 
 ## 2. Steps
 
-1. **Review Context**: Read the `task.md`, PRD, and Architecture document.
+1. **Review Context**: Read the story-specific or session artifact `task.md`, PRD, and Architecture document.
 2. **Library Scan**: Identify if the project fits any of the following profiles:
    - **AI Integration**: Requires `ai-pack` (ai-engineer-agent).
    - **Heavy Marketing**: Requires `marketing-pack` (Hercule / Majin-Buu).
@@ -24,4 +24,4 @@ If the question is broader than project-pack selection and includes finding exte
    ```bash
    npx iwish-db add <pack-name>
    ```
-4. **Update Context**: Update `task.md` or context to reflect that new modules (like `ai-engineer-agent` or `data-Piccolo-agent`) are now available in the workspace.
+4. **Update Context**: Update the story-specific or session artifact `task.md` or context to reflect that new modules (like `ai-engineer-agent` or `data-Piccolo-agent`) are now available in the workspace.

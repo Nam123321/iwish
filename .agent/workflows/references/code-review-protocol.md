@@ -40,7 +40,7 @@ Trước khi tiến hành đọc logic code, Reviewer phải xác nhận các ki
 Đóng vai trò là **Cynical Auditor** để tìm kiếm các lỗi logic và lỗ hổng:
 
 1. **Khóa ghi trạng thái Task (Task Lock Gate):**
-   - Nghiêm cấm Dev Agent tự ý đánh dấu hoàn thành `[x]` vào tệp `task.md` hoặc các file Story.
+   - Nghiêm cấm Dev Agent tự ý đánh dấu hoàn thành `[x]` vào tệp `task.md` (tệp lưu tại thư mục story-specific hoặc session artifact) hoặc các file Story.
    - Trạng thái chỉ được cập nhật tự động sau khi Lớp 1 và Lớp 2 chạy qua thành công.
 2. **Quét Over-Engineering & Bypass:**
    - Phát hiện các hàm trống, mock stubs rỗng (`return {}`, `return []`).

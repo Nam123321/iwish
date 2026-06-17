@@ -20,14 +20,14 @@ description: Generate per-story UI specification — the Discovery Track artifac
 Before running this workflow:
 1. A story file must exist (created by `create-story` workflow)
 2. The UX Design Specification must exist at `{planning_artifacts}/ux-design-specification.md`
-3. The Feature Hierarchy MUST exist at `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`
+3. The Feature Hierarchy MUST exist (canonical path: `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`, fallback: any file matching `*hierarchy*.md` resolved dynamically via keyword/glob search under `_iwish-output/`)
 
 ### 🚨 FEATURE HIERARCHY GATE CHECK (HARD PREREQUISITE)
 
 **Before proceeding, the agent MUST verify the Feature Hierarchy exists:**
 
 ```
-1. CHECK: Does `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` exist?
+1. CHECK: Does a Feature Hierarchy file exist? (Check the canonical path `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` or search dynamically for any file matching `*hierarchy*.md` in `_iwish-output/` using glob/keyword search).
 
 IF EXISTS → ✅ Proceed to Feature Hierarchy Navigation Context loading (below)
 IF NOT EXISTS → ❌ HALT with message:
@@ -43,7 +43,7 @@ IF NOT EXISTS → ❌ HALT with message:
 After the Feature Hierarchy GATE passes, the agent MUST extract navigation context:
 
 ```
-1. Read `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md` in full using `view_file`
+1. Read the resolved Feature Hierarchy file in full using `view_file`
 2. Identify which portal this story belongs to (Admin, Webstore, Sales, SaaS, etc.)
    - Match the story's portal to the corresponding section in feature-hierarchy.md
 3. Extract the portal's sidebar/menu tree:
