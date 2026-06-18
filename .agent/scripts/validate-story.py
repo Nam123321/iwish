@@ -12,6 +12,20 @@ def validate_story(filepath: Path) -> bool:
     content = filepath.read_text()
     errors = []
 
+    # Trích xuất Epic ID và Story ID từ tên file (ví dụ: story-16.2.md -> epic_id=16, story_id=16.2)
+    filename = filepath.name
+    match = re.search(r'story-(\d+)\.(\d+)', filename)
+    if not match:
+        match = re.search(r'story-(\d+)-(\d+)', filename)
+    
+    if match:
+        epic_id = match.group(1)
+        story_id = f"{match.group(1)}.{match.group(2)}"
+    else:
+        errors.append(f"Filename must match pattern 'story-N.M.md', found: '{filename}'")
+        epic_id = None
+        story_id = None
+
     # 1. Check OKF Frontmatter Header
     yaml_block_match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
     if not yaml_block_match:
@@ -45,11 +59,10 @@ def validate_story(filepath: Path) -> bool:
         errors.append("Missing AC-to-Task Traceability Matrix.")
 
     # 5. Check Cross-Feature Dependencies
-    cross_feature_pattern = re.compile(r'##\s*Cross-Feature Dependencies', re.IGNORECASE)
+    cross_feature_pattern = re.compile(r'##\s*.*?Cross-Feature Dependencies', re.IGNORECASE)
     if not cross_feature_pattern.search(content):
         errors.append("Missing '## Cross-Feature Dependencies' section.")
     else:
-        # Check sub-sections
         subsections = ["Impacts", "Consumes", "Shared Entities", "Cross-Portal"]
         for sub in subsections:
             if not re.search(r'###\s*' + sub, content, re.IGNORECASE):
@@ -59,6 +72,20 @@ def validate_story(filepath: Path) -> bool:
     qa_scorecard_pattern = re.compile(r'QA Simulator|Scorecard|TOTAL AVERAGE', re.IGNORECASE)
     if not qa_scorecard_pattern.search(content):
         errors.append("Missing QA Simulator Scorecard.")
+
+    # 7. Physical verification: Check review file and risk matrix
+    if epic_id and story_id:
+        project_root = Path(__file__).resolve().parents[2]
+        
+        # File review from review-agent
+        review_file = project_root / "_iwish-output" / "reviews" / f"review-story-{story_id}.md"
+        if not review_file.is_file():
+            errors.append(f"Physical Review File missing: '{review_file.relative_to(project_root)}'. You must run review-agent first.")
+
+        # Risk matrix file from Edge Case Guardian
+        risk_file = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
+        if not risk_file.is_file():
+            errors.append(f"Physical Risk Matrix File missing: '{risk_file.relative_to(project_root)}'. You must run Edge Case Guardian scan first.")
 
     # Print results
     if errors:

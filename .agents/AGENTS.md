@@ -16,9 +16,14 @@ Whenever creating, rewriting, or updating a Story file (`story.md`), you MUST ex
 4. **AC-to-Task Traceability Matrix**: Generate a markdown matrix mapping every Acceptance Criteria (AC) to at least one implementation Task. No orphan or missing links are allowed.
 5. **Cross-Feature Dependencies**: Generate the `## Cross-Feature Dependencies` section.
 6. **QA Simulator Guardian Audit**: Mentally execute the simulator and embed the 7-row Hybrid Scorecard (6 Core Axes + 1 UX Empathy) at the bottom. The `TOTAL AVERAGE` must be >= 8.5/10.
-7. **Edge Case Guardian Scan**: Invoke the Review Agent, run the FMEA risk scoring, write risk nodes, and update the epic risk matrix.
-8. **Automated Validation**: Before injecting or finalizing, you MUST run:
+7. **Edge Case Guardian Scan**: 
+   - Sau khi dựng xong nháp câu chuyện (Happy-path ACs), bạn **BẮT BUỘC** phải gọi Review Agent (`invoke_subagent` cho role `Review Agent`) và nạp skill Edge Case Guardian để quét lỗi biên, chấm điểm FMEA.
+   - Ghi nhận báo cáo đánh giá vào file `_iwish-output/reviews/review-story-N.M.md`.
+   - Cập nhật ma trận rủi ro epic tại `_iwish-output/edge-case-knowledge/epics/epic-N-risk-matrix.md`.
+   - Cập nhật các ACs của story với tiền tố `[EDGE-CASE]` dựa trên kết quả review.
+8. **Automated Validation**: Trước khi kết thúc turn hoặc nạp vào KG, bạn MUST chạy validator:
    `python3 .agent/scripts/validate-story.py "<file_path>"`
-   If this script fails or reports missing elements, you **MUST NOT** proceed or declare the turn complete until all validation errors are resolved.
+   Validator sẽ kiểm tra sự tồn tại vật lý của file review và risk matrix. Nếu phát hiện thiếu file vật lý (chỉ giả lập trên text), validator sẽ báo lỗi và bạn **MUST NOT** tiếp tục.
 9. **Knowledge Graph Injection**: After successful validation, run:
    `iwish inject-node --file "<file_path>" --metadata '{"summary": "...", "tags": [...], "layer": "...", "complexity": "..."}'`
+
