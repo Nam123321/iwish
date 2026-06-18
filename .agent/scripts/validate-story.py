@@ -81,11 +81,24 @@ def validate_story(filepath: Path) -> bool:
         review_file = project_root / "_iwish-output" / "reviews" / f"review-story-{story_id}.md"
         if not review_file.is_file():
             errors.append(f"Physical Review File missing: '{review_file.relative_to(project_root)}'. You must run review-agent first.")
+        elif review_file.stat().st_size < 150:
+            review_text = review_file.read_text()
+            if "mock" in review_text.lower() or "placeholder" in review_text.lower():
+                errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is a placeholder/mock. Please run real review-agent scan.")
+            elif review_file.stat().st_size < 100:
+                errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is too short ({review_file.stat().st_size} bytes). Minimum size is 100 bytes.")
 
         # Risk matrix file from Edge Case Guardian
         risk_file = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
         if not risk_file.is_file():
             errors.append(f"Physical Risk Matrix File missing: '{risk_file.relative_to(project_root)}'. You must run Edge Case Guardian scan first.")
+        elif risk_file.stat().st_size < 150:
+            risk_text = risk_file.read_text()
+            if "mock" in risk_text.lower() or "placeholder" in risk_text.lower():
+                errors.append(f"Physical Risk Matrix File '{risk_file.relative_to(project_root)}' is a placeholder/mock. Please run real Edge Case Guardian scan.")
+            elif risk_file.stat().st_size < 100:
+                errors.append(f"Physical Risk Matrix File '{risk_file.relative_to(project_root)}' is too short ({risk_file.stat().st_size} bytes). Minimum size is 100 bytes.")
+
 
     # Print results
     if errors:
