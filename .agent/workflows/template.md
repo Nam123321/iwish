@@ -38,12 +38,21 @@ links_to: ["_iwish-output/3. Development/1. Epic & Story/story-{{story_key}}.md"
 - **Redirects & Gating**: [Describe any auto-redirects, e.g. redirect to login if unauthenticated, or redirect to onboarding if workspace is new]
 - **Navigation State**: [Specify if any query params or state are passed during navigation, e.g. `?workspaceId=123`]
 
+**Navigation Tree Cross-Check:**
+- **Feature Hierarchy Nav Tree**: {{feature_hierarchy_nav_tree}}
+
 ---
 
 ## 3. Component Hierarchy
 
 ### Screen: {{screen_name}} (`{{route}}`)
 
+#### 3.1. Mermaid Layout Diagram
+```mermaid
+{{screen_layout_mermaid}}
+```
+
+#### 3.2. Detailed Tree Structure
 ```
 {{screen_name}}Page
 ├── {{SectionComponent}}

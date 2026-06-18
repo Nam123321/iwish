@@ -182,7 +182,7 @@ When invoked during UI Spec generation or enrichment, the specialist MUST genera
 
 **Phase 1: Static Layout (Stitch Prompt Generation)**
 If invoked during `/create-ui-spec`, generate the `[STITCH_PROMPT_INJECTION]` payload:
-- **Include:** Static layout constraints, CSS Grid/Flexbox rules, specific class naming conventions, color tokens, typography scales, and CSS anti-patterns to avoid.
+- **Include:** Static layout constraints, CSS Grid/Flexbox rules, specific class naming conventions, color tokens, typography scales, CSS anti-patterns to avoid, and the Mermaid layout diagram of the page component structure (with instructions to strictly adhere to the layout defined in the diagram).
 - **Exclude:** Javascript, IntersectionObservers, dynamic state logic, or complex animations.
 
 **Phase 2: Dynamic Enrichment (Dev Implementation)**

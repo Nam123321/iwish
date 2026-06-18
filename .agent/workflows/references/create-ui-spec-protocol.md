@@ -46,19 +46,25 @@ After the Feature Hierarchy GATE passes, the agent MUST extract navigation conte
 1. Read the resolved Feature Hierarchy file in full using `view_file`
 2. Identify which portal this story belongs to (Admin, Webstore, Sales, SaaS, etc.)
    - Match the story's portal to the corresponding section in feature-hierarchy.md
-3. Extract the portal's sidebar/menu tree:
-   - Top-level menu groups
-   - Sub-menu items and their hierarchy
-   - Feature placement within the tree
-   - Cross-portal navigation links (if any)
-4. Store the extracted navigation tree as `{portal_nav_tree}` for use in:
-   - Navigation, Routing & Menu Placement section of the UI spec
-   - Breadcrumb path generation
-   - Sibling/parent/child navigation relationships
-   - Sidebar active state determination
+3. Check if the screen/page/feature for this story is already listed in the feature-hierarchy.md:
+   - IF FOUND:
+     a. Extract the portal's sidebar/menu tree hierarchy path (Nav Tree) for the feature.
+     b. Display this path (e.g., `🌐 Main Web Portal -> 🏠 Marketing -> Pricing`) under `**Feature Hierarchy Nav Tree**` in the UI spec.
+   - IF NOT FOUND:
+     a. Set the navigation path status to "Chưa có" (Not available).
+     b. Propose a structured navigation path/options (Nav Tree) matching the portal's layout.
+     c. HALT and ask the user for approval: "⚠️ Feature này chưa có trên Feature Hierarchy. Đề xuất navigation: [Đề xuất]. Bạn có đồng ý phê duyệt không?".
+     d. Wait for user approval. Once the user approves:
+        - Update the `feature-hierarchy.md` file by inserting the approved navigation node in the correct portal hierarchy section.
+        - Proceed to write the approved navigation tree path to the UI Spec.
+4. Store the extracted or approved navigation tree path as `{portal_nav_tree}` for use in:
+   - Navigation, Routing & Menu Placement section of the UI spec (must display the Nav Tree).
+   - Breadcrumb path generation.
+   - Sibling/parent/child navigation relationships.
+   - Sidebar active state determination.
 5. The extracted navigation tree is the SOURCE-OF-TRUTH for all navigation
    decisions in this UI spec. Do NOT guess or infer navigation structure
-   from other sources.
+   from other sources without user approval.
 ```
 
 **The agent MUST use `{portal_nav_tree}` when generating the Navigation, Routing & Menu Placement section.**
@@ -274,6 +280,7 @@ Design System: Use configured Design System Asset ID (e.g. Stitch Asset ID {asse
 Brand Assets: Check for image/vector assets in `_iwish-output/brand-identity/assets/` and explicitly enforce their usage (e.g., logo, icons) in the generated spec and UI option.
 Page Override: load from {page_override_path} only when it exists for the active page/story context
 Feature Hierarchy: include the full relevant portal section from feature-hierarchy.md — the complete sidebar/menu tree extracted as {portal_nav_tree} — so the design tool understands the navigation tree and feature placement context
+Mermaid Layout Diagram: include the Mermaid layout diagram of the page component structure. Explicitly instruct the design tool to strictly follow this component layout structure.
 UI-UX Story Notes: include only approved or non-conflicting story-level specialist guidance
 Conflict Rule: approved screens and extracted visual contract remain authoritative if specialist guidance conflicts
 ```
@@ -285,9 +292,14 @@ The final story UI spec MUST include these sections in addition to the existing 
 ### Navigation, Routing & Menu Placement
 - Document the exact URL route/path mapping (e.g. `/admin/billing/invoices`).
 - Specify the menu hierarchy: identify the Parent Menu/Tab and the Child/Sub-tab.
+- Display the Nav Tree: Show the full navigation path (e.g., `🌐 Main Web Portal -> 🏠 Marketing -> Pricing`). If it was missing and approved, display the approved navigation path.
 - Define the detailed Access Flow (step-by-step navigation path starting from home/landing).
 - Outline active/highlight states for menus, sidebars, and breadcrumbs.
 - Detail routing guards, auth check redirections, and navigation states (query parameters passed).
+
+### Component Hierarchy Layout Diagram
+- The spec MUST contain a Mermaid diagram representing the layout of the page's components (headers, panels, sidebars, grids, forms, list views).
+- The Mermaid diagram code MUST be copied to Section 10 `[STITCH_PROMPT_INJECTION]`.
 
 ### User Simulation Results
 - Personas tested
