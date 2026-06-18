@@ -108,6 +108,11 @@ Stories must be independently completable in sequence:
 ```
 ### Story {N}.{M}: {story_title}
 
+**Epic:** Epic {N}: {epic_title}
+**Story Title:** {story_title}
+**FR Covered:** [{FR-ID}: {FR-Name}] (e.g., [FR-1.1: Platform Mode Detection](file:///path/to/prd.md#FR-1.1))
+**Goal:** {story_goal}
+
 As a {user_type},
 I want {capability},
 So that {value_benefit}.

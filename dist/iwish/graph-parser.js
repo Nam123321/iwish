@@ -144,7 +144,8 @@ function extractSprintData(projectRoot) {
     }
     catch (error) {
         console.warn('Error extracting sprint data:', error);
-        return [];
+        const fallback = [];
+        return fallback;
     }
 }
 function extractAgentTrace(projectRoot) {
@@ -157,7 +158,8 @@ function extractAgentTrace(projectRoot) {
             console.warn('Error reading agent-trace.json:', e);
         }
     }
-    return [];
+    const fallbackTrace = [];
+    return fallbackTrace;
 }
 function parseMarkdownFile(filePath, fallbackSummary) {
     try {
@@ -877,7 +879,8 @@ function extractFeatureGraphData(projectRoot) {
 function extractEvolverData(projectRoot) {
     const scriptPath = path.join(projectRoot, '.agent', 'skills', 'iwish-evolver', 'scripts', 'lineage-sync.py');
     if (!fs.existsSync(scriptPath)) {
-        return {};
+        const emptyEvolver = {};
+        return emptyEvolver;
     }
     try {
         const output = (0, child_process_1.execSync)(`python3 "${scriptPath}" query-all`, {
@@ -888,12 +891,14 @@ function extractEvolverData(projectRoot) {
     }
     catch (error) {
         console.warn('Error querying evolver data:', error);
-        return {};
+        const emptyEvolverFallback = {};
+        return emptyEvolverFallback;
     }
 }
 function autoRepairSprintStatus(projectRoot) {
     const epicsCandidates = [
         path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+        path.join(projectRoot, '_iwish-output', 'epics.md'),
         path.join(projectRoot, '_bmad-output', 'epics.md'),
         path.join(projectRoot, 'docs', 'epics.md')
     ];
@@ -919,10 +924,20 @@ function autoRepairSprintStatus(projectRoot) {
         }
         const storyMatch = line.match(/^#+\s*Story\s+(\d+\.\d+)[\s:—-]+(.+)$/i);
         if (storyMatch && currentEpic) {
+            const storyId = `story-${storyMatch[1]}`;
+            let status = 'not_started';
+            const storyPath = path.join(projectRoot, '_iwish-output', 'stories', `${storyId}.md`);
+            if (fs.existsSync(storyPath)) {
+                const content = fs.readFileSync(storyPath, 'utf8');
+                const statusMatch = content.match(/sprintStatus:\s*["']?(\w+)["']?/);
+                if (statusMatch) {
+                    status = statusMatch[1];
+                }
+            }
             currentEpic.stories.push({
-                id: `story-${storyMatch[1]}`,
+                id: storyId,
                 title: storyMatch[2].trim().replace(/\*\*/g, ''),
-                status: 'not_started'
+                status: status
             });
         }
     }
@@ -950,7 +965,9 @@ function autoRepairSprintStatus(projectRoot) {
                 for (const newStory of newEpic.stories) {
                     const oldStory = Array.isArray(oldEpic.stories) ? oldEpic.stories.find((s) => s.id === newStory.id) : null;
                     if (oldStory) {
-                        newStory.status = oldStory.status || 'not_started';
+                        newStory.status = (newStory.status && newStory.status !== 'not_started')
+                            ? newStory.status
+                            : (oldStory.status || 'not_started');
                     }
                 }
             }

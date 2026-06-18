@@ -125,7 +125,8 @@ export function extractSprintData(projectRoot: string): any[] {
     });
   } catch (error) {
     console.warn('Error extracting sprint data:', error);
-    return [];
+    const fallback: any[] = [];
+    return fallback;
   }
 }
 
@@ -138,7 +139,8 @@ export function extractAgentTrace(projectRoot: string): any[] {
       console.warn('Error reading agent-trace.json:', e);
     }
   }
-  return [];
+  const fallbackTrace: any[] = [];
+  return fallbackTrace;
 }
 
 export type IdeaToPrdStep = {
@@ -963,7 +965,8 @@ export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult
 export function extractEvolverData(projectRoot: string): any {
   const scriptPath = path.join(projectRoot, '.agent', 'skills', 'iwish-evolver', 'scripts', 'lineage-sync.py');
   if (!fs.existsSync(scriptPath)) {
-    return {};
+    const emptyEvolver: any = {};
+    return emptyEvolver;
   }
 
   try {
@@ -974,13 +977,15 @@ export function extractEvolverData(projectRoot: string): any {
     return JSON.parse(output);
   } catch (error) {
     console.warn('Error querying evolver data:', error);
-    return {};
+    const emptyEvolverFallback: any = {};
+    return emptyEvolverFallback;
   }
 }
 
 export function autoRepairSprintStatus(projectRoot: string): void {
   const epicsCandidates = [
     path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_iwish-output', 'epics.md'),
     path.join(projectRoot, '_bmad-output', 'epics.md'),
     path.join(projectRoot, 'docs', 'epics.md')
   ];
@@ -1010,10 +1015,20 @@ export function autoRepairSprintStatus(projectRoot: string): void {
 
     const storyMatch = line.match(/^#+\s*Story\s+(\d+\.\d+)[\s:—-]+(.+)$/i);
     if (storyMatch && currentEpic) {
+      const storyId = `story-${storyMatch[1]}`;
+      let status = 'not_started';
+      const storyPath = path.join(projectRoot, '_iwish-output', 'stories', `${storyId}.md`);
+      if (fs.existsSync(storyPath)) {
+        const content = fs.readFileSync(storyPath, 'utf8');
+        const statusMatch = content.match(/sprintStatus:\s*["']?(\w+)["']?/);
+        if (statusMatch) {
+          status = statusMatch[1];
+        }
+      }
       currentEpic.stories.push({
-        id: `story-${storyMatch[1]}`,
+        id: storyId,
         title: storyMatch[2].trim().replace(/\*\*/g, ''),
-        status: 'not_started'
+        status: status
       });
     }
   }
@@ -1043,7 +1058,9 @@ export function autoRepairSprintStatus(projectRoot: string): void {
         for (const newStory of newEpic.stories) {
           const oldStory = Array.isArray(oldEpic.stories) ? oldEpic.stories.find((s: any) => s.id === newStory.id) : null;
           if (oldStory) {
-            newStory.status = oldStory.status || 'not_started';
+            newStory.status = (newStory.status && newStory.status !== 'not_started')
+              ? newStory.status
+              : (oldStory.status || 'not_started');
           }
         }
       }

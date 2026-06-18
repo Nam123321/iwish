@@ -474,6 +474,58 @@ nodes:
   - compression
   - token-optimization
   depends_on: []
+- id: skill-doubt-driven-development
+  type: skill
+  path: /.agent/skills/doubt-driven-development/SKILL.md
+  description: Subjects every non-trivial decision to a fresh-context adversarial review before it stands.
+  tags:
+  - doubt
+  - review
+  - adversarial
+  - verification
+  depends_on: []
+- id: skill-sdd-cache
+  type: skill
+  path: /.agent/skills/sdd-cache/SKILL.md
+  description: Cross-session citation cache for source-driven-development.
+  tags:
+  - sdd-cache
+  - caching
+  - fetch
+  - revalidation
+  depends_on:
+  - skill-source-driven-development
+- id: skill-source-driven-development
+  type: skill
+  path: /.agent/skills/source-driven-development/SKILL.md
+  description: Grounds every implementation decision in official documentation.
+  tags:
+  - source-driven
+  - documentation
+  - verification
+  - citation
+  depends_on: []
+- id: skill-performance-optimization
+  type: skill
+  path: /.agent/skills/performance-optimization/SKILL.md
+  description: Optimizes application performance and establishes Core Web Vitals checks.
+  tags:
+  - performance
+  - optimization
+  - web-vitals
+  - lighthouse
+  depends_on: []
+- id: skill-observability-and-instrumentation
+  type: skill
+  path: /.agent/skills/observability-and-instrumentation/SKILL.md
+  description: Guides structured logging, metrics instrumentation, and OpenTelemetry.
+  tags:
+  - observability
+  - logging
+  - metrics
+  - tracing
+  depends_on: []
+
 - id: workflow-prototype
   type: workflow
   path: /.agent/workflows/prototype.md

@@ -357,8 +357,9 @@ async function compileUserGuideDashboard(projectRoot) {
     const templateContent = await fs.readFile(templatePath, 'utf8');
     const graphData = (0, graph_parser_1.extractGraphData)(projectRoot);
     let sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
-    if (!sprintData || sprintData.length === 0) {
-        console.log(chalk_1.default.yellow('\n⚠️  Đã phát hiện sprint-status.yaml sai định dạng hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
+    const sprintStatusPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+    if (!fs.existsSync(sprintStatusPath) || !sprintData || sprintData.length === 0) {
+        console.log(chalk_1.default.yellow('\n⚠️  Đã phát hiện sprint-status.yaml bị thiếu hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
         (0, graph_parser_1.autoRepairSprintStatus)(projectRoot);
         sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
     }

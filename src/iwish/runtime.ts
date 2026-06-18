@@ -463,8 +463,9 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
   const graphData = extractGraphData(projectRoot);
   let sprintData = extractSprintData(projectRoot);
   
-  if (!sprintData || sprintData.length === 0) {
-    console.log(chalk.yellow('\n⚠️  Đã phát hiện sprint-status.yaml sai định dạng hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
+  const sprintStatusPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+  if (!fs.existsSync(sprintStatusPath) || !sprintData || sprintData.length === 0) {
+    console.log(chalk.yellow('\n⚠️  Đã phát hiện sprint-status.yaml bị thiếu hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
     autoRepairSprintStatus(projectRoot);
     sprintData = extractSprintData(projectRoot);
   }

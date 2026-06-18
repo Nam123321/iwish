@@ -21,3 +21,12 @@ Do NOT attempt to run this workflow without reading the protocol!
 > `node .agent/scripts/design-compliance-scanner.js --spec <path-to-ui-spec.md> --design <path-to-design.md>`
 > Ensure the scan passes with Exit Code 0. If it fails, you must fix all unauthorized design tokens (e.g. replacing default violet colors like `#7C3AED` with allowed tokens from `DESIGN.md` such as `#00DF9A` or `#059669`) and re-run the check. Do NOT proceed to design generation or coding with compliance violations.
 
+<steps CRITICAL="TRUE">
+1. Load target story `_iwish-output/stories/story-N.M.md`.
+2. Read Feature Hierarchy `_iwish-output/2. Product Planning/2.5. feature-hierarchy.md`. Halt if missing.
+3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
+4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
+5. Write spec to `_iwish-output/3. Development/2. Functional Design/3.2. ui-spec-story-N.M.md`.
+6. Run scanner: `node .agent/scripts/design-compliance-scanner.js --spec _iwish-output/3. Development/2. Functional Design/3.2. ui-spec-story-N.M.md --design DESIGN.md`.
+7. Ensure scanner passes (Exit Code 0).
+</steps>

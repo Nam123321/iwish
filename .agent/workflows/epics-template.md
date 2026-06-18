@@ -48,6 +48,11 @@ This document provides the complete epic and story breakdown for {{project_name}
 
 ### Story {{N}}.{{M}}: {{story_title_N_M}}
 
+**Epic:** Epic {{N}}: {{epic_title_N}}
+**Story Title:** {{story_title_N_M}}
+**FR Covered:** {{fr_covered_N_M}}
+**Goal:** {{story_goal_N_M}}
+
 As a {{user_type}},
 I want {{capability}},
 So that {{value_benefit}}.
