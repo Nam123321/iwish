@@ -78,7 +78,7 @@ After the Feature Hierarchy GATE passes, the agent MUST extract navigation conte
 2. Map portal to slug: Admin → "admin-portal", Webstore → "webstore", Sales → "sales-app", SaaS → "saas-dashboard"
 3. CHECK: Does `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md` exist?
 
-IF EXISTS → ✅ Proceed with workflow
+IF EXISTS → ✅ Proceed to Automated Design System Token Synchronization (below)
 IF NOT EXISTS → ❌ BLOCK with message:
    "⚠️ Design System chưa có cho portal '{portal_name}'.
     Vui lòng chạy /create-ux-design trước để tạo Design System.
@@ -86,6 +86,18 @@ IF NOT EXISTS → ❌ BLOCK with message:
 ```
 
 **The agent MUST NOT skip this check.** No story UI spec can exist without a portal Design System.
+
+### 🔄 AUTOMATED DESIGN SYSTEM TOKEN SYNCHRONIZATION
+After the Design System GATE passes, the agent MUST synchronize the design tokens to the design platform:
+```
+1. Check if the local `{planning_artifacts}/design-system/{portal-slug}/DESIGN.md` has been modified since the last sync.
+2. If modified, or if the design system asset ID is not yet registered on the server:
+   a. Call the Stitch MCP tool `upload_design_md` (or `create_design_system_from_design_md`) passing the contents of `DESIGN.md`.
+   b. Retrieve the returned `designSystemId` (or asset ID) from the tool response.
+   c. Save the `designSystemId` to the portal configuration file (e.g., `stitch-project.json`) under `{portal_design_system_id}` so it is referenced in all downstream mock generation calls.
+   d. Log the sync event: "🔄 Design system tokens synchronized to platform. Asset ID: [designSystemId]."
+3. Set `{portal_design_system_id}` as the active design system context for this session.
+```
 
 ### PAGE OVERRIDE RETRIEVAL RULE (AFTER DESIGN SYSTEM GATE)
 
@@ -270,19 +282,25 @@ Each story UI spec MUST include **5 visual options** for the story's key screen(
 | Option 5 | HTML/CSS prototype | Interactive prototype |
 
 **Context Injection for Design/Stitch calls:**
+For tool-based design generation (such as `generate_screen_from_text` in Stitch MCP), the agent MUST construct the prompt in Section 10 using a highly structured Markdown payload format rather than natural language prose:
+
 ```
-Product: {project_name}
-Portal: {portal_name}
-Story: {story_key} — {story_title}
+[DESIGN_SYSTEM_CONTEXT]
+Design System Asset ID: {portal_design_system_id} (or Figma file/frame)
+Brand Assets: list available icons, logos, vector paths from `_iwish-output/brand-identity/assets/`
+Page Override Rules: include rules from `{planning_artifacts}/design-system/{portal-slug}/pages/{page-slug}.md` if they exist
+
+[MANDATORY_LAYOUT_STRUCTURE]
+Adhere strictly to the layout hierarchy and component relationships defined in this Mermaid diagram:
+{screen_layout_mermaid}
+
+[CONTENT_&_INTERACTION_REQUIREMENTS]
+Product Context: {project_name} - {portal_name}
+Feature Scope: {story_key} — {story_title}
+Navigation Context: {portal_nav_tree} (full menu hierarchy path from feature-hierarchy.md)
 Acceptance Criteria: {acceptance_criteria_bullets}
-Persona: {persona} — {device}
-Design System: Use configured Design System Asset ID (e.g. Stitch Asset ID {assetId} or Figma file/frame). If configured asset is missing, STOP and request user to sync design first.
-Brand Assets: Check for image/vector assets in `_iwish-output/brand-identity/assets/` and explicitly enforce their usage (e.g., logo, icons) in the generated spec and UI option.
-Page Override: load from {page_override_path} only when it exists for the active page/story context
-Feature Hierarchy: include the full relevant portal section from feature-hierarchy.md — the complete sidebar/menu tree extracted as {portal_nav_tree} — so the design tool understands the navigation tree and feature placement context
-Mermaid Layout Diagram: include the Mermaid layout diagram of the page component structure. Explicitly instruct the design tool to strictly follow this component layout structure.
-UI-UX Story Notes: include only approved or non-conflicting story-level specialist guidance
-Conflict Rule: approved screens and extracted visual contract remain authoritative if specialist guidance conflicts
+Target Persona & Device: {persona} — {device}
+Specialist Notes: {ui_ux_story_notes}
 ```
 
 ## REQUIRED UI SPEC OUTPUT SECTIONS

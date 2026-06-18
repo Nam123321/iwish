@@ -224,7 +224,22 @@ interface {{ResponseType}} {
 
 > **For Stitch MCP Generation:** Copy and paste the block below into your Stitch tool.
 ```
-{{stitch_prompt_injection}}
+[DESIGN_SYSTEM_CONTEXT]
+Design System Asset ID: {{portal_design_system_id}}
+Brand Assets: {{brand_assets_list}}
+Page Override Rules: {{page_override_rules}}
+
+[MANDATORY_LAYOUT_STRUCTURE]
+Adhere strictly to the layout hierarchy and component relationships defined in this Mermaid diagram:
+{{screen_layout_mermaid}}
+
+[CONTENT_&_INTERACTION_REQUIREMENTS]
+Product Context: {{project_name}} - {{target_portals}}
+Feature Scope: Story {{story_key}} — {{story_title}}
+Navigation Context: {{feature_hierarchy_nav_tree}}
+Acceptance Criteria: {{story_acceptance_criteria}}
+Target Persona & Device: {{target_persona}} — {{target_device}}
+Specialist Notes: {{ui_ux_story_notes}}
 ```
 
 ---

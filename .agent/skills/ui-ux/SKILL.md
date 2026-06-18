@@ -181,8 +181,10 @@ The specialist must return a compact I-Wish-facing recommendation using exactly 
 When invoked during UI Spec generation or enrichment, the specialist MUST generate the exact payloads for the two-phase pipeline based on the UI/UX Pro Max library rules:
 
 **Phase 1: Static Layout (Stitch Prompt Generation)**
-If invoked during `/create-ui-spec`, generate the `[STITCH_PROMPT_INJECTION]` payload:
-- **Include:** Static layout constraints, CSS Grid/Flexbox rules, specific class naming conventions, color tokens, typography scales, CSS anti-patterns to avoid, and the Mermaid layout diagram of the page component structure (with instructions to strictly adhere to the layout defined in the diagram).
+If invoked during `/create-ui-spec`, generate the `[STITCH_PROMPT_INJECTION]` payload using the structured Markdown payload format containing:
+- **`[DESIGN_SYSTEM_CONTEXT]`**: The active Design System Asset ID (`designSystemId`), brand asset paths, and page override rules.
+- **`[MANDATORY_LAYOUT_STRUCTURE]`**: Sourced from the page's Mermaid component layout diagram with instructions to strictly follow its structure.
+- **`[CONTENT_&_INTERACTION_REQUIREMENTS]`**: Sourced from the story's Acceptance Criteria, target persona, device context, and the Nav Tree from `feature-hierarchy.md`.
 - **Exclude:** Javascript, IntersectionObservers, dynamic state logic, or complex animations.
 
 **Phase 2: Dynamic Enrichment (Dev Implementation)**
