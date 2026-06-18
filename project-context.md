@@ -91,6 +91,9 @@ All AI assistants and agents operating on this project must strictly comply with
       5. **CHỜ user approve** trước khi chạy audit. Agent **KHÔNG ĐƯỢC** tự sửa data mà không có approval.
       6. Sau khi audit hoàn tất → cập nhật `_iwish/runtime/.context-audit-state.json` với hash mới.
     - Nếu hash **giống nhau** hoặc file `.context-audit-state.json` chưa tồn tại lần đầu → tạo file với hash hiện tại và bỏ qua audit.
+12. **Codebase Health & Code Simplification Synergy (Sự kết hợp giữa codebase-health và code-simplification)**:
+    - **Diagnostic Gate vs. Refactoring Action**: `/codebase-health` là cổng chẩn đoán tổng thể (phát hiện dead code, dependency vòng, file/function quá phức tạp). `code-simplification` là bộ hướng dẫn refactor chi tiết (giảm lồng lặp < 3 cấp, tách nhỏ function > 50 dòng, đặt tên rõ ràng) được chạy trực tiếp trong quá trình dev-agent viết code.
+    - **Nguyên tắc phối hợp (Synergy Flow)**: Khi `/codebase-health` phát hiện hotspot phức tạp, hoặc khi các thay đổi trong một story đẩy độ phức tạp của file vượt ngưỡng, agent **BẮT BUỘC** phải kích hoạt kỹ năng `code-simplification` để refactor file/module đó trước khi kết thúc câu chuyện (story). Mọi thay đổi refactor phải được kiểm thử đầy đủ để đảm bảo giữ nguyên behavior.
 
 ---
 
@@ -106,3 +109,4 @@ Section này ghi nhận các thay đổi rule quan trọng kèm hướng dẫn r
 |:---|:---|:---|:---|:---|
 | `rule-10` | `added` | Sprint Status Standardization — chỉ cho phép enum values cố định | `_iwish-output/**/sprint-status.yaml` | Scan tất cả `sprint-status.yaml`, thay thế status không chuẩn bằng enum gần nhất theo bảng mapping ở Rule #10 |
 | `rule-11` | `added` | Context Drift Detection — auto-audit khi project-context thay đổi | N/A | Tạo `_iwish/runtime/.context-audit-state.json` nếu chưa có |
+| `rule-12` | `added` | Codebase Health & Code Simplification Synergy | N/A | Run `/codebase-health` to detect hotspots and apply `code-simplification` when refactoring |

@@ -84,10 +84,7 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
   3. **Behavioral Layer Overlay:** Merge the Asset Inventory (P0.5, P1.5 files) into the architecture map as a separate "Behavioral Module" layer.
   4. **Diagram:** Generate a Mermaid.js diagram showing BOTH technical modules AND behavioral assets. Must include ≥ 3 nodes.
   5. **Classify:** Determine the repo type. Now includes: `agent-framework`, `prompt-collection`, `workflow-engine`, `ui-library`, `backend-api`, `monorepo`, `full-stack`, `hybrid-agent`.
-- **Gate:** At least 3 modules identified. Mermaid diagram generated. Asset Inventory merged.
-- **Output:** Architecture Blueprint section prepared.
-
-### Phase 3: DISSECT 🔬 (Agent: capability-agent) — UPGRADED
+- **Gate:** At least 3 modules identified. Mermaid diagram generated. Asset Inventory merged### Phase 3: DISSECT 🔬 (Agent: capability-agent) — UPGRADED
 - **Action:** Invoke Phase 3 of `repo-absorption` skill. Now **Dual-Layer + Graph-Directed**.
 - **Steps:**
   1. **Tech Layer (Graph-Directed Deep Reading):**
@@ -97,7 +94,8 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
      - Read ALL `[P0.5 - Linked Behavioral Asset]` files entirely (these are the "soul" of AI repos).
      - Read ALL `[P1.5 - Dynamically Linked Asset]` files entirely.
      - For `[P4 - Orphan Asset]` files: Read only the first 50 lines to determine relevance. Skip if clearly irrelevant (changelog, license, contributing guide).
-  3. **Extraction Requirements:**
+  3. **Extraction & Zoom-in Requirements:**
+     - For prompt-only or hybrid repositories, the agent must read the *full content* of all primary rules and prompts and construct a **Granular Zoom-in Audit** mapping *each* core component/skill to its design pros/cons, edge cases, and exact implementation details.
      - For each Behavioral Asset, extract: **Role/Persona**, **System Prompt**, **Tool Usage Pattern**, **Workflow Steps**, **Decision Logic**.
      - For each Tech module, extract: **Where, What, How, Why, Edge Cases** (existing requirement).
 - **Gate:** At least 5 core patterns documented across BOTH layers combined.
@@ -124,6 +122,7 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
   1. **Web Search & Issue Scan:**
      - Query search engines, developer forums, and social spaces for real user feedback: `{repo-name} feedback`, `{repo-name} pros cons`, `{repo-name} issues`.
      - Scan the repository's GitHub Issues, Discussions, and Pull Requests from the past 3-6 months.
+     - **Vulnerability & Regression Sweep:** Specifically search for security vulnerability reports, regression reports, and design debates. If any critical issues are found, the agent must cross-reference them with the cloned codebase and explain the technical root cause in the report.
      - Extract community discussions and sentiment trends.
   2. **Release History & Changelog Analysis (NEW):**
      - **Fetch all tags/releases** via GitHub API: `https://api.github.com/repos/{owner}/{repo}/releases` and `https://api.github.com/repos/{owner}/{repo}/tags`.
@@ -185,7 +184,7 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
      - **Orchestration / Coordination Model**: How tasks/agents are orchestrated (e.g., sequential scripts, multi-agent coordination, event-driven loops).
      - **Skill Invocation / Prompt Loading**: How prompts and tools are resolved, parsed, and loaded into execution context.
      - **State & Context Management**: How variables, execution state, and agent memory are persisted and transferred across steps.
-  3. **Adversarial Stress-Test:** Identify at least 3 architectural risks or "bloat" patterns that should NOT be absorbed.
+  3. **Adversarial Stress-Test:** Identify at least 3 architectural risks or "bloat" patterns that should NOT be absorbed. Enforce the **Anti-Sycophancy Guard** and document at least **three (3) Pushback Questions** targeting the design of the target repository.
   4. Scan I-Wish `.agent/` directories for overlapping functionality.
   5. **Categorize and Classify Assets:** Group the external repository's features/components into logical Functional Groups (e.g., Tooling Skills, Custom Rules/Checklists, Coordination Workflows, Installer/Sync Scripts, Utility Modules).
   6. **I-Wish Classification Funnel Audit (Shape & Role Axes):**
@@ -208,6 +207,7 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
        - *Phương án & Nơi tích hợp / Proposed Action & Target*: Action track (`ADOPT` | `MERGE` | `REPLACE` | `SKIP` | `TOURNAMENT_PLUGIN`) and Target type (`SYSTEM_SKILL` | `USER_SPACE` | `SKIP`). Note: `TOURNAMENT_PLUGIN` packages the repo as an isolated Skill Attachment meant for A/B testing rather than merging its core logic into I-Wish.
        - *Tiêu chí Phễu / Funnel Criteria*: Justification details based on the 3 funnel criteria (Scope & Autonomy, Execution Context, Reusability).
      - **Phân tích Cơ chế Vận hành / Operational Mechanisms Analysis**: A dedicated section comparing the execution model, orchestrator flows, prompt loading methods, and state flow of the target repository versus I-Wish. Highlight which operational patterns should be adopted or avoided.
+     - **Granular Zoom-in Audit Table**: A detailed skill-by-skill / component-by-component analysis evaluating pros, cons, and direct functional comparisons for prompt-only or compound repositories.
   9. **Create Detailed Integration Plan:** Following the matrix, provide concrete, actionable integration steps for each group marked for adoption/merging (e.g., target destination directories, frontmatter schemas, routing triggers).
   10. **Compound Check:** Determine if the repo contains >3 independent modules (e.g., a monorepo).
 - **Output:** 
