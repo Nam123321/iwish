@@ -679,6 +679,10 @@ nodes:
   type: doc
   path: /docs/decisions/ADR-002-all-in-graph-migration.md
   description: 'Core architectural document: ADR-002-all-in-graph-migration.md'
+- id: core-design.md
+  type: doc
+  path: /DESIGN.md
+  description: 'Core project file: DESIGN.md'
 - id: core-readme.md
   type: doc
   path: /README.md
