@@ -43,6 +43,7 @@ const routing_1 = require("./commands/routing");
 const reconciliation_1 = require("./commands/reconciliation");
 const module_1 = require("./commands/module");
 const research_1 = require("./commands/research");
+const prototype_1 = require("./commands/prototype");
 function getInvocationName() {
     return process.argv[1]?.split('/').pop() || 'iwish';
 }
@@ -66,5 +67,6 @@ async function runCli() {
     (0, reconciliation_1.registerReconciliationCommands)(program, getProjectRoot, addSharedDirectoryOption);
     (0, module_1.registerModuleCommands)(program, getProjectRoot, addSharedDirectoryOption);
     (0, research_1.registerResearchCommands)(program, getProjectRoot, addSharedDirectoryOption);
+    (0, prototype_1.registerPrototypeCommands)(program, getProjectRoot, addSharedDirectoryOption);
     await program.parseAsync(process.argv);
 }

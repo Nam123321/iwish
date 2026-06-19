@@ -8,6 +8,7 @@ import { registerRoutingCommands } from './commands/routing';
 import { registerReconciliationCommands } from './commands/reconciliation';
 import { registerModuleCommands } from './commands/module';
 import { registerResearchCommands } from './commands/research';
+import { registerPrototypeCommands } from './commands/prototype';
 
 function getInvocationName(): string {
   return process.argv[1]?.split('/').pop() || 'iwish';
@@ -37,6 +38,7 @@ export async function runCli(): Promise<void> {
   registerReconciliationCommands(program, getProjectRoot, addSharedDirectoryOption);
   registerModuleCommands(program, getProjectRoot, addSharedDirectoryOption);
   registerResearchCommands(program, getProjectRoot, addSharedDirectoryOption);
+  registerPrototypeCommands(program, getProjectRoot, addSharedDirectoryOption);
 
   await program.parseAsync(process.argv);
 }

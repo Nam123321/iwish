@@ -77,6 +77,7 @@ const CANONICAL_COMMANDS = [
     { command: '/flow', description: 'Automated Epic/Story SDLC pipeline workflow', tags: ['command', 'sdlc', 'automation', 'pipeline'] },
     { command: '/update-knowledge-formatter', description: 'Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard', tags: ['command', 'maintenance', 'okf'] },
     { command: '/edge-case-guardian', description: 'Edge Case Guardian 8-Pillar scan and risk analysis workflow', tags: ['command', 'review', 'quality'] },
+    { command: '/make-prototype', description: 'Create an interactive single-file HTML prototype for planning preview', tags: ['command', 'planning', 'prototype', 'design'] },
 ];
 function readYaml(filePath) {
     return yaml_1.default.parse(fs.readFileSync(filePath, 'utf8'));

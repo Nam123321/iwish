@@ -12,19 +12,28 @@ def validate_story(filepath: Path) -> bool:
     content = filepath.read_text()
     errors = []
 
-    # Trích xuất Epic ID và Story ID từ tên file (ví dụ: story-16.2.md -> epic_id=16, story_id=16.2)
-    filename = filepath.name
-    match = re.search(r'story-(\d+)\.(\d+)', filename)
-    if not match:
-        match = re.search(r'story-(\d+)-(\d+)', filename)
+    # Trích xuất Epic ID và Story ID từ tên file hoặc đường dẫn thư mục
+    filepath_str = filepath.resolve().as_posix()
     
+    # Thử khớp cấu trúc thư mục phân cấp (ví dụ: /Epic-11/Story-11.1/story.md)
+    match = re.search(r'/Epic-(\d+)/Story-(\d+)[.-](\d+)', filepath_str, re.IGNORECASE)
     if match:
         epic_id = match.group(1)
-        story_id = f"{match.group(1)}.{match.group(2)}"
+        story_id = f"{match.group(2)}.{match.group(3)}"
     else:
-        errors.append(f"Filename must match pattern 'story-N.M.md', found: '{filename}'")
-        epic_id = None
-        story_id = None
+        # Thử khớp cấu trúc phẳng tên file (ví dụ: story-16.2.md)
+        filename = filepath.name
+        match = re.search(r'story-(\d+)\.(\d+)', filename, re.IGNORECASE)
+        if not match:
+            match = re.search(r'story-(\d+)-(\d+)', filename, re.IGNORECASE)
+        
+        if match:
+            epic_id = match.group(1)
+            story_id = f"{match.group(1)}.{match.group(2)}"
+        else:
+            errors.append(f"Filename or path must match pattern 'Epic-N/Story-N.M/story.md' or 'story-N.M.md', found: '{filepath_str}'")
+            epic_id = None
+            story_id = None
 
     # 1. Check OKF Frontmatter Header
     yaml_block_match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
@@ -91,14 +100,19 @@ def validate_story(filepath: Path) -> bool:
         # Risk matrix file from Edge Case Guardian
         risk_file = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
         if not risk_file.is_file():
-            errors.append(f"Physical Risk Matrix File missing: '{risk_file.relative_to(project_root)}'. You must run Edge Case Guardian scan first.")
+            # Thử tìm với chữ hoa 'Epic'
+            risk_file_alt = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"Epic-{epic_id}-risk-matrix.md"
+            if risk_file_alt.is_file():
+                risk_file = risk_file_alt
+            
+        if not risk_file.is_file():
+            errors.append(f"Physical Risk Matrix File missing: 'epic-{epic_id}-risk-matrix.md' in _iwish-output/edge-case-knowledge/epics/. You must run Edge Case Guardian scan first.")
         elif risk_file.stat().st_size < 150:
             risk_text = risk_file.read_text()
             if "mock" in risk_text.lower() or "placeholder" in risk_text.lower():
                 errors.append(f"Physical Risk Matrix File '{risk_file.relative_to(project_root)}' is a placeholder/mock. Please run real Edge Case Guardian scan.")
             elif risk_file.stat().st_size < 100:
                 errors.append(f"Physical Risk Matrix File '{risk_file.relative_to(project_root)}' is too short ({risk_file.stat().st_size} bytes). Minimum size is 100 bytes.")
-
 
     # Print results
     if errors:

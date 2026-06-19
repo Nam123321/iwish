@@ -126,6 +126,11 @@ guide:
       UX spec).
     note: Trigger after PRD is completed to outline layout structure and
       interactions.
+  step_2_prototype:
+    output: 📄 2. Product Planning/prototypes/prototype-referrence-only.html (Prototype Reference-Only HTML).
+    note: "Mandatory planning approval gate. Synthesizes navigation structures from
+      feature-hierarchy.md and styles/design tokens from ui-ux-spec.md into a
+      portable, single-file HTML preview."
   step_3:
     title: Solution (Architecture & Backlog)
     focus: "Goal: Establish technical design blueprints, break down Epics & Stories,

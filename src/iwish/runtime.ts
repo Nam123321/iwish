@@ -493,6 +493,32 @@ export async function compileUserGuideDashboard(projectRoot: string): Promise<st
     }
   }
 
+  // Enforce English fallback for key mismatches
+  const enLocale = localesData['en'] || {};
+  function isObject(item: any): boolean {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+  }
+  function mergeDeep(target: any, source: any): any {
+    if (isObject(target) && isObject(source)) {
+      for (const key in source) {
+        if (isObject(source[key])) {
+          if (!target[key]) target[key] = {};
+          mergeDeep(target[key], source[key]);
+        } else {
+          if (target[key] === undefined) {
+            target[key] = source[key];
+          }
+        }
+      }
+    }
+    return target;
+  }
+  for (const lang of Object.keys(localesData)) {
+    if (lang !== 'en') {
+      mergeDeep(localesData[lang], enLocale);
+    }
+  }
+
   const finalHtml = templateContent
     .replace('/*PROJECT_ROOT*/ ""', JSON.stringify(projectRoot).replace(/<\/script>/ig, '<\\/script>'))
     .replace('/*NODES_EDGES*/ {}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
