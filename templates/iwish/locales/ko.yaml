@@ -99,6 +99,12 @@ guide:
   step_2_ux:
     output: 📄 2. Product Planning/2.3. ui-ux-spec.md (사용자 경험 맵과 전체 UX 사양).
     note: PRD가 완료된 후에 실행되어 레이아웃 구조와 상호작용을 구상합니다.
+  step_2_prototype:
+    output: 📄 2. Product Planning/prototypes/prototype-referrence-only.html (HTML 대화형 프로토타입).
+    note: "필수 계획 승인 게이트. feature-hierarchy.md에서 내비게이션 구조를, ui-ux-spec.md에서 스타일/디자인 토큰을 통합하여 이식 가능한 단일 파일 HTML 미리보기로 합성합니다."
+  step_2_sim:
+    output: 📄 2. Product Planning/2.3.5. system-integrity-map.md (시스템 무결성 맵 - SIM).
+    note: "시스템 레이어와 경계를 분석하여 고립된 구성 요소, FE 전용 프래그먼트, 중복되는 재사용 엔진 및 커버리지 갭을 방지합니다. 최소 5가지 아키텍처 옵션을 제안합니다."
   step_3:
     title: Solution (아키텍처와 백로그)
     focus: "목표: 기술 설계 청사진을 수립하고, Epics & Stories를 분해하며, 스프린트를 초기화합니다."

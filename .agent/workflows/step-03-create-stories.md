@@ -68,14 +68,21 @@ To generate all epics with their stories based on the approved epics_list, follo
 
 ## STORY GENERATION PROCESS:
 
-### 1. Load Approved Epic Structure
+### 1. Load Approved Epic Structure & SIM
 
-Load {outputFile} and review:
-
-- Approved epics_list from Step 2
-- FR coverage map
-- All requirements (FRs, NFRs, additional)
-- Template structure at the end of the document
+Load and review the prerequisites:
+- **Approved epics_list:** From {outputFile} (Step 2).
+- **System Integrity Map (SIM):** Load `{planning_artifacts}/2. Product Planning/2.3.5. system-integrity-map.md`. 
+  - 🛑 **HARD GATE:** If the SIM file is missing or empty, you MUST halt and warn the user: *"⚠️ SIM file chưa tồn tại. Vui lòng chạy /create-sim trước để khởi tạo System Integrity Map."*
+- **SIM Change Detection & Audit:** If the SIM file was modified after stories were generated, perform a change impact audit. Scan all stories for:
+  - *Orphaned components* (endpoints/entities without matching presentation).
+  - *FE-only fragments* (UI spec files without corresponding API contract).
+  - *Reusable engines* (duplicated core logic across epics).
+  - *Coverage gaps* (layers missing critical story coverage).
+  - ⚠️ **Emit a warning report** to the user detailing the drift before proceeding.
+- **FR coverage map**
+- **All requirements** (FRs, NFRs, additional)
+- **Template structure** at the end of the document
 
 ### 2. Explain Story Creation Approach
 
@@ -160,13 +167,19 @@ Display:
 - FRs covered by this epic
 - Any NFRs or additional requirements relevant
 
-#### B. Story Breakdown
+#### B. Story Breakdown (3-Option Standard)
 
-Work with user to break down the epic into stories:
+Before proposing stories, you MUST propose at least **3 distinct story decomposition options** for the epic:
+- **Option 1: Vertical Slice First (Tracer Bullet)** — Propose slicing stories where each story goes UI -> API -> DB. Good for early feedback but harder to manage parallel work on shared engines.
+- **Option 2: Core Engine / Platform First** — Propose building the core business domain models and services first, then wrapping them with UI stories. Best for complex logic to prevent duplicate reusable engines, but delays user feedback.
+- **Option 3: Contract / Interface Driven** — Propose defining the API contracts/schemas first, then parallelizing FE and BE stories. Excellent for swarm development, but requires strict validation gates.
 
-- Identify distinct user capabilities
-- Ensure logical flow within the epic
-- Size stories appropriately
+For each option, analyze:
+- **Pros (Ưu điểm)**
+- **Cons (Nhược điểm)**
+- **Recommendation:** Highlight which option you recommend and why based on the approved SIM (`2.3.5. system-integrity-map.md`).
+
+**[User Gate - Decomposition Approval]** Halt and wait for the user to select one of the 3 decomposition options before generating the specific user stories.
 
 #### C. Generate Each Story
 

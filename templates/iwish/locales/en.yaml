@@ -131,6 +131,9 @@ guide:
     note: "Mandatory planning approval gate. Synthesizes navigation structures from
       feature-hierarchy.md and styles/design tokens from ui-ux-spec.md into a
       portable, single-file HTML preview."
+  step_2_sim:
+    output: 📄 2. Product Planning/2.3.5. system-integrity-map.md (System Integrity Map).
+    note: "Analyze system layers and boundaries to prevent orphaned components, FE-only fragments, reusable engines, and coverage gaps. Proposes 5 architectural options."
   step_3:
     title: Solution (Architecture & Backlog)
     focus: "Goal: Establish technical design blueprints, break down Epics & Stories,

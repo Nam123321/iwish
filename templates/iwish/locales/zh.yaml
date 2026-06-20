@@ -95,6 +95,12 @@ guide:
   step_2_ux:
     output: 📄 2. Product Planning/2.3. ui-ux-spec.md (用户旅程图和整体 UX 规范)。
     note: 在 PRD 完成后触发，以勾勒出布局结构和交互方式。
+  step_2_prototype:
+    output: 📄 2. Product Planning/prototypes/prototype-referrence-only.html (HTML 交互原型)。
+    note: "强制规划评审关卡。将来自 feature-hierarchy.md 的导航结构和来自 ui-ux-spec.md 的样式/设计 Token 融合成一个可移植的单文件 HTML 预览。"
+  step_2_sim:
+    output: 📄 2. Product Planning/2.3.5. system-integrity-map.md (系统完整性映射 - SIM)。
+    note: "分析系统层级和边界，以防止孤立组件、FE-only 碎片、重复的重用引擎以及覆盖空缺。提出至少 5 种架构层级方案。"
   step_3:
     title: Solution (架构与 Backlog)
     focus: 目标：建立技术设计蓝图，分解 Epics & Stories，并初始化迭代。

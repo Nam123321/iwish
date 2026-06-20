@@ -7,7 +7,7 @@ workflow_path: '{project-root}/.agent/workflows'
 
 # File References
 thisStepFile: './step-02-design-epics.md'
-nextStepFile: './step-03-create-stories.md'
+nextStepFile: './step-02.5-system-integrity-mapping.md'
 workflowFile: '{workflow_path}/workflow.md'
 outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 

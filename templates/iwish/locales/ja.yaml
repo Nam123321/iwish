@@ -98,6 +98,12 @@ guide:
   step_2_ux:
     output: 📄 2. Product Planning/2.3. ui-ux-spec.md (ユーザー体験マップと全体の UX 仕様)。
     note: PRD が完了した後に実行され、レイアウト構造とインタラクションを概説します。
+  step_2_prototype:
+    output: 📄 2. Product Planning/prototypes/prototype-referrence-only.html (HTML対話型プロトタイプ)。
+    note: "必須の計画承認ゲート。feature-hierarchy.mdからナビゲーション構造を、ui-ux-spec.mdからスタイル/デザイン・トークンを統合し、ポータブルな単一ファイルHTMLプレビューに合成します。"
+  step_2_sim:
+    output: 📄 2. Product Planning/2.3.5. system-integrity-map.md (システム完全性マップ - SIM)。
+    note: "システム層と境界を分析し、孤立したコンポーネント、FE専用フラグメント、重複する再利用エンジン、およびカバレッジギャップを防止します。少なくとも5つのアーキテクチャオプションを提案します。"
   step_3:
     title: Solution (アーキテクチャとバックログ)
     focus: 目標：技術設計の青写真を確立し、Epics & Stories を分解し、スプリントを初期化する。

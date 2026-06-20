@@ -131,6 +131,12 @@ guide:
       dùng và đặc tả UX tổng thể).
     note: Kích hoạt sau khi PRD hoàn tất để định hình cấu trúc giao diện và trải
       nghiệm.
+  step_2_prototype:
+    output: 📄 2. Product Planning/prototypes/prototype-referrence-only.html (Mẫu thử nghiệm tương tác HTML).
+    note: "Cổng phê duyệt lập kế hoạch bắt buộc. Tổng hợp cấu trúc điều hướng từ feature-hierarchy.md và các token phong cách từ ui-ux-spec.md thành mẫu thử nghiệm HTML độc lập."
+  step_2_sim:
+    output: 📄 2. Product Planning/2.3.5. system-integrity-map.md (Bản đồ Toàn vẹn Hệ thống - SIM).
+    note: "Phân tích cấu trúc các layer và ranh giới hệ thống để ngăn chặn các lỗi tính năng mồ côi (orphaned), UI rỗng (FE-only), engine trùng lặp, hoặc thiếu story bao phủ. Đề xuất ít nhất 5 phương án cấu trúc layer."
   step_3:
     title: Solution (Kiến Trúc & Lập Backlog)
     focus: "Mục tiêu: Thiết lập bản vẽ kỹ thuật kiến trúc, bẻ nhỏ Epics & Stories,

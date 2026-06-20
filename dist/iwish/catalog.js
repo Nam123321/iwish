@@ -78,6 +78,7 @@ const CANONICAL_COMMANDS = [
     { command: '/update-knowledge-formatter', description: 'Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard', tags: ['command', 'maintenance', 'okf'] },
     { command: '/edge-case-guardian', description: 'Edge Case Guardian 8-Pillar scan and risk analysis workflow', tags: ['command', 'review', 'quality'] },
     { command: '/make-prototype', description: 'Create an interactive single-file HTML prototype for planning preview', tags: ['command', 'planning', 'prototype', 'design'] },
+    { command: '/create-sim', description: 'Analyze system layers, boundaries, and components, proposing 5 options for user evaluation', tags: ['command', 'planning', 'architecture', 'design'] },
 ];
 function readYaml(filePath) {
     return yaml_1.default.parse(fs.readFileSync(filePath, 'utf8'));

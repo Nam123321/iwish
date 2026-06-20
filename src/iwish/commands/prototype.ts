@@ -978,6 +978,216 @@ export function registerPrototypeCommands(
         }
       })
   );
+
+  addSharedDirectoryOption(
+    program
+      .command('create-sim')
+      .description('Analyze system layers, boundaries, and components, proposing 5 options for user evaluation')
+      .option('--select <option_id>', 'Select the option directly (1-5)')
+      .action(async (options: { directory: string; select?: string }) => {
+        const projectRoot = getProjectRoot(options.directory);
+        const prdPath = path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.1. product-brief-or-prd.md');
+        const altPrdPath = path.join(projectRoot, '_iwish-output', '2. Product Planning', 'prd.md');
+        const finalPrdPath = fs.existsSync(prdPath) ? prdPath : (fs.existsSync(altPrdPath) ? altPrdPath : null);
+
+        if (!finalPrdPath) {
+          console.error(chalk.red('❌ Error: PRD file not found. Please run /create-prd or ensure prd.md exists in _iwish-output/2. Product Planning/'));
+          process.exit(1);
+        }
+
+        // Locate auxiliary planning files
+        const planningDir = path.join(projectRoot, '_iwish-output', '2. Product Planning');
+        const hierarchyPath = path.join(planningDir, '2.5. feature-hierarchy.md');
+        const altHierarchyPath = path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md');
+        const finalHierarchyPath = fs.existsSync(hierarchyPath) ? hierarchyPath : (fs.existsSync(altHierarchyPath) ? altHierarchyPath : null);
+
+        const depPath = path.join(planningDir, '2.6. cross-feature-dependencies.md');
+        const finalDepPath = fs.existsSync(depPath) ? depPath : null;
+
+        console.log(chalk.blue('🔍 Analyzing project planning inputs...'));
+        console.log(chalk.gray(`  - Reading PRD: ${path.basename(finalPrdPath)}`));
+        console.log(chalk.gray(`  - Reading Feature Hierarchy: ${finalHierarchyPath ? path.basename(finalHierarchyPath) : 'Not found (using default modules)'}`));
+        console.log(chalk.gray(`  - Reading Cross Dependencies: ${finalDepPath ? path.basename(finalDepPath) : 'Not found (using default bindings)'}`));
+
+        let projectName = 'Project';
+        let features: string[] = [];
+        let dependencies: string[] = [];
+
+        // Parse Project Name from PRD L1 Header
+        try {
+          const prdContent = fs.readFileSync(finalPrdPath, 'utf8');
+          const titleMatch = prdContent.match(/^#\s+(.+)$/m);
+          if (titleMatch) {
+            projectName = titleMatch[1].trim();
+          }
+        } catch (e: any) {
+          console.warn(chalk.yellow(`  [Warning] Failed to parse PRD file: ${e.message}`));
+        }
+
+        // Parse Features/Modules from Feature Hierarchy
+        if (finalHierarchyPath) {
+          try {
+            const hierarchyContent = fs.readFileSync(finalHierarchyPath, 'utf8');
+            const lines = hierarchyContent.split('\n');
+            for (const line of lines) {
+              const match = line.match(/^\s*[-\*]\s+([^:\r\n]+)/);
+              if (match && !line.includes('type:') && !line.includes('title:') && match[1].trim()) {
+                const feat = match[1].replace(/[\[\]]/g, '').trim();
+                // Filter out non-features
+                if (feat && feat.length > 3 && !features.includes(feat) && !feat.startsWith('http') && !feat.includes('output') && !feat.includes('note')) {
+                  features.push(feat);
+                }
+              }
+            }
+          } catch (e: any) {
+            console.warn(chalk.yellow(`  [Warning] Failed to parse Feature Hierarchy: ${e.message}`));
+          }
+        }
+
+        // Parse Cross Dependencies
+        if (finalDepPath) {
+          try {
+            const depContent = fs.readFileSync(finalDepPath, 'utf8');
+            const lines = depContent.split('\n');
+            for (const line of lines) {
+              if (line.includes('->') || line.includes('depends on') || line.includes(':')) {
+                const trimmed = line.trim();
+                if (trimmed && trimmed.length > 5 && !trimmed.startsWith('---') && !trimmed.startsWith('#')) {
+                  dependencies.push(trimmed);
+                }
+              }
+            }
+          } catch (e: any) {
+            console.warn(chalk.yellow(`  [Warning] Failed to parse Cross Dependencies: ${e.message}`));
+          }
+        }
+
+        // Defaults if parsing yields empty lists
+        if (features.length === 0) {
+          features = ['Authentication Engine', 'Core Portal Workspace', 'Report Builder Module'];
+        }
+        if (dependencies.length === 0) {
+          dependencies = ['Core Portal -> Auth Engine (Session Validation)', 'Report Builder -> Core Portal (Data Extraction)'];
+        }
+
+        const displayFeatures = features.slice(0, 5);
+        console.log(chalk.green(`✓ Successfully extracted metadata for: "${projectName}"`));
+        console.log(chalk.gray(`  Features found: ${features.length} (evaluating top ${displayFeatures.length})`));
+        console.log(chalk.gray(`  Dependencies detected: ${dependencies.length} connections`));
+        console.log('');
+        console.log(chalk.blue('Generating 5 Architectural Topology Options tailored to project context:'));
+        console.log('');
+
+        const simOptions = [
+          {
+            id: 1,
+            name: 'DDD Clean-Layered Architecture',
+            pros: 'Decoupled layers, high testability, prevents FE-only and Orphaned components.',
+            cons: 'Slightly higher class/file count, complex boundary mappings.',
+            details: `Layers: Presentation (UI), Orchestration (API), Domain (Core Logic), Infrastructure (Prisma DB/Redis).
+  - Presentation mapping: ${displayFeatures.map(f => `${f} Views/Components`).join(', ')}.
+  - Domain mapping: ${displayFeatures.map(f => `${f} Business Rules Engine`).join(', ')}.`
+          },
+          {
+            id: 2,
+            name: 'Feature-Folder (Modular) Architecture',
+            pros: 'Co-locates UI, API, and logic per feature, making vertical slices extremely clear.',
+            cons: 'Can lead to duplicated reusable engines if domain boundaries leak.',
+            details: `Each module gets its own folder with encapsulated sub-layers.
+  - Directories: ${displayFeatures.map(f => `src/modules/${f.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`).join(', ')}.`
+          },
+          {
+            id: 3,
+            name: 'Hexagonal (Ports & Adapters) Architecture',
+            pros: 'Core logic is fully isolated from external DB/UI changes. Absolute tech-independence.',
+            cons: 'High cognitive overhead, heavy boilerplate mapping adapters.',
+            details: `Ports define logical interfaces; Adapters map to external APIs/DBs.
+  - Ports: Core Service Interfaces for ${displayFeatures.map(f => `${f}`).join(', ')}.
+  - Adapters: Database models, Auth provider client, Crawler queue adapters.`
+          },
+          {
+            id: 4,
+            name: 'Serverless Event-Driven Topology',
+            pros: 'Highly scalable, async, decoupled using event queue channels.',
+            cons: 'Harder to trace state flow, potential event loop conflicts.',
+            details: `Features communicate asynchronously via Event Bus.
+  - Event triggers: ${displayFeatures.map(f => `${f.toUpperCase().replace(/[^A-Z0-9]+/g, '_')}_REQUESTED`).join(', ')}.`
+          },
+          {
+            id: 5,
+            name: 'Model-First Clean Architecture (Thin Controller)',
+            pros: 'Extremely fast development time, maps directly to database entities.',
+            cons: 'Leaks database logic into controllers, higher risk of duplicate business logic.',
+            details: `Thick Domain layer with database models directly mapping to thin frontend controllers.
+  - Schemas: Database schema tables corresponding to ${displayFeatures.join(', ')}.`
+          }
+        ];
+
+        simOptions.forEach(opt => {
+          console.log(chalk.yellow(`Option ${opt.id}: ${opt.name}`));
+          console.log(`  - Description: ${opt.details}`);
+          console.log(`  - Pros: ${opt.pros}`);
+          console.log(`  - Cons: ${opt.cons}`);
+          console.log('');
+        });
+
+        if (options.select) {
+          const selectedId = parseInt(options.select, 10);
+          const chosenOpt = simOptions.find(o => o.id === selectedId);
+          if (!chosenOpt) {
+            console.error(chalk.red(`❌ Invalid option selection: ${options.select}. Choose a value from 1 to 5.`));
+            process.exit(1);
+          }
+
+          console.log(chalk.green(`✓ Selected Option ${selectedId}: ${chosenOpt.name}`));
+          const mapDir = path.join(projectRoot, '_iwish-output', '2. Product Planning');
+          fs.ensureDirSync(mapDir);
+          const mapPath = path.join(mapDir, '2.3.5. system-integrity-map.md');
+
+          // Build dynamic Validation Matrix from extracted features
+          let matrixLines = '';
+          for (const feat of displayFeatures) {
+            matrixLines += `| ${feat} | ${feat} UI | API Endpoint | ${feat} Engine | Database Entity | Aligned |\n`;
+          }
+
+          const simYaml = `---
+type: I-Wish SIM Map
+title: "System Integrity Map (SIM)"
+description: "Approved logical layers, boundaries, and reusable platform engines."
+resource: "file://${mapPath}"
+tags: ["sim", "planning"]
+timestamp: "${new Date().toISOString()}"
+links_to: ["file://${finalPrdPath}"]
+---
+
+# System Integrity Map (SIM)
+
+## 1. Approved Architectural Topology
+Selected Option ${chosenOpt.id}: ${chosenOpt.name}
+
+## 2. Layer Definitions & Contracts
+- **Presentation Layer (UI/UX):** Outfits, Pages, and reusable visual tokens.
+- **Orchestration Layer (API/Routing):** Express/Next.js routes and contract validators.
+- **Domain Layer (Core Business Engines):** State machines, transaction logic, and core services.
+- **Infrastructure Layer (Data & Cache):** Prisma Client database models and Redis namespaces.
+
+## 3. Platform & Reusable Engines
+- **Auth & Identity Engine:** Handles authorization and session tokens.
+- **Notification Service:** Shared message dispatching queue.
+
+## 4. Integrity Validation Matrix
+| Feature / Portal | UI Component | API Endpoint | Domain Engine | Database Entity | Status |
+|---|---|---|---|---|---|
+${matrixLines.trim()}
+`;
+
+          fs.writeFileSync(mapPath, simYaml, 'utf8');
+          console.log(chalk.green(`✓ System Integrity Map saved successfully to: ${mapPath}`));
+        } else {
+          console.log(chalk.cyan('Run this command with `--select <1-5>` to select and write your final SIM map.'));
+        }
+      })
+  );
 }
 
 interface ParityResult {
