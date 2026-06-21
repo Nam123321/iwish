@@ -984,8 +984,207 @@ export function registerPrototypeCommands(
       .command('create-sim')
       .description('Analyze system layers, boundaries, and components, proposing 5 options for user evaluation')
       .option('--select <option_id>', 'Select the option directly (1-5)')
-      .action(async (options: { directory: string; select?: string }) => {
+      .option('--sync', 'Perform reverse-mapping from epics-and-stories.md back to SIM validation matrix')
+      .action(async (options: { directory: string; select?: string; sync?: boolean }) => {
         const projectRoot = getProjectRoot(options.directory);
+
+        if (options.sync) {
+          console.log(chalk.blue('🔄 Running Phase 2 SIM Reverse-Sync...'));
+          const mapDir = path.join(projectRoot, '_iwish-output', '2. Product Planning');
+          const mapPath = path.join(mapDir, '2.3.5. system-integrity-map.md');
+
+          if (!fs.existsSync(mapPath)) {
+            console.error(chalk.red(`❌ Error: System Integrity Map file not found at ${mapPath}`));
+            process.exit(1);
+          }
+
+          const epicsAndStoriesPath = path.join(mapDir, '2.4. epics-and-stories.md');
+          if (!fs.existsSync(epicsAndStoriesPath)) {
+            console.error(chalk.red(`❌ Error: Epics & Stories file not found at ${epicsAndStoriesPath}`));
+            process.exit(1);
+          }
+
+          try {
+            const content = fs.readFileSync(epicsAndStoriesPath, 'utf8');
+            const lines = content.split('\n');
+
+            const epics: Array<{
+              id: string;
+              title: string;
+              isKilled: boolean;
+              isDeferred: boolean;
+              stories: Array<{
+                id: string;
+                title: string;
+                lineNumber: number;
+                body: string;
+              }>;
+            }> = [];
+
+            let currentEpic: typeof epics[0] | null = null;
+            let currentStory: typeof epics[0]['stories'][0] | null = null;
+
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i];
+              const lineNumber = i + 1;
+
+              // Check Epic header
+              const epicMatch = line.match(/^(?:##|###)\s+Epic\s+(\d+):\s*(.*)$/i);
+              if (epicMatch) {
+                const id = epicMatch[1];
+                const title = epicMatch[2].trim();
+                const isKilled = title.toLowerCase().includes('killed') || title.includes('⛔') || title.toLowerCase().includes('merged') || title.includes('🔄');
+                const isDeferred = title.toLowerCase().includes('deferred') || title.includes('⏸️') || title.toLowerCase().includes('backlog') || title.toLowerCase().includes('phase 3') || title.toLowerCase().includes('pending') || title.includes('⏳');
+                
+                let existingEpic = epics.find(e => e.id === id);
+                if (existingEpic) {
+                  existingEpic.title = title;
+                  existingEpic.isKilled = isKilled || existingEpic.isKilled;
+                  existingEpic.isDeferred = isDeferred || existingEpic.isDeferred;
+                  currentEpic = existingEpic;
+                } else {
+                  currentEpic = {
+                    id,
+                    title,
+                    isKilled,
+                    isDeferred,
+                    stories: []
+                  };
+                  epics.push(currentEpic);
+                }
+                currentStory = null;
+                continue;
+              }
+
+              // Check Story header
+              const storyMatch = line.match(/^(?:###|####)\s+Story\s+(\d+\.\d+):\s*(.*)$/i);
+              if (storyMatch) {
+                const id = storyMatch[1];
+                const title = storyMatch[2].trim();
+                
+                currentStory = {
+                  id,
+                  title,
+                  lineNumber,
+                  body: ''
+                };
+                
+                if (currentEpic) {
+                  currentEpic.stories.push(currentStory);
+                }
+                continue;
+              }
+
+              // Append lines to the current story's body
+              if (currentStory) {
+                currentStory.body += line + '\n';
+              }
+            }
+
+            const epicsAndStoriesUri = 'file://' + epicsAndStoriesPath.replace(/ /g, '%20').replace(/\\/g, '/');
+            const rows: string[] = [];
+            let hasCoverageGap = false;
+
+            for (const epic of epics) {
+              const hasStories = epic.stories.length > 0;
+              if (epic.isKilled && !hasStories) {
+                rows.push(`| **Epic ${epic.id}: ${epic.title}** | - | - | - | - | ⛔ Killed / Merged |`);
+                continue;
+              }
+              if (epic.isDeferred && !hasStories) {
+                rows.push(`| **Epic ${epic.id}: ${epic.title}** | - | - | - | - | ⏸️ Deferred |`);
+                continue;
+              }
+
+              const uiLinks: string[] = [];
+              const apiLinks: string[] = [];
+              const domainLinks: string[] = [];
+              const dataLinks: string[] = [];
+
+              for (const story of epic.stories) {
+                const textToScan = (story.title + '\n' + story.body).toLowerCase();
+                
+                const isUI = /ui|view|component|giao diện|customizer|storefront|css|widget|card|theme|màn hình|dialog|modal|navbar|sidebar|frontend|trang|portal|panel|dashboard|front|display/i.test(textToScan);
+                const isAPI = /api|endpoint|route|controller|webhook|fastify|express|routing|sso|hmac|jwt|http|request|response|cors|connect/i.test(textToScan);
+                const isDomain = /engine|logic|crawler|calculator|attribution|optimizer|learning|rag|xử lý|thuật toán|service|handler|business|flow|quản lý|tính toán|rule/i.test(textToScan);
+                const isData = /db|database|prisma|redis|pgvector|schema|table|lưu trữ|dữ liệu|bảng|model|entity|migration|postgres|mysql|sqlite|lưu|save/i.test(textToScan);
+
+                const link = `[Story ${story.id}](${epicsAndStoriesUri}#L${story.lineNumber})`;
+
+                if (isUI) uiLinks.push(link);
+                if (isAPI) apiLinks.push(link);
+                if (isDomain) domainLinks.push(link);
+                if (isData) dataLinks.push(link);
+              }
+
+              let status = 'Aligned';
+              if (epic.stories.length === 0) {
+                status = '⚠️ Empty Epic';
+                console.warn(chalk.yellow(`⚠️ [COVERAGE-GAP] Epic ${epic.id} (${epic.title}) has no stories mapped to any layers.`));
+                hasCoverageGap = true;
+              } else {
+                const hasUI = uiLinks.length > 0;
+                const hasAPI = apiLinks.length > 0;
+                const hasDomain = domainLinks.length > 0;
+                const hasData = dataLinks.length > 0;
+
+                if (hasUI && !hasAPI && !hasDomain) {
+                  status = '⚠️ FE-Only Fragment';
+                  console.warn(chalk.yellow(`⚠️ [COVERAGE-GAP] Epic ${epic.id} (${epic.title}) contains UI components but lacks corresponding API Endpoints/Domain logic.`));
+                  hasCoverageGap = true;
+                } else if ((hasDomain || hasData) && !hasUI && !hasAPI) {
+                  status = '⚠️ Orphaned Backend';
+                  console.warn(chalk.yellow(`⚠️ [COVERAGE-GAP] Epic ${epic.id} (${epic.title}) contains Domain/Data engines but lacks corresponding UI components or API Endpoints.`));
+                  hasCoverageGap = true;
+                }
+              }
+
+              const uiCol = uiLinks.length > 0 ? uiLinks.join('<br>') : '-';
+              const apiCol = apiLinks.length > 0 ? apiLinks.join('<br>') : '-';
+              const domainCol = domainLinks.length > 0 ? domainLinks.join('<br>') : '-';
+              const dataCol = dataLinks.length > 0 ? dataLinks.join('<br>') : '-';
+
+              rows.push(`| **Epic ${epic.id}: ${epic.title}** | ${uiCol} | ${apiCol} | ${domainCol} | ${dataCol} | ${status} |`);
+            }
+
+            const simContent = fs.readFileSync(mapPath, 'utf8');
+            const searchHeader = '## 4. Integrity Validation Matrix';
+            const headerIndex = simContent.indexOf(searchHeader);
+
+            let updatedContent = '';
+            if (headerIndex === -1) {
+              updatedContent = simContent + '\n\n' + `## 4. Integrity Validation Matrix
+| Feature / Portal | UI Component | API Endpoint | Domain Engine | Database Entity | Status |
+|---|---|---|---|---|---|
+${rows.join('\n')}
+`;
+            } else {
+              const baseContent = simContent.substring(0, headerIndex);
+              const newSection = `## 4. Integrity Validation Matrix
+| Feature / Portal | UI Component | API Endpoint | Domain Engine | Database Entity | Status |
+|---|---|---|---|---|---|
+${rows.join('\n')}
+`;
+              updatedContent = baseContent + newSection;
+            }
+
+            fs.writeFileSync(mapPath, updatedContent, 'utf8');
+            console.log(chalk.green(`✓ System Integrity Map successfully reverse-synced at: ${mapPath}`));
+            
+            if (hasCoverageGap) {
+              console.warn(chalk.yellow('⚠️ Reverse-Sync finished with coverage gaps. Please check the warnings above.'));
+            } else {
+              console.log(chalk.green('✅ Verification PASSED: All epics are properly aligned across layers!'));
+            }
+
+          } catch (err: any) {
+            console.error(chalk.red(`❌ Error running SIM reverse-sync: ${err.message}`));
+            process.exit(1);
+          }
+          return;
+        }
+
+
         const prdPath = path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.1. product-brief-or-prd.md');
         const altPrdPath = path.join(projectRoot, '_iwish-output', '2. Product Planning', 'prd.md');
         const finalPrdPath = fs.existsSync(prdPath) ? prdPath : (fs.existsSync(altPrdPath) ? altPrdPath : null);

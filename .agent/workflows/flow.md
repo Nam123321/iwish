@@ -28,6 +28,7 @@ Before stopping at any User Gate for domain, data architecture, or design questi
 1. **Step 1: Story Design (`/make-story`)**
    - Analyze requirements and generate the target user story file (`story.md`).
    - **OKF Header:** Ensure the generated story file starts with a valid OKF YAML frontmatter block.
+   - **Validation Gate:** Even if a `story.md` file already exists (e.g. created as a draft/skeleton during epic breakdown or sprint planning), the agent MUST run the validation script: `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails (due to missing reviews, risk matrices, FR links, or scorecards), you MUST NOT skip this step. Treat the existing content as a preliminary draft and run the full `/make-story` pipeline (including Socratic review and Edge Case scan) to fully design and validate it.
    - *Update `task.md` and STOP if there are User Gates or clarifying questions.*
    
 2. **Step 2: Specification Generation**

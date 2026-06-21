@@ -389,6 +389,9 @@ After all epics and stories are generated:
 - Ensure all placeholders are replaced
 - Confirm all FRs are covered
 - Check formatting consistency
+- **Run Phase 2 SIM Reverse-Sync & Audit (MANDATORY):**
+  - Execute: `iwish create-sim --sync`
+  - 🛑 **HARD GATE:** If the command output contains any `[COVERAGE-GAP]` warnings (such as `⚠️ Empty Epic`, `⚠️ FE-Only Fragment`, or `⚠️ Orphaned Backend`), you **MUST HALT** and present a mitigation plan (e.g., creating the missing backend or UI stories) to the user. Do not proceed until these architectural integrity gaps are resolved.
 
 ### 6.5. TIER 1 HYBRID GRAPH UPDATE (MANDATORY)
 

@@ -18,10 +18,11 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 4.2. **CRITICAL — LOAD PRODUCT CONTEXT (PRD & EPICS):** Before generating any story output, you MUST locate and read the product requirements:
    - Read the PRD: `@{project-root}/_iwish-output/2. Product Planning/2.1. product-brief-or-prd.md` (or resolve dynamically). **If no PRD file is found, you MUST HALT and warn the user: "⚠️ PRD chưa tồn tại. Vui lòng chạy /create-prd trước để khởi tạo PRD của dự án."**
    - Read the Epics list: `@{project-root}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md` to extract the high-level requirements for the chosen Epic and Story.
-4.3. **CRITICAL — PRESERVE PLACEHOLDER STORY CONTEXT:**
+4.3. **CRITICAL — PRESERVE PLACEHOLDER STORY CONTEXT & VALIDATION PRE-CHECK:**
    - Check if the target story file `@{project-root}/_iwish-output/stories/story-N.M.md` (or dynamic matching path) already exists.
-   - If it exists, you MUST read it first and search for any `[NOTE]`, `[WARNING]`, `[ALERT]`, or `remind` comments/notes written by previous agents.
-   - Extract these notes and preserve them. If notes appear to conflict, merge them chronologically, flag them with a `[POTENTIAL-CONFLICT]` prefix, and explicitly append them into the `## 🧭 6. Developer & Cross-Story Notes` section of the newly generated story. DO NOT overwrite or delete them.
+   - If it exists, you MUST run a validation pre-check on it first: `python3 .agent/scripts/validate-story.py "path/to/story.md"`.
+   - If the validation pre-check fails (meaning the file is a preliminary draft or skeleton placeholder without required FMEA reviews, risk matrices, or scorecards), you **MUST NOT** skip the story design steps. You MUST read the existing content to preserve any comments, notes, or `[NOTE]`, `[WARNING]`, `[ALERT]` flags written by previous agents, extract them, and carry them forward into the new story, but you MUST proceed with the full Socratic loop (Step 5.4), Edge Case scan (Step 6b), and validation gates. Do NOT bypass these gates just because the file physically exists.
+   - If notes appear to conflict, merge them chronologically, flag them with a `[POTENTIAL-CONFLICT]` prefix, and explicitly append them into the `## 🧭 6. Developer & Cross-Story Notes` section of the newly generated story. DO NOT overwrite or delete them without preserving them.
 4.4. **CRITICAL — LOAD NAVIGATION & ARCHITECTURE CONTEXT:**
    - Read `@{project-root}/_iwish-output/2. Product Planning/2.5. feature-hierarchy.md` (if exists) for UI navigation context.
    - Read any existing database specs (`2.2. database-spec.md`) or architecture documents if relevant.
