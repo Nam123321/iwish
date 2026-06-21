@@ -4,6 +4,39 @@ import re
 import yaml
 from pathlib import Path
 
+def check_dependencies_status(dependencies, project_root) -> list:
+    sprint_status_file = project_root / "_iwish-output" / "3. Development" / "sprint-status.yaml"
+    if not sprint_status_file.is_file():
+        sprint_status_file_alt = project_root / "_iwish-output" / "sprint-status.yaml"
+        if sprint_status_file_alt.is_file():
+            sprint_status_file = sprint_status_file_alt
+        else:
+            return []  # Skip checking if sprint-status.yaml does not exist yet
+
+    try:
+        with open(sprint_status_file, "r", encoding="utf-8") as f:
+            status_data = yaml.safe_load(f)
+
+        story_statuses = {}
+        if status_data and "epics" in status_data:
+            for epic in status_data["epics"]:
+                if "stories" in epic:
+                    for story in epic["stories"]:
+                        story_statuses[story["id"]] = story.get("status", "not_started")
+
+        errors = []
+        for dep in dependencies:
+            dep_cleaned = str(dep).strip()
+            dep_id = dep_cleaned if dep_cleaned.startswith("story-") else f"story-{dep_cleaned}"
+            status = story_statuses.get(dep_id)
+            if status is None:
+                errors.append(f"Dependency story '{dep_id}' was not found in sprint-status.yaml.")
+            elif status != "done":
+                errors.append(f"Dependency story '{dep_id}' is not DONE (current status: '{status}').")
+        return errors
+    except Exception as e:
+        return [f"Error checking dependency status from sprint-status.yaml: {e}"]
+
 def validate_story(filepath: Path) -> bool:
     if not filepath.is_file():
         print(f"❌ Error: File not found: {filepath}")
@@ -14,6 +47,7 @@ def validate_story(filepath: Path) -> bool:
 
     # Trích xuất Epic ID và Story ID từ tên file hoặc đường dẫn thư mục
     filepath_str = filepath.resolve().as_posix()
+    project_root = Path(__file__).resolve().parents[2]
     
     # Thử khớp cấu trúc thư mục phân cấp (ví dụ: /Epic-11/Story-11.1/story.md)
     match = re.search(r'/Epic-(\d+)/Story-(\d+)[.-](\d+)', filepath_str, re.IGNORECASE)
@@ -43,14 +77,24 @@ def validate_story(filepath: Path) -> bool:
         yaml_content = yaml_block_match.group(1)
         try:
             frontmatter = yaml.safe_load(yaml_content)
-            required_keys = ["type", "title", "description", "resource", "tags", "timestamp", "links_to"]
+            required_keys = ["type", "title", "description", "resource", "tags", "timestamp", "links_to", "dependencies"]
             for key in required_keys:
                 if key not in frontmatter:
                     errors.append(f"Missing required OKF frontmatter key: '{key}'.")
+            
             if frontmatter.get("type") != "I-Wish Story":
                 errors.append(f"OKF type must be 'I-Wish Story', found: '{frontmatter.get('type')}'")
+            
+            if "dependencies" in frontmatter:
+                deps = frontmatter["dependencies"]
+                if not isinstance(deps, list):
+                    errors.append("OKF frontmatter key 'dependencies' must be a list (array).")
+                else:
+                    dep_errors = check_dependencies_status(deps, project_root)
+                    errors.extend(dep_errors)
         except Exception as e:
             errors.append(f"Error parsing YAML frontmatter: {e}")
+
 
     # 2. Check FR Covered Mapping
     fr_covered_pattern = re.compile(r'(?:FR Covered:|FR Covered\*\*|FR Covered\*\*:)')

@@ -28,6 +28,7 @@ Before stopping at any User Gate for domain, data architecture, or design questi
 1. **Step 1: Story Design (`/make-story`)**
    - Analyze requirements and generate the target user story file (`story.md`).
    - **OKF Header:** Ensure the generated story file starts with a valid OKF YAML frontmatter block.
+   - **Validation Gate:** Even if a `story.md` file already exists (e.g. created as a draft/skeleton during epic breakdown or sprint planning), the agent MUST run the validation script: `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails (due to missing reviews, risk matrices, FR links, or scorecards), you MUST NOT skip this step. Treat the existing content as a preliminary draft and run the full `/make-story` pipeline (including Socratic review and Edge Case scan) to fully design and validate it.
    - *Update `task.md` and STOP if there are User Gates or clarifying questions.*
    
 2. **Step 2: Specification Generation**
@@ -42,7 +43,8 @@ Before stopping at any User Gate for domain, data architecture, or design questi
    - **[CRITICAL] [User Gate - Approval]**: You MUST STOP execution completely here. DO NOT proceed to Step 4 until the user explicitly approves the generated design specs and mockups.
 
 4. **Step 4: Implementation (`/code`)**
-   - Once spec and design mockups are approved, begin writing the code logic.
+   - **Dependency & Validation Check:** Before writing any code logic, the agent MUST run `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails or if any story listed under `dependencies` in the frontmatter is not marked as `done` in `sprint-status.yaml`, you MUST HALT execution and notify the user that the story's development foundation is missing.
+   - Once validation passes and spec and design mockups are approved, begin writing the code logic.
    - Strictly follow clean architecture guidelines and target constraints.
    - *Update `task.md`.*
 

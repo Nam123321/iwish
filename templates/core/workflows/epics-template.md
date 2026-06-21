@@ -52,6 +52,10 @@ As a {{user_type}},
 I want {{capability}},
 So that {{value_benefit}}.
 
+**FR Covered:** [FR-ID: FR Name]
+
+**Dependencies:** None
+
 **Acceptance Criteria:**
 
 <!-- for each AC on this story -->
