@@ -286,6 +286,20 @@ function detectCommand(normalizedRequest) {
             routeReason: 'Product planning intent detected',
         };
     }
+    if (/\b(reconcile|reconciliation|sync requirements|sync stories|sync epics|rebuild index|rebuild status|broken link|broken links|validate links|validate-links)\b/.test(normalizedRequest) ||
+        /đồng bộ.*(story|epic|yêu cầu)|dong bo.*(story|epic|yeu cau)/.test(normalizedRequest) ||
+        /thay đổi.*(story|epic)|thay doi.*(story|epic)/.test(normalizedRequest) ||
+        /đổi tên.*(story|epic)|doi ten.*(story|epic)/.test(normalizedRequest) ||
+        /gộp.*(story|epic)|gop.*(story|epic)/.test(normalizedRequest) ||
+        /chuyển.*epic|chuyen.*epic/.test(normalizedRequest) ||
+        /xóa.*(story|epic)|xoa.*(story|epic)/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/reconcile-change',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Epic/Story requirement modification or sync intent detected',
+        };
+    }
     if (/\b(story|epic|spec|acceptance criteria)\b/.test(normalizedRequest)) {
         return {
             canonicalCommand: '/make-story',
@@ -406,6 +420,10 @@ function getKeywordScore(normalizedRequest, canonicalCommand) {
     }
     if (canonicalCommand === '/brand') {
         if (/\b(brand|logo|guideline|identity|rebrand|prism)\b/.test(normalizedRequest))
+            return 18;
+    }
+    if (canonicalCommand === '/reconcile-change') {
+        if (/\b(reconcile|reconciliation|sync|rebuild|link|broken|merge|rename|move|đồng bộ|đổi tên|gộp|chuyển|xóa)\b/.test(normalizedRequest))
             return 18;
     }
     return 10;
@@ -588,6 +606,13 @@ function buildRecommendations(canonicalCommand, normalizedRequest) {
             workflowChain: ['/brand', 'strategy-intake', 'logo-brainstorm', 'prompt-generation', 'design-connection', 'logo-blocker', 'brand-refactoring'],
             supportiveSkills: ['ux-guardian'],
             artifactChain: ['questionnaire.md', 'logo-options.md', 'brand-guidelines.md'],
+        };
+    }
+    if (canonicalCommand === '/reconcile-change') {
+        return {
+            workflowChain: ['/reconcile-change'],
+            supportiveSkills: ['validate-links'],
+            artifactChain: ['impact-report.md', 'sprint-status.yaml'],
         };
     }
     return {
