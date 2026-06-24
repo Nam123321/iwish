@@ -292,7 +292,10 @@ function detectCommand(normalizedRequest) {
         /đổi tên.*(story|epic)|doi ten.*(story|epic)/.test(normalizedRequest) ||
         /gộp.*(story|epic)|gop.*(story|epic)/.test(normalizedRequest) ||
         /chuyển.*epic|chuyen.*epic/.test(normalizedRequest) ||
-        /xóa.*(story|epic)|xoa.*(story|epic)/.test(normalizedRequest)) {
+        /xóa.*(story|epic)|xoa.*(story|epic)/.test(normalizedRequest) ||
+        /tạo mới.*(story|epic)|tao moi.*(story|epic)/.test(normalizedRequest) ||
+        /tạo thêm.*(story|epic)|tao them.*(story|epic)/.test(normalizedRequest) ||
+        /thêm mới.*(story|epic)|them moi.*(story|epic)/.test(normalizedRequest)) {
         return {
             canonicalCommand: '/reconcile-change',
             legacyAliasMatched: null,
@@ -423,7 +426,7 @@ function getKeywordScore(normalizedRequest, canonicalCommand) {
             return 18;
     }
     if (canonicalCommand === '/reconcile-change') {
-        if (/\b(reconcile|reconciliation|sync|rebuild|link|broken|merge|rename|move|đồng bộ|đổi tên|gộp|chuyển|xóa)\b/.test(normalizedRequest))
+        if (/\b(reconcile|reconciliation|sync|rebuild|link|broken|merge|rename|move|đồng bộ|đổi tên|gộp|chuyển|xóa|tạo mới|tạo thêm|thêm mới|tao moi|tao them|them moi)\b/.test(normalizedRequest))
             return 18;
     }
     return 10;
