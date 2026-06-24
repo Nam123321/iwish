@@ -1,18 +1,574 @@
-# Sprint Status Template
-# This is an EXAMPLE showing the expected format
-# The actual file will be generated with all epics/stories from your epic files
+generated: 13-06-2026 03:18
+project: Cowok.ai
+project_key: CWK
+tracking_system: file-system
+story_location: _iwish-output/3. Development/1. Epic & Story
 
-sprint_name: "Sprint 1"
-status: planning
-start_date: 'YYYY-MM-DD'
-epics:
-  - id: epic-1
-    title: "Example Epic Title"
-    status: backlog
-    stories:
-      - id: story-1.1
-        title: "Example Story Title"
-        status: backlog
-      - id: story-1.2
-        title: "Example Story Title 2"
-        status: backlog
+development_status:
+  # ═══════════════════════════════════════════════════════════════
+  # Phase 0: Source-of-Truth Normalization
+  # ═══════════════════════════════════════════════════════════════
+  phase-0-roadmap-source-of-truth-normalization: backlog
+  story-00-1-reconcile-epic-inventory-and-phase-map: backlog
+  story-00-2-materialize-epic-33-default-enterprise-blueprint-story-artifacts: backlog
+  story-00-3-reconcile-story-01-13-notification-engine-and-story-01-14-workspace-layout-persistence: backlog
+  story-00-4-register-epic-28-mini-app-creator-in-planning-and-cross-dependencies: backlog
+  story-00-5-normalize-epic-14-story-ids-and-knowledge-foundation-split: backlog
+  story-00-6-update-deployment-roadmap-v2-sprint-dashboard-and-feature-graph: backlog
+  story-00-7-reconcile-workflow-app-approval-boundaries: backlog
+  story-00-8-expand-story-07-15-agent-skill-evolution-tracking: backlog
+  story-00-9-reconcile-epic-17-superadmin-story-inventory-and-notification-console: backlog
+  phase-0-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-01. Platform Foundation & Connectors
+  # ═══════════════════════════════════════════════════════════════
+  epic-01-multi-tenant-db-workspace: backlog
+  story-01-1-prisma-multi-tenant-schema-rls: backlog
+  story-01-2-tenant-workspace-crud: backlog
+  story-01-3-localization-engine-i18n: backlog
+  story-01-3b-locale-custom-override: backlog
+  story-01-4-tenant-registration-onboarding: backlog
+  story-01-5-authentication-identity-linking: backlog
+  story-01-6-workspace-invitations-rbac: backlog
+  story-01-7-tenant-admin-settings-panel: backlog
+  story-01-8-data-export-gdpr-portability: backlog
+  story-01-9-rate-limiting-quota-enforcement: backlog
+  story-01-10-full-stack-localization-compliance: backlog
+  story-01-11-frontend-portal-shell-multi-panel-layout: backlog
+  story-01-12-feature-driven-refactoring-of-tenantworkspace: backlog
+  story-01-13-notification-engine-5-level-urgency: backlog
+  story-01-14-workspace-layout-persistence: backlog
+  epic-01-retrospective: optional
+
+  epic-03-compliance-guardrails: backlog
+  story-03-1-pii-scrubbing-engine: backlog
+  story-03-2-compliance-toggle-management: backlog
+  story-03-3-audit-log-system: backlog
+  story-03-4-tenant-audit-dashboard: backlog
+  story-03-5-notification-delivery-preferences: backlog
+  epic-03-retrospective: optional
+
+  epic-11-dynamic-mcp-analyzer: backlog
+  story-11-1-mcp-schema-parser-and-plugin-manifest-compiler: backlog
+  story-11-2-ecosystem-asset-scanner-and-native-tool-routing: backlog
+  story-11-3-public-mcp-server: backlog
+  story-11-4-scoped-mcp-server-and-rbac-integration: backlog
+  epic-11-retrospective: optional
+
+  epic-41-plugin-standards-kit-management: backlog
+  story-41-1-standard-plugin-manifest-and-validation-schema: backlog
+  story-41-2-ui-kit-plugin-management-framework: backlog
+  story-41-3-plugin-registry-api-and-access-control: backlog
+  story-41-4-agent-plugin-catalog-vector-rag: backlog
+  story-41-5-basic-and-text-plugins-package: backlog
+  story-41-6-interactive-forms-plugins-package: backlog
+  story-41-7-information-and-kpi-plugins-package: backlog
+  story-41-8-data-exploration-plugins-package: backlog
+  story-41-9-orchestration-plugins-package: backlog
+  story-41-10-operations-and-system-plugins-package: backlog
+  story-41-11-sme-default-tool-kit-research-and-packaging: backlog
+  story-41-12-plugin-as-mcp-bridge-registry: backlog
+  story-41-13-template-configurator-ui-zero-it: backlog
+  story-41-14-component-adapter-layer-multi-surface-rendering: backlog
+  story-41-15-curated-github-plugin-import-pipeline: backlog
+  story-41-16-template-builder-agent-low-code-assistant: backlog
+  story-41-17-global-asset-default-document-parser-mcp-plugin: backlog
+  epic-41-retrospective: optional
+
+  epic-18-transactional-layout-harness-shell: backlog
+  story-18-1-layout-registry-core-and-harness-auth: backlog
+  story-18-2-transactional-layout-harness-shell: backlog
+  story-18-3-dynamic-plugin-esm-ingestion: backlog
+  story-18-4-plugin-security-console-admin-portal: backlog
+  story-18-5-multi-channel-layout-exporters-email-pdf-ppt: backlog
+  story-18-6-external-channel-adapters-lark-telegram: backlog
+  story-18-7-layout-analytics: backlog
+  story-18-8-layout-access-control: backlog
+  story-18-9-layout-responsive-system: backlog
+  story-18-10-layout-documentation-generator: backlog
+  story-18-10a-linked-panel-live-context-binding: backlog
+  story-18-11-command-palette: backlog
+  story-18-12-editable-data-grid-spreadsheet-card: backlog
+  epic-18-retrospective: optional
+
+  epic-30-b2b2b-shared-workspace: backlog
+  story-30-1-subworkspace-prisma-schema: backlog
+  story-30-2-focus-mode-global-dashboard-ui: backlog
+  story-30-3-rag-federation-filtering: backlog
+  story-30-4-ai-data-scrubbing-pipeline: backlog
+  epic-30-retrospective: optional
+
+  epic-34-workspace-shell-multi-panel-ux-hardening: backlog
+  story-34-1-workspace-layout-model-v2-two-panel-limit: backlog
+  story-34-2-tab-routing-drag-move-collapse-restore: backlog
+  story-34-3-desktop-virtual-desktop-other-monitor-placement: backlog
+  story-34-4-context-drawer-inline-push-tab-fallback-router: backlog
+  story-34-5-two-panel-responsive-audit-existing-ui-specs: backlog
+  story-34-6-linked-panel-live-context-binding: backlog
+  story-34-7-workspace-shell-implementation-rollout-plan: backlog
+  story-34-8-unified-orchestrator-dashboard: backlog
+  story-34-9-global-keyboard-shortcuts-quick-session-switcher: backlog
+  epic-34-retrospective: optional
+
+  epic-52-mobile-portal-chat-task-tracking: backlog
+  story-52-1-mobile-chat-console-ui: backlog
+  story-52-2-mobile-task-tracking-list-and-details: backlog
+  story-52-3-mobile-notification-badge-and-push-triggers: backlog
+  epic-52-retrospective: optional
+
+  epic-35-connector-registry-mcp-gateway: backlog
+  story-35-1-multi-platform-credentials-gateway: backlog
+  story-35-2-default-mcp-connectors-pack: backlog
+  story-35-3-drive-connector-pack: backlog
+  story-35-4-productivity-tool-connectors: backlog
+  story-35-5-official-o-mcp-connectors-integration: backlog
+  story-35-6-community-c-mcp-connectors-integration: backlog
+  story-35-7-custom-built-cb-mcp-connectors-integration: backlog
+  story-35-8-mcp-connectors-dashboard-enhancements: backlog
+  story-35-9-workflow-automation-connectors: backlog
+  story-35-10-google-ecosystem-omni-flow-integration: backlog
+  epic-35-retrospective: optional
+
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-02. Superadmin & Global Governance
+  # ═══════════════════════════════════════════════════════════════
+  epic-17-superadmin-portal: backlog
+  story-17-1-tenant-directory-management: backlog
+  story-17-2-quota-limit-configurations: backlog
+  story-17-3-global-system-health-dashboard: backlog
+  story-17-4-platform-wide-component-registry: backlog
+  story-17-5-superadmin-api-key-byok-quota: backlog
+  story-17-6-superadmin-feature-flag-system: backlog
+  story-17-7-global-notification-policy-incident-broadcast-console: backlog
+  story-17-8-superadmin-global-ai-asset-pool-console: backlog
+  story-17-9-superadmin-workspace-impersonation-mode: backlog
+  epic-17-retrospective: optional
+
+  epic-06-multi-gateway-billing-affiliate: backlog
+  story-06-1-affiliate-voucher-alias-local: backlog
+  story-06-2-multi-gateway-subscription-checkout: backlog
+  story-06-3-multi-gateway-billing-portal: backlog
+  story-06-4-multi-gateway-webhooks-grace-period: backlog
+  story-06-5-affiliate-commission-payout-reports: backlog
+  story-06-6-affiliate-lifecycle-superadmin: backlog
+  story-06-7-superadmin-gateway-config-reconciliation: backlog
+  epic-06-retrospective: optional
+
+  epic-13-legal-compliance-tax: backlog
+  story-13-1-hybrid-tax-configuration: backlog
+  story-13-2-e-invoicing-engine: backlog
+  story-13-3-multi-portal-subdomain-routing: backlog
+  story-13-4-cookie-consent-legal-terms: backlog
+  story-13-5-right-to-be-forgotten: backlog
+  story-13-6-compliance-certification-strategy: backlog
+  epic-13-retrospective: optional
+
+  epic-33-default-enterprise-blueprint-framework: backlog
+  story-33-1-core-business-skill-tool-templates: backlog
+  story-33-2-standard-department-workflow-blueprint-intelligence: backlog
+  story-33-2a-blueprint-artifact-schema-coverage-matrix-provenance-validation: backlog
+  story-33-2b-knowledge-base-publication-platform-agent-blueprint-recommendation: backlog
+  story-33-2c-epic-10-blueprint-handoff-workflowtemplate-candidate-compatibility: backlog
+  story-33-3-one-click-out-of-the-box-business-agent-onboarding: backlog
+  story-33-4-default-enterprise-asset-source-catalog: backlog
+  epic-33-retrospective: optional
+
+  epic-37-global-ai-asset-management: backlog
+  story-37-1-global-skill-workflow-agent-catalog: backlog
+  story-37-2-global-asset-onboarding-wizard: backlog
+  story-37-3-global-quota-and-usage-limits: backlog
+  epic-37-retrospective: optional
+
+  epic-40-meta-harness-pluggable-sdk-integration: backlog
+  story-40-1-superadmin-global-sdk-asset-portal: backlog
+  story-40-2-declarative-agent-harness-spec-engine: backlog
+  story-40-3-centralized-api-gateway-correlation-tracing: backlog
+  story-40-4-sandbox-isolation-ephemeral-state-syncing: backlog
+  story-40-5-wiki-os-ingestion-publication-gate: backlog
+  epic-40-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-03. Infrastructure & Core Services (Data, Security, Cost, Wiki)
+  # ═══════════════════════════════════════════════════════════════
+  epic-08-enterprise-llm-cost-byok: backlog
+  story-08-1-hierarchical-byok-api-key-management: backlog
+  story-08-2-token-usage-logging-dashboard: backlog
+  story-08-3-budget-enforcement-hard-soft-limits: backlog
+  story-08-4-personal-token-dashboard: backlog
+  story-08-5-semantic-caching-layer: backlog
+  story-08-6-prompt-compression-engine: backlog
+  story-08-7-batch-api-routing: backlog
+  story-08-8-member-quota-request-management: backlog
+  epic-08-retrospective: optional
+
+  epic-14-enterprise-wiki-os: backlog
+  story-14-1-wiki-block-editor: backlog
+  story-14-2-wiki-acl-permissions: backlog
+  story-14-3-wiki-version-history: backlog
+  story-14-4-wiki-crdt-collaboration: backlog
+  story-14-5-wiki-search-taxonomy: backlog
+  story-14-6-wiki-external-drive-sync: backlog
+  story-14-7-wiki-document-ingestion: backlog
+  story-14-8-rag-indexing-pipeline: backlog
+  story-14-10-solution-research-ingestion-protocol: backlog
+  epic-14-retrospective: optional
+
+  epic-pe-01-platform-event-bus: backlog
+  story-pe-01-1-event-schema-registry-topic-design: backlog
+  story-pe-01-2-centrifugo-integration-channel-management: backlog
+  story-pe-01-3-event-producer-sdk-typescript-python: backlog
+  story-pe-01-4-dead-letter-queue-retry-policies: backlog
+  epic-pe-01-retrospective: optional
+
+  epic-43-file-processing-pipeline-engine: backlog
+  story-43-1-upload-gateway-with-magika-detection: backlog
+  story-43-2-parser-router-and-multi-backend-dispatch: backlog
+  story-43-3-processing-queue-bullmq-and-status-tracking: backlog
+  story-43-4-output-router-wiki-rag-chat: backlog
+  epic-43-retrospective: optional
+
+  epic-42-unified-search-service: backlog
+  story-42-1-search-index-schema-multi-entity-adapter: backlog
+  story-42-2-hybrid-search-api-vector-keyword-filter: backlog
+  story-42-3-search-result-ranking-personalization: backlog
+  story-42-4-search-ui-command-palette-sidebar: backlog
+  epic-42-retrospective: optional
+
+  epic-45-telemetry-observability-foundation: backlog
+  story-45-1-otel-collector-integration: backlog
+  story-45-2-loki-s3-log-storage: backlog
+  story-45-3-postgresql-log-boundary-enforcement: backlog
+  story-45-4-telemetry-dashboard-grafana: backlog
+  epic-45-retrospective: optional
+
+  epic-47-config-versioning-engine: backlog
+  story-47-1-configversion-prisma-model-api: backlog
+  story-47-2-diff-viewer-rollback-ui: backlog
+  story-47-3-branch-merge-for-skills-workflows: backlog
+  epic-47-retrospective: optional
+
+  epic-48-agent-intelligence-observability: backlog
+  story-48-0-fix-prometheus-llm-counters: backlog
+  story-48-1-fix-safespanbatcher-enrich-otel: backlog
+  story-48-2-per-skill-prometheus-metrics: backlog
+  story-48-3-per-mcp-tool-performance-tracking: backlog
+  story-48-4-agent-native-resource-categorization-taxonomy: backlog
+  story-48-5-decision-observability-layer: backlog
+  story-48-6-outcome-correlation-engine: backlog
+  story-48-7-usage-drift-detection-anomaly-alerting: backlog
+  story-48-8-agent-resource-dashboard-grafana: backlog
+  story-48-9-extended-alert-rules-metrics-api-expansion: backlog
+  epic-48-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-04. AI Agent & Skills
+  # ═══════════════════════════════════════════════════════════════
+  epic-02-central-agent-orchestrator: backlog
+  story-02-1-agent-orchestrator-router: backlog
+  story-02-2-ai-staff-template-registry: backlog
+  story-02-3-agent-performance-benchmarking: backlog
+  story-02-4-agent-management-console-setup-hub: backlog
+  story-02-5-repo-to-agent-ingestion-engine: backlog
+  story-02-6-dynamic-workflow-planner-hitl-task-promotion-gateway: backlog
+  epic-02-retrospective: optional
+
+  epic-05-dynamic-migration-engine-and-sandboxing: backlog
+  story-05-1-ast-scanner-e2b-bridge: backlog
+  story-05-2-extism-wasm-sandbox: backlog
+  story-05-3-agent-application-control-and-web-browser-automation: backlog
+  story-05-4-migration-engine-repository-classification: backlog
+  story-05-5-scenario-to-plugin-synthesis: backlog
+  story-05-6-plugin-sandbox-testing-ab-verification: backlog
+  epic-05-retrospective: optional
+
+  epic-07-self-learning-rag-cl-governance-slm: backlog
+  story-07-1-autonomous-skill-evolution: backlog
+  story-07-3-rag-indexing-pipeline: backlog
+  story-07-4-skill-sharing-discovery-engine: backlog
+  story-07-5-skill-version-management: backlog
+  story-07-6-knowledge-graph-entity-linking: backlog
+  story-07-7-platform-observability-telemetry: backlog
+  story-07-9-personal-agent-approval-cl: backlog
+  story-07-11-tournament-skill-evaluation: backlog
+  story-07-12-cl-configuration-cost-transparency: backlog
+  story-07-13-skill-regression-monitor: backlog
+  story-07-14-git-style-skill-branching: backlog
+  story-07-15-agent-skill-evolution-genealogy-dashboard: backlog
+  epic-07-retrospective: optional
+
+  epic-07b-slm-model-infrastructure: backlog
+  story-07-2-slm-model-router-gateway: backlog
+  story-07-4-cost-optimizer-auto-plugin-generator: backlog
+  epic-07b-retrospective: optional
+
+  epic-07c-personal-ai-agent-hub: backlog
+  story-07-8-personal-ai-agent-hub: backlog
+  story-07-10-ai-session-history-feedback: backlog
+  epic-07c-retrospective: optional
+
+  epic-27-observe-learn-execute-agent-dpp: backlog
+  story-27-1-event-first-api-integration: backlog
+  story-27-2-code-second-webwright-forgedskill: backlog
+  story-27-3-vision-last-gemini-fallback: backlog
+  story-27-4-teach-once-ux-recorder: backlog
+  story-27-5-execution-confidence-scoring: backlog
+  story-27-6-multi-app-orchestration: backlog
+  story-27-7-d-plus-plus-dashboard: backlog
+  story-27-8-safety-guardrails: backlog
+  story-27-9-teach-once-to-agent-provisioning: backlog
+  epic-27-retrospective: optional
+
+  epic-28-mini-app-creator-workspace: backlog
+  story-28-1-mini-app-wizard: backlog
+  story-28-2-plugin-marketplace: backlog
+  story-28-3-automation-flywheel-engine: backlog
+  story-28-4-app-template-library: backlog
+  story-28-5-app-analytics-dashboard: backlog
+  epic-28-retrospective: optional
+
+  epic-32-multi-agent-swarm-independent-operations: backlog
+  story-32-1-independent-cron-scheduler: backlog
+  story-32-2-multi-agent-swarm-protocol: backlog
+  story-32-3-omnichannel-agent-publishing: backlog
+  story-32-4-agent-manifesto-state-checkpointing: backlog
+  epic-32-retrospective: optional
+
+  epic-38-agent-development-platform: backlog
+  story-38-1-agent-ide-playground: backlog
+  epic-38-retrospective: optional
+
+  epic-51-workteam-harness-agent-core: backlog
+  story-51-0-workteam-harness-protocol: backlog
+  story-51-1-platformagent-registry-tier-model: backlog
+  story-51-2-t0-platform-infrastructure-agents: backlog
+  story-51-3-t1-security-compliance-agents: backlog
+  story-51-4-t4-builder-creator-agents: backlog
+  story-51-5-t3-learning-evolution-agents: backlog
+  story-51-6-t7-data-analytics-agents: backlog
+  story-51-7-remaining-tier-agents: backlog
+  story-51-8-workteam-composition-templates: backlog
+  story-51-9-hp01-retrofit-execution: backlog
+  epic-51-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-05. Workflow & Automation
+  # ═══════════════════════════════════════════════════════════════
+  epic-04-task-tracking-views: backlog
+  story-04-1-lark-callback-gateway: backlog
+  story-04-3-kanban-state-machine-board: backlog
+  epic-04-retrospective: optional
+
+  epic-09-hr-operations-lifecycle: backlog
+  story-09-1-cv-ai-scoring-pipeline: backlog
+  story-09-2-onboarding-automation: backlog
+  story-09-3-leave-management-approval: backlog
+  epic-09-retrospective: optional
+
+  epic-10-co-created-workflow-engine: backlog
+  story-10-1-workflow-wizard-builder: backlog
+  story-10-2-workflow-step-execution: backlog
+  story-10-3-workflow-template-marketplace: backlog
+  story-10-4-workflow-trigger-management: backlog
+  story-10-5-workflow-version-management: backlog
+  story-10-6-workflow-performance-monitoring: backlog
+  story-10-7-workflow-sub-workflow-composition: backlog
+  story-10-8-workflow-error-handling-recovery: backlog
+  story-10-9-agent-auto-assignment-skill-binding: backlog
+  epic-10-retrospective: optional
+
+  epic-44-formed-workflow-runtime-engine: backlog
+  story-44-1-workflow-json-schema-state-machine-core: backlog
+  story-44-2-step-executor-bullmq-worker-pool: backlog
+  story-44-3-human-gate-integration: backlog
+  story-44-4-workflow-execution-monitoring-audit-trail: backlog
+  epic-44-retrospective: optional
+
+  epic-12-approval-engine: backlog
+  story-12-1-configurable-approval-workflows: backlog
+  story-12-2-approval-policy-configuration-engine: backlog
+  story-12-3-approval-state-machine-notifications: backlog
+  story-12-4-delegation-escalation-rules: backlog
+  story-12-5-approval-api-workflow-wiki-data-appbuilder: backlog
+  epic-12-retrospective: optional
+
+  epic-46-dynamic-workflow-engine: backlog
+  story-46-1-langgraph-python-service-http-bridge: backlog
+  story-46-2-checkpoint-state-management-postgresql: backlog
+  story-46-3-hitl-gates-confidence-scoring: backlog
+  story-46-4-crystallization-pipeline-dynamic-formed: backlog
+  epic-46-retrospective: optional
+
+  epic-15-app-builder-auto-forger: backlog
+  story-15-1-app-builder-pipeline: backlog
+  epic-15-retrospective: optional
+
+  epic-16-visual-workflow-builder: backlog
+  story-16-1-visual-node-based-canvas: backlog
+  story-16-2-external-workflow-auto-sync: backlog
+  story-16-3-workflow-composition-sub-workflow-chaining: backlog
+  story-16-4-collaborative-workflow-editing-yjs: backlog
+  story-16-5-workflow-testing-and-dry-run: backlog
+  story-16-6-role-per-node-ui: backlog
+  story-16-7-multi-view-system: backlog
+  story-16-8-tca-automation-builder: backlog
+  epic-16-retrospective: optional
+
+  epic-29-dedicated-workflow-engine: backlog
+  story-29-1-custom-dag-executor: backlog
+  story-29-2-dedicated-worker-pool: backlog
+  epic-29-retrospective: optional
+
+  epic-50-task-node-catalog: backlog
+  story-50-1-node-definition-schema-crud-api: backlog
+  story-50-2-curated-node-catalog-industry-templates: backlog
+  story-50-3-ai-powered-node-suggestion: backlog
+  story-50-4-node-versioning-fork-marketplace: backlog
+  epic-50-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-06. Communication & Chat
+  # ═══════════════════════════════════════════════════════════════
+  epic-36-chat-console-messaging: backlog
+  story-36-1-native-channels-group-chat-rooms: backlog
+  story-36-2-multi-agent-group-participation-mentions: backlog
+  story-36-3-threaded-chat-topics: backlog
+  story-36-4-universal-chat-action-card-promotion: backlog
+  epic-36-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-07. Data Platform & Analytics
+  # ═══════════════════════════════════════════════════════════════
+  epic-21-cowok-insight-workflow-analytics: backlog
+  story-21-1-activity-tracking: backlog
+  story-21-2-encrypted-local-database: backlog
+  story-21-3-focus-score-algorithm: backlog
+  story-21-4-productivity-dashboard: backlog
+  story-21-5-user-feedback-loop: backlog
+  story-21-6-export-integration: backlog
+  story-21-7-admin-insight-panel: backlog
+  story-21-8-real-time-alerting: backlog
+  story-21-9-offline-sync: backlog
+  story-21-10-multi-device-aggregation: backlog
+  epic-21-retrospective: optional
+
+  epic-22-data-warehouse-connector: backlog
+  story-22-1-connector-adapter-framework: backlog
+  story-22-2-connection-management-ui: backlog
+  story-22-3-schema-discovery-metadata-indexer: backlog
+  story-22-4-nl-to-sql-query-engine: backlog
+  story-22-5-query-approval-engine-hitl: backlog
+  story-22-6-schema-change-proposal-migration: backlog
+  story-22-7-connection-health-monitor: backlog
+  story-22-8-query-cost-estimator: backlog
+  story-22-9-tenant-scoped-connection-sharing: backlog
+  story-22-10-tiered-data-caching: backlog
+  epic-22-retrospective: optional
+
+  epic-23-cloud-drive-integration: backlog
+  story-23-1-google-drive-oauth: backlog
+  story-23-2-onedrive-sharepoint-oauth: backlog
+  story-23-3-file-sync-engine: backlog
+  story-23-4-file-preview-service: backlog
+  story-23-5-file-search-index: backlog
+  story-23-6-permission-mapping: backlog
+  story-23-7-webhook-change-detection: backlog
+  story-23-8-batch-download-upload: backlog
+  story-23-9-file-version-management: backlog
+  story-23-10-quota-tracking: backlog
+  story-23-11-offline-cache: backlog
+  story-23-12-multi-provider-aggregation: backlog
+  epic-23-retrospective: optional
+
+  epic-24-data-mart-engine: backlog
+  story-24-1-materialized-view-engine: backlog
+  story-24-2-data-mart-scheduler: backlog
+  story-24-3-department-access-control: backlog
+  story-24-4-data-mart-visualization: backlog
+  story-24-5-data-quality-monitoring: backlog
+  story-24-6-incremental-refresh: backlog
+  story-24-7-data-lineage-tracking: backlog
+  story-24-8-export-api: backlog
+  epic-24-retrospective: optional
+
+  epic-25-spreadsheet-data-explorer: backlog
+  story-25-1-spreadsheet-renderer: backlog
+  story-25-2-formula-engine: backlog
+  story-25-3-data-filtering-sorting: backlog
+  story-25-4-chart-visualization: backlog
+  story-25-5-export-import: backlog
+  epic-25-retrospective: optional
+
+  epic-26-developer-api-portal: backlog
+  story-26-1-api-key-management: backlog
+  story-26-2-webhook-subscription-engine: backlog
+  epic-26-retrospective: optional
+
+  epic-49-platform-health-tenant-experience: backlog
+  story-49-1-cost-forecasting-engine: backlog
+  story-49-2-tenant-health-score: backlog
+  story-49-3-platform-health-score: backlog
+  story-49-4-dora-metrics-tracking: backlog
+  story-49-5-tenant-experience-analytics-dashboard: backlog
+  story-49-6-observability-driven-retrospective-integration: backlog
+  story-49-7-privacy-impact-assessment: backlog
+  story-49-8-cardinality-budget-load-testing: backlog
+  epic-49-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # FG-08. Desktop & Platform Scale
+  # ═══════════════════════════════════════════════════════════════
+  epic-19-tauri-desktop-scaffold: backlog
+  story-19-1-tauri-project-setup: backlog
+  story-19-2-shared-react-codebase: backlog
+  story-19-3-ipc-bridge: backlog
+  story-19-4-auto-update-system: backlog
+  story-19-5-native-auth-session: backlog
+  story-19-6-native-notifications: backlog
+  story-19-7-system-tray-integration: backlog
+  story-19-8-desktop-performance-optimization: backlog
+  epic-19-retrospective: optional
+
+  epic-20-local-file-ai-agent: backlog
+  story-20-1-local-file-system-watcher: backlog
+  story-20-2-local-file-indexing: backlog
+  story-20-3-local-rag-engine: backlog
+  story-20-4-privacy-preservation-filters: backlog
+  story-20-5-local-action-trigger: backlog
+  story-20-6-desktop-mcp-integration: backlog
+  story-20-7-local-file-collaboration: backlog
+  story-20-8-local-file-conflict-resolver: backlog
+  story-20-9-performance-optimization: backlog
+  story-20-10-backup-recovery: backlog
+  epic-20-retrospective: optional
+
+  epic-53-mobile-app-scaffold: backlog
+  story-53-1-mobile-project-scaffolding: backlog
+  story-53-2-mobile-auth-session: backlog
+  story-53-3-mobile-cicd-pipeline: backlog
+  epic-53-retrospective: optional
+
+  epic-31-platform-observability-slm-learning: backlog
+  story-31-1-otel-collector-integration: backlog
+  story-31-2-loki-s3-agent-log-storage: backlog
+  story-31-3-loki-to-okf-jsonl-training-export: backlog
+  story-31-4-postgres-log-boundary-enforcement: backlog
+  story-31-5-tenant-data-collection-pipeline: backlog
+  story-31-6-qlora-fine-tuning-pipeline: backlog
+  story-31-7-multi-lora-serving-vllm: backlog
+  story-31-8-golden-set-regression-cicd: backlog
+  story-31-9-federated-lora-aggregation: backlog
+  story-31-10-observability-dashboard: backlog
+  story-31-11-observability-integration-test-suite: backlog
+  epic-31-retrospective: optional
+
+  # ═══════════════════════════════════════════════════════════════
+  # R&D
+  # ═══════════════════════════════════════════════════════════════
+  epic-rd-01-establish-rd-framework: backlog
+  story-rd-01-1-rd-evaluate-workflow: backlog
+  story-rd-01-2-rd-library-registry: backlog
+  story-rd-01-3-query-library-script: backlog
+  story-rd-01-4-candidate-pool-evaluation: backlog
+  epic-rd-01-retrospective: optional
