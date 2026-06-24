@@ -15,7 +15,7 @@ disable-model-invocation: true
 ## PREREQUISITES
 
 Before running this workflow:
-1. A Story UI Spec MUST exist at `{implementation_artifacts}/1. Epic & Story/Epic-{epic_id}/{story_key}/ui-ux-spec.md` (derive {epic_id} from the first digit of {story_key}, e.g. story-1.1 -> Epic-1)
+1. A Story UI Spec MUST exist at `{implementation_artifacts}/1. Epic & Story/Epic-{epic_id}/{story_key}/ui-spec.md` (derive {epic_id} from the first digit of {story_key}, e.g. story-1.1 -> Epic-1)
 2. The UI Spec MUST have `Enrichment_Required: true` in its metadata or the User explicitly requested it.
 3. The Stitch layout MUST be fully approved by the User.
 4. The HTML/CSS visual contract MUST be present in the UI Spec.
@@ -25,7 +25,7 @@ Before running this workflow:
 ## ENRICHMENT PROCESS
 
 ### 1. Load Context & Libraries
-1. Read the `ui-ux-spec.md` file inside the story folder.
+1. Read the `ui-spec.md` file inside the story folder.
 2. Identify the active Tech Stack, Portal, and Base Style.
 3. Use the `ux-pro-max` skill to query `ux-guidelines.csv` and `styles.csv` specifically for **Effects, Animations, and Micro-interactions**.
 
@@ -48,7 +48,7 @@ Before running this workflow:
 3. **Strict Separation of Concerns:** The generated logic MUST NOT alter the base DOM structure or core layout properties defined by the approved Stitch HTML. It must act as a transparent wrapper or behavioral overlay.
 
 ### 5. Update the UI Spec
-1. Append or replace the content inside the `[POST_STITCH_ENRICHMENT_LOGIC]` section of the `ui-ux-spec.md` file.
+1. Append or replace the content inside the `[POST_STITCH_ENRICHMENT_LOGIC]` section of the `ui-spec.md` file.
 2. The output MUST be placed inside ```javascript or ```css code blocks within that section.
 3. Log the completion of the enrichment back to the User.
 

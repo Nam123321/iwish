@@ -147,7 +147,7 @@
     <action>Use enhanced story context to inform implementation decisions and approaches</action>
 
     <!-- Dual-Track: Load UI spec if available -->
-    <action>Check for UI spec file at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ui-ux-spec.md (derive {{epic_id}} from the first digit of {{story_key}}, e.g. story-1.1 -> Epic-1)</action>
+    <action>Check for UI spec file at {implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ui-spec.md (derive {{epic_id}} from the first digit of {{story_key}}, e.g. story-1.1 -> Epic-1)</action>
     <check if="UI spec file exists">
       <action>Load COMPLETE UI spec file as frontend design context</action>
       <action>Extract: screen inventory, component hierarchy, responsive breakpoints, design tokens, interactions, data contracts</action>
@@ -217,7 +217,7 @@
       <output>🚨 **UI SPEC GATE — BLOCKED**
 
         This story has [FE] (frontend) tasks but NO UI Spec was found at:
-        `{implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ui-ux-spec.md` (derive {{epic_id}} from the first digit of {{story_key}})
+        `{implementation_artifacts}/1. Epic & Story/Epic-{{epic_id}}/{{story_key}}/ui-spec.md` (derive {{epic_id}} from the first digit of {{story_key}})
 
         **The `create-ui-spec` workflow MUST be run before `dev-story` for stories with frontend tasks.**
         This ensures:

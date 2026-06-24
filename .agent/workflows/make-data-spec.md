@@ -16,7 +16,7 @@ This workflow generates a comprehensive Data Specification document for a story.
 4. Parse data requirements.
 5. Compare with Database Specification `_iwish-output/2. Product Planning/2.2. database-spec.md` if exists.
 6. Save the Data Spec file in the same directory as the target story file:
-   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `database-spec.md`.
+   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `data-spec.md`.
    - For flat legacy story files: save as `_iwish-output/3. Development/1. Epic & Story/data-spec-story-{story_id}.md`.
    Ensure it includes standard OKF frontmatter.
 </steps>
