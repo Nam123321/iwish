@@ -1,5 +1,5 @@
 ---
-description: Generate data requirements specification from a story file using Kira Data data-Piccolo-agent workflows
+description: Generate data requirements specification from a story file using Kira Data data-architect-agent workflows
 ---
 
 # /make-data-spec
@@ -9,8 +9,16 @@ This workflow generates a comprehensive Data Specification document for a story.
 > [!IMPORTANT]
 > **FeatureGraph Profile Gate:** Load `.agent/fragments/graph-backend-selection-policy.md` before graph-backed data-spec validation. If FeatureGraph is unavailable, label graph evidence unavailable and do not silently infer that no DataEntity/Event/SeedData dependency exists.
 
-## Activation
+<steps CRITICAL="TRUE">
+1. Locate and load the target story file (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md` or `_iwish-output/3. Development/1. Epic & Story/story-{story_id}.md`).
+2. Read policy from `.agent/fragments/graph-backend-selection-policy.md`.
+3. Activate data-architect-agent behavior from `.agent/agents/data-architect-agent.md`.
+4. Parse data requirements.
+5. Compare with Database Specification `_iwish-output/2. Product Planning/2.2. database-spec.md` if exists.
+6. Save the Data Spec file:
+   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `data-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `data_spec.md` or `database-spec.md`).
+   - For flat story layouts: save as `_iwish-output/stories/data-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
+   Ensure it includes standard OKF frontmatter.
 
-1. Load the data-Piccolo-agent persona from `{project-root}/.agent/agents/data-Piccolo-agent.md` and apply Kira Data data-Piccolo-agent behavior from this workflow.
-2. Load config from `{project-root}/_iwish/delivery/workflows/4-implementation/make-data-spec/workflow.yaml` (if project mode) or fall back to template defaults.
-3. Execute the workflow: `{project-root}/.agent/workflows/step-01-init.md`
+</steps>
+

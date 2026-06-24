@@ -4,6 +4,12 @@ import re
 import yaml
 from pathlib import Path
 
+def normalize_id(id_str):
+    normalized = id_str.strip().lower().replace('.', '-')
+    if normalized.startswith("story-"):
+        normalized = normalized[6:]
+    return normalized
+
 def check_dependencies_status(dependencies, project_root) -> list:
     sprint_status_file = project_root / "_iwish-output" / "3. Development" / "sprint-status.yaml"
     if not sprint_status_file.is_file():
@@ -17,22 +23,39 @@ def check_dependencies_status(dependencies, project_root) -> list:
         with open(sprint_status_file, "r", encoding="utf-8") as f:
             status_data = yaml.safe_load(f)
 
+        # Build normalized status lookup
         story_statuses = {}
-        if status_data and "epics" in status_data:
-            for epic in status_data["epics"]:
-                if "stories" in epic:
-                    for story in epic["stories"]:
-                        story_statuses[story["id"]] = story.get("status", "not_started")
+        if status_data:
+            if "epics" in status_data:
+                for epic in status_data["epics"]:
+                    if "stories" in epic:
+                        for story in epic["stories"]:
+                            sid = normalize_id(story["id"])
+                            story_statuses[sid] = story.get("status", "not_started")
+            elif "development_status" in status_data:
+                for key, val in status_data["development_status"].items():
+                    if key.startswith("story-"):
+                        sid = normalize_id(key)
+                        story_statuses[sid] = val
 
         errors = []
         for dep in dependencies:
             dep_cleaned = str(dep).strip()
-            dep_id = dep_cleaned if dep_cleaned.startswith("story-") else f"story-{dep_cleaned}"
-            status = story_statuses.get(dep_id)
+            dep_norm = normalize_id(dep_cleaned)
+            
+            # Find status using prefix matching (e.g. "23-1" matches "23-1-google-drive-oauth")
+            status = None
+            matched_key = None
+            for key, val in story_statuses.items():
+                if key == dep_norm or key.startswith(dep_norm + "-"):
+                    status = val
+                    matched_key = key
+                    break
+            
             if status is None:
-                errors.append(f"Dependency story '{dep_id}' was not found in sprint-status.yaml.")
-            elif status != "done":
-                errors.append(f"Dependency story '{dep_id}' is not DONE (current status: '{status}').")
+                errors.append(f"Dependency story '{dep_cleaned}' was not found in sprint-status.yaml.")
+            elif status != "completed":
+                errors.append(f"Dependency story '{dep_cleaned}' is not completed (current status: '{status}').")
         return errors
     except Exception as e:
         return [f"Error checking dependency status from sprint-status.yaml: {e}"]
@@ -50,16 +73,17 @@ def validate_story(filepath: Path) -> bool:
     project_root = Path(__file__).resolve().parents[2]
     
     # Thử khớp cấu trúc thư mục phân cấp (ví dụ: /Epic-11/Story-11.1/story.md)
-    match = re.search(r'/Epic-(\d+)/Story-(\d+)[.-](\d+)', filepath_str, re.IGNORECASE)
+    # Hỗ trợ ký tự alphanumeric cho minor ID như 3b, 10a, v.v.
+    match = re.search(r'/Epic-(\d+)/Story-(\d+)[.-]([a-zA-Z0-9]+)', filepath_str, re.IGNORECASE)
     if match:
         epic_id = match.group(1)
         story_id = f"{match.group(2)}.{match.group(3)}"
     else:
         # Thử khớp cấu trúc phẳng tên file (ví dụ: story-16.2.md)
         filename = filepath.name
-        match = re.search(r'story-(\d+)\.(\d+)', filename, re.IGNORECASE)
+        match = re.search(r'story-(\d+)\.([a-zA-Z0-9]+)', filename, re.IGNORECASE)
         if not match:
-            match = re.search(r'story-(\d+)-(\d+)', filename, re.IGNORECASE)
+            match = re.search(r'story-(\d+)-([a-zA-Z0-9]+)', filename, re.IGNORECASE)
         
         if match:
             epic_id = match.group(1)
@@ -95,7 +119,6 @@ def validate_story(filepath: Path) -> bool:
         except Exception as e:
             errors.append(f"Error parsing YAML frontmatter: {e}")
 
-
     # 2. Check FR Covered Mapping
     fr_covered_pattern = re.compile(r'(?:FR Covered:|FR Covered\*\*|FR Covered\*\*:)')
     if not fr_covered_pattern.search(content):
@@ -130,21 +153,36 @@ def validate_story(filepath: Path) -> bool:
     if epic_id and story_id:
         project_root = Path(__file__).resolve().parents[2]
         
-        # File review from review-agent
-        review_file = project_root / "_iwish-output" / "reviews" / f"review-story-{story_id}.md"
-        if not review_file.is_file():
-            errors.append(f"Physical Review File missing: '{review_file.relative_to(project_root)}'. You must run review-agent first.")
-        elif review_file.stat().st_size < 150:
-            review_text = review_file.read_text()
-            if "mock" in review_text.lower() or "placeholder" in review_text.lower():
-                errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is a placeholder/mock. Please run real review-agent scan.")
-            elif review_file.stat().st_size < 100:
-                errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is too short ({review_file.stat().st_size} bytes). Minimum size is 100 bytes.")
+        # Hỗ trợ đa dạng cách đặt tên của file review từ review-agent
+        story_id_dash = story_id.replace('.', '-')
+        reviews_dir = project_root / "_iwish-output" / "reviews"
+        
+        review_candidates = [
+            reviews_dir / f"review-story-{story_id}.md",
+            reviews_dir / f"review-story-{story_id_dash}.md",
+            reviews_dir / f"review_{story_id}.md",
+            reviews_dir / f"review_{story_id_dash}.md"
+        ]
+        
+        review_file = None
+        for cand in review_candidates:
+            if cand.is_file():
+                review_file = cand
+                break
+        
+        if not review_file:
+            errors.append(f"Physical Review File missing in _iwish-output/reviews/. Checked names: {[c.name for c in review_candidates]}. You must run review-agent first.")
+        else:
+            if review_file.stat().st_size < 150:
+                review_text = review_file.read_text()
+                if "mock" in review_text.lower() or "placeholder" in review_text.lower():
+                    errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is a placeholder/mock. Please run real review-agent scan.")
+                elif review_file.stat().st_size < 100:
+                    errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is too short ({review_file.stat().st_size} bytes). Minimum size is 100 bytes.")
 
         # Risk matrix file from Edge Case Guardian
         risk_file = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
         if not risk_file.is_file():
-            # Thử tìm với chữ hoa 'Epic'
             risk_file_alt = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"Epic-{epic_id}-risk-matrix.md"
             if risk_file_alt.is_file():
                 risk_file = risk_file_alt

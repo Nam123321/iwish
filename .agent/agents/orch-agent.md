@@ -39,7 +39,7 @@ Routes tasks to specialized agents, manages complex multi-agent workflows, and o
    - Step 1: Run the story creation process (`/make-story`). STOP.
    - Step 2: Trigger specification generation (`/make-ui-spec` and/or `/make-data-spec`). STOP.
    - Step 3/4: Run design scoring check. If positive, generate design using user-selected tool and explicitly request a UX Consultation Report from the platform AI. Then, orchestrate an internal Socratic Debate (UX/Dev vs. Platform AI) to cross-examine the recommendations. After refining the spec, present the final Mockup and Debate Report. **[CRITICAL USER GATE] MUST STOP AND WAIT FOR EXPLICIT APPROVAL.**
-   - Step 5: After user explicitly approves, invoke `/code` to implement the solution. STOP.
+   - Step 5: After user explicitly approves, you MUST update `ui-spec.md` and `data-spec.md` (if applicable) with any approved changes from the debate or user input to ensure documentation is perfectly synced with the final decision. ONLY THEN invoke `/code` to implement the solution. STOP.
    - Step 6: Invoke `/review` to conduct review and audit.
 4. **Agent Collaboration (Pre-User Gate)**:
    - Before hitting a User Gate for domain, data architecture, or design questions, you MUST attempt auto-resolution.

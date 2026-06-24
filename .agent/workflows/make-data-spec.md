@@ -15,9 +15,10 @@ This workflow generates a comprehensive Data Specification document for a story.
 3. Activate data-architect-agent behavior from `.agent/agents/data-architect-agent.md`.
 4. Parse data requirements.
 5. Compare with Database Specification `_iwish-output/2. Product Planning/2.2. database-spec.md` if exists.
-6. Save the Data Spec file in the same directory as the target story file:
-   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `data-spec.md`.
-   - For flat legacy story files: save as `_iwish-output/3. Development/1. Epic & Story/data-spec-story-{story_id}.md`.
+6. Save the Data Spec file:
+   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `data-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `data_spec.md` or `database-spec.md`).
+   - For flat story layouts: save as `_iwish-output/stories/data-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
    Ensure it includes standard OKF frontmatter.
+
 </steps>
 

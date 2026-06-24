@@ -79,8 +79,11 @@ async function fetchRemoteRegistry(cdnUrl) {
         return data;
     }
     catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        console.warn(chalk_1.default.yellow(`[registry-updater] CDN fetch failed: ${message}`));
+        // Suppress network errors (like ENOTFOUND for cdn.iwish.dev) by default to avoid alarming the user during install
+        if (process.env.DEBUG) {
+            const message = err instanceof Error ? err.message : String(err);
+            console.warn(chalk_1.default.yellow(`[registry-updater] CDN fetch failed: ${message}`));
+        }
         return null;
     }
 }

@@ -316,12 +316,15 @@ After rendering the UI, act as an Expert UX Reviewer. Provide a structured 'Desi
 
 ```
 1. Extract the 3-5 recommendations from the Platform AI Consultation Report.
-2. Trigger Socratic Debate: Invoke `ux-agent` and `dev-agent` to evaluate the recommendations.
+2. CHECKLIST: Did the Native AI (Stitch/Figma) return any recommendations in its response?
+   - IF NO: The agent MUST still create the `Platform AI Consultation & Debate Report` section, explicitly stating: "Request for consultation was sent to Native AI, but no recommendations were returned. Fallback to internal UX evaluation." Then trigger Socratic Debate on the design anyway.
+   - IF YES: Proceed to Socratic Debate on the provided recommendations.
+3. Trigger Socratic Debate: Invoke `ux-agent` and `dev-agent` to evaluate the recommendations (or evaluate the design directly if no recommendations).
    - `dev-agent` evaluates technical feasibility (API availability, component complexity).
    - `ux-agent` evaluates UX coherence with the approved Design System.
-3. Filter out recommendations that cause Scope Creep or technical impossibility.
-4. Keep accepted recommendations to refine the UI Spec.
-5. Generate the `Platform AI Consultation & Debate Report` section in the UI Spec documenting the debate outcome.
+4. Filter out recommendations that cause Scope Creep or technical impossibility.
+5. Keep accepted recommendations to refine the UI Spec.
+6. Generate the `Platform AI Consultation & Debate Report` section in the UI Spec documenting the debate outcome (or the fallback evaluation).
 ```
 
 

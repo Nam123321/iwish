@@ -70,14 +70,14 @@ All AI assistants and agents operating on this project must strictly comply with
     - **For Epics:**
       - `backlog`: Đã lên kế hoạch nhưng chưa thực thi.
       - `in_progress`: Đang có story được code.
-      - `done`: Đã hoàn thành toàn bộ story trong epic.
+      - `completed`: Đã hoàn thành toàn bộ story trong epic.
       - `cancelled`: Đã hủy bỏ.
     - **For Stories:**
       - `backlog`: Nằm trong backlog nhưng chưa đủ điều kiện code.
       - `ready`: Đã có đủ specs, Acceptance Criteria và sẵn sàng cho dev-agent xử lý (tương đương với ready-for-dev-agent).
       - `in_progress`: Đang trong quá trình viết code / triển khai.
       - `in_review`: Đã code xong, đang chờ review (QA / Security / Adversarial).
-      - `done`: Đã pass toàn bộ review và nghiệm thu.
+      - `completed`: Đã pass toàn bộ review và nghiệm thu.
       - `blocked`: Tạm thời bị kẹt do issue bên ngoài (Lưu ý: trên UI Kanban sẽ tạm map về Backlog nếu không chứa các từ khóa tiến độ).
       - `cancelled`: Story bị hủy bỏ.
 11. **Context Drift Detection (Auto-Audit on Update)**: Khi bắt đầu session mới, agent **MUST** thực hiện kiểm tra sau:
@@ -94,6 +94,21 @@ All AI assistants and agents operating on this project must strictly comply with
 12. **Codebase Health & Code Simplification Synergy (Sự kết hợp giữa codebase-health và code-simplification)**:
     - **Diagnostic Gate vs. Refactoring Action**: `/codebase-health` là cổng chẩn đoán tổng thể (phát hiện dead code, dependency vòng, file/function quá phức tạp). `code-simplification` là bộ hướng dẫn refactor chi tiết (giảm lồng lặp < 3 cấp, tách nhỏ function > 50 dòng, đặt tên rõ ràng) được chạy trực tiếp trong quá trình dev-agent viết code.
     - **Nguyên tắc phối hợp (Synergy Flow)**: Khi `/codebase-health` phát hiện hotspot phức tạp, hoặc khi các thay đổi trong một story đẩy độ phức tạp của file vượt ngưỡng, agent **BẮT BUỘC** phải kích hoạt kỹ năng `code-simplification` để refactor file/module đó trước khi kết thúc câu chuyện (story). Mọi thay đổi refactor phải được kiểm thử đầy đủ để đảm bảo giữ nguyên behavior.
+13. **Standard Naming & Directory Rules (Enforce standard directory layout and spec document names)**:
+    - **Flat Layout mode** (Default for `iwish`):
+      - Story file: `_iwish-output/stories/story-{story_id}.md`
+      - Story UI Spec: `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`, NOT underscore `_`)
+      - Story Data Spec: `_iwish-output/stories/data-spec-story-{story_id}.md` (strictly using dash `-`, NOT underscore `_`)
+      - Task list: `_iwish-output/stories/task-story-{story_id}.md`
+    - **Hierarchical Layout mode** (Default for `Cowok-ai`):
+      - Story file: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md` (strictly `story.md`)
+      - Story UI Spec: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/ui-spec.md` (strictly `ui-spec.md`)
+      - Story Data Spec: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md` (strictly `data-spec.md`)
+      - Task list: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/task.md` (strictly `task.md`)
+    - **Review Report file**: Must strictly be named `_iwish-output/reviews/review-story-{story_id}.md` (with dots, no dashes or underscores).
+    - **Epic Risk Matrix file**: Must strictly be named `_iwish-output/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (capital `E`).
+
+
 
 ---
 

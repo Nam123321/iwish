@@ -27,10 +27,11 @@ Do NOT attempt to run this workflow without reading the protocol!
 3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
 4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
 5. Run Socratic Debate on Platform AI's UX recommendations using `ux-agent` and `dev-agent`, and embed the outcomes into the `Platform AI Consultation & Debate Report` section.
-6. Save the UI Spec file in the same directory as the target story file:
-   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `ui-spec.md`.
-   - For flat legacy story files: save as `_iwish-output/3. Development/1. Epic & Story/ui-spec-story-{story_id}.md`.
+6. Save the UI Spec file:
+   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `ui-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `ui_spec.md` or `ui-ux-spec.md`).
+   - For flat story layouts: save as `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
 7. Run scanner on the generated UI Spec file:
+
    `node .agent/scripts/design-compliance-scanner.js --spec <path-to-generated-ui-spec.md> --design DESIGN.md`
 8. Ensure scanner passes (Exit Code 0).
 </steps>

@@ -43,7 +43,7 @@ Before stopping at any User Gate for domain, data architecture, or design questi
    - **[CRITICAL] [User Gate - Approval]**: You MUST STOP execution completely here. DO NOT proceed to Step 4 until the user explicitly approves the generated design specs and mockups.
 
 4. **Step 4: Implementation (`/code`)**
-   - **Dependency & Validation Check:** Before writing any code logic, the agent MUST run `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails or if any story listed under `dependencies` in the frontmatter is not marked as `done` in `sprint-status.yaml`, you MUST HALT execution and notify the user that the story's development foundation is missing.
+   - **Dependency & Validation Check:** Before writing any code logic, the agent MUST run `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails or if any story listed under `dependencies` in the frontmatter is not marked as `completed` in `sprint-status.yaml`, you MUST HALT execution and notify the user that the story's development foundation is missing.
    - Once validation passes and spec and design mockups are approved, begin writing the code logic.
    - Strictly follow clean architecture guidelines and target constraints.
    - *Update `task.md`.*

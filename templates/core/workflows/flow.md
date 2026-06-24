@@ -13,7 +13,7 @@ The standard, automated end-to-end development pipeline of I-Wish.
 Do NOT attempt to execute multiple steps in a single response. You must execute exactly ONE step, report the status, and then STOP.
 
 **State Tracking Mechanism:**
-At the very beginning of the `/flow` pipeline, you MUST create a `task.md` file to track the progress of these steps. This file MUST be written to the story-specific subdirectory (`_iwish-output/stories/Epic-{epic_id}/{story_id}/task.md`) or the dynamic session artifact directory (`<appDataDir>/brain/<conversation-id>/task.md` under Antigravity), NEVER to the workspace root directory. This task list/checklist MUST explicitly include checking and ensuring that all newly generated or modified documents (like stories, specs, etc.) have valid OKF YAML frontmatter. Update this file as each step is completed. Report the current status to the user after completing each step.
+At the very beginning of the `/flow` pipeline, you MUST create a `task.md` file to track the progress of these steps. This file MUST be written to the story-specific subdirectory (`_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/{story_id}/task.md`) or the dynamic session artifact directory (`<appDataDir>/brain/<conversation-id>/task.md` under Antigravity), NEVER to the workspace root directory. This task list/checklist MUST explicitly include checking and ensuring that all newly generated or modified documents (like stories, specs, etc.) have valid OKF YAML frontmatter. Update this file as each step is completed. Report the current status to the user after completing each step.
 
 **Pre-User Gate: Agent Collaboration (Party Mode):**
 Before stopping at any User Gate for domain, data architecture, or design questions, you MUST attempt to resolve them internally:
@@ -43,7 +43,7 @@ Before stopping at any User Gate for domain, data architecture, or design questi
    - **[CRITICAL] [User Gate - Approval]**: You MUST STOP execution completely here. DO NOT proceed to Step 4 until the user explicitly approves the generated design specs and mockups.
 
 4. **Step 4: Implementation (`/code`)**
-   - **Dependency & Validation Check:** Before writing any code logic, the agent MUST run `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails or if any story listed under `dependencies` in the frontmatter is not marked as `done` in `sprint-status.yaml`, you MUST HALT execution and notify the user that the story's development foundation is missing.
+   - **Dependency & Validation Check:** Before writing any code logic, the agent MUST run `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails or if any story listed under `dependencies` in the frontmatter is not marked as `completed` in `sprint-status.yaml`, you MUST HALT execution and notify the user that the story's development foundation is missing.
    - Once validation passes and spec and design mockups are approved, begin writing the code logic.
    - Strictly follow clean architecture guidelines and target constraints.
    - *Update `task.md`.*

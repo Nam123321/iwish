@@ -10,10 +10,10 @@ disable-model-invocation: true
 > [!IMPORTANT]
 > **DESIGN CONSULTATION GATE (MANDATORY):**
 > Before finalizing ANY UI spec, you MUST use `view_file` to load `/.agent/skills/design-consultation/SKILL.md` and execute the Design Army Pattern (5 specialist lenses: Typography, Color, Layout, Interaction, IA). Embed the Design Consultation Report in the final spec output.
-
 **[CRITICAL COMPLIANCE REQUIREMENT]**
 To generate the UI Spec systematically, you MUST read and rigidly obey the 5-Option Framework and extraction rules defined in: [UI Spec Protocol](references/create-ui-spec-protocol.md).
 Do NOT attempt to run this workflow without reading the protocol!
+
 
 > [!IMPORTANT]
 > **DESIGN COMPLIANCE GATE CHECK (MANDATORY):**
@@ -21,3 +21,17 @@ Do NOT attempt to run this workflow without reading the protocol!
 > `node .agent/scripts/design-compliance-scanner.js --spec <path-to-ui-spec.md> --design <path-to-design.md>`
 > Ensure the scan passes with Exit Code 0. If it fails, you must fix all unauthorized design tokens (e.g. replacing default violet colors like `#7C3AED` with allowed tokens from `DESIGN.md` such as `#00DF9A` or `#059669`) and re-run the check. Do NOT proceed to design generation or coding with compliance violations.
 
+<steps CRITICAL="TRUE">
+1. Locate and load the target story file (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md` or `_iwish-output/3. Development/1. Epic & Story/story-{story_id}.md`).
+2. Read Feature Hierarchy `_iwish-output/2. Product Planning/2.5. feature-hierarchy.md`. Halt if missing.
+3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
+4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
+5. Run Socratic Debate on Platform AI's UX recommendations using `ux-agent` and `dev-agent`, and embed the outcomes into the `Platform AI Consultation & Debate Report` section.
+6. Save the UI Spec file:
+   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `ui-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `ui_spec.md` or `ui-ux-spec.md`).
+   - For flat story layouts: save as `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
+7. Run scanner on the generated UI Spec file:
+
+   `node .agent/scripts/design-compliance-scanner.js --spec <path-to-generated-ui-spec.md> --design DESIGN.md`
+8. Ensure scanner passes (Exit Code 0).
+</steps>
