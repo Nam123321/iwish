@@ -1,40 +1,49 @@
 ---
 legacy_name: 'reconcile-change-legacy'
-description: 'Process the reconciliation queue to synchronize requirement changes back to source specifications (PRD, UI Specs, Stories)'
+description: 'Process requirement and structure changes (add, remove, merge, move epic, rename) in Epics and Stories, ensuring 100% synchronized context across PRD, Architecture, and sprint-status.'
 disable-model-invocation: true
 ---
 
 # /reconcile-change
 
 > [!IMPORTANT]
-> **PURPOSE:** This workflow is responsible for reading the I-Wish reconciliation queue and explicitly updating the requirement specification files (PRD, UI Specs, Epic/Story files) to reflect changes that occurred during implementation or course correction.
+> **PURPOSE:** This workflow is the centralized gateway to handle any structural or content changes in Epics and Stories (including adding, removing, merging, renaming, or moving stories between epics). It guarantees that PRD, Architecture documents, Story files, and tracking indexes are kept 100% in sync to prevent context fragmentation.
 
-IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the current agent persona you may have loaded.
+IT IS CRITICAL THAT YOU FOLLOW THESE STEPS SEQUENTIALLY - while staying in character as the current agent persona.
 
 <steps CRITICAL="TRUE">
-1. **CHECK RECONCILIATION STATUS:** 
-   Run the CLI command `iwish reconcile-status` to check for pending work items in the queue.
-   
-2. **READ THE QUEUE:**
-   Read all `.md` work item files located in `_iwish/runtime/reconciliation-workitems/` (or run `ls _iwish/runtime/reconciliation-workitems/` to list them, then `view_file` to read them).
+1. **CHECK RECONCILIATION STATUS & INGEST CHANGE REQUEST:**
+   - Run the CLI command `iwish reconcile-status` to inspect the queue, or receive direct instructions from the user regarding the story/epic structural change (e.g., "Merge Story 1.1 and 1.2", "Rename Story 15.2", "Move Story 12.3 to Epic 14").
 
-3. **LOCATE SOURCE DOCUMENTS:**
-   Identify the Epic, Story, PRD, and UI Spec files related to each pending work item. The work item will list the `Story ID` or `Epic ID` and a `Summary` of what changed.
+2. **PHASE 1: PRE-FLIGHT IMPACT ANALYSIS:**
+   - Query all frontmatter dependencies (`dependencies:`, `links_to:`) and perform a codebase-wide grep search for references to the Story ID / Epic ID being modified.
+   - Generate a temporary `impact-report.md` detailing:
+     - All files (PRD, Architecture, other Story files, UI Specs) that refer to the target story/epic.
+     - Potential broken references if the story is deleted or renamed.
+   - **[USER GATE]** Present this Impact Report to the user and halt until they confirm the proposed plan.
 
-4. **SYNCHRONIZE SPECIFICATIONS:**
-   For each work item:
-   - Load the relevant PRD or Story file using `view_file`.
-   - Update the Scope, Requirements, or Acceptance Criteria to align with the changes described in the reconciliation work item.
-   - You MUST ensure the updated text is clearly marked as a post-implementation scope change if applicable.
-   - Save the changes to the specification files.
+3. **PHASE 2: QUEUE PROCESSING & SPECIFICATION SYNCHRONIZATION:**
+   - Once approved, systematically update the affected files identified in the Impact Report:
+     - Update the PRD requirements, Architecture references, and Epic index tables.
+     - **[CRITICAL RENAMING RULE]** If a story is renamed or moved (e.g., `story-11.1.md` -> `story-12.3.md`):
+       1. Rename the physical file on disk.
+       2. Update the H1 header *inside* the file (e.g., `# Story 12.3: ...`).
+       3. Update the YAML frontmatter ID or attributes inside the file.
+       4. Find and replace all occurrences of the old ID/link with the new ID/link in all files referencing it.
 
-5. **UPDATE FEATURE GRAPH, FEATURE HIERARCHY & KNOWLEDGE (Recommended):**
-   If the changes impact core features, instruct the user to run `/code-graph` or update the `FeatureGraph` after your edits.
-   If the reconciliation work item includes `feature_hierarchy` in its `requiredUpdates`, regenerate `{planning_artifacts}/feature-hierarchy.md` to reflect updated feature structure and navigation hierarchy.
+4. **PHASE 3: INTEGRITY GATE (VALIDATION):**
+   - Run the validation command:
+     `python3 .agent/scripts/validate-links.py`
+   - This script checks all markdown links, YAML references, and matches physical filenames against internal IDs.
+   - If the script fails, you **MUST NOT** complete the workflow. Analyze the output, fix the broken references/mismatches, and re-run the validation until it passes cleanly.
 
-6. **CLEAR WORK ITEMS:**
-   Once a work item is completely synced, you MUST delete its `.md` file from `_iwish/runtime/reconciliation-workitems/` and delete its corresponding `.json` file from `_iwish/runtime/reconciliation-queue/`.
+5. **PHASE 4: SSOT INDEX & STATUS REBUILD:**
+   - Once validation passes, synchronize the tracking indexes with the physical file status:
+     - Force a rebuild/update of `_iwish-output/3. Development/sprint-status.yaml` and the Epic index in `_iwish-output/epics.md` based *only* on the current physical `.md` files present in the directory.
+     - Run `bash .agent/scripts/navigator-guardian.sh` to compile/sync the Idea Navigator dashboard.
+     - Regenerate `_iwish-output/2. Product Planning/2.4. epics-and-stories.md` or `{planning_artifacts}/feature-hierarchy.md` if the change impacts the feature structure.
 
-7. **REPORT COMPLETION:**
-   Inform the user which documents were successfully updated and confirm that the queue has been cleared.
+6. **CLEAR QUEUE & REPORT COMPLETION:**
+   - Once completely synchronized, delete the processed work items from `_iwish/runtime/reconciliation-workitems/` and `_iwish/runtime/reconciliation-queue/` (if any exist).
+   - Summarize the updated files, IDs, and links to the user. Confirm that the validation passed and context remains fully aligned.
 </steps>

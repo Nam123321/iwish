@@ -27,7 +27,7 @@
 
 2. **Classification:**
    - Bug thuộc **Epic** nào? → ghi epic ID
-   - Bug thuộc **Story** nào? → ghi story ID (tra cứu trong `_iwish-output/stories/`)
+   - Bug thuộc **Story** nào? → ghi story ID (tra cứu trong `_iwish-output/3. Development/1. Epic & Story/`)
    - Bug thuộc loại: `UI` | `Logic` | `Data` | `API` | `State` | `Integration` | `Performance` | `Security` | `SystemDesignBug` (ví dụ: quá tải CPU, nghẽn database, chậm kết nối, rò rỉ bộ nhớ, hoặc phản hồi chậm dưới tải cao)
 
 3. **FMEA Score:**
@@ -61,7 +61,7 @@
 // turbo-all
 
 5. **Đọc Story requirement:**
-   - Mở story file: `_iwish-output/stories/[epic]/[story].md`
+   - Mở story file: `_iwish-output/3. Development/1. Epic & Story/[feature_group]/[epic]/[story].md`
    - Đọc Acceptance Criteria liên quan đến bug
    - Xác nhận: bug vi phạm AC nào?
 
@@ -457,7 +457,7 @@
 25c. **🔄 Auto-Decant & Spec Sync Engine (MANDATORY INTEGRATION):**
      - Load `.agent/skills/ag-kit-guides/context-compression-decant.md`.
      - Extract the Context Delta Block at the end of the session.
-     - If the fix resolved a new edge case (`resolved_edge_cases`) not in the story's Acceptance Criteria (AC), **automatically update** `_iwish-output/stories/[epic]/[story].md` by appending the new AC with a `[EDGE-CASE] [BUG-XXXX]` label.
+     - If the fix resolved a new edge case (`resolved_edge_cases`) not in the story's Acceptance Criteria (AC), **automatically update** `_iwish-output/3. Development/1. Epic & Story/[feature_group]/[epic]/[story].md` by appending the new AC with a `[EDGE-CASE] [BUG-XXXX]` label.
      - Automatically update progress counts and defect ratios in `_iwish-output/epics.md`.
      - Check Why #4 (Process) and Why #5 (Systemic) from RCA. If systemic issues are repeated (e.g. >= 2 similar checkpoints), trigger an immune system update by creating or enhancing skills/workflows.
 

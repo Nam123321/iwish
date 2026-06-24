@@ -103,36 +103,41 @@ Organize by USER VALUE, not technical layers:
 
 ### 3. Design Epic Structure Collaboratively
 
-**Step A: Identify User Value Themes**
+**Step A: Identify Feature Groups & User Value Themes**
 
-- Look for natural groupings in the FRs
+- Look for natural high-level groupings in the FRs to form **Feature Groups** (e.g., FG-01. Platform Foundation, FG-02. Core Product, etc.)
 - Identify user journeys or workflows
 - Consider user types and their goals
 
-**Step B: Propose Epic Structure**
+**Step B: Propose Epic Structure within Feature Groups**
 For each proposed epic:
 
-1. **Epic Title**: User-centric, value-focused
-2. **User Outcome**: What users can accomplish after this epic
-3. **FR Coverage**: Which FR numbers this epic addresses
-4. **Implementation Notes**: Any technical or UX considerations
+1. **Feature Group**: The parent group this epic belongs to.
+2. **Epic Title**: User-centric, value-focused
+3. **User Outcome**: What users can accomplish after this epic
+4. **FR Coverage**: Which FR numbers this epic addresses
+5. **Implementation Notes**: Any technical or UX considerations
 
 **Step C: Create the epics_list**
 
 Format the epics_list as:
 
 ```
-## Epic List
+## Feature Groups & Epic List
 
-### Epic 1: [Epic Title]
+### FG-01: [Feature Group Name]
+
+#### Epic 1: [Epic Title]
 [Epic goal statement - what users can accomplish]
 **FRs covered:** FR1, FR2, FR3, etc.
 
-### Epic 2: [Epic Title]
+#### Epic 2: [Epic Title]
 [Epic goal statement - what users can accomplish]
 **FRs covered:** FR4, FR5, FR6, etc.
 
-[Continue for all epics]
+### FG-02: [Feature Group Name]
+
+[Continue for all Feature Groups and Epics]
 ```
 
 ### 4. Present Epic List for Review

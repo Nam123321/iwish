@@ -71,7 +71,7 @@ To generate all epics with their stories based on the approved epics_list, follo
 ### 1. Load Approved Epic Structure & SIM
 
 Load and review the prerequisites:
-- **Approved epics_list:** From {outputFile} (Step 2).
+- **Approved feature_groups_and_epics_list:** From {outputFile} (Step 2).
 - **System Integrity Map (SIM):** Load `{planning_artifacts}/2. Product Planning/2.3.5. system-integrity-map.md`. 
   - 🛑 **HARD GATE:** If the SIM file is missing or empty, you MUST halt and warn the user: *"⚠️ SIM file chưa tồn tại. Vui lòng chạy /create-sim trước để khởi tạo System Integrity Map."*
 - **SIM Change Detection & Audit:** If the SIM file was modified after stories were generated, perform a change impact audit. Scan all stories for:
@@ -113,8 +113,9 @@ Stories must be independently completable in sequence:
 **STORY FORMAT (from template):**
 
 ```
-### Story {N}.{M}: {story_title}
+#### Story {N}.{M}: {story_title}
 
+**Feature Group:** FG-{FG}: {feature_group_name}
 **Epic:** Epic {N}: {epic_title}
 **Story Title:** {story_title}
 **FR Covered:** [{FR-ID}: {FR-Name}] (e.g., [FR-1.1: Platform Mode Detection](file:///path/to/prd.md#FR-1.1))
@@ -154,14 +155,15 @@ _Epic 2: Content Creation_
 - Story: "Login UI (depends on Story 1.3 API endpoint)" (future dependency!)
 - Story: "Edit post (requires Story 1.4 to be implemented first)" (wrong order!)
 
-### 3. Process Epics Sequentially
+### 3. Process Feature Groups and Epics Sequentially
 
-For each epic in the approved epics_list:
+For each Feature Group and Epic in the approved feature_groups_and_epics_list:
 
 #### A. Epic Overview
 
 Display:
 
+- Feature Group name
 - Epic number and title
 - Epic goal statement
 - FRs covered by this epic
@@ -421,12 +423,14 @@ The final {outputFile} must follow this structure exactly:
 1. **Overview** section with project name
 2. **Requirements Inventory** with all three subsections populated
 3. **FR Coverage Map** showing requirement to epic mapping
-4. **Epic List** with approved epic structure
-5. **Epic sections** for each epic (N = 1, 2, 3...)
-   - Epic title and goal
-   - All stories for that epic (M = 1, 2, 3...)
-     - Story title and user story
-     - Acceptance Criteria using Given/When/Then format
+4. **Feature Groups & Epic List** with approved epic structure
+5. **Feature Group sections** for each Feature Group (FG = 1, 2, 3...)
+   - Feature Group name
+   - **Epic sections** for each epic (N = 1, 2, 3...)
+     - Epic title and goal
+     - All stories for that epic (M = 1, 2, 3...)
+       - Story title and user story
+       - Acceptance Criteria using Given/When/Then format
 
 ### 7. Present FINAL MENU OPTIONS
 

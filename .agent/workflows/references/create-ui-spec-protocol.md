@@ -305,7 +305,25 @@ Navigation Context: {portal_nav_tree} (full menu hierarchy path from feature-hie
 Acceptance Criteria: {acceptance_criteria_bullets}
 Target Persona & Device: {persona} — {device}
 Specialist Notes: {ui_ux_story_notes}
+
+[PLATFORM_CONSULTATION_REQUEST]
+After rendering the UI, act as an Expert UX Reviewer. Provide a structured 'Design Consultation Report' containing strictly 3 to 5 actionable recommendations to improve cognitive load, accessibility, or interaction state handling. Format your recommendations clearly so my downstream agents can evaluate them technically.
 ```
+
+### 🚨 PLATFORM AI DEBATE GATE (MANDATORY)
+
+**After generating the design options and retrieving the Platform AI Consultation Report, the agent MUST run an internal debate:**
+
+```
+1. Extract the 3-5 recommendations from the Platform AI Consultation Report.
+2. Trigger Socratic Debate: Invoke `ux-agent` and `dev-agent` to evaluate the recommendations.
+   - `dev-agent` evaluates technical feasibility (API availability, component complexity).
+   - `ux-agent` evaluates UX coherence with the approved Design System.
+3. Filter out recommendations that cause Scope Creep or technical impossibility.
+4. Keep accepted recommendations to refine the UI Spec.
+5. Generate the `Platform AI Consultation & Debate Report` section in the UI Spec documenting the debate outcome.
+```
+
 
 ## REQUIRED UI SPEC OUTPUT SECTIONS
 
@@ -348,6 +366,11 @@ The final story UI spec MUST include these sections in addition to the existing 
 - State that approved design screens (Stitch, Figma, Claude Design, Canva, etc.) and extracted HTML/CSS visual contract remain authoritative for implementation
 - Call out any specialist recommendation that was downgraded to checklist-only or advisory-only because of conflict with approved visual artifacts
 - If a page override exists, state whether it actively shaped this story/page context or was superseded by an already approved design screen for the same page state
+
+### Platform AI Consultation & Debate Report
+- **MANDATORY SECTION**. Record the recommendations provided by the Design Platform AI.
+- Document the Socratic Debate outcome: what was accepted, what was rejected by `dev-agent` (technical constraint) or `ux-agent` (design constraint).
+- If this section is missing, the UI Spec is considered invalid and generation fails.
 
 ### [POST_DESIGN_ENRICHMENT_LOGIC]
 - Mandatory placeholder section for dynamic interactions.

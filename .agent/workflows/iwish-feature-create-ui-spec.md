@@ -22,14 +22,15 @@ Do NOT attempt to run this workflow without reading the protocol!
 > Ensure the scan passes with Exit Code 0. If it fails, you must fix all unauthorized design tokens (e.g. replacing default violet colors like `#7C3AED` with allowed tokens from `DESIGN.md` such as `#00DF9A` or `#059669`) and re-run the check. Do NOT proceed to design generation or coding with compliance violations.
 
 <steps CRITICAL="TRUE">
-1. Locate and load the target story file (e.g. `_iwish-output/stories/Epic-{epic_id}/Story-{story_id}/story.md` or `_iwish-output/stories/story-{story_id}.md`).
+1. Locate and load the target story file (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md` or `_iwish-output/3. Development/1. Epic & Story/story-{story_id}.md`).
 2. Read Feature Hierarchy `_iwish-output/2. Product Planning/2.5. feature-hierarchy.md`. Halt if missing.
 3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
 4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
-5. Save the UI Spec file in the same directory as the target story file:
-   - For hierarchical story folders (e.g. `_iwish-output/stories/Epic-{epic_id}/Story-{story_id}/`): save as `ui-ux-spec.md`.
-   - For flat legacy story files: save as `_iwish-output/stories/ui-spec-story-{story_id}.md`.
-6. Run scanner on the generated UI Spec file:
+5. Run Socratic Debate on Platform AI's UX recommendations using `ux-agent` and `dev-agent`, and embed the outcomes into the `Platform AI Consultation & Debate Report` section.
+6. Save the UI Spec file in the same directory as the target story file:
+   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `ui-ux-spec.md`.
+   - For flat legacy story files: save as `_iwish-output/3. Development/1. Epic & Story/ui-spec-story-{story_id}.md`.
+7. Run scanner on the generated UI Spec file:
    `node .agent/scripts/design-compliance-scanner.js --spec <path-to-generated-ui-ux-spec.md> --design DESIGN.md`
-7. Ensure scanner passes (Exit Code 0).
+8. Ensure scanner passes (Exit Code 0).
 </steps>

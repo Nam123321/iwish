@@ -34,20 +34,25 @@ This document provides the complete epic and story breakdown for {{project_name}
 
 {{requirements_coverage_map}}
 
-## Epic List
+## Feature Groups & Epic List
 
-{{epics_list}}
+{{feature_groups_and_epics_list}}
 
-<!-- Repeat for each epic in epics_list (N = 1, 2, 3...) -->
+<!-- Repeat for each Feature Group (FG = 1, 2, 3...) -->
 
-## Epic {{N}}: {{epic_title_N}}
+## Feature Group {{FG}}: {{feature_group_name}}
+
+<!-- Repeat for each epic in this Feature Group (N = 1, 2, 3...) -->
+
+### Epic {{N}}: {{epic_title_N}}
 
 {{epic_goal_N}}
 
 <!-- Repeat for each story (M = 1, 2, 3...) within epic N -->
 
-### Story {{N}}.{{M}}: {{story_title_N_M}}
+#### Story {{N}}.{{M}}: {{story_title_N_M}}
 
+**Feature Group:** FG-{{FG}}: {{feature_group_name}}
 **Epic:** Epic {{N}}: {{epic_title_N}}
 **Story Title:** {{story_title_N_M}}
 **FR Covered:** {{fr_covered_N_M}}
@@ -67,3 +72,5 @@ So that {{value_benefit}}.
 **And** {{additional_criteria}}
 
 <!-- End story repeat -->
+<!-- End epic repeat -->
+<!-- End Feature Group repeat -->
