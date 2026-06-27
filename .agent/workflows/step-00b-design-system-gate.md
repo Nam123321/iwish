@@ -191,9 +191,10 @@ After all 9 categories are approved:
 
 If the specialist seed block was not available yet at the moment this gate first ran, record that the workflow paused for missing context before Stitch generation instead of fabricating seed values.
 
-### Stitch Project
-- Project ID: {stitch_project_id}
-- Project URL: [View in Stitch](https://stitch.google.com/projects/{stitch_project_id})
+### Design Platform Project
+- Platform: {design_platform_name} (e.g., Stitch, Figma, Canva, Claude Design)
+- Project ID: {design_project_id}
+- Project URL: [View in Platform]({design_project_url})
 
 ### Color Palette
 [Selected variant description + token values]

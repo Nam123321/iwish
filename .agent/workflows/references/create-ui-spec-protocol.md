@@ -261,9 +261,9 @@ If `{project-root}/.agent/skills/ui-ux/SKILL.md` exists:
 
 **Project Consistency Rule:**
 - Every portal has a specific design project (Figma, Stitch, Claude Design, Canva, etc.) mapped to its `DESIGN.md`.
-- For Stitch, read `{planning_artifacts}/design-system/{portal-slug}/stitch-project.json` for `projectId` and `assetId`. For other tools, read their respective configuration files.
-- When making design generation or edit calls for a story, you **MUST** use the configured project identifier and design system asset for the portal that the screen belongs to.
-- If a story requires screens for multiple portals (e.g., Admin and Webstore), you MUST separate the generation into different projects or files. **NEVER** generate/edit a Webstore screen inside the Admin design project.
+- **CRITICAL**: Before making any design generation or edit calls for a story (including generating mockups/screens), you **MUST** read the `### Design Platform Project` section in the portal's `DESIGN.md` file to retrieve the `Platform` and `Project ID`.
+- You **MUST** use this exact `Project ID` to ensure all designs and mockups are centralized in the correct project. Do NOT create new standalone projects or use the wrong project ID.
+- If a story requires screens for multiple portals (e.g., Admin and Webstore), you MUST separate the generation into their respective configured projects. **NEVER** generate/edit a Webstore screen inside the Admin design project.
 
 **Sync Approval Flow:**
 - After generating or editing screens/mockups and presenting them to the user, the agent MUST explicitly ask: *"Do you approve this design to be synchronized to the Design System?"*
