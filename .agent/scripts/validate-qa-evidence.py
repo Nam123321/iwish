@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-Zero-Trust QA Evidence Validator v3.1
+Zero-Trust QA Evidence Validator v3.2
 =====================================
-Enforces 6 Hard Gates:
+Enforces 7 Hard Gates:
   0. Self-Healing Loop Integrity — blocks exhausted stories, verifies qa-loop.json
   1. Fragile Selector Lint
   2. Assertion Enforcer — rejects scripts with 0 expect() calls
   3. Anti-Padding Detection — rejects DOM/HAR padding tricks
   4. HAR Network Health
   5. Evidence Existence + Size
+  6. UI Presence Assertion — detects API Tunnel tests, cross-checks DOM evidence
 """
 import sys
 import os
@@ -202,6 +203,177 @@ def validate_har_file(filepath):
 # ─────────────────────────────────────────────────────────────
 # GATE 5: Evidence Existence + Size (existing)
 # ─────────────────────────────────────────────────────────────
+
+
+# ─────────────────────────────────────────────────────────────
+# GATE 6: UI Presence Assertion
+# Detects "API Tunnel" tests that open a browser but only call
+# fetch() via page.evaluate() without interacting with the DOM.
+# Also cross-checks DOM evidence for story-subject keywords.
+# ─────────────────────────────────────────────────────────────
+def check_ui_presence(epic_id, story_id):
+    """Gate 6: Detects API Tunnel and Decoy DOM patterns.
+
+    Two attack vectors this gate catches:
+    1. API Tunnel: Test uses page.evaluate(fetch()) for all logic, zero DOM interaction.
+    2. Decoy DOM: Test calls getByRole/locator but only to satisfy Gate 1/2,
+       never asserts on the DOM element (asserts on HTTP status codes instead).
+    """
+    print("\n🔍 [Gate 6] Checking for UI Presence Assertion (API Tunnel + Decoy DOM detection)...")
+
+    # ── Step 1: Find test scripts ──
+    test_files = glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.spec.ts", recursive=True) + \
+                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.spec.ts") + \
+                 glob.glob(f"tests/e2e/epic-{epic_id}/**/*{story_id}*.spec.ts", recursive=True) + \
+                 glob.glob(f"tests/e2e/epic-{epic_id}/*{story_id}*.spec.ts") + \
+                 glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.spec.js", recursive=True) + \
+                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.spec.js") + \
+                 glob.glob(f"tests/e2e/epic-{epic_id}/**/*{story_id}*.spec.js", recursive=True) + \
+                 glob.glob(f"tests/e2e/epic-{epic_id}/*{story_id}*.spec.js")
+    test_files = list(set(test_files))
+
+    if not test_files:
+        print("⚠️  Gate 6 info: No test scripts found. Skipping.")
+        return True
+
+    # ── Step 2: Analyze each test file ──
+
+    # DOM ASSERTION patterns — these prove the test actually verifies UI state
+    # Must be expect() chained with a locator assertion method
+    dom_assertion_patterns = [
+        r'expect\s*\([^)]*(?:getByRole|getByText|getByLabel|getByTestId|getByPlaceholder|locator)\s*\([^)]*\)[^)]*\)\s*\.to(?:BeVisible|BeEnabled|BeDisabled|BeHidden|ContainText|HaveText|HaveValue|HaveAttribute|HaveCount|BeChecked)',
+        r'\.to(?:BeVisible|BeEnabled|BeDisabled|BeHidden|ContainText|HaveText|HaveValue|HaveAttribute|HaveCount|BeChecked)\s*\(',
+    ]
+
+    # API Tunnel indicators
+    api_tunnel_patterns = [
+        r'page\.evaluate\s*\(\s*async\s*\(\)\s*=>\s*\{[^}]*fetch\s*\(',
+        r'page\.evaluate\s*\(\s*async\s*\(\s*\)\s*=>\s*fetch\s*\(',
+        r'page\.evaluate\s*\(\s*\(\s*\)\s*=>\s*fetch\s*\(',
+    ]
+
+    # Status-only assertion patterns (asserting on HTTP status, not DOM)
+    status_only_patterns = [
+        r'expect\s*\(\s*(?:response(?:Code)?|status(?:Code)?|(?:\w+\.)?status)\s*\)\s*\.to(?:Be|Equal)',
+        r'expect\s*\(\s*(?:\w+)\.status\s*\)\s*\.',
+        r'expect\s*\(\s*(?:negative|positive)?[Rr]esponse\.status\s*\)',
+        r'expect\s*\(\s*statuses',
+        r'expect\s*\(\s*successCount',
+        r'expect\s*\(\s*quotaExceeded',
+    ]
+
+    tunnel_detected = False
+    for tf in test_files:
+        with open(tf, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        basename = os.path.basename(tf)
+
+        # Count API tunnel usages
+        api_tunnel_count = 0
+        for pattern in api_tunnel_patterns:
+            api_tunnel_count += len(re.findall(pattern, content, re.DOTALL))
+
+        # Count DOM assertions (the REAL metric — not just DOM usage)
+        dom_assertion_count = 0
+        for pattern in dom_assertion_patterns:
+            dom_assertion_count += len(re.findall(pattern, content))
+
+        # Discount DOM assertions inside login blocks
+        login_block_match = re.search(
+            r"if\s*\(\s*page\.url\(\)\.includes\s*\(\s*['\"]login['\"]\s*\)\s*\)\s*\{(.*?)\}",
+            content, re.DOTALL
+        )
+        login_dom_assertion_count = 0
+        if login_block_match:
+            login_block = login_block_match.group(1)
+            for pattern in dom_assertion_patterns:
+                login_dom_assertion_count += len(re.findall(pattern, login_block))
+
+        real_dom_assertions = dom_assertion_count - login_dom_assertion_count
+
+        # Count status-only assertions
+        status_only_count = 0
+        for pattern in status_only_patterns:
+            status_only_count += len(re.findall(pattern, content))
+
+        # ── Decision logic ──
+        # Pattern 1: API Tunnel — evaluate(fetch) with zero DOM assertions
+        if api_tunnel_count > 0 and real_dom_assertions == 0:
+            print(f"❌ API TUNNEL DETECTED in '{basename}':")
+            print(f"   Found {api_tunnel_count} page.evaluate(fetch()) call(s) but 0 DOM assertions.")
+            print(f"   All {status_only_count} assertion(s) are on HTTP status codes, not on UI elements.")
+            print(f"   The test uses the browser as an HTTP client, not as a UI testing tool.")
+            print(f"   Fix: Add expect(page.getByRole('tab', {{name: /Data Mart/i}})).toBeVisible()")
+            tunnel_detected = True
+
+        # Pattern 2: Decoy DOM — uses getByRole/locator but never asserts on them
+        elif real_dom_assertions == 0 and status_only_count > 0:
+            print(f"❌ DECOY DOM DETECTED in '{basename}':")
+            print(f"   The test may call getByRole/locator, but all {status_only_count} expect() call(s)")
+            print(f"   assert on HTTP status codes — never on DOM element visibility/text/state.")
+            print(f"   This is camouflage: DOM locators are touched but never verified.")
+            print(f"   Fix: Replace expect(responseCode).toBe(200) with")
+            print(f"         expect(page.getByRole('heading', {{name: /Data Mart/i}})).toBeVisible()")
+            tunnel_detected = True
+
+        # Hybrid: has both API calls AND real DOM assertions — OK
+        elif api_tunnel_count > 0 and real_dom_assertions > 0:
+            print(f"  ✅ '{basename}': Hybrid test — {api_tunnel_count} API call(s) + {real_dom_assertions} DOM assertion(s). OK.")
+
+        # Pure UI test with DOM assertions — OK
+        elif real_dom_assertions > 0:
+            print(f"  ✅ '{basename}': UI test with {real_dom_assertions} DOM assertion(s). OK.")
+
+        # No assertions of any kind (should be caught by Gate 2, but just in case)
+        else:
+            print(f"  ⚠️  '{basename}': No DOM assertions and no API calls. May need review.")
+
+    if tunnel_detected:
+        return False
+
+    # ── Step 3: Cross-check DOM evidence for feature presence ──
+    evidence_patterns = [
+        f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/qa/evidence/*dom*.html",
+        f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/qa/evidence/*snapshot*.html",
+    ]
+    dom_files = []
+    for pat in evidence_patterns:
+        dom_files.extend(glob.glob(pat))
+
+    story_paths = glob.glob(f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/story.md") + \
+                  glob.glob(f"_iwish-output/stories/story-{story_id}.md")
+
+    if dom_files and story_paths:
+        with open(story_paths[0], 'r', encoding='utf-8') as f:
+            story_content = f.read()
+
+        want_match = re.search(r'I want\s+(.+?)\s*,', story_content)
+        keywords = []
+        if want_match:
+            want_text = want_match.group(1).lower()
+            stopwords = {'the', 'and', 'for', 'with', 'that', 'this', 'from', 'into',
+                         'showing', 'have', 'can', 'are', 'was', 'been', 'being', 'will'}
+            words = re.findall(r'[a-z]{3,}', want_text)
+            keywords = [w for w in words if w not in stopwords]
+
+        if keywords:
+            dom_content = ""
+            for df in dom_files:
+                with open(df, 'r', encoding='utf-8', errors='ignore') as f:
+                    dom_content += f.read().lower()
+
+            found_keywords = [kw for kw in keywords if kw in dom_content]
+
+            if found_keywords:
+                print(f"  ✅ DOM evidence contains story-subject keywords: {found_keywords}")
+            else:
+                print(f"  ⚠️  DOM evidence does NOT contain any story-subject keywords: {keywords}")
+                print(f"     The captured page may be a login/error page, not the feature page.")
+
+    print("✅ Gate 6 passed: No API Tunnel or Decoy DOM pattern detected.")
+    return True
+
 def is_valid_evidence(filename, evidence_dir, substrings, min_size):
     filename_lower = filename.lower()
     if any(sub in filename_lower for sub in substrings):
@@ -234,7 +406,7 @@ def main():
         sys.exit(1)
 
     print(f"🔍 Validating QA Evidence for Epic {epic_id}, Story {story_id}...")
-    print(f"   Running 6 Hard Gates: Loop Integrity → Locator Lint → Assertion Enforcer → Anti-Padding → HAR Health → Evidence Files\n")
+    print(f"   Running 7 Hard Gates: Loop Integrity → Locator Lint → Assertion Enforcer → Anti-Padding → HAR Health → Evidence Files → UI Presence\n")
 
     all_passed = True
 
@@ -289,6 +461,14 @@ def main():
         print("\n❌ VALIDATION FAILED at Gate 3: Evidence-padding tricks detected in test scripts.")
         print("   The test artificially inflates evidence file sizes instead of generating real evidence.")
         print("   Fix: Remove all Array().fill(), /?padding= loops, and innerHTML injection code.")
+        sys.exit(1)
+
+    # ── GATE 6: UI Presence Assertion ──
+    if not check_ui_presence(epic_id, story_id):
+        print("\n❌ VALIDATION FAILED at Gate 6: API Tunnel test detected.")
+        print("   The test opens a browser but only calls fetch() via page.evaluate().")
+        print("   It tests the API, NOT the UI. For UI stories, add DOM interaction assertions.")
+        print("   Example: expect(page.getByRole('tab', {name: /Data Mart/i})).toBeVisible()")
         sys.exit(1)
 
     # ── GATE 4 & 5: Per-spec evidence validation ──
@@ -385,7 +565,7 @@ def main():
         print("Agent may be hallucinating a test pass or ignoring backend failures.")
         sys.exit(1)
 
-    print("\n✅ VALIDATION PASSED: All 6 Hard Gates cleared. Evidence is genuine.")
+    print("\n✅ VALIDATION PASSED: All 7 Hard Gates cleared. Evidence is genuine.")
     sys.exit(0)
 
 

@@ -94,7 +94,17 @@ Before execution, the Agent MUST search for existing `.cjs` or `.spec.ts` test f
   ```bash
   python3 ../iwish/.agent/scripts/validate-qa-evidence.py "<Epic_ID>" "<Story_ID>"
   ```
-  The validator now includes Gate 0 (Loop Integrity) which checks `qa-loop.json` was properly used.
+  The validator runs 7 Hard Gates including:
+  - Gate 0: Loop Integrity (checks `qa-loop.json`)
+  - Gate 6: UI Presence Assertion — **rejects API Tunnel and Decoy DOM tests**
+
+### Gate 6: Anti-Fake-Pass Rules for Test Script Authors
+When writing Playwright test scripts, agents MUST follow these rules to pass Gate 6:
+
+1. **No API Tunnel**: Do NOT use `page.evaluate(() => fetch(...))` as the sole test logic. If testing APIs, the test MUST also verify the UI reflects the API state.
+2. **No Decoy DOM**: Do NOT call `page.getByRole()` / `page.locator()` without asserting on the result. Using a DOM locator only to satisfy Gate 1/2 without `expect(locator).toBeVisible()` is flagged as camouflage.
+3. **DOM Assertions Required**: Every test for a UI story must contain at least one `expect(page.getByRole/getByText/getByTestId(...)).toBeVisible/toContainText/toHaveText()`.
+4. **Login blocks are discounted**: DOM interactions inside `if (page.url().includes('login'))` blocks do NOT count toward the DOM assertion threshold.
 
 ## Step 5: Self-Healing Loop (Enforced by Script)
 The self-healing loop is **enforced by `self-healing-runner.py`**, NOT by agent "good faith". The script:
