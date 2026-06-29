@@ -59,7 +59,7 @@ def main():
                 in_zt_section = False
                 
             if in_zt_section:
-                match = re.search(r'- \[(x|X)\] \*\*(.*?)\*\*', line)
+                match = re.search(r'- \[(x|X)\]\s*(?:\*\*)?(.*?)(?:\*\*)?\s*$', line)
                 if match:
                     constraints.append(match.group(2).strip())
                     
@@ -69,32 +69,33 @@ def main():
             
         print(f"📋 Required Evidence Types: {', '.join(constraints)}")
         
+        def is_valid_evidence(filename, substrings, min_size):
+            filename_lower = filename.lower()
+            if any(sub in filename_lower for sub in substrings):
+                filepath = os.path.join(evidence_dir, filename)
+                if os.path.exists(filepath) and os.path.getsize(filepath) >= min_size:
+                    return True
+            return False
+
         missing_evidence = []
         for constraint in constraints:
             found = False
             if "DOM Hash" in constraint or "Snapshot" in constraint:
-                if any(f.endswith('.html') or f.endswith('.json') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['.html', 'dom', 'snapshot'], 200) for f in files_in_dir)
             elif "Network" in constraint:
-                if any(f.endswith('.json') or f.endswith('.har') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['.har', 'network'], 200) for f in files_in_dir)
             elif "A11y" in constraint:
-                if any(f.endswith('.json') or f.endswith('.txt') or f.endswith('.md') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['a11y', 'access'], 100) for f in files_in_dir)
             elif "Visual" in constraint or "Screenshot" in constraint:
-                if any(f.endswith('.png') or f.endswith('.jpg') or f.endswith('.jpeg') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['.png', '.jpg', '.jpeg', 'visual', 'screenshot'], 1024) for f in files_in_dir)
             elif "Console Log" in constraint:
-                if any(f.endswith('.log') or f.endswith('.txt') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['.log', 'console'], 100) for f in files_in_dir)
             elif "Database" in constraint:
-                if any(f.endswith('.json') or f.endswith('.sql') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['.sql', 'db', 'database'], 100) for f in files_in_dir)
             elif "Performance" in constraint or "Trace" in constraint:
-                if any(f.endswith('.json') or f.endswith('.trace') or f.endswith('.md') for f in files_in_dir):
-                    found = True
+                found = any(is_valid_evidence(f, ['.trace', 'perf'], 500) for f in files_in_dir)
             else:
-                found = len(files_in_dir) > 0
+                found = any(os.path.getsize(os.path.join(evidence_dir, f)) >= 100 for f in files_in_dir)
                 
             if found:
                 print(f"  ✅ Found evidence for: {constraint}")
