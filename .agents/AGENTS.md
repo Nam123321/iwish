@@ -70,3 +70,12 @@ All agents MUST enforce the correct file paths and names based on the active Lay
 
 - The completion status for any story, epic, task, or dependency in files (including `sprint-status.yaml`, `story.md` frontmatter, epic files, and verification scripts) MUST strictly be `completed` (all lowercase).
 - Using the term `done` as a status value or key is strictly prohibited.
+
+
+## 🌐 MacOS Browser Tooling Rule
+
+Whenever any agent (including orchestrator, qa-agent, ux-agent, dev-agent, etc.) needs to automate a browser, verify a UI, or capture screenshots, the agent MUST obey the OS environment limitations:
+
+1. **Never use `browser_subagent` for local UI on macOS**: `browser_subagent` (Agentic Browser) only supports local Chrome mode on Linux. Since this workspace runs on macOS, invoking it for local URLs will fail and cause interruptions.
+2. **Use `chrome-devtools-mcp`**: Agents MUST explicitly use the `chrome-devtools-mcp` tools (e.g., `navigate_page`, `take_screenshot`, `evaluate_script`) to interact with the browser on macOS environments. 
+3. **Static Fallback**: If complex interactions are not needed, use `read_url_content` or `search_web`.
