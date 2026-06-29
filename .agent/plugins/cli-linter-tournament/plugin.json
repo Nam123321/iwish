@@ -1,0 +1,10 @@
+{
+  "name": "cli-linter-tournament",
+  "version": "1.0.0",
+  "type": "TOURNAMENT_PLUGIN",
+  "description": "Sandboxed CLI linter for design.md",
+  "skills": ["cli-linter"],
+  "scripts": {
+    "lint": "./scripts/lint-sandbox.sh"
+  }
+}

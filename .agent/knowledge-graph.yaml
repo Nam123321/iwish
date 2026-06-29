@@ -1159,3 +1159,22 @@ nodes:
   - validation
   - compliance
   depends_on: []
+
+- id: plugin-cli-linter-tournament
+  type: plugin
+  path: /.agent/plugins/cli-linter-tournament/plugin.json
+  description: "CLI Linter Tournament Plugin config"
+  tags: [plugin, cli, linter, tournament]
+  depends_on: []
+- id: script-cli-linter-sandbox
+  type: script
+  path: /.agent/plugins/cli-linter-tournament/scripts/lint-sandbox.sh
+  description: "Sandboxed execution for CLI Linter"
+  tags: [script, sandbox, linter, cli]
+  depends_on: []
+- id: skill-cli-linter
+  type: skill
+  path: /.agent/plugins/cli-linter-tournament/skills/cli-linter/SKILL.md
+  description: "Executes the CLI linter in a secure, sandboxed environment"
+  tags: [skill, linter, cli, security, sandbox]
+  depends_on: []

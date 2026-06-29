@@ -408,6 +408,14 @@
       - **Auto-Immune Trigger**: Kích hoạt tự động quá trình tạo Draft Skill (Lesson Extraction) chứa các directive giúp tránh lỗi tương tự.
       - **capability-agent Capability Trigger**: Đưa Draft Skill này vào workflow `/enhance-skill` để thực hiện Dual-Run (Inhouse vs Darwinian) đánh giá trước khi promote thành Official Skill.
 
+21b. **Auto-Immune RCA Injection (MANDATORY):**
+     - Kích hoạt Knowledge Graph Injection để ghi nhớ lỗi và RCA vào Feature Graph.
+     - Sử dụng CLI sau để inject RCA node, đảm bảo liên kết nó tới story hoặc epic liên quan qua metadata tags:
+       ```bash
+       iwish inject-node --file "<sbrp_report_file_path>" --metadata '{"summary": "<lesson_learned>", "tags": ["rca", "bug-fix", "<feature_id>"], "layer": "story", "complexity": "auto-immune"}' || echo "- [BUG-RCA] <lesson_learned>" >> "_iwish-output/edge-case-knowledge/epics/Epic-<epic_id>-rca-fallback.md"
+       ```
+     - Cú pháp `|| echo ...` là fallback bắt buộc. Nếu Knowledge Graph (FalkorDB) offline, lỗi sẽ không làm crash workflow mà tự động ghi log thủ công vào thư mục edge-case-knowledge tương ứng của Epic.
+
 ### 7c. Update Documents
 
 22. **Update Edge Case Knowledge Graph:**
