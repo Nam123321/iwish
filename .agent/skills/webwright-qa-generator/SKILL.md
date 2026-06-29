@@ -19,6 +19,11 @@ KHÔNG sử dụng các lệnh tương tác tức thời của Chrome DevTools M
 - Tránh sử dụng `time.sleep` hoặc hardcoded timeouts.
 - Ưu tiên sử dụng các locator tin cậy: `get_by_role`, `get_by_text`, `get_by_test_id`.
 
+### 2.5. Anti-Hallucination & Real UI Interaction (Cấm giả lập giao diện)
+- **NGHIÊM CẤM** việc sử dụng `page.setContent()` để tự tiêm HTML ảo (DOM Mocking/Simulation) vào trang web để lách luật chụp ảnh màn hình.
+- Playwright script BẮT BUỘC phải dùng `page.goto(url)` để điều hướng đến Frontend thực tế đang chạy và tương tác với các element thật sự trên DOM (`page.click()`, `page.fill()`).
+- Bức ảnh chụp (`visual-screenshot.png`) phải phản ánh đúng giao diện người dùng thực tế đang hiển thị.
+
 ### 3. Vòng lặp Thực thi (Execution Loop)
 1. **Analyze (Phân tích):** Đọc Acceptance Criteria từ User Story hoặc PRD.
 2. **Generate (Sinh mã):** Viết script Playwright và lưu vào thư mục E2E Test (ví dụ: `tests/e2e/`).
