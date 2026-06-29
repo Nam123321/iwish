@@ -99,11 +99,17 @@ def classify_failure(output):
         (r'typeerror|referenceerror',     'JavaScript runtime error in application code'),
         (r'prisma.*error|database.*error','Database / Prisma error'),
         (r'internal\s+server\s+error',    'Internal Server Error'),
+        (r'404\s+not\s+found',           'Route/page not found (404)'),
+    ]
+
+    # Type 2 patterns detected from DOM assertions — UI component genuinely absent
+    app_dom_patterns = [
+        (r'element\(s\)\s+not\s+found',               'DOM element genuinely absent — app missing UI component'),
+        (r'expected:\s*visible.*error:\s*element',     'UI component expected but not rendered — app bug'),
     ]
 
     # Type 1 patterns (Script Failure) — test logic / selector issue
     script_patterns = [
-        (r'timeout\s+\d+ms\s+exceeded',              'Playwright timeout exceeded'),
         (r'waiting\s+for\s+(selector|locator)',        'Selector not found in DOM'),
         (r'strict\s+mode\s+violation',                 'Multiple elements matched selector'),
         (r'element\s+is\s+not\s+(visible|attached)',   'Element state mismatch'),
@@ -114,6 +120,22 @@ def classify_failure(output):
     ]
 
     for pattern, reason in app_patterns:
+        if re.search(pattern, output_lower):
+            return ("Type2_AppBug", reason)
+
+    # Smart timeout classification:
+    # If timeout happens AND "element(s) not found" → app didn't render content (Type2)
+    # If timeout happens without that → selector might be wrong (Type1)
+    timeout_match = re.search(r'timeout\s+\d+ms\s+exceeded', output_lower)
+    if timeout_match:
+        for pattern, reason in app_dom_patterns:
+            if re.search(pattern, output_lower):
+                return ("Type2_AppBug", f"Timeout + {reason}")
+        # Timeout without "element not found" = likely selector issue
+        return ("Type1_ScriptFailure", "Playwright timeout exceeded — likely wrong selector")
+
+    # Check DOM absence patterns even without timeout
+    for pattern, reason in app_dom_patterns:
         if re.search(pattern, output_lower):
             return ("Type2_AppBug", reason)
 
@@ -354,7 +376,8 @@ def cmd_run(epic_id, story_id, test_command):
         "recommendation": (
             "FIX THE TEST SCRIPT: Check selectors, timeouts, assertions, then re-run."
             if failure_type == "Type1_ScriptFailure"
-            else "FIX THE APPLICATION: Check API routes, DB, business logic, then re-run."
+            else "INVOKE /fix-bug: This is an APPLICATION BUG — the UI element/route/component is missing or broken. "
+                 "Do NOT fix the test script to work around it. Run /fix-bug to fix the app code first, then re-test."
         ),
         "errorTrace": error_trace
     }

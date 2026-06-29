@@ -116,15 +116,22 @@ The self-healing loop is **enforced by `self-healing-runner.py` v2.0**, NOT by a
 
 ### Agent Loop Behavior:
 - **If `self-healing-runner.py run` exits 0 (PASS):**
-  - Run `validate-qa-evidence.py` to verify evidence.
-  - If validator passes: Transition story to `Pending_Approval`, halt, notify user.
+  - Validator already ran (integrated in runner v2.0). Transition story to `Pending_Approval`, halt, notify user.
 - **If `self-healing-runner.py run` exits 1 with `action: HEAL`:**
   - Read the HEALING REPORT JSON output.
-  - If `failureType: Type1_ScriptFailure`: Fix the test script, loop back to Step 4.
-  - If `failureType: Type2_AppBug`: Invoke `/fix-bug` to fix app code, loop back to Step 4.
+  - If `failureType: Type1_ScriptFailure`: Fix the test script (wrong selectors, timeouts), loop back to Step 4.
+  - If `failureType: Type2_AppBug`: **MANDATORY** — Invoke `/fix-bug` to fix app code. **Do NOT rewrite the test script to avoid the broken page/component.** Changing the test to route around a missing UI element is a "sophisticated fake-pass" and is STRICTLY FORBIDDEN.
 - **If `self-healing-runner.py run` exits 1 with `action: HALT`:**
   - **STOP IMMEDIATELY.** Do NOT attempt further runs.
   - Notify user: *"Maximum retries (3) reached. Test still failing. Run `/reject-qa` to reset or `/approve-qa` to override."*
+
+### Anti-Workaround Rule (CRITICAL):
+When a DOM assertion fails because a UI element is **genuinely absent** (not wrong selector), the agent MUST:
+1. **NOT** change the test to use a different navigation path that avoids the missing element.
+2. **NOT** weaken the assertion (e.g., replacing `toBeVisible()` with a broader fallback).
+3. **INSTEAD** invoke `/fix-bug` to add the missing UI component to the app, then re-test with the original test script.
+
+The runner v2.1 classifies `timeout + element(s) not found` as `Type2_AppBug` to enforce this automatically.
 
 ### Reset (after user decision):
 ```bash
