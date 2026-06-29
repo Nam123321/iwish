@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Self-Healing Runner v1.0
+Self-Healing Runner v2.0
 ========================
 Executable enforcement of the QA self-healing loop.
-Replaces the markdown-only pseudocode in fast-track-self-healing/SKILL.md.
 
-This script is the SINGLE SOURCE OF TRUTH for retry tracking.
-Agents MUST use this script instead of manually editing qa-loop.json.
+Pipeline: test execution → validator → pass/fail
+When test passes, the runner automatically runs validate-qa-evidence.py.
+If the validator rejects (e.g. Gate 6 catches API Tunnel), it counts as a
+failed attempt and triggers the retry loop — no gap between test and validation.
 
 Usage:
   python3 self-healing-runner.py check  <epic_id> <story_id>
@@ -200,20 +201,121 @@ def cmd_run(epic_id, story_id, test_command):
     print("─" * 60)
 
     if result.returncode == 0:
-        # ══ TEST PASSED ══
-        state["status"] = "Pending_Approval"
-        save_state(state)
+        # ══ TEST PASSED — but must still pass validator ══
+        print(f"\n✅ Playwright test passed on attempt {state['attempts']}/{MAX_RETRIES}")
+        print(f"🔍 Running validator (validate-qa-evidence.py) to check evidence quality...")
 
-        report = {
-            "action": "VALIDATE",
-            "result": "PASS",
-            "reason": "Test passed — proceed to validate-qa-evidence.py",
-            "attempts": state["attempts"],
-            "status": "Pending_Approval"
-        }
-        print(f"\n✅ TEST PASSED on attempt {state['attempts']}/{MAX_RETRIES}")
-        print(f"\n📋 HEALING REPORT:\n{json.dumps(report, indent=2)}")
-        return 0
+        # ── Find validator script ──
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        validator_path = os.path.join(script_dir, "validate-qa-evidence.py")
+
+        if not os.path.exists(validator_path):
+            # Fallback: try relative to CWD (when running from target project)
+            validator_path_alt = os.path.join("..", "iwish", ".agent", "scripts", "validate-qa-evidence.py")
+            if os.path.exists(validator_path_alt):
+                validator_path = validator_path_alt
+            else:
+                print(f"⚠️  Validator not found at {validator_path}. Skipping evidence validation.")
+                state["status"] = "Pending_Approval"
+                save_state(state)
+                report = {
+                    "action": "VALIDATE",
+                    "result": "PASS_UNVALIDATED",
+                    "reason": "Test passed but validator script not found — evidence not verified",
+                    "attempts": state["attempts"],
+                    "status": "Pending_Approval"
+                }
+                print(f"\n📋 HEALING REPORT:\n{json.dumps(report, indent=2)}")
+                return 0
+
+        # ── Run validator ──
+        validator_result = subprocess.run(
+            [sys.executable, validator_path, str(epic_id), str(story_id)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        print(validator_result.stdout or "")
+        if validator_result.stderr:
+            print(validator_result.stderr)
+
+        if validator_result.returncode == 0:
+            # ── Both test AND validator passed ──
+            state["status"] = "Pending_Approval"
+            save_state(state)
+
+            report = {
+                "action": "VALIDATE",
+                "result": "PASS",
+                "reason": "Test passed AND all validator gates cleared",
+                "attempts": state["attempts"],
+                "status": "Pending_Approval"
+            }
+            print(f"\n✅ FULLY VALIDATED on attempt {state['attempts']}/{MAX_RETRIES}")
+            print(f"\n📋 HEALING REPORT:\n{json.dumps(report, indent=2)}")
+            return 0
+        else:
+            # ── Test passed but VALIDATOR FAILED ──
+            # This is a Type 1 failure — the test script is inadequate
+            failure_type = "Type1_ScriptFailure"
+            failure_reason = "Test execution passed but validator rejected the evidence"
+
+            # Extract specific gate failure from validator output
+            validator_output = (validator_result.stdout or "") + (validator_result.stderr or "")
+            gate_match = re.search(r'VALIDATION FAILED at Gate (\d+): (.+)', validator_output)
+            if gate_match:
+                failure_reason = f"Validator Gate {gate_match.group(1)} failed: {gate_match.group(2)}"
+
+            # Check for specific patterns
+            if "API TUNNEL" in validator_output:
+                failure_reason = "Gate 6: API Tunnel detected — test uses page.evaluate(fetch()) without DOM assertions"
+            elif "DECOY DOM" in validator_output:
+                failure_reason = "Gate 6: Decoy DOM detected — DOM locators touched but never asserted on"
+            elif "ASSERTION ENFORCER" in validator_output:
+                failure_reason = "Gate 2: Test has zero expect() assertions"
+            elif "ANTI-PADDING" in validator_output:
+                failure_reason = "Gate 3: Evidence-padding tricks detected"
+
+            failure_record = {
+                "attempt": state["attempts"],
+                "type": failure_type,
+                "reason": failure_reason,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "returnCode": validator_result.returncode,
+                "source": "validator"
+            }
+            state.setdefault("failures", []).append(failure_record)
+            remaining = MAX_RETRIES - state["attempts"]
+
+            if remaining <= 0:
+                state["status"] = "Exhausted"
+                action = "HALT"
+            else:
+                state["status"] = "Healing"
+                action = "HEAL"
+
+            save_state(state)
+
+            report = {
+                "action": action,
+                "result": "FAIL",
+                "failureType": failure_type,
+                "failureReason": failure_reason,
+                "failureSource": "validator",
+                "attempts": state["attempts"],
+                "remaining": remaining,
+                "recommendation": "FIX THE TEST SCRIPT: The test passes but evidence is invalid. Add DOM assertions (expect(locator).toBeVisible()), remove API Tunnel patterns."
+            }
+
+            if action == "HALT":
+                print(f"\n❌ EXHAUSTED after {state['attempts']} attempts (validator rejection). Manual intervention required.")
+            else:
+                print(f"\n⚠️  VALIDATOR REJECTED on attempt {state['attempts']}/{MAX_RETRIES}. {remaining} retries remaining.")
+                print(f"   Reason: {failure_reason}")
+
+            print(f"\n📋 HEALING REPORT:\n{json.dumps(report, indent=2)}")
+            return 1
 
     # ══ TEST FAILED ══
     failure_type, failure_reason = classify_failure(combined_output)

@@ -88,12 +88,11 @@ Before execution, the Agent MUST search for existing `.cjs` or `.spec.ts` test f
   ```bash
   python3 ../iwish/.agent/scripts/self-healing-runner.py run <Epic_ID> <Story_ID> -- npx playwright test <test_files>
   ```
-  This automatically tracks attempts in `qa-loop.json`, classifies failures, and blocks after 3 retries.
+  This runs a **unified pipeline**: test execution → validator (7 gates) → pass/fail.
+  - If both test AND validator pass: status = `Pending_Approval`, exit 0.
+  - If test passes but validator rejects (e.g. Gate 6): counts as a **failed attempt**, triggers retry loop.
+  - Agents do NOT need to call `validate-qa-evidence.py` separately — the runner does it.
 
-- **Evidence Validation:** After tests pass, execute:
-  ```bash
-  python3 ../iwish/.agent/scripts/validate-qa-evidence.py "<Epic_ID>" "<Story_ID>"
-  ```
   The validator runs 7 Hard Gates including:
   - Gate 0: Loop Integrity (checks `qa-loop.json`)
   - Gate 6: UI Presence Assertion — **rejects API Tunnel and Decoy DOM tests**
@@ -107,12 +106,13 @@ When writing Playwright test scripts, agents MUST follow these rules to pass Gat
 4. **Login blocks are discounted**: DOM interactions inside `if (page.url().includes('login'))` blocks do NOT count toward the DOM assertion threshold.
 
 ## Step 5: Self-Healing Loop (Enforced by Script)
-The self-healing loop is **enforced by `self-healing-runner.py`**, NOT by agent "good faith". The script:
+The self-healing loop is **enforced by `self-healing-runner.py` v2.0**, NOT by agent "good faith". The script:
 
 1. **Tracks attempts atomically** in `.agent/cache/qa-loop.json`.
-2. **Classifies failures** into Type 1 (Script) or Type 2 (App Bug) using pattern matching.
-3. **Hard-blocks at 3 retries** — the script refuses to run tests after exhaustion.
-4. **Outputs structured HEALING REPORT** in JSON for agent consumption.
+2. **Runs integrated pipeline** — test execution + validator in one command.
+3. **Classifies failures** into Type 1 (Script) or Type 2 (App Bug), including validator rejections.
+4. **Hard-blocks at 3 retries** — the script refuses to run tests after exhaustion.
+5. **Outputs structured HEALING REPORT** in JSON for agent consumption.
 
 ### Agent Loop Behavior:
 - **If `self-healing-runner.py run` exits 0 (PASS):**
