@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Zero-Trust QA Evidence Validator v3.0
+Zero-Trust QA Evidence Validator v3.1
 =====================================
-Enforces 5 Hard Gates:
-  1. Fragile Selector Lint (existing)
-  2. Assertion Enforcer (NEW) — rejects scripts with 0 expect() calls
-  3. Anti-Padding Detection (NEW) — rejects DOM/HAR padding tricks
-  4. HAR Network Health (existing, improved)
-  5. Evidence Existence + Size (existing)
+Enforces 6 Hard Gates:
+  0. Self-Healing Loop Integrity — blocks exhausted stories, verifies qa-loop.json
+  1. Fragile Selector Lint
+  2. Assertion Enforcer — rejects scripts with 0 expect() calls
+  3. Anti-Padding Detection — rejects DOM/HAR padding tricks
+  4. HAR Network Health
+  5. Evidence Existence + Size
 """
 import sys
 import os
@@ -233,9 +234,43 @@ def main():
         sys.exit(1)
 
     print(f"🔍 Validating QA Evidence for Epic {epic_id}, Story {story_id}...")
-    print(f"   Running 5 Hard Gates: Locator Lint → Assertion Enforcer → Anti-Padding → HAR Health → Evidence Files\n")
+    print(f"   Running 6 Hard Gates: Loop Integrity → Locator Lint → Assertion Enforcer → Anti-Padding → HAR Health → Evidence Files\n")
 
     all_passed = True
+
+    # ── GATE 0: Self-Healing Loop Integrity ──
+    qa_loop_path = os.path.join(".agent", "cache", "qa-loop.json")
+    print("\n🔍 [Gate 0] Checking self-healing loop integrity (qa-loop.json)...")
+    if os.path.exists(qa_loop_path):
+        try:
+            with open(qa_loop_path, 'r') as f:
+                loop_state = json.load(f)
+
+            loop_story = str(loop_state.get("storyId", ""))
+            loop_epic = str(loop_state.get("epicId", ""))
+            loop_attempts = loop_state.get("attempts", 0)
+            loop_status = loop_state.get("status", "Unknown")
+            loop_max = loop_state.get("maxRetries", 3)
+
+            # Verify qa-loop matches current story
+            if loop_story == str(story_id) and loop_epic == str(epic_id):
+                # Check for bypass: status must be Pending_Approval (test passed)
+                if loop_status == "Exhausted":
+                    print(f"❌ LOOP INTEGRITY FAIL: Story {story_id} exhausted {loop_max} retries.")
+                    print(f"   The self-healing loop ran {loop_attempts} times and still failed.")
+                    print(f"   User must run /reject-qa to reset, or /approve-qa to override.")
+                    sys.exit(1)
+                elif loop_status in ("Pending_Approval", "Running", "Healing", "Initialized"):
+                    print(f"✅ Gate 0 passed: qa-loop.json valid — {loop_attempts} attempt(s), status={loop_status}")
+                else:
+                    print(f"⚠️  Gate 0 warning: Unexpected status '{loop_status}' in qa-loop.json. Proceeding.")
+            else:
+                print(f"⚠️  Gate 0 info: qa-loop.json is for Story {loop_story} (Epic {loop_epic}), not {story_id}. Skipping loop check.")
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"⚠️  Gate 0 warning: Could not parse qa-loop.json: {e}. Proceeding.")
+    else:
+        print(f"⚠️  Gate 0 info: No qa-loop.json found. Self-healing runner was not used.")
+        print(f"   Recommendation: Use self-healing-runner.py to track retry attempts.")
 
     # ── GATE 1: Fragile Selector Lint ──
     if not check_fragile_selectors(epic_id, story_id):
@@ -350,7 +385,7 @@ def main():
         print("Agent may be hallucinating a test pass or ignoring backend failures.")
         sys.exit(1)
 
-    print("\n✅ VALIDATION PASSED: All 5 Hard Gates cleared. Evidence is genuine.")
+    print("\n✅ VALIDATION PASSED: All 6 Hard Gates cleared. Evidence is genuine.")
     sys.exit(0)
 
 

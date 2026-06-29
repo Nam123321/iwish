@@ -5,72 +5,65 @@ description: Automates compilation checks and retries for agent-generated code w
 
 # Fast-Track Self-Healing Loop
 
-This skill executes a given compilation or test command via Python's `subprocess`. If the command fails, it captures the `stderr` and `stdout` traces, auto-injects them into a retry prompt for the LLM, and retries the process up to a hard limit of 3 times.
+This skill is **enforced by executable scripts**, not by agent text interpretation.
 
-## Python Reference Implementation
+## Executable Entry Points
 
-```python
-#!/usr/bin/env python3
-import subprocess
-import sys
+| Script | Location | Purpose |
+|--------|----------|---------|
+| `self-healing-runner.py` | `.agent/scripts/self-healing-runner.py` | Test execution wrapper with retry tracking, failure classification, and hard-block enforcement |
+| `validate-qa-evidence.py` | `.agent/scripts/validate-qa-evidence.py` | Evidence validator with Gate 0 (Loop Integrity) that checks `qa-loop.json` |
 
-def run_with_self_healing(command, llm_prompt_callback, max_retries=3):
-    """
-    Executes a shell command. If it fails, uses the LLM to fix the code
-    and retries up to max_retries times.
-    
-    Args:
-        command (list): The command to run, e.g., ['python3', 'script.py']
-        llm_prompt_callback (function): Function that takes stderr and returns True if fixed.
-        max_retries (int): Hard limit on retry loops.
-    """
-    retries = 0
-    
-    while retries <= max_retries:
-        print(f"[Attempt {retries + 1}/{max_retries + 1}] Running: {' '.join(command)}")
-        
-        # AC1: Capture compilation stderr traces.
-        result = subprocess.run(
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        
-        if result.returncode == 0:
-            print("Execution succeeded!")
-            print(result.stdout)
-            return True
-            
-        print(f"Execution failed with return code {result.returncode}.")
-        error_context = result.stderr if result.stderr.strip() else result.stdout
-        
-        if retries == max_retries:
-            # AC3: Hard limit loops to exactly 3 retries.
-            print("Max retries reached. Failing gracefully.")
-            print(f"Final error:\n{error_context}")
-            return False
-            
-        # AC2: Auto-inject traceback context into LLM prompt.
-        print("Auto-injecting traceback context into LLM prompt...")
-        prompt = (
-            f"The command {' '.join(command)} failed with the following traceback/error:\n"
-            f"```\n{error_context}\n```\n"
-            "Please analyze this error and provide a fix for the code."
-        )
-        
-        fix_applied = llm_prompt_callback(prompt)
-        if not fix_applied:
-            print("LLM could not apply a fix. Aborting self-healing loop.")
-            return False
-            
-        retries += 1
+## Usage (from target project root)
 
-if __name__ == "__main__":
-    # Example usage placeholder
-    # def dummy_llm_fix(prompt):
-    #     print("Simulating LLM fix based on prompt...")
-    #     return True
-    # run_with_self_healing(['python3', 'faulty_script.py'], dummy_llm_fix)
-    pass
+### 1. Gate Check (before running tests)
+```bash
+python3 ../iwish/.agent/scripts/self-healing-runner.py check <epic_id> <story_id>
+# Exit 0 = GATE OPEN, ready to run
+# Exit 1 = GATE BLOCKED, retries exhausted
 ```
+
+### 2. Run Tests with Tracking
+```bash
+python3 ../iwish/.agent/scripts/self-healing-runner.py run <epic_id> <story_id> -- npx playwright test <test_files>
+```
+The script:
+- Increments `attempts` in `.agent/cache/qa-loop.json` BEFORE running
+- Executes the test command
+- If PASS: sets status to `Pending_Approval`, exits 0
+- If FAIL: classifies failure (Type1_ScriptFailure or Type2_AppBug), outputs HEALING REPORT JSON, exits 1
+- If attempts >= 3: sets status to `Exhausted`, exits 1 with `action: HALT`
+
+### 3. Reset State (after user decision)
+```bash
+python3 ../iwish/.agent/scripts/self-healing-runner.py reset <epic_id> <story_id>
+```
+
+### 4. Check Status
+```bash
+python3 ../iwish/.agent/scripts/self-healing-runner.py status <epic_id> <story_id>
+```
+
+## Failure Classification
+
+The runner classifies failures automatically:
+
+| Type | Patterns Detected | Agent Action |
+|------|-------------------|--------------|
+| `Type1_ScriptFailure` | Timeout, selector not found, strict mode violation, assertion mismatch | Fix test script, re-run |
+| `Type2_AppBug` | HTTP 5xx, ECONNREFUSED, TypeError in app, Prisma error | Invoke `/fix-bug`, re-run |
+
+## State Machine
+
+```
+Initialized → Running → Pending_Approval (PASS)
+                     ↘ Healing (FAIL, retries left) → Running → ...
+                     ↘ Exhausted (FAIL, no retries) → HALT
+```
+
+## Anti-Bypass Enforcement
+
+The `validate-qa-evidence.py` Gate 0 checks:
+- If `qa-loop.json` exists and matches the current story
+- If status is `Exhausted`, validation is **blocked** (hard fail)
+- This prevents agents from bypassing the retry system by skipping `self-healing-runner.py`

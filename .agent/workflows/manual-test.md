@@ -7,7 +7,7 @@ roles:
   - review-agent
 steps:
   - id: step-01-intake
-    description: "Read `manual-test-spec.md` and parse Zero-Trust constraints."
+    description: "Read `manual-test-guide.md` and parse Zero-Trust constraints."
   - id: step-02-engine-routing
     description: "Determine execution engine (A vs B) using the 4-layer heuristic."
   - id: step-03-execution
@@ -23,15 +23,26 @@ steps:
 This workflow orchestrates the QA testing phase by strictly enforcing Zero-Trust physical evidence generation using either Playwright automation or MCP agentic ephemeral testing.
 
 ## Prerequisites
-- A valid `manual-test-spec.md` exists in the target story directory (e.g. `Story-{id}/qa/manual-test-spec.md`).
+- A valid `manual-test-guide.md` exists in the target story directory (e.g. `Story-{id}/qa/manual-test-guide.md`).
 - `_iwish-output/.../Epic-{id}/Story-{id}/qa/evidence/` directory exists (or equivalent depending on flat/hierarchical layout).
 
 ## Step 1: Intake & Parse Spec
-1. Agent locates `manual-test-spec.md` for the given Epic/Story.
-   - **Multi-Portal Check:** If the Epic/Story impacts multiple portals (e.g., Customer App and Admin Dashboard), the Agent MUST generate/read separate spec files for each portal (e.g., `manual-test-spec-{id}-customer.md` and `manual-test-spec-{id}-admin.md`).
+1. Agent locates `manual-test-guide.md` for the given Epic/Story.
+   - **Multi-Portal Check:** If the Epic/Story impacts multiple portals (e.g., Customer App and Admin Dashboard), the Agent MUST generate/read separate spec files for each portal (e.g., `manual-test-guide-{id}-customer.md` and `manual-test-guide-{id}-admin.md`).
 2. Extract the `Preferred Engine` and `Target Portal` metadata.
 3. Extract the Required Evidence Constraints (which of the 7 methods must be collected).
 4. **Mock Account Constraint:** Before testing, the Agent MUST use `code-search` or investigate `seed` files to find existing mock test accounts. The Agent MUST NOT create new junk accounts to test (unless the test case is explicitly about the Registration flow).
+
+## Step 1.4: Graph-Context Resolution (MANDATORY)
+Before searching blindly for code files, the Agent MUST consult the knowledge graphs to pinpoint exact dependencies and edge cases:
+1. **FeatureGraph & Data Spec:** Read the `FeatureGraph` or `data-spec.md` for this Epic/Story to extract the EXACT names of UI components, API endpoints, and Data Models involved.
+2. **KnowledgeGraph & Risk Matrix:** Read `Epic-{id}-risk-matrix.md` or consult the Edge Case Guardian output to extract documented edge cases, negative flows, and potential failure points. Incorporate these into the test scenarios automatically.
+
+## Step 1.5: Implementation-Aware Testing (MANDATORY)
+Before generating any test scripts, the Agent MUST physically inspect the implementation source code to prevent hallucinations.
+1. **Targeted Inspection:** Using the precise file names extracted from Step 1.4, the Agent MUST use `code-search` or `view_file` to read the actual React/Vue components (e.g. `.tsx`), `schema.prisma`, `api-routes.ts`, and backend controllers.
+2. **Extraction:** Identify exact `data-testid`, class names, DOM structure, payload schema, and data types (UUID vs Int).
+3. **Mock/Seed Data Check:** The Agent MUST read `seed-accounts.js` or equivalent mock data files to retrieve existing valid test accounts (e.g. `admin@cowok.ai`) instead of making up fake data. Test scripts MUST use data that actually exists in the local DB.
 
 ## Step 2: Liveness Probe & Engine Routing
 Before executing tests, the Agent MUST verify environment readiness.
@@ -41,11 +52,21 @@ Determine whether to use **Engine A (Playwright)** or **Engine B (Agentic MCP)**
 1. **Default Execution:** Engine A (Playwright) running in **headless mode** is the mandatory default for all test executions to prevent macOS GUI constraints.
 2. **Interactive Debugging:** Engine B (`chrome-devtools-mcp`) is ONLY permitted for post-failure triage and exploratory debugging. It must NEVER run concurrently with Engine A.
 
+## Step 2.5: Compliance Pre-Check (MANDATORY)
+Before execution, the Agent MUST search for existing `.cjs` or `.spec.ts` test files related to the story.
+1. Inspect the files to ensure they comply with Zero-Trust guidelines:
+   - They MUST interact with the actual DOM using semantic locators (e.g. `getByRole`, `getByText`).
+   - They MUST NOT use fragile locators (`.locator`, `.click('.class')`).
+   - They MUST NOT inject fake/mocked API requests or dump mocked strings as evidence.
+2. **Override Rule:** If any script violates these rules (is caught "làm màu"), the Agent MUST overwrite it entirely with a proper Zero-Trust compliant Playwright script before proceeding.
+
 ## Step 3: Execution & Evidence Collection
 ### 3A: Engine A (Headless Playwright) - MANDATORY EXECUTION
-- The Agent MUST use the `webwright-qa-generator` skill to write a deterministic Playwright script or reuse an existing one.
-- The Playwright script MUST be executed in headless mode.
-- The script MUST output the required physical evidence (e.g., DOM snapshot, HAR log, screenshots) into the `qa/evidence` folder inside the Story directory.
+- **Kiểm tra công cụ:** Trình tạo QA (`webwright-qa-generator`) dựa trên công cụ Webwright của Microsoft (cài đặt qua `uvx` hoặc `pip`).
+- Trực tiếp chạy lệnh kiểm tra sự tồn tại của `webwright` (ví dụ `webwright --help` hoặc lệnh tương đương do skill định nghĩa).
+- **Yêu cầu Xác nhận (Ask):** Nếu CÓ lỗi (command not found), Agent **TUYỆT ĐỐI KHÔNG** tự động bypass. Agent PHẢI dừng quy trình lại và thông báo: *"Webwright chưa được cài đặt. Bạn có muốn install Webwright để sử dụng AI Automation QA không, hay muốn tiếp tục với Vanilla Playwright?"*.
+- **Fallback Strategy**: CHỈ KHI người dùng xác nhận "Tiếp tục với Vanilla Playwright", Agent mới được phép bỏ qua wrapper script và tiến hành dùng LLM context gốc để sinh code Playwright.
+- Mã Playwright sinh ra bắt buộc chạy ở chế độ headless và xuất kết quả (DOM snapshot, HAR log, screenshot) vào `qa/evidence`.
 - *Requirement:* The Agent MUST have `enable_write_tools=true` to write and execute the test scripts natively.
 
 ### 3B: Engine B (Agentic Ephemeral MCP) - POST-FAILURE TRIAGE ONLY
@@ -57,25 +78,46 @@ Determine whether to use **Engine A (Playwright)** or **Engine B (Agentic MCP)**
 - Audit results MUST be captured and appended to the `qa/evidence` folder inside the Story directory.
 
 ## Step 4: Validation Gate
-- Execute `python3 .agent/scripts/validate-qa-evidence.py "<Epic_ID>" "<Story_ID>"`.
-- The validator ensures the required physical files exist and match the spec constraints.
-- For UI stories, ensure the existence of `accessibility-report.md` or `performance-vitals.md` (or a logged warning if failed gracefully).
-- If missing, the agent is caught "hallucinating" or being lazy, and the test fails.
+- **Pre-Validation Gate Check (MANDATORY):** Before running tests, the agent MUST call:
+  ```bash
+  python3 ../iwish/.agent/scripts/self-healing-runner.py check <Epic_ID> <Story_ID>
+  ```
+  If this exits with code 1 (GATE BLOCKED), the agent MUST NOT run tests. It MUST halt and inform the user.
 
-## Step 5: Triaging & Guided Loop Engineering
-To prevent infinite loops and track state across execution turns, the agent MUST read and write to a persistent loop tracking state file: `.agent/cache/qa-loop.json`.
+- **Test Execution (MANDATORY via self-healing-runner):** The agent MUST NOT run `npx playwright test` directly. Instead:
+  ```bash
+  python3 ../iwish/.agent/scripts/self-healing-runner.py run <Epic_ID> <Story_ID> -- npx playwright test <test_files>
+  ```
+  This automatically tracks attempts in `qa-loop.json`, classifies failures, and blocks after 3 retries.
 
-- **If Test FAILS:**
-  - Read `.agent/cache/qa-loop.json` (create it with `attempts: 1` if it doesn't exist for this story/portal).
-  - If `attempts < 3`: 
-    - Increment `attempts` in `qa-loop.json`.
-    - Classify bug (SBRP-Lite vs Critical).
-    - If SBRP-Lite: Automatically invoke `/fix-bug`. 
-  - If `attempts >= 3`: 
-    - Update `qa-loop.json` status to `Exhausted`.
-    - **HALT** the workflow and notify the user: *"Maximum retries (3) reached. Test still failing. Manual intervention required."*
-  - Upon successful fix, trigger `iwish inject-node` to document the bug (Auto-Immune RCA).
-- **If Test PASSES:**
-  - Update `qa-loop.json` status to `Pending_Approval`.
-  - Transition the story state to `Pending_Approval` in both `sprint-status.yaml` and `story.md`.
-  - **HALT** the workflow and notify the user: *"Test passed. Awaiting `/approve-qa` or `/reject-qa` human cross-check."*
+- **Evidence Validation:** After tests pass, execute:
+  ```bash
+  python3 ../iwish/.agent/scripts/validate-qa-evidence.py "<Epic_ID>" "<Story_ID>"
+  ```
+  The validator now includes Gate 0 (Loop Integrity) which checks `qa-loop.json` was properly used.
+
+## Step 5: Self-Healing Loop (Enforced by Script)
+The self-healing loop is **enforced by `self-healing-runner.py`**, NOT by agent "good faith". The script:
+
+1. **Tracks attempts atomically** in `.agent/cache/qa-loop.json`.
+2. **Classifies failures** into Type 1 (Script) or Type 2 (App Bug) using pattern matching.
+3. **Hard-blocks at 3 retries** — the script refuses to run tests after exhaustion.
+4. **Outputs structured HEALING REPORT** in JSON for agent consumption.
+
+### Agent Loop Behavior:
+- **If `self-healing-runner.py run` exits 0 (PASS):**
+  - Run `validate-qa-evidence.py` to verify evidence.
+  - If validator passes: Transition story to `Pending_Approval`, halt, notify user.
+- **If `self-healing-runner.py run` exits 1 with `action: HEAL`:**
+  - Read the HEALING REPORT JSON output.
+  - If `failureType: Type1_ScriptFailure`: Fix the test script, loop back to Step 4.
+  - If `failureType: Type2_AppBug`: Invoke `/fix-bug` to fix app code, loop back to Step 4.
+- **If `self-healing-runner.py run` exits 1 with `action: HALT`:**
+  - **STOP IMMEDIATELY.** Do NOT attempt further runs.
+  - Notify user: *"Maximum retries (3) reached. Test still failing. Run `/reject-qa` to reset or `/approve-qa` to override."*
+
+### Reset (after user decision):
+```bash
+python3 ../iwish/.agent/scripts/self-healing-runner.py reset <Epic_ID> <Story_ID>
+```
+
