@@ -33,30 +33,28 @@ This workflow orchestrates the QA testing phase by strictly enforcing Zero-Trust
 3. Extract the Required Evidence Constraints (which of the 7 methods must be collected).
 4. **Mock Account Constraint:** Before testing, the Agent MUST use `code-search` or investigate `seed` files to find existing mock test accounts. The Agent MUST NOT create new junk accounts to test (unless the test case is explicitly about the Registration flow).
 
-## Step 2: 4-Layer Engine Routing
-Determine whether to use **Engine A (Playwright)** or **Engine B (Agentic MCP)**:
-1. **Flag Override:** Did the user specify `--engine=playwright` or `--engine=mcp`? If yes, force it.
-2. **File Check:** Does `tests/e2e/Epic-{id}/Story-{id}.spec.ts` exist? If yes, force Engine A to reuse it.
-3. **Spec Preferred:** Does the spec explicitly define Playwright or MCP? If yes, respect it.
-4. **Auto-Heuristic:** If `Auto`:
-   - If test requires visual verification, dragging, or live OAuth: Route to Engine B.
-   - If test is a standard CRUD or form submission: Route to Engine A.
+## Step 2: Liveness Probe & Engine Routing
+Before executing tests, the Agent MUST verify environment readiness.
+1. **Liveness Check:** Ping the target URL. The Agent MUST collect the exact target URL or port from the user (e.g., `http://localhost:3004`) instead of assuming a default like `3000`. If unreachable or returning a server error, the Agent MUST capture the failure (e.g., connection error log) as evidence and abort the test immediately with status `FAILS`. **Graceful Failure/Mocking of evidence is STRICTLY FORBIDDEN.**
+
+Determine whether to use **Engine A (Playwright)** or **Engine B (Agentic MCP)** under **Strict Mutual Exclusion**:
+1. **Default Execution:** Engine A (Playwright) running in **headless mode** is the mandatory default for all test executions to prevent macOS GUI constraints.
+2. **Interactive Debugging:** Engine B (`chrome-devtools-mcp`) is ONLY permitted for post-failure triage and exploratory debugging. It must NEVER run concurrently with Engine A.
 
 ## Step 3: Execution & Evidence Collection
-### 3A: Engine A (Persistent Playwright)
-- Invoke `/qa-agent-automate` to run the existing script or generate a new one.
-- The Playwright script must output the required evidence (e.g., DOM snapshot, HAR log) into the `qa-evidence` folder.
+### 3A: Engine A (Headless Playwright) - MANDATORY EXECUTION
+- The Agent MUST use the `webwright-qa-generator` skill to write a deterministic Playwright script or reuse an existing one.
+- The Playwright script MUST be executed in headless mode.
+- The script MUST output the required physical evidence (e.g., DOM snapshot, HAR log, screenshots) into the `qa-evidence` folder.
+- *Requirement:* The Agent MUST have `enable_write_tools=true` to write and execute the test scripts natively.
 
-### 3B: Engine B (Agentic Ephemeral MCP)
-- QA Agent uses `chrome-devtools-mcp` tools (e.g. `take_screenshot`, `evaluate_script` for DOM tree, `get_network_request`).
-- Agent actively follows the Happy Path and Edge Cases.
-- Agent manually writes the collected evidence to files in the `qa-evidence` folder.
+### 3B: Engine B (Agentic Ephemeral MCP) - POST-FAILURE TRIAGE ONLY
+- If Engine A fails, the QA Agent may use `chrome-devtools-mcp` tools attached to a separate debugging instance to inspect the DOM, identify missing selectors, or triage the failure.
+- Agent proposes script fixes based on triage and loops back to 3A.
 
 ### 3C: DoD Audit (Claude Kit Standard)
-- **If the story involves a UI Portal:** The Agent MUST load the `a11y-debugging` and `debug-optimize-lcp` skills.
-- Execute Lighthouse and Axe checks via the Chrome DevTools MCP on the local environment.
-- Audit results MUST be captured and appended to the `qa-evidence` folder (e.g., `accessibility-report.md`, `performance-vitals.md`).
-- **Graceful Failure:** If the Lighthouse MCP audit fails (e.g., local port issues), log the failure as a warning and proceed. Do not crash the workflow during early UI iteration.
+- Execute Lighthouse and Axe checks programmatically (via CLI or Playwright integration) rather than relying on GUI MCP tools.
+- Audit results MUST be captured and appended to the `qa-evidence` folder.
 
 ## Step 4: Validation Gate
 - Execute `python3 .agent/scripts/validate-qa-evidence.py "<Epic_ID>" "<Story_ID>"`.

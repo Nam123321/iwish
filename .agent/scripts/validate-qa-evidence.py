@@ -12,11 +12,13 @@ def main():
     epic_id = sys.argv[1]
     story_id = sys.argv[2]
     
-    spec_pattern = f"_iwish-output/stories/manual-test-spec-{story_id}*.md"
-    spec_files = glob.glob(spec_pattern)
+    spec_pattern_flat = f"_iwish-output/stories/manual-test-spec-{story_id}*.md"
+    spec_pattern_hierarchical = f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/manual-test-spec-{story_id}*.md"
+    
+    spec_files = glob.glob(spec_pattern_flat) + glob.glob(spec_pattern_hierarchical)
     
     if not spec_files:
-        print(f"❌ Error: No Spec files found matching {spec_pattern}")
+        print(f"❌ Error: No Spec files found matching {spec_pattern_flat} or {spec_pattern_hierarchical}")
         sys.exit(1)
         
     print(f"🔍 Validating QA Evidence for Epic {epic_id}, Story {story_id}...")
