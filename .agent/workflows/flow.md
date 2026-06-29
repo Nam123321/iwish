@@ -55,5 +55,11 @@ Before stopping at any User Gate for domain, data architecture, or design questi
    - *Update `task.md`.*
 
 6. **Step 5: Code Review & Validation (`/review`)**
-   - Upon code completion, run tests and perform code quality audits (SAST, security checks, and hybrid scorecard).
+   - Run static analysis, tests, and perform code quality audits (SAST, security checks, and hybrid scorecard).
+   - If the user explicitly requested to run both Step 5 and Step 6 together, you MUST automatically transition to Step 6 immediately after Step 5 passes successfully, without stopping for a separate user prompt.
+   - *Update `task.md`.*
+
+7. **Step 6: UI Automation & Evidence Gathering (`/manual-test`)**
+   - Instruct the QA Agent to execute the `manual-test` protocol to generate UI automation scripts (Playwright) and collect physical Zero-Trust evidence.
+   - Ensure the liveness probe passes (e.g. asking user to start the dev server) before running dynamic tests.
    - Report final validation outcomes to the user and mark the pipeline as complete in `task.md`.

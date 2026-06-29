@@ -23,8 +23,8 @@ steps:
 This workflow orchestrates the QA testing phase by strictly enforcing Zero-Trust physical evidence generation using either Playwright automation or MCP agentic ephemeral testing.
 
 ## Prerequisites
-- A valid `manual-test-spec.md` exists in the target story directory.
-- `_iwish-output/qa-evidence/Epic-{id}/Story-{id}/` directory exists.
+- A valid `manual-test-spec.md` exists in the target story directory (e.g. `Story-{id}/qa/manual-test-spec.md`).
+- `_iwish-output/.../Epic-{id}/Story-{id}/qa/evidence/` directory exists (or equivalent depending on flat/hierarchical layout).
 
 ## Step 1: Intake & Parse Spec
 1. Agent locates `manual-test-spec.md` for the given Epic/Story.
@@ -45,7 +45,7 @@ Determine whether to use **Engine A (Playwright)** or **Engine B (Agentic MCP)**
 ### 3A: Engine A (Headless Playwright) - MANDATORY EXECUTION
 - The Agent MUST use the `webwright-qa-generator` skill to write a deterministic Playwright script or reuse an existing one.
 - The Playwright script MUST be executed in headless mode.
-- The script MUST output the required physical evidence (e.g., DOM snapshot, HAR log, screenshots) into the `qa-evidence` folder.
+- The script MUST output the required physical evidence (e.g., DOM snapshot, HAR log, screenshots) into the `qa/evidence` folder inside the Story directory.
 - *Requirement:* The Agent MUST have `enable_write_tools=true` to write and execute the test scripts natively.
 
 ### 3B: Engine B (Agentic Ephemeral MCP) - POST-FAILURE TRIAGE ONLY
@@ -54,7 +54,7 @@ Determine whether to use **Engine A (Playwright)** or **Engine B (Agentic MCP)**
 
 ### 3C: DoD Audit (Claude Kit Standard)
 - Execute Lighthouse and Axe checks programmatically (via CLI or Playwright integration) rather than relying on GUI MCP tools.
-- Audit results MUST be captured and appended to the `qa-evidence` folder.
+- Audit results MUST be captured and appended to the `qa/evidence` folder inside the Story directory.
 
 ## Step 4: Validation Gate
 - Execute `python3 .agent/scripts/validate-qa-evidence.py "<Epic_ID>" "<Story_ID>"`.

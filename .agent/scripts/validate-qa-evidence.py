@@ -12,29 +12,39 @@ def main():
     epic_id = sys.argv[1]
     story_id = sys.argv[2]
     
-    spec_pattern_flat = f"_iwish-output/stories/manual-test-spec-{story_id}*.md"
-    spec_pattern_hierarchical = f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/manual-test-spec-{story_id}*.md"
+    spec_pattern_flat = f"_iwish-output/stories/qa/manual-test-spec-{story_id}*.md"
+    spec_pattern_hierarchical = f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/qa/manual-test-spec-{story_id}*.md"
+    spec_pattern_flat_legacy = f"_iwish-output/stories/manual-test-spec-{story_id}*.md"
+    spec_pattern_hierarchical_legacy = f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/manual-test-spec-{story_id}*.md"
     
-    spec_files = glob.glob(spec_pattern_flat) + glob.glob(spec_pattern_hierarchical)
+    spec_files = glob.glob(spec_pattern_flat) + glob.glob(spec_pattern_hierarchical) + glob.glob(spec_pattern_flat_legacy) + glob.glob(spec_pattern_hierarchical_legacy)
     
     if not spec_files:
-        print(f"❌ Error: No Spec files found matching {spec_pattern_flat} or {spec_pattern_hierarchical}")
+        print(f"❌ Error: No Spec files found for Epic {epic_id}, Story {story_id}")
         sys.exit(1)
         
     print(f"🔍 Validating QA Evidence for Epic {epic_id}, Story {story_id}...")
-    evidence_dir = f"_iwish-output/qa-evidence/Epic-{epic_id}/Story-{story_id}"
-    
-    if not os.path.exists(evidence_dir):
-        print(f"❌ Error: Evidence directory not found at {evidence_dir}")
-        sys.exit(1)
-        
-    files_in_dir = os.listdir(evidence_dir)
-    print(f"📁 Found {len(files_in_dir)} files in evidence directory.")
     
     all_passed = True
     
     for spec_path in spec_files:
         print(f"\n📄 Reading spec: {spec_path}")
+        
+        # Determine evidence directory based on spec location
+        if "/qa/" in spec_path:
+            # Option 1 structure: spec is in qa/, evidence is in qa/evidence/
+            evidence_dir = os.path.join(os.path.dirname(spec_path), "evidence")
+        else:
+            # Legacy structure
+            evidence_dir = f"_iwish-output/qa-evidence/Epic-{epic_id}/Story-{story_id}"
+            
+        if not os.path.exists(evidence_dir):
+            print(f"❌ Error: Evidence directory not found at {evidence_dir}")
+            sys.exit(1)
+            
+        files_in_dir = os.listdir(evidence_dir)
+        print(f"📁 Found {len(files_in_dir)} files in evidence directory: {evidence_dir}")
+        
         with open(spec_path, 'r') as f:
             content = f.read()
             
