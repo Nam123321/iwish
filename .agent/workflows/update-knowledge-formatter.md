@@ -38,7 +38,7 @@ Use this workflow when:
     - Default -> `I-Wish Concept`
   - **Extract Title:** Scan for H1 heading `# Title` or fall back to the filename.
   - **Extract Description:** Extract description from first non-header paragraphs or use standard fallback.
-  - **Format URI:** Generate absolute `file:///...` resource paths.
+  - **Format URI:** Generate portable `file://{project-root}/...` resource paths instead of hardcoded absolute paths.
   - **Prepend YAML:** Prepend the compliant OKF frontmatter to the top of the file.
 
 ### 3. Run Validation Gate

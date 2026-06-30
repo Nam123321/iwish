@@ -10,4 +10,4 @@ IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/.agen
 
 **[CRITICAL COMPLIANCE REQUIREMENT]**
 During PRD Generation, you are required to enforce Strategy Alignment, Socratic Review, and Simulator Guardian limits.
-You MUST read and rigidly obey the rules defined in: [PRD Guardrails](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/.agent/workflows/references/create-prd-guardrails.md). Do NOT skip any validation gates.
+You MUST read and rigidly obey the rules defined in: [PRD Guardrails](file://{project-root}/.agent/workflows/references/create-prd-guardrails.md). Do NOT skip any validation gates.

@@ -13,5 +13,5 @@ description: 'Use when a bug is reported to perform root cause analysis, impact 
 ---
 
 **[CRITICAL COMPLIANCE REQUIREMENT]**
-To resolve bugs systematically without causing regressions, you MUST read and rigidly obey the 8-Phase SBRP rules defined in: [Bug Resolution Protocol](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/.agent/workflows/references/fix-bug-protocol.md).
+To resolve bugs systematically without causing regressions, you MUST read and rigidly obey the 8-Phase SBRP rules defined in: [Bug Resolution Protocol](file://{project-root}/.agent/workflows/references/fix-bug-protocol.md).
 Do NOT attempt to fix the bug or write code until you have executed Phase 1 to Phase 4 of the protocol!

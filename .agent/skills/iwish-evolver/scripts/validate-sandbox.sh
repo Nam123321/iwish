@@ -19,7 +19,7 @@ git add README.md
 git commit -q -m "Initial commit"
 
 # Copy the wrapper script
-WRAPPER_SRC="/Users/hatrang20061988/Desktop/AI Project/iwish/.agent/skills/iwish-evolver/scripts/git-sandbox-wrapper.sh"
+WRAPPER_SRC="{project-root}/.agent/skills/iwish-evolver/scripts/git-sandbox-wrapper.sh"
 cp "$WRAPPER_SRC" ./git-sandbox-wrapper.sh
 chmod +x ./git-sandbox-wrapper.sh
 git add git-sandbox-wrapper.sh

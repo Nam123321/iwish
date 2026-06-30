@@ -2,7 +2,7 @@
 type: I-Wish UI Spec
 title: "UX Design Specification {{project_name}}"
 description: "UX design specification for {{project_name}}"
-resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/2. Product Planning/2.3. ui-ux-spec.md"
+resource: "file://{project-root}/_iwish-output/2. Product Planning/2.3. ui-ux-spec.md"
 tags: ["ux", "planning"]
 timestamp: "{{date}}"
 links_to: []

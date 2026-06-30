@@ -2,7 +2,7 @@
 type: I-Wish Epic Breakdown
 title: "{{project_name}} - Epic Breakdown"
 description: "Epic and story breakdown for {{project_name}}"
-resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/2. Product Planning/2.4. epics-and-stories.md"
+resource: "file://{project-root}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md"
 tags: ["epics", "planning"]
 timestamp: "{{date}}"
 links_to: []

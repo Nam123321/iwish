@@ -11,7 +11,7 @@ import time
 import subprocess
 import unittest
 
-SCRIPT_PATH = "/Users/hatrang20061988/Desktop/AI Project/iwish/.agent/skills/iwish-evolver/scripts/time-budget-filter.py"
+SCRIPT_PATH = "{project-root}/.agent/skills/iwish-evolver/scripts/time-budget-filter.py"
 
 class TestTimeBudgetFilter(unittest.TestCase):
     
@@ -70,7 +70,7 @@ class TestTimeBudgetFilter(unittest.TestCase):
         and then sleep. When the parent is killed, both should die.
         """
         # Create a temporary script that spawns a child process and sleeps
-        temp_script = "/Users/hatrang20061988/Desktop/AI Project/iwish/.agent/skills/iwish-evolver/scripts/temp_spawn.py"
+        temp_script = "{project-root}/.agent/skills/iwish-evolver/scripts/temp_spawn.py"
         with open(temp_script, "w") as f:
             f.write(f"""import subprocess
 import sys

@@ -59,10 +59,10 @@ When the user selects an option, save it in the following format:
 type: I-Wish SIM Map
 title: "System Integrity Map (SIM)"
 description: "Approved logical layers, boundaries, and reusable platform engines."
-resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/2. Product Planning/2.3.5. system-integrity-map.md"
+resource: "file://{project-root}/_iwish-output/2. Product Planning/2.3.5. system-integrity-map.md"
 tags: ["sim", "planning"]
 timestamp: "{current_date}"
-links_to: ["file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/2. Product Planning/2.4. epics-and-stories.md"]
+links_to: ["file://{project-root}/_iwish-output/2. Product Planning/2.4. epics-and-stories.md"]
 ---
 
 # System Integrity Map (SIM)

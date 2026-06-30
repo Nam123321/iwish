@@ -106,7 +106,7 @@ Typical follow-up:
      type: I-Wish Pivot Log
      title: "Pivot Log: [summary]"
      description: "[Brief description of the pivot cause]"
-     resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md"
+     resource: "file://{project-root}/_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md"
      tags: ["pivot", "development"]
      timestamp: "[ISO-8601]"
      links_to: [] # links to affected stories, PRD or architecture specs

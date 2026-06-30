@@ -2,7 +2,7 @@
 type: I-Wish Product Strategy
 title: "Product Strategy — {{PROJECT_NAME}}"
 description: "Product Strategy for project {{PROJECT_NAME}}"
-resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/1. Idea Discovery/product-strategy.md"
+resource: "file://{project-root}/_iwish-output/1. Idea Discovery/product-strategy.md"
 tags: ["strategy", "planning"]
 timestamp: "{{DATE}}"
 links_to: []

@@ -47,7 +47,7 @@ Compile the analysis into a standardized markdown file located at `_iwish-output
 type: I-Wish Project Expansion Report
 title: "Project Expansion Review: [Tên tính năng/module mới]"
 description: "Project expansion review report for [Tên tính năng/module mới]"
-resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/3. Development/project-expansion-review/PER-[feature-name].md"
+resource: "file://{project-root}/_iwish-output/3. Development/project-expansion-review/PER-[feature-name].md"
 tags: ["project-expansion-review", "development"]
 timestamp: "[ISO-8601]"
 links_to: [] # links to related ideas, PRDs, or architecture specs

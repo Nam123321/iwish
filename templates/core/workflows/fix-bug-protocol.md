@@ -384,7 +384,7 @@
   type: I-Wish Bug Report
   title: "SBRP Bug Report Round {N}"
   description: "Bug report log for session round {N}"
-  resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/bug-reports/YYYY-MM-sbrp-round{N}.md"
+  resource: "file://{project-root}/_iwish-output/bug-reports/YYYY-MM-sbrp-round{N}.md"
   tags: ["bug-report", "development"]
   timestamp: "[ISO-8601]"
   links_to: []

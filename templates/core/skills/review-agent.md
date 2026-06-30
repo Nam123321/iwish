@@ -20,7 +20,7 @@ Enforces the systematic identification, tracking, and mitigation of edge cases a
 
 ## The 8-Pillar Edge Case Taxonomy
 
-When reviewing specifications or code, evaluate the implementation against the following 8 pillars (detailed in [taxonomy-8-pillars.md](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/.agent/fragments/taxonomy-8-pillars.md)):
+When reviewing specifications or code, evaluate the implementation against the following 8 pillars (detailed in [taxonomy-8-pillars.md](file://{project-root}/.agent/fragments/taxonomy-8-pillars.md)):
 
 | Pillar | Focus | Guiding Question |
 |---|---|---|
