@@ -51,7 +51,7 @@ To generate comprehensive data specifications, cross-epic dependency maps, and t
 - 💬 Every `[FLOW:]` tag MUST produce a dependency map entry
 - 💬 Every `⚠️` warning MUST be resolved or explicitly accepted by user
 - 🚪 PRIMARY output: FeatureGraph via MCP tools (`add_data_entity`, `add_event`, `add_seed_data`)
-- 🚪 SECONDARY output (optional): `{output_folder}/data-specs/` for human-readable markdown backup
+- 🚪 SECONDARY output (optional): `{planning_artifacts}/2. Product Planning/` for human-readable markdown backup
 
 > **ADR-002 FRESHNESS PROTOCOL — L2 Update:**
 > This workflow is a Layer 2 update point for FeatureGraph. After completing each phase, verify the graph was updated by querying back:
@@ -119,7 +119,7 @@ add_seed_data(model="{ModelName}", values="{comma-separated values}", source_sto
 ```
 
 #### A4b. Save Data Spec Markdown (OPTIONAL — human-readable backup)
-Save to `{output_folder}/data-specs/{epic-key}-data-spec.md` with format:
+Save to `{planning_artifacts}/2. Product Planning/2.2. database-spec.md` with format:
 ```markdown
 # Data Specification: Epic {N} — {title}
 
@@ -183,7 +183,7 @@ add_feature_relationship(fr_id1, "IMPACTS", fr_id2, reason, confidence)
 ```
 
 #### B5b. Save Dependency Map Markdown (OPTIONAL — human-readable backup)
-Save to `{output_folder}/data-specs/cross-epic-dependency-map.md` with format:
+Save to `{planning_artifacts}/2. Product Planning/2.2b. data-dependency-map.md` with format:
 ```markdown
 # Cross-Epic Data Dependency Map
 
@@ -219,7 +219,7 @@ For each story, assign test priority based on:
 - Flow complexity (from Shinji analysis): More events → more integration tests
 
 #### C3. Save Test Strategy
-Save to `{output_folder}/test-specs/test-strategy-matrix.md` with format:
+Save to `{planning_artifacts}/2. Product Planning/2.2c. test-strategy-matrix.md` with format:
 ```markdown
 # Test Strategy Matrix
 

@@ -247,7 +247,7 @@ Append to {outputFile}:
 - Verify `[KB-SYNC:]` tags have corresponding configurations
 
 #### C. Test Strategy Traceability
-- Verify `{output_folder}/test-specs/test-strategy-matrix.md` exists
+- Verify `{planning_artifacts}/2. Product Planning/2.2c. test-strategy-matrix.md` exists
 - Check that ALL epics appear in the test coverage summary
 - Verify `[MANUAL-TEST]` tagged ACs appear in the Manual Test Catalog
 - Flag epics with 0% automation coverage as ⚠️ **LOW-TEST-COVERAGE**

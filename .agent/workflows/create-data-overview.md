@@ -14,9 +14,9 @@ This workflow generates a cross-epic data architecture overview — running **on
 - Only needs to run **once** per project planning cycle
 
 ## What It Produces
-- `{output_folder}/data-specs/cross-epic-dependency-map.md` — model + event flow diagram
-- `{output_folder}/data-specs/{epic-key}-data-overview.md` — per-epic model overview
-- `{output_folder}/test-specs/test-strategy-matrix.md` — test coverage matrix
+- `{planning_artifacts}/2. Product Planning/2.2b. data-dependency-map.md` — model + event flow diagram
+- `{planning_artifacts}/2. Product Planning/2.2. database-spec.md` — cross-epic model overview
+- `{planning_artifacts}/2. Product Planning/2.2c. test-strategy-matrix.md` — test coverage matrix
 
 ## Activation
 

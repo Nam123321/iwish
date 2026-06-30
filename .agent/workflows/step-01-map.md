@@ -74,7 +74,7 @@ Generate dependency map document:
 **Conflicts:**
 {table of conflicts with: Story A | Story B | Table | Conflict Type | Resolution}
 
-Save to: `{output_folder}/data-specs/data-dependency-map.md`
+Save to: `{planning_artifacts}/2. Product Planning/2.2b. data-dependency-map.md`
 
 [S] Save map
 [DA] Dismiss"
