@@ -4,11 +4,6 @@ import yaml
 from datetime import datetime
 import sys
 
-def slugify(text):
-    text = text.lower()
-    text = re.sub(r'[^a-z0-9]+', '-', text)
-    return text.strip('-')
-
 def parse_frontmatter(content):
     try:
         if content.startswith('---\n'):
@@ -44,106 +39,162 @@ def extract_number(name):
         return float(num_part)
     return 99999.0
 
-def generate_sprint_status(base_dir, output_file):
-    fg_map = {}
+def process_story_file(story_md_path, story_id):
+    if not os.path.exists(story_md_path): return None
+    with open(story_md_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    fm = parse_frontmatter(content)
+    
+    title = fm.get("title", "") if fm else ""
+    if not title:
+        title = f"Story {story_id.split('-')[-1]}"
+        
+    status = fm.get("status") if fm else None
+    if not status:
+        status = extract_status_from_content(content)
+        
+    return {
+        "id": story_id,
+        "title": title,
+        "status": status.lower()
+    }
+
+def process_epic_file(epic_md_path, epic_id):
+    if not os.path.exists(epic_md_path): return None
+    with open(epic_md_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    fm = parse_frontmatter(content)
+    
+    title = fm.get("title", "") if fm else ""
+    if not title:
+        title = f"Epic {epic_id.split('-')[-1]}"
+        
+    status = fm.get("status") if fm else None
+    if not status:
+        status = extract_status_from_content(content)
+        
+    return {
+        "id": epic_id,
+        "title": title,
+        "status": status.lower()
+    }
+
+def generate_sprint_status(project_root):
+    # Detect layout
+    hierarchical_base = os.path.join(project_root, "_iwish-output", "3. Development", "1. Epic & Story")
+    flat_base = os.path.join(project_root, "_iwish-output", "stories")
+    
+    is_hierarchical = os.path.exists(hierarchical_base)
+    base_dir = hierarchical_base if is_hierarchical else flat_base
+    output_file = os.path.join(project_root, "_iwish-output", "3. Development", "sprint-status.yaml") if is_hierarchical else os.path.join(project_root, "_iwish-output", "stories", "sprint-status.yaml")
+    
+    # Create dir if not exists
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    
+    epics_dict = {}
+
     if os.path.exists(base_dir):
-        for item in os.listdir(base_dir):
-            item_path = os.path.join(base_dir, item)
-            if not os.path.isdir(item_path):
-                continue
+        if is_hierarchical:
+            # Hierarchical logic
+            for item in os.listdir(base_dir):
+                item_path = os.path.join(base_dir, item)
+                if not os.path.isdir(item_path):
+                    continue
                 
-            fg_name = ""
-            if item.startswith("FG-"):
-                fg_name = item
-                for epic_item in os.listdir(item_path):
-                    epic_path = os.path.join(item_path, epic_item)
-                    if os.path.isdir(epic_path) and epic_item.startswith("Epic-"):
-                        if fg_name not in fg_map: fg_map[fg_name] = {}
-                        fg_map[fg_name][epic_item] = {"path": epic_path, "stories": []}
-                        
-                        for story_item in os.listdir(epic_path):
-                            story_path = os.path.join(epic_path, story_item)
-                            if os.path.isdir(story_path) and story_item.startswith("Story-"):
-                                fg_map[fg_name][epic_item]["stories"].append(story_path)
-            elif item.startswith("Epic-"):
-                fg_name = "Uncategorized"
-                if fg_name not in fg_map: fg_map[fg_name] = {}
-                fg_map[fg_name][item] = {"path": item_path, "stories": []}
-                for story_item in os.listdir(item_path):
-                    story_path = os.path.join(item_path, story_item)
-                    if os.path.isdir(story_path) and story_item.startswith("Story-"):
-                        fg_map[fg_name][item]["stories"].append(story_path)
-
-    output = []
-    now_str = datetime.now().strftime("%d-%m-%Y %H:%M")
-    output.append(f"generated: {now_str}")
-    output.append("tracking_system: file-system")
-    output.append(f"story_location: {base_dir}")
-    output.append("")
-    output.append("development_status:")
-
-    sorted_fgs = sorted(fg_map.keys())
-    for fg in sorted_fgs:
-        output.append("  # ═══════════════════════════════════════════════════════════════")
-        output.append(f"  # {fg}")
-        output.append("  # ═══════════════════════════════════════════════════════════════")
-        
-        epics = fg_map[fg]
-        sorted_epics = sorted(epics.keys(), key=extract_number)
-        
-        for epic_name in sorted_epics:
-            epic_data = epics[epic_name]
-            epic_md = os.path.join(epic_data["path"], "epic.md")
-            
-            epic_slug = epic_name.lower()
-            status = "backlog"
-            
-            if os.path.exists(epic_md):
-                with open(epic_md, "r", encoding="utf-8") as f:
-                    content = f.read()
-                    fm = parse_frontmatter(content)
+                # Check if it's a Feature Group folder or direct Epic folder
+                epic_dirs = []
+                if item.startswith("FG-"):
+                    for epic_item in os.listdir(item_path):
+                        epic_path = os.path.join(item_path, epic_item)
+                        if os.path.isdir(epic_path) and epic_item.startswith("Epic-"):
+                            epic_dirs.append((epic_item, epic_path))
+                elif item.startswith("Epic-"):
+                    epic_dirs.append((item, item_path))
                     
-                    title = fm.get("title", "")
-                    if title:
-                        clean_title = re.sub(r'(?i)^epic[- ]?\d+[^a-z0-9]*', '', title)
-                        epic_slug = f"{epic_name.lower()}-{slugify(clean_title)}"
+                for epic_item, epic_path in epic_dirs:
+                    epic_id = f"epic-{extract_number(epic_item):g}".replace('.0', '')
+                    epic_md = os.path.join(epic_path, "epic.md")
                     
-                    status = fm.get("status")
-                    if not status:
-                        status = extract_status_from_content(content)
-            
-            output.append(f"  {epic_slug}: {status.lower()}")
-            
-            sorted_stories = sorted(epic_data["stories"], key=lambda x: extract_number(os.path.basename(x)))
-            for story_path in sorted_stories:
-                story_md = os.path.join(story_path, "story.md")
-                if not os.path.exists(story_md): continue
-                
-                with open(story_md, "r", encoding="utf-8") as f:
-                    content = f.read()
-                    fm = parse_frontmatter(content)
-                
-                story_name = os.path.basename(story_path).lower()
-                title = fm.get("title", "") if fm else ""
-                story_slug = story_name
-                if title:
-                    clean_title = re.sub(r'(?i)^story[- ]?\d+\.\d+[a-z]*[^a-z0-9]*', '', title)
-                    story_slug = f"{story_name}-{slugify(clean_title)}"
-                
-                status = fm.get("status") if fm else None
-                if not status:
-                    status = extract_status_from_content(content)
-                
-                story_slug = story_slug.replace('.', '-')
-                output.append(f"  {story_slug}: {status.lower()}")
-                
-            output.append("")
+                    epic_data = process_epic_file(epic_md, epic_id)
+                    if not epic_data:
+                        epic_data = {"id": epic_id, "title": epic_item, "status": "backlog"}
+                    epic_data["stories"] = []
+                    
+                    # Find stories
+                    for story_item in os.listdir(epic_path):
+                        story_path = os.path.join(epic_path, story_item)
+                        if os.path.isdir(story_path) and story_item.startswith("Story-"):
+                            story_id = f"story-{story_item.split('-')[-1]}"
+                            story_md = os.path.join(story_path, "story.md")
+                            story_data = process_story_file(story_md, story_id)
+                            if story_data:
+                                epic_data["stories"].append(story_data)
+                    
+                    # Sort stories
+                    epic_data["stories"] = sorted(epic_data["stories"], key=lambda x: extract_number(x["id"]))
+                    epics_dict[epic_id] = epic_data
+        else:
+            # Flat layout logic
+            for item in os.listdir(base_dir):
+                item_path = os.path.join(base_dir, item)
+                if os.path.isdir(item_path):
+                    # In Flat, sometimes there are folders like Epic-17
+                    if item.startswith("Epic-"):
+                        epic_id = f"epic-{extract_number(item):g}".replace('.0', '')
+                        epic_md = os.path.join(item_path, "epic.md")
+                        epic_data = process_epic_file(epic_md, epic_id)
+                        if not epic_data: epic_data = {"id": epic_id, "title": item, "status": "backlog"}
+                        if epic_id not in epics_dict:
+                            epics_dict[epic_id] = epic_data
+                            epics_dict[epic_id]["stories"] = []
+                        else:
+                            epics_dict[epic_id].update(epic_data)
+                            if "stories" not in epics_dict[epic_id]: epics_dict[epic_id]["stories"] = []
+                elif item.endswith(".md"):
+                    if item.lower().startswith("epic-"):
+                        epic_id = f"epic-{extract_number(item):g}".replace('.0', '')
+                        epic_data = process_epic_file(item_path, epic_id)
+                        if not epic_data: epic_data = {"id": epic_id, "title": item, "status": "backlog"}
+                        if epic_id not in epics_dict:
+                            epics_dict[epic_id] = epic_data
+                            epics_dict[epic_id]["stories"] = []
+                        else:
+                            epics_dict[epic_id].update(epic_data)
+                            if "stories" not in epics_dict[epic_id]: epics_dict[epic_id]["stories"] = []
+                    elif item.lower().startswith("story-"):
+                        story_id = f"story-{extract_number(item)}"
+                        epic_num = story_id.split('-')[-1].split('.')[0]
+                        epic_id = f"epic-{epic_num}"
+                        story_data = process_story_file(item_path, story_id)
+                        if story_data:
+                            if epic_id not in epics_dict:
+                                epics_dict[epic_id] = {"id": epic_id, "title": f"Epic {epic_num}", "status": "backlog", "stories": []}
+                            if "stories" not in epics_dict[epic_id]:
+                                epics_dict[epic_id]["stories"] = []
+                            epics_dict[epic_id]["stories"].append(story_data)
 
+    output = {
+        "sprint_name": "Active Sprint",
+        "status": "active",
+        "start_date": datetime.now().strftime("%Y-%m-%d"),
+        "epics": []
+    }
+
+    # Sort epics
+    sorted_epic_ids = sorted(epics_dict.keys(), key=lambda x: extract_number(x))
+    for eid in sorted_epic_ids:
+        epic = epics_dict[eid]
+        if "stories" in epic:
+            epic["stories"] = sorted(epic["stories"], key=lambda x: extract_number(x["id"]))
+        output["epics"].append(epic)
+
+    # Use sort_keys=False if possible, but safe_dump might sort. 
+    # To maintain order, we use standard safe_dump with sort_keys=False (requires pyyaml 5.1+)
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write("\n".join(output))
+        yaml.dump(output, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+        
     print(f"Successfully generated {output_file}")
 
 if __name__ == "__main__":
-    base = sys.argv[1] if len(sys.argv) > 1 else "_iwish-output/3. Development/1. Epic & Story"
-    out = sys.argv[2] if len(sys.argv) > 2 else "_iwish-output/3. Development/sprint-status.yaml"
-    generate_sprint_status(base, out)
+    project_root = sys.argv[1] if len(sys.argv) > 1 else "."
+    generate_sprint_status(project_root)
