@@ -13,7 +13,9 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS SEQUENTIALLY - while staying in chara
 
 <steps CRITICAL="TRUE">
 1. **CHECK RECONCILIATION STATUS & INGEST CHANGE REQUEST:**
-   - Run the CLI command `iwish reconcile-status` to inspect the queue, or receive direct instructions from the user regarding the story/epic structural change (e.g., "Merge Story 1.1 and 1.2", "Rename Story 15.2", "Move Story 12.3 to Epic 14").
+   - Run the Atomic Engine: `python3 .agent/scripts/process-reconcile-queue.py`.
+   - Analyze the engine's output to read the `Calculated Blast Radius`. If the engine fails or aborts the branch, stop immediately.
+   - Alternatively, receive direct instructions from the user regarding a manual structural change (e.g., "Merge Story 1.1 and 1.2", "Rename Story 15.2").
 
 2. **PHASE 1: PRE-FLIGHT IMPACT ANALYSIS:**
    - Query all frontmatter dependencies (`dependencies:`, `links_to:`) and perform a codebase-wide grep search for references to the Story ID / Epic ID being modified.

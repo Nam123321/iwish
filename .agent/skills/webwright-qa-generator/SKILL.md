@@ -1,47 +1,30 @@
 ---
 name: webwright-qa-generator
-description: Use when generating persistent E2E automation tests based on the Webwright methodology (Playwright Python/JS scripts). This skill creates robust, resilient code-based UI interaction scripts instead of relying on ephemeral single-action MCP DevTools operations.
+description: "Use when generating persistent E2E automation tests based on the Webwright methodology (Playwright Python/JS scripts). This skill creates robust, resilient code-based UI interaction scripts instead of relying on ephemeral single-action MCP DevTools operations."
+inputs:
+  - test_spec: "Path to manual-test-spec.md"
+  - target_url: "URL to test"
+outputs:
+  - playwright_script: "Generated Playwright script"
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # Webwright QA Generator Skill
 
-## Context
-Khi QA Agent được giao nhiệm vụ tự động hóa kiểm thử (QA Automate) cho một User Story hoặc tính năng, skill này bắt buộc áp dụng **Triết lý Webwright** để tạo ra các bài test Automation bền vững.
-Thay vì sử dụng Chrome DevTools MCP để click từng bước một cách tạm thời, QA Agent phải lập trình một script Playwright giả lập hành vi người dùng. Script này sẽ trở thành một tài sản (Artifact) E2E Test chạy độc lập trong CI/CD.
+This skill acts as an adapter to launch Microsoft Webwright via `uvx` dynamically, providing a Zero-Trust manual test execution environment with live DOM feedback.
 
-## Core Directives (Chỉ thị cốt lõi)
+## Execution Rules
 
-### 1. Code-First Approach (Tiếp cận bằng Code)
-KHÔNG sử dụng các lệnh tương tác tức thời của Chrome DevTools MCP (`click`, `fill`, `navigate_page`) để hoàn thành nghiệp vụ. Thay vào đó, hãy sinh mã nguồn Playwright (bằng Python hoặc TypeScript tùy thuộc stack dự án).
+1. **Adapter Strategy:**
+   DO NOT write raw Playwright scripts blindly if you can use Webwright to auto-navigate and generate the scripts.
+   Execute the wrapper script `.agent/skills/webwright-qa-generator/scripts/run-webwright.sh` to trigger the Webwright AI loop.
 
-### 2. Auto-Wait & Resiliency (Tính bền bỉ)
-- Tận dụng tối đa tính năng `auto-wait` của Playwright.
-- Tránh sử dụng `time.sleep` hoặc hardcoded timeouts.
-- Ưu tiên sử dụng các locator tin cậy: `get_by_role`, `get_by_text`, `get_by_test_id`.
+2. **Flaky Loop Guarantee:**
+   **Fallback:** If the wrapper script fails completely (due to missing Python, blockages, or 3-retry exhaustion), you MUST fall back to generating vanilla Playwright code using your own LLM context.
+   **Graph-Context Resolution (MANDATORY):** Before writing code, you MUST consult the `FeatureGraph`, `data-spec.md`, and KnowledgeGraph (`Epic-risk-matrix.md`) to map out exact component dependencies and edge cases.
+   **Implementation-Aware Generation (MANDATORY):** Before generating vanilla code, you MUST use `view_file` or `code_search` to read the actual implementation source code (e.g. `.tsx` components, `api-routes.ts`, `seed-accounts.js`) identified in the Graph. You MUST NOT guess or hallucinate CSS selectors, data-testids, or mock accounts.
 
-### 2.5. Anti-Hallucination & Real UI Interaction (Cấm giả lập giao diện)
-- **NGHIÊM CẤM** việc sử dụng `page.setContent()` để tự tiêm HTML ảo (DOM Mocking/Simulation) vào trang web để lách luật chụp ảnh màn hình.
-- Playwright script BẮT BUỘC phải dùng `page.goto(url)` để điều hướng đến Frontend thực tế đang chạy và tương tác với các element thật sự trên DOM (`page.click()`, `page.fill()`).
-- Bức ảnh chụp (`visual-screenshot.png`) phải phản ánh đúng giao diện người dùng thực tế đang hiển thị.
-
-### 3. Vòng lặp Thực thi (Execution Loop)
-1. **Analyze (Phân tích):** Đọc Acceptance Criteria từ User Story hoặc PRD.
-2. **Generate (Sinh mã):** Viết script Playwright và lưu vào thư mục E2E Test (ví dụ: `tests/e2e/`).
-3. **Execute (Chạy thử):** Dùng Terminal (`run_command`) chạy script vừa tạo để đảm bảo nó Pass với UI hiện hành.
-4. **Iterate (Tinh chỉnh):** Nếu lỗi, đọc traceback từ Terminal (không cần vào DevTools) và sửa script Playwright cho đến khi Pass.
-
-### 4. Zero-Trust Evidence Collection (Engine A Constraint)
-Bắt buộc áp dụng 7 Phương pháp Zero-Trust. Playwright script PHẢI lập trình để sinh ra bằng chứng vật lý (physical evidence) vào đúng thư mục `_iwish-output/qa-evidence/Epic-{epic_id}/Story-{story_id}/`.
-Ví dụ:
-- `page.screenshot(path="...")` cho Visual Pixel Diff.
-- Lưu lại log network (HAR hoặc JSON) nếu yêu cầu Network Trapping.
-- Chụp A11y Tree Snapshot thông qua thư viện a11y của Playwright.
-Điều này là bắt buộc để script `validate-qa-evidence.py` có thể quét và cấp phép cho test được Pass.
-
-### 5. Output Artifact (Đầu ra)
-Kết quả cuối cùng là một file Playwright Script hoàn chỉnh đã được test thành công (Lưu ở `tests/e2e/Epic-{epic}/Story-{story}.spec.ts`). Cập nhật lại Task/Story báo cáo rằng E2E Test đã bao phủ tính năng và Evidence đã được tạo.
-
-### 6. Storage & Environment Configuration (Lưu trữ & Môi trường)
-- **Directory Structure:** Lưu tất cả script sinh ra vào thư mục `tests/e2e/`. KHÔNG để lẫn vào thư mục `src`.
-- **Version Control:** File script (`.spec.ts` hoặc `.py`) phải được đưa vào Git để chạy CI/CD. Đảm bảo các thư mục sinh ra trong lúc chạy test (như `test-results/`, `playwright-report/`) được thêm vào `.gitignore`.
-- **Môi trường:** Không hardcode URL (ví dụ `http://localhost:3000`). Mọi script sinh ra phải sử dụng biến môi trường (ví dụ `process.env.BASE_URL` hoặc lấy từ file cấu hình Playwright) để dễ dàng chạy test trên Local, Staging hoặc Production.
+3. **Validation Requirements (Semantic Assertions):**
+   - Once the script/evidence is generated, you MUST run `.agent/scripts/validate-qa-evidence.py` to ensure the generated evidence strictly follows Zero-Trust requirements (no fragile CSS/XPath locators, no dummy files).
+   - **MANDATORY EXPECT()**: Your generated Playwright scripts MUST include explicit semantic assertions (`expect(page.locator(...)).toBeVisible()`, `expect(page).toHaveTitle(...)`) to validate that the UI has successfully transitioned to the correct state. Taking a screenshot is NOT enough to pass a test case; you must assert the business logic physically in the code.

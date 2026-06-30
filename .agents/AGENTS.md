@@ -71,6 +71,12 @@ All agents MUST enforce the correct file paths and names based on the active Lay
 - The completion status for any story, epic, task, or dependency in files (including `sprint-status.yaml`, `story.md` frontmatter, epic files, and verification scripts) MUST strictly be `completed` (all lowercase).
 - Using the term `done` as a status value or key is strictly prohibited.
 
+## 🔒 Sprint-Status Immutability Rule
+
+- Agents MUST NEVER directly modify the `sprint-status.yaml` file using `write_file` or `replace_file_content` tools.
+- The `sprint-status.yaml` is a compiled tracking index. Any updates to story/epic statuses, scope, or structure MUST be driven exclusively by updating the underlying Physical Source files (e.g., `story-N.M.md`) and then running the appropriate workflow to rebuild the index.
+- If a user requests a change to the sprint status, the agent MUST route the user to `/sprint-planning` (for adding/removing scope) or `/reconcile-change` (for structural/status synchronization).
+
 
 ## 🌐 MacOS Browser Tooling Rule
 
@@ -79,3 +85,11 @@ Whenever any agent (including orchestrator, qa-agent, ux-agent, dev-agent, etc.)
 1. **Never use `browser_subagent` for local UI on macOS**: `browser_subagent` (Agentic Browser) only supports local Chrome mode on Linux. Since this workspace runs on macOS, invoking it for local URLs will fail and cause interruptions.
 2. **Use `chrome-devtools-mcp`**: Agents MUST explicitly use the `chrome-devtools-mcp` tools (e.g., `navigate_page`, `take_screenshot`, `evaluate_script`) to interact with the browser on macOS environments. 
 3. **Static Fallback**: If complex interactions are not needed, use `read_url_content` or `search_web`.
+
+## 📊 Epic Story Table Rule
+Whenever any agent generates or updates an `epic.md` file, the `## Stories` section MUST strictly follow this table format to ensure SSOT synchronization:
+- The table must contain exactly 4 columns: `| Story ID | Title | Dependencies | Status |`.
+- The `Story ID` MUST be the logical ID (e.g., `Story-26.1`) in bold.
+- The `Dependencies` must be extracted from the linked story's dependencies.
+- The `Status` must accurately reflect the story's development status (e.g., `backlog`, `ready-for-dev`).
+- Example format: `| **Story-26.1** | Feature Name | Epic-01, Story-25.2 | backlog |`

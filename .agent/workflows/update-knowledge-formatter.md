@@ -8,7 +8,7 @@ description: 'Automatically upgrade legacy documentation files to standard OKF f
 
 Automate the retrofit and upgrade process for existing project documentation, closing the gap when upgrading a project to I-Wish Open Knowledge Format (OKF) standard.
 
-This supportive workflow recursively scans `_iwish-output/` or `_bmad-output/`, formats missing frontmatter blocks based on the context of the files, validates the updated files against standard JSON schemas, indexes them into FalkorDB/Neo4j, and refreshes the user guide dashboard.
+This supportive workflow recursively scans `_iwish-output/` or `_iwish-output/`, formats missing frontmatter blocks based on the context of the files, validates the updated files against standard JSON schemas, indexes them into FalkorDB/Neo4j, and refreshes the user guide dashboard.
 
 ## When to Use
 
@@ -20,7 +20,7 @@ Use this workflow when:
 ## Upgrade Sequence
 
 ### 1. Identify Output Directory
-- Look for the active output directory: `_iwish-output/` or `_bmad-output/`.
+- Look for the active output directory: `_iwish-output/` or `_iwish-output/`.
 - If neither exists, halt the command and request generation of the PRD/brief first.
 
 ### 2. Auto-Format Files with Frontmatter

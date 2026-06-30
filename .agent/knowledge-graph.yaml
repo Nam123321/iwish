@@ -586,7 +586,7 @@ nodes:
   depends_on: []
 - id: story-psa-2.2
   type: story
-  path: /_bmad-output/stories/epic-pocock-skills-absorption/story-psa-2.2-local-devex-ops-integration.md
+  path: /_iwish-output/stories/epic-pocock-skills-absorption/story-psa-2.2-local-devex-ops-integration.md
   description: Local DevEx Ops Integration (Husky, Lint, Guardrails).
   tags:
   - psa

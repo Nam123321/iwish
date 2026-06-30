@@ -77,6 +77,7 @@ Load {outputFile} and review:
 3. **Incremental Delivery**: Each epic should deliver value independently
 4. **Logical Flow**: Natural progression from user's perspective
 5. **🔗 Dependency-Free Within Epic**: Stories within an epic must NOT depend on future stories
+6. **PBAC-OVER-RBAC (Access Control)**: Identify any epics requiring access control (RBAC). Define the PBAC tree structure (Main Feature -> Sub Features) with default roles and drill-down configs from the very beginning.
 
 **⚠️ CRITICAL PRINCIPLE:**
 Organize by USER VALUE, not technical layers:
@@ -117,6 +118,7 @@ For each proposed epic:
 3. **User Outcome**: What users can accomplish after this epic
 4. **FR Coverage**: Which FR numbers this epic addresses
 5. **Implementation Notes**: Any technical or UX considerations
+6. **PBAC Structure**: (If applicable) The Policy-Based Access Control tree (Main Feature & Sub Features) and default roles.
 
 **Step C: Create the epics_list**
 
@@ -130,10 +132,12 @@ Format the epics_list as:
 #### Epic 1: [Epic Title]
 [Epic goal statement - what users can accomplish]
 **FRs covered:** FR1, FR2, FR3, etc.
+**PBAC Structure:** [None] or [Main Feature -> Sub Feature 1, Sub Feature 2; Default roles: Admin, User]
 
 #### Epic 2: [Epic Title]
 [Epic goal statement - what users can accomplish]
 **FRs covered:** FR4, FR5, FR6, etc.
+**PBAC Structure:** [None] or [Main Feature -> Sub Feature 1, Sub Feature 2; Default roles: Admin, User]
 
 ### FG-02: [Feature Group Name]
 

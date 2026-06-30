@@ -10,7 +10,7 @@ steps:
   - id: step-02-prompt-reason
     description: "Prompt user for the explicit rejection reason."
   - id: step-03-update-spec
-    description: "Append rejection constraint into `manual-test-spec-{id}.md`."
+    description: "Append rejection constraint into `manual-test-guide-{id}.md`."
   - id: step-04-reset-loop
     description: "Reset loop attempts and trigger `/fix-bug`."
 ---
@@ -29,7 +29,7 @@ This workflow is executed when a human explicitly rejects a QA test that is in t
 - Wait for user input.
 
 ## Step 3: Update Test Spec
-- Once the user provides the reason, the Agent edits the `manual-test-spec-{id}.md` file for this story.
+- Once the user provides the reason, the Agent edits the `manual-test-guide-{id}.md` file for this story.
 - Find or create the `### Human Cross-Check Rejections` section within the Constraints area.
 - Append the user's rejection reason as a new strict negative constraint (e.g., `- [REJECTED ON {DATE}]: {User Reason}`).
 

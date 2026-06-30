@@ -11,9 +11,9 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 
 <steps CRITICAL="TRUE">
 1. Load `_iwish-output/epics.md` or `_iwish-output/2. Product Planning/2.4. epics-and-stories.md` to scan backlog.
-2. Interactively query the user to select which Epics to activate for the current sprint.
-3. Check if `_iwish-output/3. Development/sprint-status.yaml` already exists. If not, create folder `_iwish-output/3. Development/` and write the initial `sprint-status.yaml` from `sprint-status-template.yaml` (set selected stories to `ready`). If yes, read it, parse YAML, merge the selected stories while preserving the statuses of existing stories. Ask user if there is a conflict.
-4. Save the updated `sprint-status.yaml`.
+2. Interactively query the user to select which Epics or Stories to activate for the current sprint.
+3. Update the `status: ready-for-dev` (or appropriate status) directly within the `story.md` physical files of the selected stories to ensure SSOT integrity. Do NOT manually edit `sprint-status.yaml`.
+4. Run the terminal command `python3 .agent/scripts/compile-sprint-status.py` to auto-generate the updated `sprint-status.yaml` based on the physical files.
 5. Run terminal command `bash .agent/scripts/navigator-guardian.sh`.
 6. Inform user that planning is complete and list stories.
 </steps>

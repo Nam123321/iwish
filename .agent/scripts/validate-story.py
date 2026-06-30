@@ -67,31 +67,48 @@ def validate_story(filepath: Path) -> bool:
 
     content = filepath.read_text()
     errors = []
+    project_root = Path(__file__).resolve().parents[2]
 
     # Trích xuất Epic ID và Story ID từ tên file hoặc đường dẫn thư mục
-    filepath_str = filepath.resolve().as_posix()
-    project_root = Path(__file__).resolve().parents[2]
-    
+    # Strict File Naming & Case-Insensitive FS Check
+    actual_name = None
+    if filepath.parent.exists():
+        for p in filepath.parent.iterdir():
+            if p.name.lower() == filepath.name.lower():
+                actual_name = p.name
+                break
+    if actual_name and actual_name != filepath.name:
+        errors.append(f"Case-insensitive match found. Expected '{filepath.name}', but actual file is '{actual_name}'.")
+
+    filename = filepath.name
+    if filename.lower() == "ui-ux-spec.md":
+        errors.append("Invalid filename: 'ui-ux-spec.md' is strictly forbidden. Use 'ui-spec.md' instead.")
+
     # Thử khớp cấu trúc thư mục phân cấp (ví dụ: /Epic-11/Story-11.1/story.md)
     # Hỗ trợ ký tự alphanumeric cho minor ID như 3b, 10a, v.v.
+    filepath_str = filepath.resolve().as_posix()
     match = re.search(r'/Epic-(\d+)/Story-(\d+)[.-]([a-zA-Z0-9]+)', filepath_str, re.IGNORECASE)
     if match:
         epic_id = match.group(1)
         story_id = f"{match.group(2)}.{match.group(3)}"
+        if filename != "story.md":
+            errors.append(f"In hierarchical layout, the story file must be named strictly 'story.md', found: '{filename}'.")
     else:
         # Thử khớp cấu trúc phẳng tên file (ví dụ: story-16.2.md)
-        filename = filepath.name
-        match = re.search(r'story-(\d+)\.([a-zA-Z0-9]+)', filename, re.IGNORECASE)
-        if not match:
-            match = re.search(r'story-(\d+)-([a-zA-Z0-9]+)', filename, re.IGNORECASE)
-        
+        match = re.search(r'^story-(\d+)\.([a-zA-Z0-9]+)\.md$', filename)
         if match:
             epic_id = match.group(1)
             story_id = f"{match.group(1)}.{match.group(2)}"
         else:
-            errors.append(f"Filename or path must match pattern 'Epic-N/Story-N.M/story.md' or 'story-N.M.md', found: '{filepath_str}'")
-            epic_id = None
-            story_id = None
+            match_fallback = re.search(r'story-(\d+)[.-]([a-zA-Z0-9]+)', filename, re.IGNORECASE)
+            if match_fallback:
+                errors.append(f"In flat layout, the story file must be named strictly matching 'story-N.M.md' (all lowercase), found: '{filename}'.")
+                epic_id = match_fallback.group(1)
+                story_id = f"{match_fallback.group(1)}.{match_fallback.group(2)}"
+            else:
+                errors.append(f"Filename or path must match pattern 'Epic-N/Story-N.M/story.md' or 'story-N.M.md', found: '{filepath_str}'")
+                epic_id = None
+                story_id = None
 
     # 1. Check OKF Frontmatter Header
     yaml_block_match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
@@ -195,6 +212,41 @@ def validate_story(filepath: Path) -> bool:
                 errors.append(f"Physical Risk Matrix File '{risk_file.relative_to(project_root)}' is a placeholder/mock. Please run real Edge Case Guardian scan.")
             elif risk_file.stat().st_size < 100:
                 errors.append(f"Physical Risk Matrix File '{risk_file.relative_to(project_root)}' is too short ({risk_file.stat().st_size} bytes). Minimum size is 100 bytes.")
+
+    # 8. Status Auto-Fix Logic
+    if epic_id and story_id and not errors:
+        tasks_match = re.search(r'## Tasks\n(.*?)(?=\n## |$)', content, re.DOTALL)
+        if tasks_match:
+            tasks_text = tasks_match.group(1)
+            unchecked = len(re.findall(r'- \[\s\]', tasks_text))
+            checked = len(re.findall(r'- \[x\]', tasks_text, re.IGNORECASE))
+            
+            has_tasks = (unchecked + checked) > 0
+            all_completed = has_tasks and (unchecked == 0)
+            
+            review_passed = False
+            if review_file and review_file.is_file():
+                rt = review_file.read_text().upper()
+                if "PASS" in rt:
+                    review_passed = True
+                    
+            try:
+                # yaml_block_match is defined above
+                frontmatter = yaml.safe_load(yaml_block_match.group(1))
+                current_status = frontmatter.get("status", "").lower() if frontmatter else ""
+                
+                if all_completed and review_passed:
+                    if current_status != "completed":
+                        print("🔄 Auto-fixing status to 'completed' as all tasks are ticked and review passed QA.")
+                        new_content = re.sub(r'^status:\s*.*$', "status: completed", content, flags=re.MULTILINE)
+                        filepath.write_text(new_content)
+                else:
+                    if current_status == "completed":
+                        print("🔄 Auto-downgrading status to 'in-progress' as conditions for completion are no longer met.")
+                        new_content = re.sub(r'^status:\s*.*$', "status: in-progress", content, flags=re.MULTILINE)
+                        filepath.write_text(new_content)
+            except Exception as e:
+                pass
 
     # Print results
     if errors:

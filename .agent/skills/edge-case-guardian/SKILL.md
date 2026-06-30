@@ -117,7 +117,7 @@ Every feature, story, or epic MUST be analyzed through these 8 lenses:
    - Search: `"[Feature] security vulnerabilities"` (for P6 pillar)
 
 2. **Knowledge Graph Review (Required):**
-   - Check `_bmad-output/edge-case-knowledge/index.md` for related features
+   - Check `_iwish-output/edge-case-knowledge/index.md` for related features
    - Load relevant pillar files for cross-referencing
 
 3. **Source Attribution (Required for each edge case):**
@@ -194,7 +194,7 @@ An edge case is considered **well-defined** when it satisfies ALL of these:
 
 ### Location
 ```
-_bmad-output/edge-case-knowledge/
+_iwish-output/edge-case-knowledge/
 ├── index.md                    # Master index: all nodes by pillar, epic, feature
 ├── pillars/
 │   ├── p1-input-boundary.md

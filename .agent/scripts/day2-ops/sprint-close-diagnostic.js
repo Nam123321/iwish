@@ -9,9 +9,9 @@ const yaml = require('yaml');
  */
 
 const BMAD_HOME = process.cwd();
-const BUG_TRACKER_PATH = path.join(BMAD_HOME, '_bmad-output', 'bug-tracker.yaml');
+const BUG_TRACKER_PATH = path.join(BMAD_HOME, '_iwish-output', 'bug-tracker.yaml');
 const TURN_EXITS_PATH = path.join(BMAD_HOME, '.agent', 'memory', 'turn-exits.jsonl');
-const REPORT_DIR = path.join(BMAD_HOME, '_bmad-output', 'health-reports', new Date().toISOString().split('T')[0]);
+const REPORT_DIR = path.join(BMAD_HOME, '_iwish-output', 'health-reports', new Date().toISOString().split('T')[0]);
 const REPORT_PATH = path.join(REPORT_DIR, 'sprint-evolution-report.md');
 
 async function run() {

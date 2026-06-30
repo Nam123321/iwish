@@ -19,9 +19,12 @@ KHÔNG sử dụng các lệnh tương tác tức thời của Chrome DevTools M
 - Tránh sử dụng `time.sleep` hoặc hardcoded timeouts.
 - Ưu tiên sử dụng các locator tin cậy: `get_by_role`, `get_by_text`, `get_by_test_id`.
 
-### 3. Vòng lặp Thực thi (Execution Loop)
+3. **Vòng lặp Thực thi (Execution Loop & Semantic Assertions)**
 1. **Analyze (Phân tích):** Đọc Acceptance Criteria từ User Story hoặc PRD.
+1.4. **Graph-Context Resolution (Tra cứu Bản đồ):** Truy vấn `FeatureGraph` (hoặc `data-spec.md`) và `Epic-risk-matrix` (KnowledgeGraph) để tìm CHÍNH XÁC tên các file UI component, API endpoints, Data Models và các rủi ro biên (Edge Cases) cần cover.
+1.5. **Inspect Implementation (Soi code thực tế):** Dùng tool (`view_file` hoặc `code_search`) đọc các file UI Component (ví dụ `.tsx`, `.html`), API Route, và file Mock Data (`seed-accounts.js`...) liên quan để lấy CHÍNH XÁC cấu trúc DOM, `data-testid`, và thông tin đăng nhập hợp lệ. TUYỆT ĐỐI KHÔNG tự bịa (hallucinate) selector hoặc mock account.
 2. **Generate (Sinh mã):** Viết script Playwright và lưu vào thư mục E2E Test (ví dụ: `tests/e2e/`).
+   - **MANDATORY EXPECT()**: Script sinh ra **BẮT BUỘC** phải có các lệnh `expect()` (ví dụ `expect(page.locator(...)).toBeVisible()`) để kiểm chứng logic nghiệp vụ. Chỉ thao tác click và chụp ảnh là KHÔNG ĐỦ.
 3. **Execute (Chạy thử):** Dùng Terminal (`run_command`) chạy script vừa tạo để đảm bảo nó Pass với UI hiện hành.
 4. **Iterate (Tinh chỉnh):** Nếu lỗi, đọc traceback từ Terminal (không cần vào DevTools) và sửa script Playwright cho đến khi Pass.
 

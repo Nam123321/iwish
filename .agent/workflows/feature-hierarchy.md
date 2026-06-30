@@ -36,6 +36,7 @@ The template produces:
 - **Portal Overview** — table of all portals/modules with FR coverage
 - **Per-Portal Sidebar/Menu Tree** — navigation hierarchy with FR##/E#/S#.# traceability
 - **Cross-Portal Feature Summary** — shared entities, events, and cross-cutting features
+- **PBAC/RBAC Access Tree** — Defines which epics/features require access control, mapped as a tree (main feature -> sub features) with default roles and drill-down config structure.
 
 ### Step 3: Save & Index
 1. Save to `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`
