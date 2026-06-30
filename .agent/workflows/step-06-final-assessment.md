@@ -96,7 +96,18 @@ This assessment identified [X] issues across [Y] categories. Address the critica
 - Add date and assessor information
 - Save the final report
 
-### 5. Present Completion
+### 5. Post-Assessment Execution (CRITICAL)
+
+If the Overall Readiness Status is **READY**:
+1. You MUST execute the script: `python3 .agent/scripts/populate_development.py`. This script will mass-generate the physical Epic and Story stub files in the Development folder based on the validated `epics-and-stories.md`.
+2. Do not proceed until the script completes successfully.
+3. Inform the user that the physical stub files have been generated with `status: backlog`. Remind them they still need to run `/make-story` or `/flow` on individual stories before developing them.
+4. Suggest the user to run `/sprint-planning` now to activate the stub stories into `ready-for-dev` status and compile the `sprint-status.yaml`.
+
+If the Overall Readiness Status is **NOT READY** or **NEEDS WORK**:
+- Present the findings and ask the user how they would like to proceed with resolving the critical issues.
+
+### 6. Present Completion
 
 Display:
 "**Implementation Readiness Assessment Complete**
