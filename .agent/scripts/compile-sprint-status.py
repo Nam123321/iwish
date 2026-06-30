@@ -24,12 +24,14 @@ def extract_status_from_content(content):
     match = re.search(r'\*\*Status:\*\*\s*(.+?)(?:\n|$)', content, re.IGNORECASE)
     if match:
         st = match.group(1).strip().lower()
+        st = re.sub(r'[^a-z0-9\-_]', '', st)
         if st.startswith("ready-for-dev"): return "ready-for-dev"
         return st
     # 2. Look for Status: <status>
     match = re.search(r'^Status:\s*(.+?)(?:\n|$)', content, re.MULTILINE | re.IGNORECASE)
     if match:
         st = match.group(1).strip().lower()
+        st = re.sub(r'[^a-z0-9\-_]', '', st)
         if st.startswith("ready-for-dev"): return "ready-for-dev"
         return st
     return "backlog"
