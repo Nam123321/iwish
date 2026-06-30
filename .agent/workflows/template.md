@@ -5,7 +5,7 @@ description: "UI and UX specification for Story {{story_key}}"
 resource: "file:///Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/2. Product Planning/2.3. ui-ux-spec.md"
 tags: ["ui-spec", "ux"]
 timestamp: "{{date}}"
-links_to: ["_iwish-output/3. Development/1. Epic & Story/story-{{story_key}}.md"]
+links_to: ["Story-{{story_key}}"]
 ---
 
 # UI Spec: Story {{story_key}} — {{story_title}}

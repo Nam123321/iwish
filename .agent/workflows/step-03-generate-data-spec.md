@@ -37,7 +37,7 @@ description: "Data specification for Story {story_id}"
 resource: "file://_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md"
 tags: ["data-spec", "database"]
 timestamp: "{current_date}"
-links_to: ["_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md"]
+links_to: ["Story-{story_id}"]
 storyId: '{story_id}'
 workflowType: 'data-spec'
 status: 'complete'
