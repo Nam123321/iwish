@@ -477,7 +477,8 @@ nodes:
 - id: skill-doubt-driven-development
   type: skill
   path: /.agent/skills/doubt-driven-development/SKILL.md
-  description: Subjects every non-trivial decision to a fresh-context adversarial review before it stands.
+  description: Subjects every non-trivial decision to a fresh-context adversarial
+    review before it stands.
   tags:
   - doubt
   - review
@@ -525,7 +526,6 @@ nodes:
   - metrics
   - tracing
   depends_on: []
-
 - id: workflow-prototype
   type: workflow
   path: /.agent/workflows/prototype.md
@@ -1130,51 +1130,112 @@ nodes:
 - id: workflow-flow
   type: workflow
   path: /.agent/workflows/flow.md
-  description: "Automated Epic/Story SDLC pipeline workflow: /make-story -> Spec/Design -> /code -> /review"
+  description: 'Automated Epic/Story SDLC pipeline workflow: /make-story -> Spec/Design
+    -> /code -> /review'
   tags:
   - flow
   - pipeline
   - sdlc
   - automation
   depends_on: []
-
 - id: skill-credential-redactor
   type: skill
   path: /_iwish-output/iwish-skills/credential-redactor/SKILL.md
-  description: Detects and redacts credentials (e.g. API keys, JWTs, private keys) in text payloads or data objects before logging or persistence.
+  description: Detects and redacts credentials (e.g. API keys, JWTs, private keys)
+    in text payloads or data objects before logging or persistence.
   tags:
   - security
   - redaction
   - compliance
   - pii
   depends_on: []
-
 - id: skill-policy-evaluator
   type: skill
   path: /_iwish-output/iwish-skills/policy-evaluator/SKILL.md
-  description: Validates agentic actions and inputs against Cedar or Rego security policies, returning enforcement verdicts and parameter transforms.
+  description: Validates agentic actions and inputs against Cedar or Rego security
+    policies, returning enforcement verdicts and parameter transforms.
   tags:
   - security
   - policy
   - validation
   - compliance
   depends_on: []
-
 - id: plugin-cli-linter-tournament
   type: plugin
   path: /.agent/plugins/cli-linter-tournament/plugin.json
-  description: "CLI Linter Tournament Plugin config"
-  tags: [plugin, cli, linter, tournament]
+  description: CLI Linter Tournament Plugin config
+  tags:
+  - plugin
+  - cli
+  - linter
+  - tournament
   depends_on: []
 - id: script-cli-linter-sandbox
   type: script
   path: /.agent/plugins/cli-linter-tournament/scripts/lint-sandbox.sh
-  description: "Sandboxed execution for CLI Linter"
-  tags: [script, sandbox, linter, cli]
+  description: Sandboxed execution for CLI Linter
+  tags:
+  - script
+  - sandbox
+  - linter
+  - cli
   depends_on: []
 - id: skill-cli-linter
   type: skill
   path: /.agent/plugins/cli-linter-tournament/skills/cli-linter/SKILL.md
-  description: "Executes the CLI linter in a secure, sandboxed environment"
-  tags: [skill, linter, cli, security, sandbox]
+  description: Executes the CLI linter in a secure, sandboxed environment
+  tags:
+  - skill
+  - linter
+  - cli
+  - security
+  - sandbox
   depends_on: []
+- id: Story-22.3
+  type: Story
+  path: _iwish-output/stories/story-22.3.md
+  description: "K\xEDch ho\u1EA1t Auto-Immune Triggers cho I-Wish SDK"
+  tags:
+  - slee
+  - knowledge-compiler
+  - enrichment
+  depends_on:
+  - Story-22.2
+- id: File_iwish_runner_core
+  type: File
+  path: .agent/scripts/iwish_runner_core.py
+  description: I-Wish Core SDK for Zero-Trust physical execution scripts with AST
+    scanning, File locking, and Knowledge Compiler triggers
+  tags:
+  - slee
+  - sdk
+  - runner
+  depends_on: []
+- id: File_log_scanner
+  type: File
+  path: .agent/scripts/log_scanner.py
+  description: Fault-Tolerant Retro Log Scanner
+  tags:
+  - retro
+  - scanner
+  depends_on: []
+- id: Review-22.3
+  type: Review
+  path: _iwish-output/reviews/review-story-22.3-post-code.md
+  description: Code Review Scorecard
+  tags:
+  - review
+  - audit
+  - security
+  depends_on:
+  - Story-22.3
+- id: iwish_runner_core
+  type: File
+  path: .agent/scripts/iwish_runner_core.py
+  description: Core SDK runner with auto-immune triggers
+  tags:
+  - sdk
+  - runner
+  - security
+  depends_on:
+  - Story-22.3

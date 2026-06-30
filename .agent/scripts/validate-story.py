@@ -32,7 +32,7 @@ def check_dependencies_status(dependencies, project_root) -> list:
                         for story in epic["stories"]:
                             sid = normalize_id(story["id"])
                             story_statuses[sid] = story.get("status", "not_started")
-            elif "development_status" in status_data:
+            elif "development_status" in status_data and status_data["development_status"]:
                 for key, val in status_data["development_status"].items():
                     if key.startswith("story-"):
                         sid = normalize_id(key)

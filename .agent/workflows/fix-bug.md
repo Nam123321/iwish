@@ -1,4 +1,14 @@
 ---
+steps:
+  - id: step-fb-01-triage
+    description: "Triage and Context (Phases 1-2)"
+  - id: step-fb-02-analysis
+    description: "Root Cause and Impact Analysis (Phases 3-4)"
+  - id: step-fb-03-fix
+    description: "Fix and Verify (Phases 5-6)"
+  - id: step-fb-04-document
+    description: "Document and Measure (Phases 7-8)"
+
 description: 'Use when a bug is reported to perform root cause analysis, impact analysis, and regression testing before fixing.'
 ---
 
