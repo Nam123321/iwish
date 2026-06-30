@@ -73,10 +73,17 @@ def process_epic_file(epic_md_path, epic_id):
     if not status:
         status = extract_status_from_content(content)
         
+    # Extract FRs
+    frs = "N/A"
+    fr_match = re.search(r'(?:FRs|FR Covered):\s*([^\n]+)', content, re.IGNORECASE)
+    if fr_match:
+        frs = fr_match.group(1).strip()
+        
     return {
         "id": epic_id,
         "title": title,
-        "status": status.lower()
+        "status": status.lower(),
+        "frs": frs
     }
 
 def generate_sprint_status(project_root):
@@ -173,25 +180,46 @@ def generate_sprint_status(project_root):
                                 epics_dict[epic_id]["stories"] = []
                             epics_dict[epic_id]["stories"].append(story_data)
 
-    output = {
-        "sprint_name": "Active Sprint",
-        "status": "active",
-        "start_date": datetime.now().strftime("%Y-%m-%d"),
-        "epics": []
-    }
+    output_lines = []
+    output_lines.append(f"sprint_name: Active Sprint")
+    output_lines.append(f"status: active")
+    output_lines.append(f"start_date: '{datetime.now().strftime('%Y-%m-%d')}'")
+    output_lines.append("")
 
     # Sort epics
     sorted_epic_ids = sorted(epics_dict.keys(), key=lambda x: extract_number(x))
     for eid in sorted_epic_ids:
         epic = epics_dict[eid]
+        
+        output_lines.append("# ==========================================")
+        epic_num = extract_number(eid)
+        if isinstance(epic_num, float) and epic_num.is_integer():
+            epic_num = int(epic_num)
+        output_lines.append(f"# Epic {epic_num}: {epic['title']}")
+        frs = epic.get("frs", "N/A")
+        output_lines.append(f"# FRs: {frs}")
+        output_lines.append("# ==========================================")
+        
+        output_lines.append(f"{eid}: {epic['status']}")
+        
         if "stories" in epic:
             epic["stories"] = sorted(epic["stories"], key=lambda x: extract_number(x["id"]))
-        output["epics"].append(epic)
+            for story in epic["stories"]:
+                story_id = story["id"]
+                title = story["title"]
+                status = story["status"]
+                
+                story_num_str = story_id.replace('story-', '').replace('.', '-')
+                kebab_title = re.sub(r'[^a-zA-Z0-9\s-]', '', title)
+                kebab_title = re.sub(r'\s+', '-', kebab_title).strip('-').lower()
+                
+                key = f"{story_num_str}-{kebab_title}"
+                output_lines.append(f"{key}: {status}")
+        
+        output_lines.append("")
 
-    # Use sort_keys=False if possible, but safe_dump might sort. 
-    # To maintain order, we use standard safe_dump with sort_keys=False (requires pyyaml 5.1+)
     with open(output_file, "w", encoding="utf-8") as f:
-        yaml.dump(output, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+        f.write("\n".join(output_lines))
         
     print(f"Successfully generated {output_file}")
 
