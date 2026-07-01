@@ -247,7 +247,10 @@ def generate_sprint_status(project_root):
             if "frs" in epic and epic["frs"] != "N/A":
                 output_lines.append(f"# FRs: {epic['frs']}")
             
-            output_lines.append(f"{epic['id']}: {epic['status']}")
+            clean_epic_title = re.sub(r'^(?:Epic\s+)?\d+\s*[:\-]\s*', '', epic['title'], flags=re.IGNORECASE)
+            clean_epic_title = clean_epic_title.replace(":", " -").replace('"', "'")
+            epic_key = f"Epic {epic_num} - {clean_epic_title}"
+            output_lines.append(f"\"{epic_key}\": {epic['status']}")
             
             if "stories" in epic:
                 epic["stories"] = sorted(epic["stories"], key=lambda x: extract_number(x["id"]))
@@ -256,12 +259,12 @@ def generate_sprint_status(project_root):
                     title = story["title"]
                     status = story["status"]
                     
-                    story_num_str = story_id.replace('story-', '').replace('.', '-')
-                    kebab_title = re.sub(r'[^a-zA-Z0-9\s-]', '', title)
-                    kebab_title = re.sub(r'\s+', '-', kebab_title).strip('-').lower()
+                    story_num_str = story_id.replace('story-', '')
+                    clean_title = re.sub(r'^(?:Story\s+)?(?:\d+(?:\.\d+)?)\s*[:\-]\s*', '', title, flags=re.IGNORECASE)
+                    clean_title = clean_title.replace(":", " -").replace('"', "'")
                     
-                    key = f"{story_num_str}-{kebab_title}"
-                    output_lines.append(f"{key}: {status}")
+                    key = f"Story {story_num_str} - {clean_title}"
+                    output_lines.append(f"\"{key}\": {status}")
             
             output_lines.append("")
             

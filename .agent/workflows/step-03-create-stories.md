@@ -416,6 +416,15 @@ CRITICAL: BẮT BUỘC phải đưa file `epics-and-stories.md` này vào Knowle
 
 3. **Verification:** Confirm `feature-hierarchy.md` exists and is non-empty before proceeding.
 
+### 6.7. POPULATE DEVELOPMENT PHYSICAL FILES (MANDATORY)
+
+> [!IMPORTANT]
+> To ensure the physical tracking structure matches the planning output, you MUST automatically generate the physical Epic and Story files in the Development tracking structure right after indexing.
+
+**Execute:** `python3 .agent/scripts/populate_development.py`
+
+This will parse the `2.4. epics-and-stories.md` file you just created and physically scaffold all `epic.md` and `story.md` files (with full goals and ACs) in the Development folder (or `_iwish-output/stories`), keeping them in `backlog` status for later sprint execution.
+
 ## TEMPLATE STRUCTURE COMPLIANCE:
 
 The final {outputFile} must follow this structure exactly:
