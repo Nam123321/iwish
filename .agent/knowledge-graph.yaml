@@ -1239,3 +1239,33 @@ nodes:
   - security
   depends_on:
   - Story-22.3
+- id: file-api-key-manager
+  type: File
+  path: src/api-keys/apiKeyManager.ts
+  description: API Key generation and verification
+  tags: [security, core, auth]
+- id: file-api-key-manager-test
+  type: File
+  path: src/api-keys/apiKeyManager.test.ts
+  description: Tests for API Key manager
+  tags: [test, security]
+- id: file-db
+  type: File
+  path: src/db.ts
+  description: Database connection setup
+  tags: [core, db]
+- id: file-api-key-middleware
+  type: File
+  path: src/middleware/apiKeyMiddleware.ts
+  description: Express middleware for API key auth
+  tags: [security, core, auth]
+- id: file-webhook-dispatcher
+  type: File
+  path: src/webhooks/webhookDispatcher.ts
+  description: Webhook dispatching logic
+  tags: [core, webhooks]
+- id: file-webhook-dispatcher-test
+  type: File
+  path: src/webhooks/webhookDispatcher.test.ts
+  description: Tests for Webhook dispatcher
+  tags: [test, webhooks]

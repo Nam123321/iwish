@@ -63,7 +63,7 @@ export const createAuditExtension = (
             const auditLog = await (client as any).auditLog.create({
               data: {
                 entityType: model,
-                entityId: result?.id || 'UNKNOWN', // Fallback if no ID is returned
+                entityId: (result as any)?.id ? String((result as any).id) : 'UNKNOWN', // Fallback if no ID is returned
                 action: operation.toUpperCase(),
                 actorId: actorId,
                 actorContext: JSON.stringify(ctx),

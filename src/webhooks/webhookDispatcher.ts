@@ -80,13 +80,14 @@ export async function queueWebhookEvent(tenantId: string, endpointId: string, ev
     throw new Error('Payload size exceeds 1MB limit');
   }
 
+  const defaultStatus = 'PENDING';
   return prisma.webhookEvent.create({
     data: {
       tenantId,
       endpointId,
       eventType,
       payload: payloadString,
-      status: 'PENDING'
+      status: defaultStatus
     }
   });
 }

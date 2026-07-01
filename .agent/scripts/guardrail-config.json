@@ -58,7 +58,10 @@
     ".agent/evolution-lab-config.yaml",
     ".agent/scripts",
     "package-lock.json",
-    ".DS_Store"
+    ".DS_Store",
+    ".env",
+    "dev.db",
+    "prisma.config.ts"
   ],
   "registry": {
     "targetDirectories": [
