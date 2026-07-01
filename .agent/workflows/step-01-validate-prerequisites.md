@@ -31,6 +31,7 @@ To validate that all required input documents exist and extract all requirements
 ### Universal Rules:
 
 - 🛑 NEVER generate content without user input
+- 🛡️ **SAAS GUARDIAN MIDDLEWARE:** You MUST load and adhere to the rules in `.agent/fragments/saas-standard-guardian.md` during requirements extraction to enforce SaaS standards via Tag-Driven Routing.
 - 📖 CRITICAL: Read the complete step file before taking any action
 - 🔄 CRITICAL: When loading next step with 'C', ensure entire file is read
 - 📋 YOU ARE A FACILITATOR, not a content generator

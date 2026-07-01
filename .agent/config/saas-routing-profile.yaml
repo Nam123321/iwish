@@ -1,0 +1,28 @@
+schema_version: "1.0"
+interceptor_mode: "sequential" # Ensures subagents are invoked one-by-one, never combined
+
+tags_map:
+  "SAAS:ACCESS_CONTROL":
+    trigger_workflow: "/design-access-control"
+    delegation_role: "pbac-architect"
+    description: "Evaluates standard PBAC/RBAC structures and ensures features have required auth matrices."
+    
+  "SAAS:SECURITY":
+    trigger_workflow: "/security-guardian-patch"
+    delegation_role: "white-hacker"
+    description: "Evaluates threat models, static scans, and performs dynamic PoC tests."
+    
+  "SAAS:PRIVACY":
+    trigger_workflow: "/data-privacy-lifecycle"
+    delegation_role: "data-architect-agent"
+    description: "Identifies PII models and enforces Data Masking / GDPR compliance rules."
+    
+  "SAAS:BILLING":
+    trigger_workflow: "/billing-subscription-gating"
+    delegation_role: "pm-agent-persona"
+    description: "Maps subscription tiers and usage limits to feature access."
+    
+  "SAAS:GROWTH":
+    trigger_workflow: "/growth-telemetry-architect"
+    delegation_role: "data-strategist-agent"
+    description: "Generates tracking plans and analytics events schema."

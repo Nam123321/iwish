@@ -32,6 +32,7 @@
     ".agent/skills/user-simulation-guardian/personas",
     ".agent/skills/user-simulation-guardian/scenarios",
     ".agent/configs",
+    ".agent/config",
     ".agent/skills/clone-website",
     ".agent/skills/socratic-review",
     ".agent/skills/ux-pro-max",

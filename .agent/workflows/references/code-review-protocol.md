@@ -75,3 +75,8 @@ Reviewer phải kết luận đợt đánh giá bằng các thông tin sau:
    - Nếu `Trust Score` là `Low`, đợt đánh giá bị **BÁC BỎ (REJECTED)**.
 3. **Tier 1 Hybrid Graph Update:** BẮT BUỘC lưu lại kết quả Review (đặc biệt là Scorecard và Disposition) vào Knowledge Graph qua CLI:
    `iwish inject-node --file "_iwish-output/reviews/<tên-file-review>.md" --metadata '{"summary": "Code Review Scorecard", "tags": ["review", "audit"], "layer": "quality-control", "complexity": "medium"}'`
+
+4. **Cập nhật trạng thái Story (Story Status Update):**
+   - NẾU đợt đánh giá được CHẤP THUẬN (APPROVED), bạn BẮT BUỘC phải cập nhật trường `status` trong frontmatter của file `story.md` thành `testing` hoặc `pending_qa`.
+   - NẾU bị BÁC BỎ (REJECTED), bạn phải cập nhật `status` thành `in-progress` hoặc `dev_failed`.
+   - Tuyệt đối không để nguyên trạng thái cũ.

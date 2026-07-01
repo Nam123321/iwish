@@ -8,14 +8,19 @@ def normalize_id(id_str):
     normalized = id_str.strip().lower().replace('.', '-')
     if normalized.startswith("story-"):
         normalized = normalized[6:]
+    elif normalized.startswith("story "):
+        normalized = normalized[6:]
     return normalized
 
 def check_dependencies_status(dependencies, project_root) -> list:
-    sprint_status_file = project_root / "_iwish-output" / "3. Development" / "sprint-status.yaml"
+    sprint_status_file = project_root / "_iwish-output" / "stories" / "sprint-status.yaml"
     if not sprint_status_file.is_file():
-        sprint_status_file_alt = project_root / "_iwish-output" / "sprint-status.yaml"
-        if sprint_status_file_alt.is_file():
-            sprint_status_file = sprint_status_file_alt
+        sprint_status_file_alt1 = project_root / "_iwish-output" / "3. Development" / "sprint-status.yaml"
+        sprint_status_file_alt2 = project_root / "_iwish-output" / "sprint-status.yaml"
+        if sprint_status_file_alt1.is_file():
+            sprint_status_file = sprint_status_file_alt1
+        elif sprint_status_file_alt2.is_file():
+            sprint_status_file = sprint_status_file_alt2
         else:
             return []  # Skip checking if sprint-status.yaml does not exist yet
 
@@ -37,7 +42,12 @@ def check_dependencies_status(dependencies, project_root) -> list:
                     if key.startswith("story-"):
                         sid = normalize_id(key)
                         story_statuses[sid] = val
-
+            else:
+                for key, val in status_data.items():
+                    if key.lower().startswith("story"):
+                        sid = normalize_id(key.split(" - ")[0])
+                        story_statuses[sid] = val
+        print(story_statuses)
         errors = []
         for dep in dependencies:
             dep_cleaned = str(dep).strip()

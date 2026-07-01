@@ -30,9 +30,9 @@ def main():
     current_fg = "Uncategorized"
     
     # regexes
-    fg_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Feature Group\s+(\d+):\s*(?:\*\*)?\s*(.+)')
-    epic_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Epic\s+(\d+):\s*(?:\*\*)?\s*(.+)')
-    story_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Story\s+(\d+\.\d+):\s*(?:\*\*)?\s*(.+)')
+    fg_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?(?:Feature Group|FG-?|Module|Portal)\s*(\d+):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
+    epic_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Epic\s+(\d+):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
+    story_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Story\s+(\d+\.\d+):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
     
     # State tracking
     current_epic_num = None

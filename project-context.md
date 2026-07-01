@@ -107,8 +107,7 @@ All AI assistants and agents operating on this project must strictly comply with
       - Task list: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/task.md` (strictly `task.md`)
     - **Review Report file**: Must strictly be named `_iwish-output/reviews/review-story-{story_id}.md` (with dots, no dashes or underscores).
     - **Epic Risk Matrix file**: Must strictly be named `_iwish-output/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (capital `E`).
-
-
+14. **SaaS Standard Guardian Middleware**: All Dev Agents, QA Agents, and Planners are bound by the Interceptor rules defined in `.agent/fragments/saas-standard-guardian.md`. When encountering a `SAAS:*` tag on a story or epic, you MUST NOT bypass or override the tag. You MUST halt your generation, read `.agent/config/saas-routing-profile.yaml`, and use your subagent tool (e.g., `send_message` or `invoke_subagent`) to spawn the designated expert subagent. If an unmapped tag is found, you MUST halt with an error. Multiple tags must be processed sequentially.
 
 ---
 
@@ -125,3 +124,4 @@ Section này ghi nhận các thay đổi rule quan trọng kèm hướng dẫn r
 | `rule-10` | `added` | Sprint Status Standardization — chỉ cho phép enum values cố định | `_iwish-output/**/sprint-status.yaml` | Scan tất cả `sprint-status.yaml`, thay thế status không chuẩn bằng enum gần nhất theo bảng mapping ở Rule #10 |
 | `rule-11` | `added` | Context Drift Detection — auto-audit khi project-context thay đổi | N/A | Tạo `_iwish/runtime/.context-audit-state.json` nếu chưa có |
 | `rule-12` | `added` | Codebase Health & Code Simplification Synergy | N/A | Run `/codebase-health` to detect hotspots and apply `code-simplification` when refactoring |
+| `rule-14` | `added` | SaaS Standard Guardian Middleware | N/A | Planners, Dev Agents, QA Agents MUST use `invoke_subagent` for SAAS:* tags |
