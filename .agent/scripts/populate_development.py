@@ -14,13 +14,8 @@ def main():
         content = f.read()
 
     is_hierarchical = True
-    if os.path.exists(FLAT_DIR) and not os.path.exists(HIERARCHICAL_DIR):
-        is_hierarchical = False
-        
-    if is_hierarchical and not os.path.exists(HIERARCHICAL_DIR):
+    if not os.path.exists(HIERARCHICAL_DIR):
         os.makedirs(HIERARCHICAL_DIR, exist_ok=True)
-    elif not is_hierarchical and not os.path.exists(FLAT_DIR):
-        os.makedirs(FLAT_DIR, exist_ok=True)
 
     lines = content.split('\n')
     
@@ -56,13 +51,9 @@ def main():
                     story_goal = goal_match.group(1).strip()
                     break
 
-            if is_hierarchical:
-                story_dir = os.path.join(HIERARCHICAL_DIR, f"Epic-{epic_num}", f"Story-{current_story_id}")
-                os.makedirs(story_dir, exist_ok=True)
-                file_path = os.path.join(story_dir, "story.md")
-            else:
-                file_path = os.path.join(FLAT_DIR, f"story-{current_story_id}.md")
-                os.makedirs(FLAT_DIR, exist_ok=True)
+            story_dir = os.path.join(HIERARCHICAL_DIR, f"Epic-{epic_num}", f"Story-{current_story_id}")
+            os.makedirs(story_dir, exist_ok=True)
+            file_path = os.path.join(story_dir, "story.md")
                 
             story_body = "\n".join(current_story_lines).strip()
             
@@ -104,16 +95,16 @@ dependencies: []
             else:
                 print(f"Skipped existing story (modified by user): {file_path}")
 
-            
             # Update epic.md with this story
-            if is_hierarchical:
-                epic_file_path = os.path.join(HIERARCHICAL_DIR, f"Epic-{epic_num}", "epic.md")
-            else:
-                epic_file_path = os.path.join(FLAT_DIR, f"epic-{epic_num}.md")
+            epic_file_path = os.path.join(HIERARCHICAL_DIR, f"Epic-{epic_num}", "epic.md")
             
             if os.path.exists(epic_file_path):
-                with open(epic_file_path, "a", encoding="utf-8") as ef:
-                    ef.write(f"| **Story-{current_story_id}** | {current_story_title} | | backlog |\n")
+                with open(epic_file_path, "r", encoding="utf-8") as ef:
+                    existing_epic_content = ef.read()
+                
+                if f"**Story-{current_story_id}**" not in existing_epic_content:
+                    with open(epic_file_path, "a", encoding="utf-8") as ef:
+                        ef.write(f"| **Story-{current_story_id}** | {current_story_title} | | backlog |\n")
                     
         # Reset
         current_story_id = None
@@ -123,13 +114,9 @@ dependencies: []
     def flush_epic():
         nonlocal current_epic_num, current_epic_title, current_epic_lines, count_epics
         if current_epic_num:
-            if is_hierarchical:
-                epic_dir = os.path.join(HIERARCHICAL_DIR, f"Epic-{current_epic_num}")
-                os.makedirs(epic_dir, exist_ok=True)
-                epic_file_path = os.path.join(epic_dir, "epic.md")
-            else:
-                epic_file_path = os.path.join(FLAT_DIR, f"epic-{current_epic_num}.md")
-                os.makedirs(FLAT_DIR, exist_ok=True)
+            epic_dir = os.path.join(HIERARCHICAL_DIR, f"Epic-{current_epic_num}")
+            os.makedirs(epic_dir, exist_ok=True)
+            epic_file_path = os.path.join(epic_dir, "epic.md")
                 
             epic_body = "\n".join(current_epic_lines).strip()
                 

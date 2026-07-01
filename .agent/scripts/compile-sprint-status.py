@@ -90,125 +90,95 @@ def process_epic_file(epic_md_path, epic_id, epic_to_fg_map):
         "fg": fg
     }
 
-def parse_feature_hierarchy(filepath):
+def parse_feature_groups(project_root):
     mapping = {}
-    if not os.path.exists(filepath):
-        return mapping
+    epics_file = os.path.join(project_root, "_iwish-output", "2. Product Planning", "2.4. epics-and-stories.md")
+    if os.path.exists(epics_file):
+        with open(epics_file, "r", encoding="utf-8") as f:
+            for line in f:
+                match = re.search(r'\|\s*\*\*(?:Epic|E)-?(\d+)\*\*\s*\|[^\|]+\|\s*([^\|]+)\s*\|', line, re.IGNORECASE)
+                if match:
+                    epic_num = int(match.group(1))
+                    fg = match.group(2).strip()
+                    if fg and fg.lower() != "uncategorized":
+                        mapping[epic_num] = fg
+
+    hierarchy_file = os.path.join(project_root, "_iwish-output", "2. Product Planning", "2.6. feature-hierarchy.md")
+    if not os.path.exists(hierarchy_file):
+        hierarchy_file = os.path.join(project_root, "_iwish-output", "2. Product Planning", "2.5. feature-hierarchy.md")
     
-    with open(filepath, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        
-    current_module = "Uncategorized"
-    for line in lines:
-        module_match = re.match(r'^###\s+(\d+\.\s+.*?)$', line.strip())
-        if module_match:
-            current_module = module_match.group(1).strip()
-            continue
+    if os.path.exists(hierarchy_file):
+        with open(hierarchy_file, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        current_module = "Uncategorized"
+        for line in lines:
+            module_match = re.search(r'^(?:#{3,4})\s+(?:[^a-zA-Z0-9]*\s*)?(\d+\.\d+(?:\.\d+)?\s+.*?)$', line.strip())
+            if module_match:
+                current_module = module_match.group(1).strip()
+                continue
             
-        epic_match = re.search(r'\((?:E|Epic\s*)(\d+)', line, re.IGNORECASE)
-        if epic_match:
-            epic_num = int(epic_match.group(1))
-            mapping[epic_num] = current_module
-            
+            module_match_legacy = re.match(r'^###\s+(\d+\.\s+.*?)$', line.strip())
+            if module_match_legacy:
+                current_module = module_match_legacy.group(1).strip()
+                continue
+                
+            epic_match = re.search(r'\|\s*E-(\d+)', line, re.IGNORECASE) or re.search(r'\((?:E|Epic\s*)(\d+)', line, re.IGNORECASE)
+            if epic_match:
+                epic_num = int(epic_match.group(1))
+                if epic_num not in mapping:
+                    mapping[epic_num] = current_module
+
     return mapping
 
 def generate_sprint_status(project_root):
-    hierarchical_base = os.path.join(project_root, "_iwish-output", "3. Development", "1. Epic & Story")
-    flat_base = os.path.join(project_root, "_iwish-output", "stories")
-    
-    is_hierarchical = os.path.exists(hierarchical_base)
-    base_dir = hierarchical_base if is_hierarchical else flat_base
-    output_file = os.path.join(project_root, "_iwish-output", "3. Development", "sprint-status.yaml") if is_hierarchical else os.path.join(project_root, "_iwish-output", "stories", "sprint-status.yaml")
+    base_dir = os.path.join(project_root, "_iwish-output", "3. Development", "1. Epic & Story")
+    output_file = os.path.join(project_root, "_iwish-output", "3. Development", "sprint-status.yaml")
     
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
-    # Parse feature hierarchy for flat layout fallback
-    hierarchy_file = os.path.join(project_root, "_iwish-output", "2. Product Planning", "2.5. feature-hierarchy.md")
-    epic_to_fg_map = parse_feature_hierarchy(hierarchy_file)
+    epic_to_fg_map = parse_feature_groups(project_root)
     
     epics_dict = {}
 
     if os.path.exists(base_dir):
-        if is_hierarchical:
-            # Hierarchical logic
-            for item in os.listdir(base_dir):
-                item_path = os.path.join(base_dir, item)
-                if not os.path.isdir(item_path):
-                    continue
+        # Hierarchical logic
+        for item in os.listdir(base_dir):
+            item_path = os.path.join(base_dir, item)
+            if not os.path.isdir(item_path):
+                continue
+            
+            epic_dirs = []
+            if item.startswith("FG-"):
+                for epic_item in os.listdir(item_path):
+                    epic_path = os.path.join(item_path, epic_item)
+                    if os.path.isdir(epic_path) and epic_item.startswith("Epic-"):
+                        epic_dirs.append((epic_item, epic_path, item))
+            elif item.startswith("Epic-"):
+                epic_dirs.append((item, item_path, None))
                 
-                epic_dirs = []
-                if item.startswith("FG-"):
-                    for epic_item in os.listdir(item_path):
-                        epic_path = os.path.join(item_path, epic_item)
-                        if os.path.isdir(epic_path) and epic_item.startswith("Epic-"):
-                            epic_dirs.append((epic_item, epic_path, item)) # Pass FG folder name
-                elif item.startswith("Epic-"):
-                    epic_dirs.append((item, item_path, None))
+            for epic_item, epic_path, fg_folder in epic_dirs:
+                epic_id = f"epic-{extract_number(epic_item):g}".replace('.0', '')
+                epic_md = os.path.join(epic_path, "epic.md")
+                
+                epic_data = process_epic_file(epic_md, epic_id, epic_to_fg_map)
+                if not epic_data:
+                    epic_data = {"id": epic_id, "title": epic_item, "status": "backlog", "fg": fg_folder or "Uncategorized"}
+                elif fg_folder and epic_data["fg"] == "Uncategorized":
+                    epic_data["fg"] = fg_folder
                     
-                for epic_item, epic_path, fg_folder in epic_dirs:
-                    epic_id = f"epic-{extract_number(epic_item):g}".replace('.0', '')
-                    epic_md = os.path.join(epic_path, "epic.md")
-                    
-                    epic_data = process_epic_file(epic_md, epic_id, epic_to_fg_map)
-                    if not epic_data:
-                        epic_data = {"id": epic_id, "title": epic_item, "status": "backlog", "fg": fg_folder or "Uncategorized"}
-                    elif fg_folder and epic_data["fg"] == "Uncategorized":
-                        epic_data["fg"] = fg_folder
-                        
-                    epic_data["stories"] = []
-                    
-                    for story_item in os.listdir(epic_path):
-                        story_path = os.path.join(epic_path, story_item)
-                        if os.path.isdir(story_path) and story_item.startswith("Story-"):
-                            story_id = f"story-{story_item.split('-')[-1]}"
-                            story_md = os.path.join(story_path, "story.md")
-                            story_data = process_story_file(story_md, story_id)
-                            if story_data:
-                                epic_data["stories"].append(story_data)
-                    
-                    epic_data["stories"] = sorted(epic_data["stories"], key=lambda x: extract_number(x["id"]))
-                    epics_dict[epic_id] = epic_data
-        else:
-            # Flat layout logic
-            for item in os.listdir(base_dir):
-                item_path = os.path.join(base_dir, item)
-                if os.path.isdir(item_path):
-                    if item.startswith("Epic-"):
-                        epic_id = f"epic-{extract_number(item):g}".replace('.0', '')
-                        epic_md = os.path.join(item_path, "epic.md")
-                        epic_data = process_epic_file(epic_md, epic_id, epic_to_fg_map)
-                        if not epic_data: epic_data = {"id": epic_id, "title": item, "status": "backlog", "fg": "Uncategorized"}
-                        if epic_id not in epics_dict:
-                            epics_dict[epic_id] = epic_data
-                            epics_dict[epic_id]["stories"] = []
-                        else:
-                            epics_dict[epic_id].update(epic_data)
-                            if "stories" not in epics_dict[epic_id]: epics_dict[epic_id]["stories"] = []
-                elif item.endswith(".md"):
-                    if item.lower().startswith("epic-"):
-                        epic_id = f"epic-{extract_number(item):g}".replace('.0', '')
-                        epic_data = process_epic_file(item_path, epic_id, epic_to_fg_map)
-                        if not epic_data: epic_data = {"id": epic_id, "title": item, "status": "backlog", "fg": "Uncategorized"}
-                        if epic_id not in epics_dict:
-                            epics_dict[epic_id] = epic_data
-                            epics_dict[epic_id]["stories"] = []
-                        else:
-                            epics_dict[epic_id].update(epic_data)
-                            if "stories" not in epics_dict[epic_id]: epics_dict[epic_id]["stories"] = []
-                    elif item.lower().startswith("story-"):
-                        story_id = f"story-{extract_number(item)}"
-                        epic_num = story_id.split('-')[-1].split('.')[0]
-                        epic_id = f"epic-{epic_num}"
-                        story_data = process_story_file(item_path, story_id)
+                epic_data["stories"] = []
+                
+                for story_item in os.listdir(epic_path):
+                    story_path = os.path.join(epic_path, story_item)
+                    if os.path.isdir(story_path) and story_item.startswith("Story-"):
+                        story_id = f"story-{story_item.split('-')[-1]}"
+                        story_md = os.path.join(story_path, "story.md")
+                        story_data = process_story_file(story_md, story_id)
                         if story_data:
-                            if epic_id not in epics_dict:
-                                fg = "Uncategorized"
-                                if epic_num.isdigit() and int(epic_num) in epic_to_fg_map:
-                                    fg = epic_to_fg_map[int(epic_num)]
-                                epics_dict[epic_id] = {"id": epic_id, "title": f"Epic {epic_num}", "status": "backlog", "stories": [], "fg": fg}
-                            if "stories" not in epics_dict[epic_id]:
-                                epics_dict[epic_id]["stories"] = []
-                            epics_dict[epic_id]["stories"].append(story_data)
+                            epic_data["stories"].append(story_data)
+                
+                epic_data["stories"] = sorted(epic_data["stories"], key=lambda x: extract_number(x["id"]))
+                epics_dict[epic_id] = epic_data
 
     # Group by Feature Group
     fg_groups = defaultdict(list)
