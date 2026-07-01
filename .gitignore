@@ -23,3 +23,8 @@ _iwish-output/
 scratch/
 
 
+
+/src/generated/prisma
+
+.env
+dev.db

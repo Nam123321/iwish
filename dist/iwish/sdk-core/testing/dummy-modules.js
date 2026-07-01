@@ -2,64 +2,50 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DummyEventDispatcher = exports.DummyLogger = exports.DummyConfigLoader = void 0;
 const config_loader_1 = require("../types/config-loader");
-/**
- * Dummy ConfigLoader implementation for validation.
- */
 class DummyConfigLoader {
-    configs = {
-        'API_KEY': '12345',
-        'TIMEOUT': 5000,
-    };
+    // Use Object.create(null) to prevent prototype lookups
+    configs = Object.assign(Object.create(null), { 'API_KEY': '12345', 'TIMEOUT': 5000 });
     getConfig(key, defaultValue) {
-        if (this.hasConfig(key)) {
+        if (this.hasConfig(key))
             return this.configs[key];
-        }
-        if (defaultValue !== undefined) {
+        if (defaultValue !== undefined)
             return defaultValue;
-        }
         throw new config_loader_1.MissingConfigError(key);
     }
     hasConfig(key) {
-        return key in this.configs;
+        return Object.prototype.hasOwnProperty.call(this.configs, key);
     }
 }
 exports.DummyConfigLoader = DummyConfigLoader;
-/**
- * Dummy Logger implementation for validation.
- */
 class DummyLogger {
-    info(message, payload) {
-        console.log(`[INFO] ${message}`, this.maskSensitiveData(payload));
-    }
-    warn(message, payload) {
-        console.warn(`[WARN] ${message}`, this.maskSensitiveData(payload));
-    }
-    error(message, error) {
-        console.error(`[ERROR] ${message}`, this.maskSensitiveData(error));
-    }
-    debug(message, payload) {
-        console.debug(`[DEBUG] ${message}`, this.maskSensitiveData(payload));
-    }
-    maskSensitiveData(payload) {
-        if (!payload)
+    info(message, payload) { console.log(`[INFO] ${message}`, this.maskSensitiveData(payload)); }
+    warn(message, payload) { console.warn(`[WARN] ${message}`, this.maskSensitiveData(payload)); }
+    error(message, error) { console.error(`[ERROR] ${message}`, this.maskSensitiveData(error)); }
+    debug(message, payload) { console.debug(`[DEBUG] ${message}`, this.maskSensitiveData(payload)); }
+    maskSensitiveData(payload, depth = 0) {
+        // Prevent deep recursion / cyclic references
+        if (depth > 5 || !payload || typeof payload !== 'object')
             return payload;
-        if (typeof payload === 'object') {
-            const sanitized = { ...payload };
-            if (sanitized.password)
-                sanitized.password = '***';
-            if (sanitized.secret)
-                sanitized.secret = '***';
-            if (sanitized.token)
-                sanitized.token = '***';
-            return sanitized;
+        // Preserve Arrays
+        if (Array.isArray(payload)) {
+            return payload.map(item => this.maskSensitiveData(item, depth + 1));
         }
-        return payload;
+        const sanitized = {};
+        const sensitiveKeys = new Set(['password', 'secret', 'token', 'authorization']);
+        for (const key in payload) {
+            if (Object.prototype.hasOwnProperty.call(payload, key)) {
+                if (sensitiveKeys.has(key.toLowerCase())) {
+                    sanitized[key] = '***';
+                }
+                else {
+                    sanitized[key] = this.maskSensitiveData(payload[key], depth + 1);
+                }
+            }
+        }
+        return sanitized;
     }
 }
 exports.DummyLogger = DummyLogger;
-/**
- * Dummy EventDispatcher implementation for validation.
- */
 class DummyEventDispatcher {
     listeners = new Map();
     errorHandler;
@@ -67,39 +53,40 @@ class DummyEventDispatcher {
         this.errorHandler = errorHandler;
     }
     on(eventName, listener) {
-        if (!this.listeners.has(eventName)) {
+        if (!this.listeners.has(eventName))
             this.listeners.set(eventName, new Set());
-        }
         this.listeners.get(eventName).add(listener);
-        // Return unsubscribe function
-        return () => {
-            this.off(eventName, listener);
-        };
+        return () => { this.off(eventName, listener); };
     }
     off(eventName, listener) {
         const set = this.listeners.get(eventName);
-        if (set) {
+        if (set)
             set.delete(listener);
-        }
     }
     async dispatch(eventName, ...args) {
         const set = this.listeners.get(eventName);
         if (!set)
             return;
         const listenersArray = Array.from(set);
-        for (const listener of listenersArray) {
+        // Execute listeners concurrently
+        await Promise.allSettled(listenersArray.map(async (listener) => {
             try {
                 await listener(...args);
             }
             catch (err) {
                 if (this.errorHandler) {
-                    this.errorHandler(err, eventName);
+                    try {
+                        this.errorHandler(err, eventName);
+                    }
+                    catch (handlerErr) {
+                        console.error(`Error in errorHandler for event ${eventName}`, handlerErr);
+                    }
                 }
                 else {
                     console.error(`Unhandled exception in listener for event ${eventName}`, err);
                 }
             }
-        }
+        }));
     }
 }
 exports.DummyEventDispatcher = DummyEventDispatcher;

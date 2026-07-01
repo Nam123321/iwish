@@ -29,7 +29,7 @@ This workflow is executed when a human manually approves a QA test that is in th
   - Find the corresponding `story_id`.
   - Change `status` to `completed`.
 - Agent modifies the physical `story.md` file (e.g., `_iwish-output/stories/story-{id}.md` or the hierarchical path):
-  - Update `status: Pending_Approval` (or `testing`) to `status: completed` in the OKF frontmatter.
+  - Run `python3 .agent/scripts/update-story-status.py <path_to_story.md> completed` to update the status in the OKF frontmatter safely.
 
 ## Step 3: Knowledge Graph Injection
 - Agent runs `iwish inject-node --file "<path_to_story.md>" --metadata '{"summary": "...", "tags": [...], "layer": "story"}'` to update the semantic graph.
