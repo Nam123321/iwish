@@ -26,3 +26,8 @@ tags_map:
     trigger_workflow: "/growth-telemetry-architect"
     delegation_role: "data-strategist-agent"
     description: "Generates tracking plans and analytics events schema."
+    
+  "SAAS:LOCALIZATION":
+    trigger_workflow: "/design-localization"
+    delegation_role: "architect-agent"
+    description: "Evaluates multi-language setup, timezone handling, currency formatting, and measurement units."

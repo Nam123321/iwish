@@ -38,6 +38,7 @@ Review the `2.4. epics-and-stories.md` file (or generate it). You MUST ensure th
 - **Notifications & Webhooks** (Template engine, Webhook dispatcher)
 - **Billing & Subscription** (Stripe/Payment gateway integration)
 - **AppSec & GDPR Privacy** (Rate limits, Data Masking, RTBF)
+- **Localization & Regional Settings** (i18n, timezone, currencies, measurement units, decimal/thousands separators)
 
 ### 4. Taxonomy Tagging
 For every Story in the project, append the appropriate `SAAS:*` tags into its YAML frontmatter.
@@ -47,6 +48,7 @@ For every Story in the project, append the appropriate `SAAS:*` tags into its YA
 - `SAAS:BILLING`: For checkout, usage metering.
 - `SAAS:AUDIT`: For telemetry, audit logs.
 - `SAAS:GROWTH`: For onboarding, analytics.
+- `SAAS:LOCALIZATION`: For language, timezone, currency, and unit formatting conventions.
 
 **Downstream Effect:** These tags will automatically trigger dynamic workflows (e.g. `data-privacy-compliance-skill`) or static guardians (e.g. `saas-standard-guardian`) during `/make-story`, `/make-ui-spec`, and `/code`.
 
