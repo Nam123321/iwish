@@ -34,13 +34,51 @@ def main():
     
     lines = content.split('\n')
     
-    count = 0
+    count_stories = 0
+    count_epics = 0
+    
     for i, line in enumerate(lines):
         fg_match = re.match(fg_pattern, line)
         if fg_match:
             current_fg = f"FG-{fg_match.group(1)}: {fg_match.group(2)}"
             continue
             
+        epic_match = re.match(epic_pattern, line)
+        if epic_match:
+            epic_num = epic_match.group(1)
+            epic_title = epic_match.group(2).strip()
+            
+            if is_hierarchical:
+                epic_dir = os.path.join(HIERARCHICAL_DIR, f"Epic-{epic_num}")
+                os.makedirs(epic_dir, exist_ok=True)
+                epic_file_path = os.path.join(epic_dir, "epic.md")
+            else:
+                epic_file_path = os.path.join(FLAT_DIR, f"epic-{epic_num}.md")
+                os.makedirs(FLAT_DIR, exist_ok=True)
+                
+            if not os.path.exists(epic_file_path):
+                epic_content = f"""---
+type: I-Wish Epic
+title: "{epic_title}"
+resource: "Epic-{epic_num}"
+status: backlog
+---
+
+# Epic {epic_num}: {epic_title}
+
+> **[STUB FILE]** Đây là file stub được tự động sinh ra ở cuối giai đoạn Project Planning.
+
+**Feature Group:** {current_fg}
+
+## Stories
+| Story ID | Title | Dependencies | Status |
+|---|---|---|---|
+"""
+                with open(epic_file_path, "w", encoding="utf-8") as ef:
+                    ef.write(epic_content)
+                print(f"Created epic stub: {epic_file_path}")
+                count_epics += 1
+
         story_match = re.match(story_pattern, line)
         if story_match:
             story_id = story_match.group(1)
@@ -94,10 +132,20 @@ dependencies: []
 """
                 with open(file_path, "w", encoding="utf-8") as sf:
                     sf.write(stub_content)
-                print(f"Created stub: {file_path}")
-                count += 1
+                print(f"Created story stub: {file_path}")
+                count_stories += 1
+                
+                # Update the epic.md with this story
+                if is_hierarchical:
+                    epic_file_path = os.path.join(HIERARCHICAL_DIR, f"Epic-{epic_num}", "epic.md")
+                else:
+                    epic_file_path = os.path.join(FLAT_DIR, f"epic-{epic_num}.md")
+                
+                if os.path.exists(epic_file_path):
+                    with open(epic_file_path, "a", encoding="utf-8") as ef:
+                        ef.write(f"| **Story-{story_id}** | {story_title} | | backlog |\n")
 
-    print(f"\\nSuccessfully generated {count} new story stub files.")
+    print(f"\\nSuccessfully generated {count_epics} epic stubs and {count_stories} story stubs.")
 
 if __name__ == "__main__":
     main()

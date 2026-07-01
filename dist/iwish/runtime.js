@@ -357,8 +357,18 @@ async function compileUserGuideDashboard(projectRoot) {
     const templateContent = await fs.readFile(templatePath, 'utf8');
     const graphData = (0, graph_parser_1.extractGraphData)(projectRoot);
     let sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
-    const sprintStatusPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
-    if (!fs.existsSync(sprintStatusPath) || !sprintData || sprintData.length === 0) {
+    const devSprintStatusPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+    const flatSprintStatusPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
+    const bmadSprintStatusPath = path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml');
+    const effectiveSprintPath = fs.existsSync(devSprintStatusPath) ? devSprintStatusPath :
+        fs.existsSync(flatSprintStatusPath) ? flatSprintStatusPath :
+            bmadSprintStatusPath;
+    const hasEpicsAndStories = fs.existsSync(path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', 'epics.md')) ||
+        fs.existsSync(path.join(projectRoot, '_bmad-output', 'epics.md')) ||
+        fs.existsSync(path.join(projectRoot, 'docs', 'epics.md')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story'));
+    if (hasEpicsAndStories && (!fs.existsSync(effectiveSprintPath) || !sprintData || sprintData.length === 0)) {
         console.log(chalk_1.default.yellow('\n⚠️  Đã phát hiện sprint-status.yaml bị thiếu hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
         (0, graph_parser_1.autoRepairSprintStatus)(projectRoot);
         sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);

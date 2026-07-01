@@ -941,7 +941,10 @@ function autoRepairSprintStatus(projectRoot) {
             });
         }
     }
-    const sprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+    const devSprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+    const flatSprintPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
+    const hasHierarchical = fs.existsSync(path.join(projectRoot, '_iwish-output', '3. Development'));
+    const sprintPath = hasHierarchical ? devSprintPath : flatSprintPath;
     let existingData = {};
     if (fs.existsSync(sprintPath)) {
         try {
