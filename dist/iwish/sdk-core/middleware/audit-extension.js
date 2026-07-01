@@ -45,7 +45,7 @@ const createAuditExtension = (eventDispatcher, getContext) => {
                         const auditLog = await client.auditLog.create({
                             data: {
                                 entityType: model,
-                                entityId: result?.id || 'UNKNOWN', // Fallback if no ID is returned
+                                entityId: result?.id ? String(result.id) : 'UNKNOWN', // Fallback if no ID is returned
                                 action: operation.toUpperCase(),
                                 actorId: actorId,
                                 actorContext: JSON.stringify(ctx),

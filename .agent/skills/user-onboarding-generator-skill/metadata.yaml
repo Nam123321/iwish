@@ -1,0 +1,30 @@
+id: user-onboarding-generator-skill
+type: SKILL
+status: draft
+origin:
+  type: manual
+  created_by: create-skill
+  created_at: "2026-07-01"
+  source_story: "Story-24.5"
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: Story-24.5
+      type: ExternalSource
+      confidence: 10
+      sensitivity: public
+      ref: "_iwish-output/stories/story-24.5.md"
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - "_iwish-output/stories/story-24.5.md"
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: ".agent/skills/user-onboarding-generator-skill"
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

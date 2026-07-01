@@ -1,0 +1,14 @@
+name: data-privacy-compliance-skill
+version: 0.1.0
+status: draft
+origin:
+  story: file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/_iwish-output/stories/story-24.6.md
+  created_by: create-skill
+  timestamp: "2026-07-01T15:54:31+07:00"
+promotion_target: core
+path_policy: runtime
+tags:
+  - privacy
+  - gdpr
+  - compliance
+  - database

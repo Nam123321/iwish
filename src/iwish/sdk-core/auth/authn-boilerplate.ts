@@ -135,12 +135,14 @@ export class AuthNBoilerplate {
       return { status: 'MFA_REQUIRED' };
     }
 
+    const crypto = await import('crypto');
+    
     // Generate internal session
     const session: AuthSession = {
-      id: "sess_" + Math.random().toString(36).substring(7),
+      id: "sess_" + crypto.randomUUID().replace(/-/g, ''),
       user_id: token.sub,
-      access_token_hash: "hash_placeholder",
-      refresh_token_hash: "hash_placeholder",
+      access_token_hash: crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex'),
+      refresh_token_hash: crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex'),
       expires_at: new Date(token.exp * 1000),
       amr: token.amr || ['pwd']
     };

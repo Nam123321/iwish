@@ -1,0 +1,9 @@
+capability: user-onboarding-generator-skill
+type: SKILL
+status: complete
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: done
+completed_at: "2026-07-01"

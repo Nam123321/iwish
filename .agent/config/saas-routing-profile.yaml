@@ -3,7 +3,7 @@ interceptor_mode: "sequential" # Ensures subagents are invoked one-by-one, never
 
 tags_map:
   "SAAS:ACCESS_CONTROL":
-    trigger_workflow: "/design-access-control"
+    trigger_workflow: "/saas-standard"
     delegation_role: "pbac-architect"
     description: "Evaluates standard PBAC/RBAC structures and ensures features have required auth matrices."
     
