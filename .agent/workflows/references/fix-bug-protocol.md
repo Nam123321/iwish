@@ -403,10 +403,17 @@
     
 21. **Cập nhật Hệ miễn dịch (Auto-Immune Update):**
     - **MANDATORY HOTSPOT CHECK**: Bắt buộc chạy `node scripts/hotspot-calculator.js '<file_path>'` cho các file quan trọng vừa được sửa.
-    - Nếu `hotspot_score >= 30` hoặc `bug_count >= 3`, HOẶC bug là **Type A (Lặp lại)** hoặc **RPN ≥ 60**, BẮT BUỘC:
+    - Nếu `hotspot_score >= 30` hoặc `bug_count >= 3`, HOẶC bug là **Type A (Lặp lại)**, **RPN ≥ 60**, hoặc phân loại là **SystemDesignBug / Security**, BẮT BUỘC:
       - Thêm lesson vào `project-context.md` (vùng `### Watchouts / Immune System`) hoặc tạo một Knowledge Item mới.
-      - **Auto-Immune Trigger**: Kích hoạt tự động quá trình tạo Draft Skill (Lesson Extraction) chứa các directive giúp tránh lỗi tương tự.
-      - **capability-agent Capability Trigger**: Đưa Draft Skill này vào workflow `/enhance-skill` để thực hiện Dual-Run (Inhouse vs Darwinian) đánh giá trước khi promote thành Official Skill.
+      - **[NEW] Auto-Immune Trigger via Gateway**: Thay vì tự ghi file Draft Skill thủ công, Agent BẮT BUỘC phải gọi Cổng Intake `/skill` với JSON payload như sau (yêu cầu set timeout 60 giây):
+        ```json
+        {
+          "query": "Tạo skill/workflow từ bug [bug-id]: [lesson-learned]",
+          "cwi_hint": <integer_0_1000>,
+          "headless": true
+        }
+        ```
+      - **[EDGE-CASE] EC-FB-004 (Integration Crash):** Nếu Gateway `/skill` down, treo quá timeout 60s, hoặc báo lỗi, tiến trình fix bug KHÔNG ĐƯỢC CRASH. Agent phải fall back bằng cách ghi lesson text vào file markdown bình thường với tên duy nhất `_iwish-output/edge-case-knowledge/lesson-bug-[bug-id]-[timestamp].md`, đồng thời in ra JSON nguyên bản để dev có thể manually trigger lại.
 
 21b. **Auto-Immune RCA Injection (MANDATORY):**
      - Kích hoạt Knowledge Graph Injection để ghi nhớ lỗi và RCA vào Feature Graph.

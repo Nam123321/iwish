@@ -247,16 +247,22 @@ This workflow is the master orchestrator for the **Repo Absorption Protocol (RAP
 - **Steps:**
   1. **Dual-Track Routing:**
      - **If `SYSTEM_SKILL`:** 
-       - Tự động gọi luồng **I-Wish-SKILL Building** (bắt buộc đi qua PRD -> Epic -> Story).
-       - Toàn bộ file PRD, Epic, Story, sprint-status.yaml phải được ép buộc lưu trữ tại thư mục riêng `_iwish-output/iwish-skills/` để tránh ghi đè lên thư mục dự án của user.
-       - Classify module (SKILL_ATTACHMENT, DEDICATED_WORKFLOW, NEW_PERSONA, COMPOUND_INTEGRATION) và tạo Draft Assets (tất cả các file SKILL.md, agent hoặc workflow mới được sinh ra phải tuân thủ nghiêm ngặt schema frontmatter chuẩn hóa gồm: name, description, inputs, outputs, mcp_tools_required, subagent_triggers).
-       - Inject Triggers vào SkillGraph (`skill-graph.yaml`) hoặc Host Agent's profile.
+       - **[NEW] Universal Intake Routing:** Thay vì tự tạo file SKILL.md hay Workflow thủ công, Agent BẮT BUỘC phải gọi Cổng Intake `/skill` với JSON payload như sau (yêu cầu set timeout tối đa 60 giây):
+         ```json
+         {
+           "query": "Tạo skill/workflow từ repo {repo-name} tập trung vào cơ chế [Cơ chế cốt lõi]",
+           "cwi_hint": <integer_0_1000>,
+           "headless": true
+         }
+         ```
+       - **[EDGE-CASE] EC-P6-002 (Integration Crash):** Bọc lệnh gọi `/skill` trong logic try-catch/cảnh báo kèm **timeout chặt chẽ (60s)**. Nếu lệnh thất bại, treo quá thời gian, hoặc Gateway sập, **TUYỆT ĐỐI KHÔNG** làm crash tiến trình `absorb-repo`. Agent phải in ra màn hình JSON payload nguyên bản để user có thể tự gọi lại, đảm bảo kết quả từ 5 phases trước không bị mất.
+       - Việc phân tích tạo PRD/Epic/Story cho skill mới sẽ do cổng `/skill` (định tuyến sang `/create-skill` hoặc `/enhance-skill`) chịu trách nhiệm.
      - **If `USER_SPACE`:** 
        - Kích hoạt **Zero-Story Flow**. Không tạo bất kỳ Epic/Story nào.
        - Inject data từ Phase 4 trực tiếp vào Memory/Context của tác vụ dự án hiện hành. Bỏ qua việc tạo Draft Assets hệ thống.
 - 🛑 **HUMAN CHECKPOINT 2 (Iterative):** (Chỉ áp dụng cho `SYSTEM_SKILL`) For *each* implementation change and trigger injection, present the diff/code to the user.
   - **Wait for Input:** User must approve or skip *each* change independently.
-- **Output:** Approved draft assets (for System Skill) or Injected Context (for User Space). Do not write into canonical `.agent/` paths until the user approves each promotion.
+- **Output:** Payload JSON được gửi tới Gateway (for System Skill) or Injected Context (for User Space). Do not write into canonical `.agent/` paths until the user approves each promotion.
 
 ### Phase 7: VALIDATE 🧠 (Agent: review-agent)
 - **Action:** The Understanding Gate. Verify the agent actually comprehends the repo.
