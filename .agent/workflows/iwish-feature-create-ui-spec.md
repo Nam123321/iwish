@@ -30,6 +30,21 @@ Do NOT attempt to run this workflow without reading the protocol!
 6. Save the UI Spec file:
    - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `ui-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `ui_spec.md` or `ui-ux-spec.md`).
    - For flat story layouts: save as `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
+   - **CRITICAL - OKF FRONTMATTER**: You MUST start the generated file with this exact YAML frontmatter structure to ensure Graph connectivity:
+     ```yaml
+     ---
+     type: I-Wish UI Spec
+     title: "UI Specification: Story {story_id} — {story_title}"
+     description: "UI specification for Story {story_id}"
+     resource: "file://{absolute_path_to_this_file}"
+     tags: ["ui-spec", "design"]
+     timestamp: "{current_date}"
+     links_to: ["_iwish-output/stories/story-{story_id}.md"] # Adjust to actual path of the parent story
+     dependencies: [] # Add any dependent story IDs if applicable
+     storyId: '{story_id}'
+     status: 'complete'
+     ---
+     ```
 7. Run scanner on the generated UI Spec file:
 
    `node .agent/scripts/design-compliance-scanner.js --spec <path-to-generated-ui-spec.md> --design DESIGN.md`

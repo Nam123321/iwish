@@ -18,7 +18,21 @@ This workflow generates a comprehensive Data Specification document for a story.
 6. Save the Data Spec file:
    - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `data-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `data_spec.md` or `database-spec.md`).
    - For flat story layouts: save as `_iwish-output/stories/data-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
-   Ensure it includes standard OKF frontmatter.
+   - **CRITICAL - OKF FRONTMATTER**: You MUST start the generated file with this exact YAML frontmatter structure to ensure Graph connectivity:
+     ```yaml
+     ---
+     type: I-Wish Data Spec
+     title: "Data Specification: Story {story_id} — {story_title}"
+     description: "Data specification for Story {story_id}"
+     resource: "file://{absolute_path_to_this_file}"
+     tags: ["data-spec", "database"]
+     timestamp: "{current_date}"
+     links_to: ["_iwish-output/stories/story-{story_id}.md"] # Adjust to actual path of the parent story
+     dependencies: [] # Add any dependent story IDs if applicable
+     storyId: '{story_id}'
+     status: 'complete'
+     ---
+     ```
 
 </steps>
 
