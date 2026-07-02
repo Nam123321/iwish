@@ -28,8 +28,14 @@ def parse_frontmatter(content):
     return None
 
 def extract_status_from_content(content):
-    match = re.search(r'\*\*Status\*\*:\s*([a-zA-Z-]+)', content)
+    # Support both "**Status**: completed" and "**Status:** completed"
+    match = re.search(r'\*\*Status:?\*\*:?\s*([a-zA-Z-]+)', content, re.IGNORECASE)
     if match: return match.group(1).lower()
+    
+    # Fallback to plain "Status: completed" anywhere in the file
+    match2 = re.search(r'(?m)^Status:\s*([a-zA-Z-]+)', content, re.IGNORECASE)
+    if match2: return match2.group(1).lower()
+    
     if 'status: completed' in content.lower(): return 'completed'
     if 'status: in-progress' in content.lower(): return 'in-progress'
     return 'backlog'
