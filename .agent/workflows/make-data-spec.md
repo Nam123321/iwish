@@ -13,7 +13,10 @@ This workflow generates a comprehensive Data Specification document for a story.
 1. Locate and load the target story file (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md` or `_iwish-output/3. Development/1. Epic & Story/story-{story_id}.md`).
 2. Read policy from `.agent/fragments/graph-backend-selection-policy.md`.
 3. Activate data-architect-agent behavior from `.agent/agents/data-architect-agent.md`.
-4. Parse data requirements.
+4. Parse data requirements and strictly define **API Contract & DTO Specifications**:
+   - MUST define the exact JSON payload structures for both Request and Response.
+   - MUST define explicit type mappings at the API boundary (e.g., Prisma `Decimal` to TypeScript `number`, `DateTime` to `string`, and Nullable `?` to `| null`).
+   - Output these definitions into a dedicated "API Contract & DTO Specifications" section in the data-spec.
 5. Compare with Database Specification `_iwish-output/2. Product Planning/2.2. database-spec.md` if exists.
 6. Save the Data Spec file:
    - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `data-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `data_spec.md` or `database-spec.md`).

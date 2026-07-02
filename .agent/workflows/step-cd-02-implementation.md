@@ -12,6 +12,7 @@ Execute the instructions defined in this step for the iwish-feature-dev-story.md
 
 ## Instructions
 
+1. **CRITICAL — SHARED TYPES GATE:** Before writing any UI Component or Backend Controller code, you MUST define and map the API Contracts, DTOs, and shared types in the designated shared workspace of the project's source code (e.g., `packages/shared/src/api-routes.ts` or `types.ts`). Both FE and BE code MUST import these shared definitions. You are FORBIDDEN from locally duplicating API interfaces inside frontend components or backend controllers.
 2. **Implementation Inspection:** The agent MUST read the relevant implementation files (UI components, `schema.prisma`, `api-routes.ts`, and `seed-accounts.js` or mock files) mapped from the graphs.
    3. **No Hallucination:** Tests MUST NOT be written blindly based on PRD/Stories alone. You must assert against exact DOM structures, true database types (e.g. UUIDs), existing mock data, and cover the documented edge cases.
 4.5. CRITICAL — SOCRATIC REVIEW GATE 2. Before generating any Implementation Plan output, you MUST execute the Socratic Review Mode (Gate 2: `technical`). Load `.agent/skills/socratic-review/SKILL.md` to stress-test the architectural impact, database migrations, and backward compatibility. You are FORBIDDEN from generating the Implementation Plan until the user has completed the Socratic loop and explicitly approved the Synthesis.
