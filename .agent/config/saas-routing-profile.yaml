@@ -31,3 +31,8 @@ tags_map:
     trigger_workflow: "/design-localization"
     delegation_role: "architect-agent"
     description: "Evaluates multi-language setup, timezone handling, currency formatting, and measurement units."
+    
+  "SAAS:SETTINGS-HIERARCHY":
+    trigger_workflow: "/design-settings-hierarchy"
+    delegation_role: "architect-agent"
+    description: "Evaluates and structures the Settings Hierarchy (Global -> Middle -> Personal) for every portal."
