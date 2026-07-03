@@ -61,9 +61,14 @@ All agents MUST enforce the correct file paths and names based on the active Lay
   - UI spec file: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/ui-spec.md`
   - Data spec file: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md`
   - Task list: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/task.md`
+- **Evolution Lab Layout mode** (For Meta-SDLC Capability Authoring):
+  - Story file: `.agent/evolution-lab/stories/story-{story_id}.md` (use Meta prefix e.g. `story-M1.1.md`)
+  - UI spec file: `.agent/evolution-lab/stories/ui-spec-story-{story_id}.md`
+  - Data spec file: `.agent/evolution-lab/stories/data-spec-story-{story_id}.md`
+  - Task list: `.agent/evolution-lab/stories/task-story-{story_id}.md`
 - **Spec naming restriction**: Story-level UI and Data spec files must strictly use `ui-spec` and `data-spec` in their names. Arbitrary naming conventions (such as `ui-ux-spec.md`, `database-spec.md`, `tech-spec.md`) are strictly forbidden.
-- **Review Report file**: Must strictly be named `_iwish-output/reviews/review-story-{story_id}.md` (with dots, no dashes or underscores).
-- **Epic Risk Matrix file**: Must strictly be named `_iwish-output/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (capital `E`).
+- **Review Report file**: Must strictly be named `_iwish-output/reviews/review-story-{story_id}.md` (with dots, no dashes or underscores). If in Evolution Lab mode, use `.agent/evolution-lab/reviews/review-story-{story_id}.md`.
+- **Epic Risk Matrix file**: Must strictly be named `_iwish-output/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (capital `E`). If in Evolution Lab mode, use `.agent/evolution-lab/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md`.
 
 
 ## 🔄 Completion Status Rule

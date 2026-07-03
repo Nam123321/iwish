@@ -22,14 +22,15 @@ Do NOT attempt to run this workflow without reading the protocol!
 > Ensure the scan passes with Exit Code 0. If it fails, you must fix all unauthorized design tokens (e.g. replacing default violet colors like `#7C3AED` with allowed tokens from `DESIGN.md` such as `#00DF9A` or `#059669`) and re-run the check. Do NOT proceed to design generation or coding with compliance violations.
 
 <steps CRITICAL="TRUE">
-1. Locate and load the target story file (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md` or `_iwish-output/3. Development/1. Epic & Story/story-{story_id}.md`).
+1. Locate and load the target story file. This could be in `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md`, `_iwish-output/stories/story-{story_id}.md`, or `.agent/evolution-lab/stories/story-{story_id}.md`.
 2. Read Feature Hierarchy `_iwish-output/2. Product Planning/2.5. feature-hierarchy.md`. Halt if missing.
 3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
 4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
 5. Run Socratic Debate on Platform AI's UX recommendations using `ux-agent` and `dev-agent`, and embed the outcomes into the `Platform AI Consultation & Debate Report` section.
-6. Save the UI Spec file:
-   - For hierarchical story folders (e.g. `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/`): save as `ui-spec.md` (strictly using dash `-`, not underscore `_` or any other naming like `ui_spec.md` or `ui-ux-spec.md`).
-   - For flat story layouts: save as `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`, not underscore `_`).
+6. Save the UI Spec file based on the parent story's location:
+   - For hierarchical story folders: save as `ui-spec.md` in the same directory (strictly using dash `-`).
+   - For flat story layouts (`_iwish-output/stories/`): save as `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`).
+   - For Evolution Lab Layout (`.agent/evolution-lab/stories/`): save as `.agent/evolution-lab/stories/ui-spec-story-{story_id}.md`.
    - **CRITICAL - OKF FRONTMATTER**: You MUST start the generated file with this exact YAML frontmatter structure to ensure Graph connectivity:
      ```yaml
      ---
@@ -39,7 +40,7 @@ Do NOT attempt to run this workflow without reading the protocol!
      resource: "file://{absolute_path_to_this_file}"
      tags: ["ui-spec", "design"]
      timestamp: "{current_date}"
-     links_to: ["_iwish-output/stories/story-{story_id}.md"] # Adjust to actual path of the parent story
+     links_to: ["<path_to_parent_story_file>"] # Adjust to actual path of the parent story
      dependencies: [] # Add any dependent story IDs if applicable
      storyId: '{story_id}'
      status: 'complete'

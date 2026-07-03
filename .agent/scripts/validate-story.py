@@ -97,7 +97,7 @@ def validate_story(filepath: Path) -> bool:
     # Thử khớp cấu trúc thư mục phân cấp (ví dụ: /Epic-11/Story-11.1/story.md)
     # Hỗ trợ ký tự alphanumeric cho minor ID như 3b, 10a, v.v.
     filepath_str = filepath.resolve().as_posix()
-    match = re.search(r'/Epic-(\d+)/Story-(\d+)[.-]([a-zA-Z0-9]+)', filepath_str, re.IGNORECASE)
+    match = re.search(r'/Epic-([a-zA-Z0-9]+)/Story-([a-zA-Z0-9]+)[.-]([a-zA-Z0-9]+)', filepath_str, re.IGNORECASE)
     if match:
         epic_id = match.group(1)
         story_id = f"{match.group(2)}.{match.group(3)}"
@@ -105,12 +105,12 @@ def validate_story(filepath: Path) -> bool:
             errors.append(f"In hierarchical layout, the story file must be named strictly 'story.md', found: '{filename}'.")
     else:
         # Thử khớp cấu trúc phẳng tên file (ví dụ: story-16.2.md)
-        match = re.search(r'^story-(\d+)\.([a-zA-Z0-9]+)\.md$', filename)
+        match = re.search(r'^story-([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.md$', filename)
         if match:
             epic_id = match.group(1)
             story_id = f"{match.group(1)}.{match.group(2)}"
         else:
-            match_fallback = re.search(r'story-(\d+)[.-]([a-zA-Z0-9]+)', filename, re.IGNORECASE)
+            match_fallback = re.search(r'story-([a-zA-Z0-9]+)[.-]([a-zA-Z0-9]+)', filename, re.IGNORECASE)
             if match_fallback:
                 errors.append(f"In flat layout, the story file must be named strictly matching 'story-N.M.md' (all lowercase), found: '{filename}'.")
                 epic_id = match_fallback.group(1)
@@ -182,7 +182,10 @@ def validate_story(filepath: Path) -> bool:
         
         # Hỗ trợ đa dạng cách đặt tên của file review từ review-agent
         story_id_dash = story_id.replace('.', '-')
-        reviews_dir = project_root / "_iwish-output" / "reviews"
+        if "evolution-lab" in filepath_str:
+            reviews_dir = project_root / ".agent" / "evolution-lab" / "reviews"
+        else:
+            reviews_dir = project_root / "_iwish-output" / "reviews"
         
         review_candidates = [
             reviews_dir / f"review-story-{story_id}.md",
@@ -198,7 +201,7 @@ def validate_story(filepath: Path) -> bool:
                 break
         
         if not review_file:
-            errors.append(f"Physical Review File missing in _iwish-output/reviews/. Checked names: {[c.name for c in review_candidates]}. You must run review-agent first.")
+            errors.append(f"Physical Review File missing in {reviews_dir.relative_to(project_root)}. Checked names: {[c.name for c in review_candidates]}. You must run review-agent first.")
         else:
             if review_file.stat().st_size < 150:
                 review_text = review_file.read_text()
@@ -208,14 +211,21 @@ def validate_story(filepath: Path) -> bool:
                     errors.append(f"Physical Review File '{review_file.relative_to(project_root)}' is too short ({review_file.stat().st_size} bytes). Minimum size is 100 bytes.")
 
         # Risk matrix file from Edge Case Guardian
-        risk_file = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
-        if not risk_file.is_file():
+        if "evolution-lab" in filepath_str:
+            risk_file = project_root / ".agent" / "evolution-lab" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
+            risk_file_alt = project_root / ".agent" / "evolution-lab" / "edge-case-knowledge" / "epics" / f"Epic-{epic_id}-risk-matrix.md"
+            err_msg_path = ".agent/evolution-lab/edge-case-knowledge/epics/"
+        else:
+            risk_file = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"epic-{epic_id}-risk-matrix.md"
             risk_file_alt = project_root / "_iwish-output" / "edge-case-knowledge" / "epics" / f"Epic-{epic_id}-risk-matrix.md"
+            err_msg_path = "_iwish-output/edge-case-knowledge/epics/"
+            
+        if not risk_file.is_file():
             if risk_file_alt.is_file():
                 risk_file = risk_file_alt
             
         if not risk_file.is_file():
-            errors.append(f"Physical Risk Matrix File missing: 'epic-{epic_id}-risk-matrix.md' in _iwish-output/edge-case-knowledge/epics/. You must run Edge Case Guardian scan first.")
+            errors.append(f"Physical Risk Matrix File missing: 'epic-{epic_id}-risk-matrix.md' in {err_msg_path}. You must run Edge Case Guardian scan first.")
         elif risk_file.stat().st_size < 150:
             risk_text = risk_file.read_text()
             if "mock" in risk_text.lower() or "placeholder" in risk_text.lower():

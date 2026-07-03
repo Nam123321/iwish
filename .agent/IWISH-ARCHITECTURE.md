@@ -116,3 +116,11 @@ mappings:
  *   **Registry Hook**: Ensures every source file is registered in `knowledge-graph.yaml`.
  
  ---
+ 
+ ## 6. Meta-SDLC & Evolution Lab Governance
+ 
+ When developing internal capabilities, workflows, skills, or agent personas (Meta-SDLC), the orchestrator MUST adhere to the **Evolution Lab Layout Mode** to ensure absolute isolation from the product runtime.
+ 
+ 1. **Isolation**: All Meta-SDLC artifacts (stories, epics, tasks, UI/Data specs, risk matrices, review reports) MUST be written to `.agent/evolution-lab/...`.
+ 2. **Pollution Prevention**: Internal framework development MUST NOT pollute the product's runtime or project metrics. Meta-SDLC files are exempt from `sprint-status.yaml`, `FeatureGraph`, and `CodeGraph` scans unless specifically tracking framework progress.
+ 3. **Naming Convention**: Use the `M` prefix for stories and epics related to the Meta-SDLC (e.g. `story-M1.1.md`) to maintain semantic clarity.
