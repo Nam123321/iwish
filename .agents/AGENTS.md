@@ -98,3 +98,11 @@ Whenever any agent generates or updates an `epic.md` file, the `## Stories` sect
 - The `Dependencies` must be extracted from the linked story's dependencies.
 - The `Status` must accurately reflect the story's development status (e.g., `backlog`, `ready-for-dev`).
 - Example format: `| **Story-26.1** | Feature Name | Epic-01, Story-25.2 | backlog |`
+
+## 🔌 Dynamic Port Resolution Rule
+
+Whenever any agent needs to execute a `navigate_page` command or launch a Browser/QA Script on `localhost`, the following is **MANDATORY**:
+
+- **No Port Hallucination:** You MUST NOT assume or default to standard ports like `3000`, `5173`, or `8080`.
+- **Dynamic Lookup:** You MUST explicitly use `grep_search` or `view_file` to read the project's configuration file (e.g., `vite.config.js`, `package.json`, or `.env`) to extract the exact development port allocated for the current workspace.
+- **Enforcement:** If a port cannot be found dynamically, halt the operation and ask the user to provide the correct port.
