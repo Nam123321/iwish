@@ -106,3 +106,13 @@ Whenever any agent needs to execute a `navigate_page` command or launch a Browse
 - **No Port Hallucination:** You MUST NOT assume or default to standard ports like `3000`, `5173`, or `8080`.
 - **Dynamic Lookup:** You MUST explicitly use `grep_search` or `view_file` to read the project's configuration file (e.g., `vite.config.js`, `package.json`, or `.env`) to extract the exact development port allocated for the current workspace.
 - **Enforcement:** If a port cannot be found dynamically, halt the operation and ask the user to provide the correct port.
+
+## 🗄️ Database Schema & API Lifecycle Rule
+
+Whenever any agent modifies the database schema (e.g., `schema.prisma`) or runs migrations:
+
+1. **Active Lifecycle Management:** The agent MUST identify if the API server is currently running in the background.
+2. **Graceful Shutdown:** The agent MUST gracefully terminate the existing API server process (e.g., using `manage_task` kill or port killing scripts like `npm run kill-port`) before generating the new client.
+3. **Generation:** The agent MUST run `prisma generate` (or the equivalent database client generation command) to update the client files.
+4. **Restart:** The agent MUST start a fresh instance of the API server before proceeding to any QA, integration testing, or UI verification steps.
+5. **No Blind Watchers:** Agents SHOULD NOT rely on background file watchers (like Nodemon watching `node_modules`) to handle schema restarts during automated editing tasks to avoid race conditions and crash loops. Use explicit shutdown and restart commands instead.
