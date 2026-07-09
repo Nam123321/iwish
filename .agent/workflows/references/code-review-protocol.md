@@ -36,6 +36,66 @@ Trước khi tiến hành đọc logic code, Reviewer phải xác nhận các ki
 
 ---
 
+### 🟠 LỚP 1.5: CỔNG TUÂN THỦ ĐẶC TẢ (LAYER 1.5 - SPEC COMPLIANCE GATE)
+Trước khi chuyển sang đánh giá đối lập, Reviewer phải xác minh code thực sự triển khai đúng những gì đặc tả đã định nghĩa. **Đây là bước bắt buộc — không được bỏ qua.**
+
+> **[CRITICAL]** Nạp skill Spec Compliance Guardian: `view_file .agent/skills/spec-compliance-guardian/SKILL.md`
+
+1. **Nạp đặc tả bắt buộc (Mandatory Spec Loading):**
+   - BẮT BUỘC nạp file Story (với đầy đủ ACs và Tasks)
+   - BẮT BUỘC nạp file UI Spec (nếu story liên quan đến giao diện)
+   - BẮT BUỘC nạp file Data Spec (nếu story liên quan đến dữ liệu/API)
+   - BẮT BUỘC nạp file `api-routes.ts` (nếu story liên quan đến API endpoints)
+   - Nếu bất kỳ file đặc tả bắt buộc nào THIẾU → **DỪNG ĐÁNH GIÁ** với lỗi "Missing spec file"
+
+2. **Kiểm tra Đồng bộ UI Spec ↔ Code:**
+   - `[UI-1]` So sánh cây component trong UI Spec với cấu trúc file component thực tế. Ghi nhận: component thiếu, sai cấu trúc lồng nhau, component thừa không có trong spec.
+   - `[UI-2]` Trích xuất design tokens từ UI Spec và kiểm tra code sử dụng đúng token. Ghi nhận: màu hardcoded, tham chiếu token sai.
+   - `[UI-3]` Trích xuất responsive rules từ UI Spec và kiểm tra breakpoint classes. Ghi nhận: thiếu breakpoint, logic breakpoint sai.
+   - `[UI-4]` Trích xuất state definitions (loading/empty/error) từ UI Spec và kiểm tra code paths. Ghi nhận: thiếu xử lý state.
+
+3. **Kiểm tra Đồng bộ Data Spec ↔ Code:**
+   - `[DATA-1]` So sánh entity fields trong Data Spec với Prisma schema field-by-field. Ghi nhận: field thiếu, type sai, relation thiếu, constraint sai.
+   - `[DATA-2]` So sánh DTO contracts trong Data Spec với TypeScript interfaces thực tế trong controllers/api-client. Ghi nhận: field thiếu, type sai, nesting sai.
+   - `[DATA-3]` So sánh API routes trong Data Spec với `api-routes.ts` và controller decorators thực tế. Ghi nhận: route thiếu, HTTP method sai, params sai.
+
+4. **Ma trận Truy vết AC (AC Traceability Matrix):**
+   - Với MỖI Acceptance Criterion trong story:
+     - Xác định artifact code cụ thể triển khai AC đó (file:line reference)
+     - Xác định artifact test cụ thể kiểm thử AC đó
+     - Tạo hàng: `[AC Text] → [Code Reference] → [Test Reference]`
+   - Nếu bất kỳ AC nào thiếu Code Reference → **BÁC BỎ (REJECT)**
+   - Nếu bất kỳ AC nào thiếu Test Reference → **CẢNH BÁO (WARN)**
+
+5. **Tính điểm SCS (Spec Compliance Score):**
+   ```
+   SCS = (UI compliance × 0.30 + Data compliance × 0.30 + AC coverage × 0.40) × 100
+   ```
+   - Nếu SCS < 85% → **BÁC BỎ** với báo cáo diff chi tiết, gửi lại cho dev.
+   - Nếu SCS ≥ 85% → Ghi nhận SCS vào review report, chuyển sang Lớp 1.8 (nếu có logic code) hoặc Lớp 2.
+
+---
+
+### 🟢 LỚP 1.8: CỔNG BIÊN DỊCH & KIỂM TRA RUNTIME (LAYER 1.8 - COMPILATION & HEALTH-CHECK GATE)
+Cổng này đảm bảo code thực sự chạy được, chống lỗi Vite 500. **Lưu ý: Cổng này có tính chọn lọc để tiết kiệm tài nguyên.**
+
+1. **Selective Trigger (Kích hoạt có chọn lọc):**
+   - BẮT BUỘC chạy cổng này nếu Git Diff có sửa đổi các file logic, components, cấu hình (`src/**/*.ts`, `src/**/*.tsx`, `vite.config.ts`, `schema.prisma`...).
+   - BỎ QUA cổng này nếu thay đổi chỉ nằm trong file tĩnh, tài liệu, markdown, hoặc các chỉnh sửa không ảnh hưởng logic.
+
+2. **Compilation Gate (Biên dịch tĩnh):**
+   - Chạy lệnh build: `npm run build` hoặc `npx vite build --emptyOutDir`.
+   - Lệnh build phải redirect log ra file vật lý (vd: `> _iwish-output/evidence/build-review.log 2>&1; echo $? > _iwish-output/evidence/build.exitcode`).
+   - Kiểm tra bằng `validate-evidence.js`. Nếu thất bại → Điểm SCS bị ép về 0% → **BÁC BỎ (REJECT)**.
+
+3. **Runtime Health-Check (Xác minh Runtime):**
+   - Khởi động dev server chạy ngầm (ví dụ: `npm run dev -- --port 3004 &`).
+   - Chờ server sẵn sàng, chạy `curl -I http://localhost:3004` để xác minh trả về HTTP 200 OK.
+   - Hủy process server (`kill`) ngay sau khi kiểm tra.
+   - Nếu trả về 500 hoặc server crash → **BÁC BỎ (REJECT)**.
+
+---
+
 ### 🟡 LỚP 2: ĐỐI LẬP & PHẢN BIỆN (LAYER 2 - ADVERSARIAL AUDIT GATE)
 Đóng vai trò là **Cynical Auditor** để tìm kiếm các lỗi logic và lỗ hổng:
 

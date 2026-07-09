@@ -326,9 +326,17 @@
 
 ## Phase 6: VERIFY (Kiểm tra)
 
-16b. **COMPILER VALIDATION GATE (BẮT BUỘC):**
-     - Chạy `pnpm build`, `nest build`, hoặc `tsc --noEmit`
-     - Nếu compile lỗi (MODULE_NOT_FOUND, type error) → HALT, không được chuyển sang verify. Quay lại Phase 5 fix ngay lập tức.
+16b. **EVIDENCE-BASED COMPILER VALIDATION GATE (BẮT BUỘC):**
+     - Lệnh build/test KHÔNG ĐƯỢC chỉ chạy in ra terminal. BẮT BUỘC phải redirect output ra file vật lý để downstream workflow (Pivot Guardian) có thể kiểm chứng.
+     - **Static Build Check:** 
+       `npm run build > _iwish-output/evidence/build-[bug-id].log 2>&1; echo $? > _iwish-output/evidence/build-[bug-id].exitcode`
+     - **Runtime Health-Check (Chống lỗi Vite 500 runtime):**
+       Khởi động dev server chạy ngầm (`npm run dev -- --port 3004 &`), đợi khởi động, sau đó verify bằng cURL:
+       `curl -I http://localhost:3004 > _iwish-output/evidence/health-[bug-id].log 2>&1; echo $? > _iwish-output/evidence/health-[bug-id].exitcode`
+       Đừng quên kill process sau khi kiểm tra.
+     - **Verify:** Gọi script Pivot Guardian để kiểm chứng sự tồn tại vật lý và mã thoát:
+       `node .agent/scripts/validate-evidence.js _iwish-output/evidence/build-[bug-id].log _iwish-output/evidence/build-[bug-id].exitcode`
+     - Nếu script `validate-evidence.js` báo lỗi → HALT, không được báo cáo hoàn thành. Quay lại Phase 5 fix lập tức. Thiếu file evidence vật lý = 0%.
 
 17. **Test case cho chính bug:**
     - Tái tạo lỗi ban đầu → confirm đã fix
