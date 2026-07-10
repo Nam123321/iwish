@@ -24,7 +24,8 @@ Load and read `/.agent/fragments/idea-discovery-framework.md`. Interview the use
 2. **🎯 Lens 2: Problem & Value Prop:** Identify root causes, one-sentence value proposition, and customer definition of success.
 3. **🛡️ Lens 3: Competitors & Moat:** List alternatives/competitors, current limitations, and defensive moats (network effects, switching costs, etc.).
 4. **🛠️ Lens 4: Execution & MVP Scope:** Call out complex tech requirements, define minimum week-one scope, and identify major failure risks.
-5. **📈 Lens 5: Metrics & Growth:** Define primary and secondary success metrics.
+5. **❓ Unknowns Gate (Pre-Metrics):** Before finalizing the metrics, run the `unknowns-scanner` skill (`phase: idea-discover`, `depth: partial`, `tools: assumption-map, debiasing-check`) to identify blindspots in the first 4 lenses.
+6. **📈 Lens 5: Metrics & Growth:** Define primary and secondary success metrics.
 
 ### 2. Apply The Mom Test & Pushback Guards
 During the dialogue, enforce these golden rules:

@@ -73,6 +73,11 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
    `python3 .agent/scripts/validate-story.py "path/to/story.md"`
    If this validation script exits with a non-zero code, you MUST inspect the errors, rewrite/fix the missing or malformed blocks in the story file, and re-run validation until it passes (passes with Exit Code 0).
 6d. CRITICAL — TIER 1 HYBRID GRAPH UPDATE. Sau khi hoàn thiện và xác thực thành công story file, bạn BẮT BUỘC phải "bơm" trực tiếp tóm tắt story này vào Knowledge Graph bằng lệnh CLI: `iwish inject-node --file "<target_story_path_determined_in_step_4.3>" --metadata '{"summary": "Mô tả ngắn gọn về tính năng", "tags": ["story", "planning"], "layer": "documentation", "complexity": "low"}'`. Lệnh này giúp FalkorDB nhận diện được node tài liệu này ngay lập tức.
+6e. CRITICAL — UNKNOWNS SCANNER (QUICK).
+    - Load the `unknowns-scanner` skill (`.agent/skills/unknowns-scanner/SKILL.md`).
+    - Run with: phase=story, context_file={story_file}, depth=quick
+    - If findings with severity=critical → HALT and present to user
+    - Else → append findings to unknowns-ledger.yaml, continue
 7. SMART NAVIGATION MENU (OPTION B). At the very end of story creation, analyze the generated story content. If the story is tagged with `[UI]` (Frontend) or `[DATA]` (Database/Schema), print a clear Next Steps Navigation Menu in the chat:
    - Explain what design files are needed based on the story tags.
    - Present clickable shortcuts for the user to trigger: `/make-ui-spec` (if UI tagged), `/make-data-spec` (if DATA tagged), or `/code` to skip design and proceed directly to coding.

@@ -3,6 +3,8 @@ name: "Edge Case Guardian (Review Agent Skill)"
 description: >
   Systematically identifies and validates edge cases across technical implementations 
   using the 8-Pillar Edge Case Taxonomy. Grounded in the review-agent persona.
+role: absorbed-into-uip
+redirect: unknowns-scanner
 ---
 
 # Edge Case Guardian Skill

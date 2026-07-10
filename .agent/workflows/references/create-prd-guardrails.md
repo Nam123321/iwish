@@ -14,4 +14,9 @@ When executing the PRD Creation workflow, you MUST follow these guardrails exact
 4. **CRITICAL — TECH STACK RESEARCH PASS:** For Platform or Enterprise Platform products (>60 FRs or >5 user journeys), conduct a GitHub/web tech stack research round BEFORE the QA audit. Ensure FRs are validated against available open-source solutions and no capability domains are missed. Research should cover: agent frameworks, model serving, security tools, integration frameworks, etc.
 5. **CRITICAL — FR ADEQUACY CHECK:** After Socratic Review and Tech Stack Research, validate that the FR count is appropriate for the product complexity class. If Platform-class but <60 FRs, HALT and perform a Deep Dive pass to discover missing capability domains.
 6. **CRITICAL — QA SIMULATOR GUARDIAN AUDIT:** Before concluding the PRD generation, execute the Fat-Guardian Simulator mental run. Load `@{project-root}/.agent/skills/qa-simulator-guardian/SKILL.md`. Calculate the EXACT 7-row Hybrid Scorecard (6 Core Axes + 1 UX Empathy). Produce the Scorecard directly at the bottom of the PRD document output. `TOTAL AVERAGE` MUST be `>= 8.5/10`. If lower, HALT workflow and loop back to rewrite the gaps.
-7. **CRITICAL — NAVIGATOR GUARDIAN SYNC:** Upon completing all steps above, explicitly run `bash .agent/scripts/navigator-guardian.sh` via the terminal to synchronize the Idea Navigator dashboard.
+7. **CRITICAL — UNKNOWNS SCANNER (MACRO):**
+   - Load the `unknowns-scanner` skill (`.agent/skills/unknowns-scanner/SKILL.md`).
+   - Run with: phase=planning, scope=macro, depth=partial
+   - Write macro assumptions to `macro-risks.yaml`
+   - Present Assumption Map to user for review
+8. **CRITICAL — NAVIGATOR GUARDIAN SYNC:** Upon completing all steps above, explicitly run `bash .agent/scripts/navigator-guardian.sh` via the terminal to synchronize the Idea Navigator dashboard.

@@ -148,6 +148,18 @@ Prepare the following structure for document append:
 ### Key Performance Indicators
 
 [Key performance indicators content based on conversation, or N/A if not discussed]
+
+### Unknowns Gate: Pre-Scope Check
+
+Before finalizing this phase and moving to scope, run the `unknowns-scanner` skill with:
+- phase: product-brief
+- depth: partial
+- tools: assumption-map (KU), debiasing-check (UK)
+
+Document findings here:
+- Assumptions embedded in user journeys that lack evidence
+- Metrics that may be unmeasurable or vanity
+- Domain constraints not yet explored
 ```
 
 ### 7. Present MENU OPTIONS

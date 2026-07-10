@@ -1,0 +1,17 @@
+id: workflow-unknowns
+name: unknowns
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discovery, planning, execution, monitoring]
+stages: [idea-discovery, architecture, epic-creation, story-creation, review, dev]
+triggers: [unknowns, macro risk, assumption check]
+anti_triggers: [deploy]
+primary_agents: [orch-agent, pm-agent, analyst-agent]
+primary_workflows: [unknowns]
+supportive_skills: [unknowns-scanner]
+tool_dependencies: []
+constraints:
+  - Requires context files to scan.
+source_path: /.agent/workflows/unknowns.md
+tags: [discovery, canonical, risk-management]

@@ -109,6 +109,12 @@ Cổng này đảm bảo code thực sự chạy được, chống lỗi Vite 50
 3. **Kiểm tra Architecture Guardian (God File Prevention):**
    - Rà soát số dòng code của các file bị thay đổi hoặc tạo mới trong PR/Story.
    - Nếu phát hiện bất kỳ source file nào (không phải file tự sinh) vượt quá **ngưỡng 300-500 dòng**, bạn BẮT BUỘC phải đánh dấu LỖI NGHIÊM TRỌNG (CRITICAL ARCHITECTURE VIOLATION) và TỪ CHỐI (REJECT) bản đánh giá. Yêu cầu tác giả chạy `/refactor` để bóc tách file trước khi submit lại.
+4. **Unknowns Scanner (Adversarial Micro Scan):**
+   - Nạp `unknowns-scanner` skill (`.agent/skills/unknowns-scanner/SKILL.md`)
+   - Chạy với: phase=review, depth=full
+   - Tools: debiasing-check, drift-detector, merge-quiz
+   - Nếu findings có mức độ critical → TỰ ĐỘNG BÁC BỎ (REJECT) bản đánh giá.
+
 
 ---
 

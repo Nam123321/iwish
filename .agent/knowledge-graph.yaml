@@ -1269,3 +1269,31 @@ nodes:
   path: src/webhooks/webhookDispatcher.test.ts
   description: Tests for Webhook dispatcher
   tags: [test, webhooks]
+- id: config-tool-registry
+  type: config
+  path: /.agent/unknowns/tool-registry.yaml
+  description: Registry file for Unknowns Intelligence Platform (UIP) tools.
+  tags:
+  - unknowns
+  - uip
+  - registry
+  depends_on: []
+- id: workflow-unknowns
+  type: workflow
+  path: /.agent/workflows/unknowns.md
+  description: Canonical short workflow for Unknowns Discovery Platform (UIP) slash command.
+  tags:
+  - unknowns
+  - discovery
+  - uip
+  depends_on:
+  - workflow-iwish-feature-unknowns
+- id: workflow-iwish-feature-unknowns
+  type: workflow
+  path: /.agent/workflows/iwish-feature-unknowns.md
+  description: Unknowns Intelligence Platform (UIP) Gateway workflow.
+  tags:
+  - unknowns
+  - uip
+  - gateway
+  depends_on: []

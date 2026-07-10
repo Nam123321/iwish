@@ -4,6 +4,8 @@ description: 'Use when generating an implementation plan to evaluate architectur
 version: "1.0.0"
 author: "I-Wish Architecture Team"
 type: "SKILL"
+role: absorbed-into-uip
+redirect: uip-socratic-drill
 ---
 
 # Socratic Review Mode

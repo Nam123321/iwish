@@ -86,6 +86,23 @@ Create all of the following:
 - Create an adoption review pack following `docs/iwish-adoption-review-pack-standard.md`
 - Create `routing-profile.yaml` following `docs/iwish-routing-profile-standard.md`
 
+### 3.5. Anti-Fabrication Gate Classification (MANDATORY)
+
+Before proceeding to CSO validation, classify every procedural gate in the generated capability:
+
+1. **Read** `.agent/fragments/anti-fabrication-watchmen-pattern.md`
+2. **Classify** every gate/check in the generated SKILL.md or workflow as:
+   - **Category A (Deterministic):** Script exit codes, compiler checks, file existence — machine-verified, agent cannot fabricate
+   - **Category B (Trust-Based):** Agent self-reported judgments, comparisons, scores — subject to bias and fabrication
+3. **Calculate** the Enforcement Maturity Ratio: `Category A gates / Total gates × 100%`
+4. **Threshold:** If Enforcement Maturity < 30% → FLAG the capability as "low enforcement maturity" in `metadata.yaml` and add a recommendation to convert at least 2 Category B gates to Category A (e.g., by creating a companion verification script)
+5. **Evidence Trail:** For every Category B gate in the generated capability, define the evidence trail (what artifact proves the gate was actually executed — e.g., `view_file` tool call, raw script output, file:line references)
+6. **Output:** Add a `## Gate Classification` table to the generated SKILL.md following the template in the fragment:
+```markdown
+| Gate ID | Description | Category | Enforcement Mechanism | Evidence Trail |
+|---------|------------|----------|----------------------|----------------|
+```
+
 ### 4. CSO (Claude Search Optimization) Validation Gate
 Before concluding this step, explicitly audit every `description` field generated in the YAML frontmatter.
 - MUST NOT contain a summary of the workflow.

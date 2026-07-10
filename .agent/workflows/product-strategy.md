@@ -76,6 +76,20 @@ For each Pillar in the template, cross-reference the relevant discovery artifact
 - Preserve `<!-- source: filename.md -->` comments from the template.
 - Add specific quotes or data points from source files where possible.
 
+**Special Injection for Pillar 5 (Hypothesis Registry):**
+Before populating Pillar 5, you MUST run the `unknowns-scanner` skill with:
+- phase: planning
+- scope: macro
+- depth: full
+- tools: assumption-map, pre-mortem, pmf-validator, confidence-scorer, competitive-blindspot
+
+Transform Pillar 5 from a static list into a living risk register:
+1. Assign a confidence score (0.0-1.0) with an evidence trail for each hypothesis.
+2. Include PMF validation results (market signals for/against).
+3. Surface competitive blindspots from all research docs.
+4. Include Pre-Mortem findings ("Why will this product fail in 12 months?").
+5. Output: Generate the full `_iwish-output/unknowns/macro-risks.yaml` — this becomes THE macro risk register for the entire project lifecycle.
+
 ### Step 4: Compute Verdict
 
 Apply the verdict logic in this exact order:

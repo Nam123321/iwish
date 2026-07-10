@@ -30,6 +30,7 @@ Verify that the newly created draft capability files are structurally sound, fol
 - [ ] Contains required sections: "When to Use", "Core Rules", "Anti-Patterns", "Best Practices"
 - [ ] No broken markdown formatting (unclosed code blocks, missing headers)
 - [ ] File size is reasonable (500-5000 lines; flag if outside this range)
+- [ ] Skill contains a `## Gate Classification` or `## Anti-Fabrication` section classifying gates as Category A (Deterministic) vs Category B (Trust-Based) per `.agent/fragments/anti-fabrication-watchmen-pattern.md`. Enforcement Maturity (% Category A) must be ≥ 30%. Skills with 0% Category A are flagged as "paper-only".
 
 #### For WORKFLOW files:
 - [ ] Gateway `.md` file has valid YAML frontmatter with `name`, `description`, `inputs`, `outputs`, `mcp_tools_required`, and `subagent_triggers` fields
@@ -129,3 +130,4 @@ Next Steps:
 - [ ] Instinct logged after promotion approval
 - [ ] Sprint tracker finalized
 - [ ] User has received the completion report
+- [ ] Anti-Fabrication gate classification exists and Enforcement Maturity ≥ 30%

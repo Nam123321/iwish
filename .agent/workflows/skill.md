@@ -55,3 +55,21 @@ After obtaining the `SOI` and `CWI`, the Agent must sequentially apply the follo
 ## 4. Execution
 
 Based on the routing result, the Agent automatically invokes the corresponding workflow and passes the payload/query to begin execution.
+
+## 5. Anti-Fabrication Policy
+
+> **Reference:** `.agent/fragments/anti-fabrication-watchmen-pattern.md`
+
+When routing to `/create-skill` or `/enhance-skill`, the following policy applies:
+
+1. **For new capabilities** (`/create-skill`): The forge phase (Step W-03) MUST classify all gates as Category A (Deterministic) or Category B (Trust-Based) and ensure Enforcement Maturity ≥ 30%.
+
+2. **For existing capabilities** (`/enhance-skill`): The upgrade phase (Step E-03) MUST audit existing gates and propose hardening if Enforcement Maturity < 20%.
+
+3. **For Gray Zone routing** (SOI 30-75%): When the AI council evaluates whether to create or enhance, they MUST also assess the Enforcement Maturity of any overlapping skill. Low maturity (< 30%) is an additional argument for enhancement (hardening the existing skill) rather than creating a new one.
+
+4. **Enforcement Maturity Classification:**
+   - **High Maturity (>70% Category A):** Skill has strong deterministic verification
+   - **Medium Maturity (30-70% Category A):** Acceptable, monitor for improvement opportunities
+   - **Low Maturity (<30% Category A):** Flag for hardening — skill may be "paper-only"
+   - **Zero Maturity (0% Category A):** CRITICAL — skill has no machine-verified gates, all checks are trust-based and subject to fabrication

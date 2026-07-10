@@ -166,6 +166,20 @@ Read and execute: `step-ic-04-internal-faq.md`
 
 This stage stress-tests feasibility, risk, and execution reality.
 
+### Step 4b: Unknowns Intelligence Scan
+
+**[MANDATORY GATE]** Before proceeding to Strategic Advantage, you MUST run the `unknowns-scanner` skill with:
+- phase: discovery
+- scope: macro
+- depth: partial
+- tools: assumption-map (KU), pre-mortem (UU), confidence-scorer (KU), debiasing-check (UK)
+
+Append a new section `## IC-04b: Unknowns Intelligence Scan` to the challenge document containing:
+- Assumption Map with confidence scores (verified vs unverified)
+- Pre-Mortem findings (Tigers and Elephants)
+- Debiasing check: which IC-01-04 answers show anchoring/confirmation bias?
+- Confidence calibration: epistemic uncertainty score for each major claim
+
 ### Step 5: Strategic Advantage
 
 Read and execute: `step-ic-05-strategic-advantage.md`

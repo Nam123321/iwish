@@ -116,3 +116,14 @@ Whenever any agent modifies the database schema (e.g., `schema.prisma`) or runs 
 3. **Generation:** The agent MUST run `prisma generate` (or the equivalent database client generation command) to update the client files.
 4. **Restart:** The agent MUST start a fresh instance of the API server before proceeding to any QA, integration testing, or UI verification steps.
 5. **No Blind Watchers:** Agents SHOULD NOT rely on background file watchers (like Nodemon watching `node_modules`) to handle schema restarts during automated editing tasks to avoid race conditions and crash loops. Use explicit shutdown and restart commands instead.
+
+## 🔍 Spec Compliance Enforcement Rule
+
+Whenever any agent (dev-agent, review-agent, qa-agent) performs implementation, code review, or testing for a story:
+
+1. **Mandatory Spec Loading:** The agent MUST load and actively reference the applicable specification files (UI Spec, Data Spec, Story ACs) throughout the entire workflow — not just a one-time read at setup. If a spec file exists for the story but is not loaded, the agent MUST halt and load it before proceeding.
+2. **Spec Re-Read Checkpoint (Dev):** During `/dev-story`, after every 3 completed tasks or after any context truncation event, the dev-agent MUST re-read the applicable spec files and cross-check implementation against spec definitions. More than 2 detected drift items requires HALT and remediation.
+3. **AC Traceability Matrix (Dev):** Before marking any story as `dev_completed`, the dev-agent MUST produce an AC Traceability Matrix mapping every Acceptance Criterion to specific code artifacts (file:line) and test artifacts. No orphan ACs allowed.
+4. **Spec Structural Gate (Review):** During `/review`, the review-agent MUST execute Layer 1.5 (Spec Compliance Gate) as defined in the 3-Layer Code Review Protocol. This includes mandatory spec loading, UI/Data structural diff, AC traceability verification, and SCS scoring. Reviews with SCS < 85% MUST be rejected.
+5. **Spec Compliance Score (SCS):** All reviews MUST include the SCS score in their output. SCS < 75% at any pipeline stage is a blocking finding.
+6. **Skill Reference:** All spec compliance checks follow the procedures defined in `.agent/skills/spec-compliance-guardian/SKILL.md`.

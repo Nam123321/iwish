@@ -17,6 +17,11 @@ IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/.agen
    *Guideline:* Use `invoke_subagent` (Sub-agents) for isolated parallel/sequential tasks with no communication overhead. Use `send_message` (Agent Teams) ONLY when 2+ agents require direct conversational coordination.
 2. FOLLOW THE COMMAND IN LINE 7 FIRST to draft the traditional software Architecture document. Be sure to append your Multi-Agent Topology decisions into the final `architecture.md`.
 3. CRITICAL — SOCRATIC REVIEW GATE 0. Before finalizing the Architecture, you MUST execute the Socratic Review Mode (Gate 0: `discovery`). Load `.agent/skills/socratic-review/SKILL.md` to stress-test the architectural decisions, tech stack justifications, scalability assumptions, and your Multi-Agent Topologies.
+4. CRITICAL — ARCHITECTURE UNKNOWNS GATE.
+   - Load the `unknowns-scanner` skill (`.agent/skills/unknowns-scanner/SKILL.md`)
+   - Run with: phase=architecture, scope=macro, depth=full
+   - Tools: tech-stack-audit, wardley-position, pre-mortem
+   - If any MACRO risk with confidence < 0.5 → HALT, present alternatives
 </steps>
 
 > **NAVIGATOR GUARDIAN SYNC (CRITICAL)**

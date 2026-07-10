@@ -27,6 +27,12 @@ Execute the instructions defined in this step for the iwish-feature-dev-story.md
    - Verify module isolation and existing test coverage.
    - Stop and obtain Explicit User Approval to run the test.
    - If approved, invoke `bash .agent/scripts/iwish-deletion-test.sh <target-module>` to sandbox the deletion. Ensure the app still compiles and core tests pass after module removal. If they do, the module was shallow and must be rejected.
+4.7b. CRITICAL — SPEC RE-READ CHECKPOINT. After completing every 3 tasks (or after any context truncation/checkpoint event), you MUST re-read the applicable spec files (UI Spec and/or Data Spec) using `view_file` and cross-check your current implementation against the spec definitions. Follow the Spec Re-Read procedure defined in `.agent/skills/spec-compliance-guardian/SKILL.md` §4. If you detect more than 2 drift items between your implementation and the spec, you MUST HALT and remediate (fix the drifting code) before continuing to the next task. You are FORBIDDEN from proceeding past this checkpoint with known spec drift.
+4.7c. CRITICAL — DEVIATION CHECK. After every 3 tasks alongside the Spec Re-Read Checkpoint:
+   - Load the `unknowns-scanner` skill (`.agent/skills/unknowns-scanner/SKILL.md`)
+   - Run with: phase=dev, depth=quick
+   - Tools: deviation-logger, drift-detector
+   - If deviation impacts macro assumption → update macro confidence
 
 ## Exit Criteria
 - [ ] Completed all instructions in this step successfully.

@@ -1,0 +1,93 @@
+# UIP Tool Registry — Post-Council Consolidation (2026-07-11)
+# Consolidation: 11 stubs → 7 production tools
+# Decision ref: _iwish-output/unknowns/uip-council-decision-2026-07-11.md
+
+tools:
+  # --- Type A+B Tools (Deterministic + LLM Deep Analysis) ---
+  - id: fmea-scanner
+    name: "FMEA Edge Case Scanner"
+    type: "unknown-unknowns"
+    classification: "A+B"
+    phases: ["story", "dev", "review"]
+    path: ".agent/scripts/uip-fmea-scanner.py"
+    cost: "high"
+    absorbs: []
+    co_registers_with: "edge-case-guardian"
+    deep_flag: true
+
+  - id: tech-stack-audit
+    name: "Tech Stack Auditor"
+    type: "known-unknowns"
+    classification: "A+B"
+    phases: ["planning", "architecture"]
+    path: ".agent/scripts/uip-tech-stack-audit.py"
+    cost: "medium"
+    absorbs: []
+    co_registers_with: null
+    deep_flag: true
+
+  - id: review-challenger
+    name: "Review Challenger"
+    type: "unknown-knowns"
+    classification: "A+B"
+    phases: ["review", "dev"]
+    path: ".agent/scripts/uip-review-challenger.py"
+    cost: "medium"
+    absorbs: ["merge-quiz", "debiasing-check"]
+    co_registers_with: null
+    deep_flag: true
+    modes: ["quiz", "debias", "both"]
+
+  - id: confidence-scorer
+    name: "Confidence Scorer"
+    type: "known-unknowns"
+    classification: "A+B"
+    phases: ["discovery", "planning", "review"]
+    path: ".agent/scripts/uip-confidence-scorer.py"
+    cost: "low"
+    absorbs: []
+    co_registers_with: null
+    deep_flag: true
+    bounded_adjustment: 0.1
+
+  # --- Type B Tools (LLM Prompt Templates) ---
+  - id: risk-scanner
+    name: "Risk Scanner"
+    type: "unknown-unknowns"
+    classification: "B"
+    phases: ["planning", "discovery"]
+    path: ".agent/scripts/uip-risk-scanner.py"
+    cost: "medium"
+    absorbs: ["pre-mortem", "assumption-map"]
+    co_registers_with: "idea-hardening"
+    deep_flag: false
+    modes: ["pre-mortem", "assumptions", "both"]
+
+  - id: market-audit
+    name: "Market Audit"
+    type: "unknown-unknowns"
+    classification: "B"
+    phases: ["discovery"]
+    path: ".agent/scripts/uip-market-audit.py"
+    cost: "medium"
+    absorbs: ["pmf-validator", "competitive-blindspot"]
+    co_registers_with: "unique-advantage-evaluator"
+    deep_flag: true
+    modes: ["pmf", "blindspot", "both"]
+
+  # --- Type A Enhanced (Deterministic Only) ---
+  - id: drift-detector
+    name: "Drift Detector + Deviation Logger"
+    type: "known-knowns"
+    classification: "A"
+    phases: ["dev", "review"]
+    path: ".agent/scripts/uip-drift-detector.py"
+    cost: "low"
+    absorbs: ["deviation-logger"]
+    co_registers_with: "spec-compliance-guardian"
+    deep_flag: false
+    deviation_flag: true
+
+# Killed tools (not rebuilt):
+# - socratic-drill: SOI ~0.80 with Socratic Review skill. Use that skill directly.
+# - code-archaeology: Deferred. Not enough value vs complexity.

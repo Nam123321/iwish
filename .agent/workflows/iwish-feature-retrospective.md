@@ -12,5 +12,9 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 3. Pass the yaml path @{project-root}/_iwish/delivery/workflows/4-implementation/retro/workflow.yaml as 'workflow-config' parameter to the workflow.xml instructions
 4. Follow workflow.xml instructions EXACTLY as written to process and follow the specific workflow config and its instructions
 5. Save outputs after EACH section when generating any documents from templates
+5b. **Unknowns Analyst Sync:**
+   - Invoke `Unknowns Analyst` subagent
+   - Request generation of sprint unknowns report based on ledger trends
+   - Review analyst report and include in retro summary
 6. After completing the retrospective, execute the /gen-dashboard workflow to update the user-guide-dashboard.html.
 </steps>

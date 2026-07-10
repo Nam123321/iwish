@@ -1,6 +1,8 @@
 ---
 name: 'qa-simulator-guardian'
 description: "Use when validating a story's completeness by mentally simulating edge cases, state integrity, and generating the 7-row Hybrid Scorecard."
+role: absorbed-into-uip
+redirect: step-u-05-synthesize
 ---
 
 # QA Simulator Guardian

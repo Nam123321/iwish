@@ -15,6 +15,14 @@ Draft the actual technical changes to the I-Wish capabilities based on the ident
    - Audit the `description` field in the capability's YAML frontmatter.
    - **Rule**: Must NOT contain workflow summaries (e.g., "generates", "creates"). Must ONLY contain triggering conditions (symptoms, keywords).
    - Rewrite any violating descriptions.
+3.5. **Anti-Fabrication Audit (MANDATORY)**:
+   - Read `.agent/fragments/anti-fabrication-watchmen-pattern.md`.
+   - Audit the existing capability's gates: classify each as Category A (Deterministic — script exit codes, compiler checks, file existence) or Category B (Trust-Based — agent self-reported judgments, comparisons, scores).
+   - Calculate the Enforcement Maturity Ratio: `Category A gates / Total gates × 100%`.
+   - If Category B ratio > 80% (Enforcement Maturity < 20%), you MUST propose converting at least 2 gates to Category A (e.g., by adding script-verified checks, grep patterns, or automated validators).
+   - For all remaining Category B gates, ensure evidence trail requirements are defined (what artifact proves the gate was executed — e.g., `view_file` tool call, raw output, file:line references).
+   - Include the Enforcement Maturity score in the upgrade proposal.
+   - If the capability lacks a `## Gate Classification` section, add one following the template in the fragment.
 4. **Adversarial Self-Review**:
    - Imagine being an agent following the *new* rule. Does it solve the original bug without creating too much overhead?
 

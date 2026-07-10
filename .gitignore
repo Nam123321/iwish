@@ -28,3 +28,4 @@ scratch/
 
 .env
 dev.db
+__pycache__/
