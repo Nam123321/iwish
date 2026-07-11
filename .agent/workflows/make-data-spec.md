@@ -18,6 +18,7 @@ This workflow generates a comprehensive Data Specification document for a story.
    - MUST define explicit type mappings at the API boundary (e.g., Prisma `Decimal` to TypeScript `number`, `DateTime` to `string`, and Nullable `?` to `| null`).
    - Output these definitions into a dedicated "API Contract & DTO Specifications" section in the data-spec.
 5. Compare with Database Specification `_iwish-output/2. Product Planning/2.2. database-spec.md` if exists.
+5.5. **[ZERO-TRUST AUDIT GATE]**: Before finalizing, you MUST write the spec to a temporary draft and run `python3 .agent/scripts/audit-trace-validator.py --file <path-to-draft-data-spec>`. If it exits with Code 1 (missing traceId/Audit for mutations), you MUST fix the spec and retry until it passes.
 6. Save the Data Spec file based on the parent story's location:
    - For hierarchical story folders: save as `data-spec.md` in the same directory (strictly using dash `-`).
    - For flat story layouts (`_iwish-output/stories/`): save as `_iwish-output/stories/data-spec-story-{story_id}.md` (strictly using dash `-`).

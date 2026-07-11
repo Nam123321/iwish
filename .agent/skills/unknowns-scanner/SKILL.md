@@ -37,12 +37,14 @@ UIP tools follow a 3-tier classification:
 |------|--------|-------|-------------------|
 | `uip-risk-scanner.py` | planning, discovery | `--mode pre-mortem\|assumptions\|both` | Idea Hardening |
 | `uip-market-audit.py` | discovery | `--mode pmf\|blindspot\|both` | Unique Advantage Evaluator |
+| `uip-ux-blindspot-scanner.py` | planning, design | — | Party-Mode Debate Trigger |
 
 ### Type A (Pure Deterministic)
 
 | Tool | Phases | Extra Flags | Co-registers With |
 |------|--------|-------------|-------------------|
 | `uip-drift-detector.py` | dev, review | `--log-deviations` | Spec Compliance Guardian |
+| `uip-ux-compliance-matrix.py` | planning, design | — | Zero-Trust UX Gate |
 
 ## Execution
 

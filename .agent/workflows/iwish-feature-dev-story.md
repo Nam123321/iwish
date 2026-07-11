@@ -9,6 +9,9 @@ disable-model-invocation: true
 > **STANDARDS INJECTION (MANDATORY):**
 > During coding and testing phases, you MUST use `view_file` to load `/.agent/fragments/test-bootstrap.md` and `/.agent/fragments/ux-principles.md` to adhere to core quality guidelines.
 
+> [!WARNING]
+> **MECHANICAL COMPILATION GATE (MANDATORY):**
+> Before marking any task as complete or sending the code to Review, the dev-agent MUST execute a local build check (e.g., `npm run build`, `vite build`, or `npx tsc --noEmit && npx vite build --emptyOutDir=false`). This guarantees no unresolved imports or syntax errors slip through to the Review-Agent.
 IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the current agent persona you may have loaded:
 
 > [!NOTE]

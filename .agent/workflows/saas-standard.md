@@ -61,7 +61,11 @@ For every Story in the project, append the appropriate `SAAS:*` tags into its YA
 - `SAAS:LOCALIZATION`: For language, timezone, currency, and unit formatting conventions.
 - `SAAS:SETTINGS-HIERARCHY`: For Configuration Cascade and UI grouping across Global, Middle, and Personal tiers.
 
-**Downstream Effect:** These tags will automatically trigger dynamic workflows (e.g. `data-privacy-compliance-skill`) or static guardians (e.g. `saas-standard-guardian`) during `/make-story`, `/make-ui-spec`, and `/code`.
+**Downstream Effect:** These tags will automatically trigger dynamic workflows (e.g. `data-privacy-compliance-skill`) or static guardians (e.g. `saas-standard-guardian`, `audit-trace-guardian`) during `/make-story`, `/make-ui-spec`, and `/code`. 
+
+> [!IMPORTANT]
+> **AUDIT & TRACE GUARDIAN ENFORCEMENT:**
+> You MUST ensure that the `audit-trace-guardian` skill (`/.agent/skills/audit-trace-guardian/SKILL.md`) is loaded and applied during subsequent workflows (like `/make-story`, `/make-data-spec`, and `/make-ui-spec`) whenever a mutating action on a sensitive entity is detected. This enforces proper SOC2 Audit Logs and OpenTelemetry/W3C Tracing standards.
 
 ---
 ## COMPLETION

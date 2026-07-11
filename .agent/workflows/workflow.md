@@ -49,3 +49,11 @@ Load config from `{project-root}/_iwish/config.yaml` and resolve:
 Load and execute `steps/step-01-discover.md` to begin the workflow.
 
 **Note:** Input document discovery and initialization protocols are handled in step-01-discover.md.
+
+> [!IMPORTANT]
+> **PROACTIVE UX STANDARDIZATION ZERO-TRUST GATE:**
+> Before finalizing `project-context.md` or `DESIGN.md`:
+> 1. Run the Type B scanner: `python3 .agent/scripts/uip-ux-blindspot-scanner.py --spec <draft_spec_path>`.
+> 2. Invoke `/party-mode` with `ux-agent`, `dev-agent`, and `pm-agent` to debate the blind spots using the 4-Lens Questionnaire (`/.agent/workflows/references/ux-standardization-questionnaire.md`).
+> 3. Write the debate output to a temporary file, then run the Type A validator: `python3 .agent/scripts/uip-ux-compliance-matrix.py --file <temp_debate_output>`.
+> 4. You MUST NOT commit the UX standards to `project-context.md` unless the validator exits with Code 0.

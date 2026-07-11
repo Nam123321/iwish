@@ -27,6 +27,9 @@ Do NOT attempt to run this workflow without reading the protocol!
 3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
 4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
 5. Run Socratic Debate on Platform AI's UX recommendations using `ux-agent` and `dev-agent`, and embed the outcomes into the `Platform AI Consultation & Debate Report` section.
+5.5. **[CONTINUOUS UX DISCOVERY GATE (SBUP)]**:
+   - During the generation of the UI Spec, if the `ux-guardian` or Design Consultation reveals a novel UI component, layout pattern, or complex interaction behavior (e.g., a new filter builder, multi-step wizard, custom drag-and-drop hierarchy) that is NOT already standardized in the global `DESIGN.md`, you MUST trigger the Structured Behavioral Update Process (SBUP).
+   - Log this as a "Candidate UX Pattern" inside the spec and propose updating the global `DESIGN.md` (or `project-context.md`) to standardize it for future reuse.
 6. **[MANDATORY HTML PREVIEW GATE]**: Generate a static zero-logic HTML/CSS preview file at `html-preview-story-{story_id}.html` (in the same directory where the UI spec will go) and prompt the user to open it in their browser for visual review. Do NOT proceed to the next step until the user approves this preview layout.
 
 6.5. **[STRICT GATE GUARDIAN]** Save the UI Spec Draft:

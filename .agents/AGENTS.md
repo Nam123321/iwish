@@ -127,3 +127,11 @@ Whenever any agent (dev-agent, review-agent, qa-agent) performs implementation, 
 4. **Spec Structural Gate (Review):** During `/review`, the review-agent MUST execute Layer 1.5 (Spec Compliance Gate) as defined in the 3-Layer Code Review Protocol. This includes mandatory spec loading, UI/Data structural diff, AC traceability verification, and SCS scoring. Reviews with SCS < 85% MUST be rejected.
 5. **Spec Compliance Score (SCS):** All reviews MUST include the SCS score in their output. SCS < 75% at any pipeline stage is a blocking finding.
 6. **Skill Reference:** All spec compliance checks follow the procedures defined in `.agent/skills/spec-compliance-guardian/SKILL.md`.
+
+## 🛣️ Absolute Path Aliasing Rule
+
+Whenever any agent (dev-agent, orch-agent) writes or refactors code that imports modules (especially in React/Vite/TypeScript projects):
+
+1. **Ban Long Relative Paths:** The agent MUST NOT use long relative paths (e.g., `../../`, `../../../`). Relative paths are only permitted for files within the exact same immediate directory (e.g., `./Button.jsx` or `../utils`).
+2. **Mandatory Absolute Aliasing:** The agent MUST use absolute path aliasing (e.g., `@/features/billing/components/...`, `@/shared/...`) defined in the project's configuration (`tsconfig.json`, `vite.config.js`).
+3. **Context Drift Prevention:** This rule prevents the Review-Agent from failing to detect physical pathing errors and reduces LLM hallucination regarding directory structures.
