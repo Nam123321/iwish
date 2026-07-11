@@ -27,10 +27,10 @@ Do NOT attempt to run this workflow without reading the protocol!
 3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
 4. Call Design Consultation skill from `.agent/skills/design-consultation/SKILL.md` to audit spec.
 5. Run Socratic Debate on Platform AI's UX recommendations using `ux-agent` and `dev-agent`, and embed the outcomes into the `Platform AI Consultation & Debate Report` section.
-6. Save the UI Spec file based on the parent story's location:
-   - For hierarchical story folders: save as `ui-spec.md` in the same directory (strictly using dash `-`).
-   - For flat story layouts (`_iwish-output/stories/`): save as `_iwish-output/stories/ui-spec-story-{story_id}.md` (strictly using dash `-`).
-   - For Evolution Lab Layout (`.agent/evolution-lab/stories/`): save as `.agent/evolution-lab/stories/ui-spec-story-{story_id}.md`.
+6. **[MANDATORY HTML PREVIEW GATE]**: Generate a static zero-logic HTML/CSS preview file at `html-preview-story-{story_id}.html` (in the same directory where the UI spec will go) and prompt the user to open it in their browser for visual review. Do NOT proceed to the next step until the user approves this preview layout.
+
+6.5. **[STRICT GATE GUARDIAN]** Save the UI Spec Draft:
+   - **DO NOT save directly as `ui-spec.md`**. You MUST save the file as a draft: `ui-spec-draft.md` (or `ui-spec-draft-story-{story_id}.md` for flat layouts).
    - **CRITICAL - OKF FRONTMATTER**: You MUST start the generated file with this exact YAML frontmatter structure to ensure Graph connectivity:
      ```yaml
      ---
@@ -46,7 +46,9 @@ Do NOT attempt to run this workflow without reading the protocol!
      status: 'complete'
      ---
      ```
-6.5. **[MANDATORY HTML PREVIEW GATE]**: Generate a static zero-logic HTML/CSS preview file at `_iwish-output/stories/html-preview-story-{story_id}.html` (or equivalent directory based on active layout) and prompt the user to open it in their browser for visual review. Do NOT proceed to the next step until the user approves this preview layout.
+   - After saving the draft, you MUST execute the finalizer script to promote it:
+     `node .agent/scripts/finalize-ui-spec.js --story={story_id} --draft=<path-to-draft> --out=<path-to-final-ui-spec>`
+   - The script will physically verify that the HTML file exists. If it does not, the script will DELETE your draft and abort.
 7. Run scanner on the generated UI Spec file:
 
    `node .agent/scripts/design-compliance-scanner.js --spec <path-to-generated-ui-spec.md> --design DESIGN.md`
