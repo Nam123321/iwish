@@ -46,6 +46,7 @@ Do NOT attempt to run this workflow without reading the protocol!
      status: 'complete'
      ---
      ```
+6.5. **[MANDATORY HTML PREVIEW GATE]**: Generate a static zero-logic HTML/CSS preview file at `_iwish-output/stories/html-preview-story-{story_id}.html` (or equivalent directory based on active layout) and prompt the user to open it in their browser for visual review. Do NOT proceed to the next step until the user approves this preview layout.
 7. Run scanner on the generated UI Spec file:
 
    `node .agent/scripts/design-compliance-scanner.js --spec <path-to-generated-ui-spec.md> --design DESIGN.md`

@@ -37,10 +37,11 @@ Before stopping at any User Gate for domain, data architecture, or design questi
    - **OKF Header:** Ensure all generated specification files start with a valid OKF YAML frontmatter block.
    - *Update `task.md` and STOP if there are User Gates.*
 
-3. **Step 3: Design Scoring & Mockup Generation**
+3. **Step 3: Design Scoring, HTML Preview & Mockup Generation**
    - Perform design scoring checks to determine if user interface mockups are needed.
-   - If UI changes are present and score thresholds are met, generate mockups on the configured design platform (Stitch, Figma, Claude Design, Canva, etc.) without forcing Stitch as the default.
-   - **[CRITICAL] [User Gate - Approval]**: You MUST STOP execution completely here. DO NOT proceed to Step 4 until the user explicitly approves the generated design specs and mockups.
+   - If UI changes are present, generate a static zero-logic HTML/CSS preview and instruct the user to open it in their browser for layout validation.
+   - If score thresholds require high-fidelity design, generate mockups on the configured design platform (Stitch, Figma, Claude Design, Canva, etc.) without forcing Stitch as the default.
+   - **[CRITICAL] [User Gate - Approval]**: You MUST STOP execution completely here. DO NOT proceed to Step 4 until the user explicitly approves the HTML preview layout and generated design specs/mockups.
 
 4. **Step 4: Implementation (`/code`)**
    - **Dependency & Validation Check:** Before writing any code logic, the agent MUST run `python3 .agent/scripts/validate-story.py "path/to/story.md"`. If validation fails or if any story listed under `dependencies` in the frontmatter is not marked as `completed` in `sprint-status.yaml`, you MUST HALT execution and notify the user that the story's development foundation is missing.

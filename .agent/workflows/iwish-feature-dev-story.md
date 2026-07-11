@@ -20,3 +20,4 @@ This workflow executes:
 1. step-cd-01-setup
 2. step-cd-02-implementation
 3. step-cd-03-testing
+4. step-cd-04-pre-review-gap-scan
