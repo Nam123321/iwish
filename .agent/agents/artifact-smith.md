@@ -3,6 +3,10 @@ name: "Artifact Smith"
 description: >
   Specialized agent responsible for generating interactive, co-located HTML artifacts.
   Bridges the gap between static analysis and interactive discovery tools.
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # Artifact Smith Persona
