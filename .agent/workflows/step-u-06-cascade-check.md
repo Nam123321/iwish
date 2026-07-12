@@ -1,17 +1,25 @@
 # Step U-06: Cascade Check
 
-## Goal
-Evaluate the updated macro confidence and trigger appropriate escalation or halt actions based on predefined thresholds.
+## Purpose
+Evaluate if any findings trigger cascade actions.
 
-## Instructions
-1. Read the updated `overall_confidence` from `_iwish-output/unknowns/macro-risks.yaml`.
-2. Run `python3 .agent/scripts/validate-cascade-actions.py _iwish-output/unknowns/macro-risks.yaml` to ensure deterministic cascade evaluation.
-3. Apply logic:
-   - **Confidence >= 0.5**: Proceed normally. Output a success status.
-   - **0.3 <= Confidence < 0.5**: ESCALATE. Present a warning to the user outlining the eroded assumptions and suggesting `/correct-course`. Wait for user override or confirmation.
-   - **Confidence < 0.3**: HALT. Immediately block downstream execution (e.g., dependent stories). Demand a `/pivot-project` or `/correct-course` workflow.
+## Steps
+1. Check all macro assumptions with `confidence < 0.5`:
+   - Present to user with evidence
+   - Ask: "Investigate further (re-run with deeper tools)?" or "Accept risk?" or "Trigger course correction?"
+2. Check all macro assumptions with `confidence < 0.3`:
+   - AUTO-ESCALATE: "⚠️ MACRO-{ID} critically undermined. Dependent stories: [list]. Recommend: `/pivot-project`"
+   - Block: Add `blocked_by: MACRO-{ID}` to dependent story frontmatter
+3. If cascade triggered:
+   - Route to `/reconcile-change` (for structural sync)
+   - Route to `/correct-course` or `/pivot-project` (based on severity)
+   - Update sprint-status via proper workflow (NOT direct file edit)
+4. If no cascade needed:
+   - Log: "Unknowns scan completed. No cascade required."
+   - Offer: "Run `/unknowns` again after next sprint for confidence recalibration"
 
 ## Exit Criteria
-- Cascade thresholds evaluated.
-- Appropriate warnings/halts presented to the user.
-- Pipeline execution concludes successfully or halts safely.
+- [ ] All threshold-breach findings addressed
+- [ ] Cascade routing executed (if triggered)
+- [ ] User informed of results
+- [ ] Cascade verification logic executes (if cascade triggered)

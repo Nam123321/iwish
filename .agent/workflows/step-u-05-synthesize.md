@@ -1,21 +1,27 @@
 # Step U-05: Synthesize
 
-## Goal
-Aggregate findings, update knowledge buses (`unknowns-ledger.yaml` and `macro-risks.yaml`), and apply the QA Simulator Scorecard logic if generating final verdicts.
+## Purpose
+Compile all findings into actionable report. Optionally invoke Artifact Smith for interactive output.
 
-## Instructions
-1. Gather all findings from Step 2 (Macro) and Step 3/4 (Micro/Bridge).
-2. Format the findings to append to `_iwish-output/unknowns/unknowns-ledger.yaml`. 
-3. If any finding impacts a macro risk, update `overall_confidence` and the specific risk entry in `_iwish-output/unknowns/macro-risks.yaml`.
-4. **QA Simulator Guardian Absorption:** If the workflow phase is `story` or `review` and requires a completeness verdict, execute the 7-row Hybrid Scorecard evaluation:
-   - Mentally simulate edge cases, state integrity, and UX empathy based on the findings.
-   - Calculate a scorecard out of 10. (If score < 8.5, flag as incomplete).
-5. Output the synthesized report to `_iwish-output/unknowns/reports/`.
-6. Use `Artifact Smith` if an interactive HTML visualization is requested, placing the HTML file co-located with the requesting context.
+## Steps
+1. Read all findings from Knowledge Bus (`unknowns-ledger.yaml` and `macro-risks.yaml`).
+2. Group by:
+   - Quadrant (UU/KU/UK/KK distribution)
+   - Severity (critical/high/medium/low)
+   - Phase origin (which phase produced the finding)
+3. Generate `_iwish-output/unknowns/reports/unknowns-report-{context}.md`:
+   - Executive Summary (1 paragraph)
+   - Quadrant Distribution Chart (mermaid)
+   - Top 5 Critical Findings (with evidence + recommendations)
+   - Macro Risk Dashboard (confidence scores for all tracked assumptions)
+   - Micro Findings Table (FMEA style with RPN)
+   - Recommended Actions (prioritized list)
+4. If `depth=full` or user requests → invoke Artifact Smith (`invoke_subagent` for Artifact Smith) to generate interactive HTML version.
+5. Append synthesis metadata to `unknowns-ledger.yaml`.
 
 ## Exit Criteria
-- Knowledge buses are updated.
-- QA Simulator Scorecard logic applied (if applicable).
-- Synthesized report generated.
+- [ ] Report generated at `_iwish-output/unknowns/reports/unknowns-report-{context}.md`
+- [ ] Key findings presented to user
+- [ ] Recommendations actionable (linked to specific workflows like `/make-story`, `/correct-course`)
 
-Next, proceed to `step-u-06-cascade-check.md`.
+Next, proceed to `step-u-06-cascade-check.md` if running full/bridge scope, otherwise execution completes.

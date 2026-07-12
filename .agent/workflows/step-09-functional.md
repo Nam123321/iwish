@@ -234,6 +234,14 @@ This is a quick architectural-level risk flag, NOT a full 8-Pillar analysis:
 4. **Do NOT score individual edge cases at this stage** — that happens during Epic/Story creation. This is a "first alert" only.
 5. **Present risk notes to user** as part of the FR review before the A/P/C menu.
 
+### 5c. ❓ Unknowns Scanner — PRD Ambiguity Scan (Quick)
+
+**BEFORE presenting the final FRs to the user, load the `unknowns-scanner` skill (`.agent/skills/unknowns-scanner/SKILL.md`) and run a quick scan to detect implicit assumptions:**
+
+1. **Parameters**: `phase=prd`, `scope=macro`, `depth=quick`
+2. **Focus**: Look for "Known-Unknowns" in the functional requirements (e.g., "User can export data" → What format? What size limit?).
+3. **Action**: If ambiguity is found, append it to `unknowns-ledger.yaml` via the scanner and optionally add a `> [!WARNING] Ambiguity Detected: ...` block before the A/P/C menu.
+
 ### 6. Generate Functional Requirements Content
 
 Prepare the content to append to the document:

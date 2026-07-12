@@ -1,93 +1,170 @@
-# UIP Tool Registry — Post-Council Consolidation (2026-07-11)
-# Consolidation: 11 stubs → 7 production tools
-# Decision ref: _iwish-output/unknowns/uip-council-decision-2026-07-11.md
-
+# Unknowns Intelligence Platform — Tool Registry
+version: "1.0"
 tools:
-  # --- Type A+B Tools (Deterministic + LLM Deep Analysis) ---
-  - id: fmea-scanner
-    name: "FMEA Edge Case Scanner"
-    type: "unknown-unknowns"
-    classification: "A+B"
-    phases: ["story", "dev", "review"]
-    path: ".agent/scripts/uip-fmea-scanner.py"
-    cost: "high"
-    absorbs: []
-    co_registers_with: "edge-case-guardian"
-    deep_flag: true
+  # ═══ MACRO TOOLS ═══
+  - id: pre-mortem
+    name: "Pre-Mortem Analysis"
+    script: scripts/uip-pre-mortem.py
+    phases: [discovery, planning, architecture]
+    quadrants: [unknown-unknown]
+    cost: medium
+    description: "Prospective hindsight — imagine failure, work backwards to causes"
+    technique: "Tigers (likely failures) vs Elephants (catastrophic but unlikely)"
+    validation: scripts/validate-pre-mortem.py
+    source_reference: "Klein 2007, Prospective Hindsight"
+
+  - id: assumption-map
+    name: "Assumption Mapping"
+    script: scripts/uip-assumption-map.py
+    phases: [discovery, planning]
+    quadrants: [known-unknown]
+    cost: medium
+    description: "2×2 matrix: Importance × Evidence Strength"
+    technique: "Strategyzer Assumption Mapping"
+    validation: scripts/validate-assumption-map.py
+    source_reference: "Bland & Osterwalder, Testing Business Ideas"
+
+  - id: pmf-validator
+    name: "Product-Market Fit Validator"
+    script: scripts/uip-pmf-validator.py
+    phases: [discovery]
+    quadrants: [unknown-unknown, known-unknown]
+    cost: high
+    description: "Cross-check PMF signals against market data and user evidence"
+    technique: "Sean Ellis PMF Survey + Superhuman Method"
+    validation: scripts/validate-pmf.py
 
   - id: tech-stack-audit
-    name: "Tech Stack Auditor"
-    type: "known-unknowns"
-    classification: "A+B"
-    phases: ["planning", "architecture"]
-    path: ".agent/scripts/uip-tech-stack-audit.py"
-    cost: "medium"
-    absorbs: []
-    co_registers_with: null
-    deep_flag: true
+    name: "Tech Stack Fitness Audit"
+    script: scripts/uip-tech-stack-audit.py
+    phases: [planning, architecture, dev]
+    quadrants: [known-known, known-unknown]
+    cost: medium
+    description: "Validate tech choices against requirements, benchmarks, community signals"
+    technique: "Fitness Function + ThoughtWorks Radar cross-reference"
+    validation: scripts/validate-tech-audit.py
 
-  - id: review-challenger
-    name: "Review Challenger"
-    type: "unknown-knowns"
-    classification: "A+B"
-    phases: ["review", "dev"]
-    path: ".agent/scripts/uip-review-challenger.py"
-    cost: "medium"
-    absorbs: ["merge-quiz", "debiasing-check"]
-    co_registers_with: null
-    deep_flag: true
-    modes: ["quiz", "debias", "both"]
+  - id: spec-stack-auditor
+    name: "Specification Tech Stack Auditor"
+    script: skills/spec-stack-auditor/SKILL.md
+    phases: [planning, architecture]
+    quadrants: [known-unknown]
+    cost: high
+    description: "LLM-based semantic scanner for Markdown documents (Epic, PRD) to validate conceptual architecture"
+    technique: "Agentic semantic validation (Native Execution)"
+    validation: null
+
+  - id: risk-scanner
+    name: "Risk Execution Engine"
+    script: scripts/uip-risk-scanner.py
+    phases: [planning, architecture, dev, review]
+    quadrants: [unknown-unknown, known-unknown]
+    cost: high
+    description: "Generates risk scan prompts and executes them against an LLM engine to extract final reports"
+    technique: "LLM Orchestration + YAML extraction (Native Execution via Prompt Generator)"
+    validation: null
+
+  - id: competitive-blindspot
+    name: "Competitive Blindspot Scanner"
+    script: scripts/uip-competitive-blindspot.py
+    phases: [discovery, planning]
+    quadrants: [unknown-unknown, unknown-known]
+    cost: high
+    description: "Scan for strategic blindspots vs competitors"
+    technique: "Porter 5 Forces inversion + anti-pattern scan"
+    validation: null
+
+  - id: wardley-position
+    name: "Wardley Map Position Check"
+    script: scripts/uip-wardley-position.py
+    phases: [planning, architecture]
+    quadrants: [unknown-known]
+    cost: medium
+    description: "Map component evolution stages, detect mispositioned components"
+    technique: "Wardley Mapping evolution axis"
+    validation: null
+
+  # ═══ MICRO TOOLS ═══
+  - id: fmea-scanner
+    name: "FMEA Edge Case Scanner"
+    script: scripts/uip-fmea-scanner.py
+    phases: [story, dev]
+    quadrants: [unknown-unknown, known-unknown]
+    cost: medium
+    description: "8-Pillar edge case taxonomy with RPN scoring"
+    technique: "FMEA (Failure Mode & Effects Analysis) + I-Wish 8-Pillar"
+    validation: scripts/validate-fmea.py
+    absorbed_from: "edge-case-guardian"
+
+  - id: debiasing-check
+    name: "Cognitive Debiasing Check"
+    script: scripts/uip-debiasing-check.py
+    phases: [story, review]
+    quadrants: [unknown-known]
+    cost: low
+    description: "Scan decisions for common cognitive biases"
+    technique: "CIA ACH (Analysis of Competing Hypotheses) adapted"
+    validation: null
+
+  - id: drift-detector
+    name: "Spec-to-Code Drift Detector"
+    script: scripts/uip-drift-detector.py
+    phases: [dev, review]
+    quadrants: [known-known]
+    cost: medium
+    description: "Compare specification documents against implementation"
+    technique: "Structural diff + semantic comparison"
+    validation: scripts/validate-drift.py
+    absorbed_from: "spec-compliance-guardian"
+
+  - id: deviation-logger
+    name: "Implementation Deviation Logger"
+    script: scripts/uip-deviation-logger.py
+    phases: [dev]
+    quadrants: [unknown-known]
+    cost: low
+    description: "Capture and log implementation deviations from plan"
+    technique: "Structured deviation capture with macro impact assessment"
+    validation: scripts/validate-deviation-log.py
+
+  - id: merge-quiz
+    name: "Merge Readiness Quiz"
+    script: scripts/uip-merge-quiz.py
+    phases: [review]
+    quadrants: [known-known, known-unknown]
+    cost: low
+    description: "Generate quiz questions about PR changes for reviewer comprehension"
+    technique: "Socratic verification of reviewer understanding"
+    validation: null
+
+  # ═══ CROSS-CUTTING TOOLS ═══
+  - id: socratic-drill
+    name: "Socratic Drill-Down"
+    script: scripts/uip-socratic-drill.py
+    phases: [discovery, planning, story, review]
+    quadrants: [unknown-unknown, unknown-known]
+    cost: medium
+    description: "Progressive questioning to surface implicit assumptions"
+    technique: "5 Whys + Socratic Method + Devil's Advocate"
+    validation: null
+    absorbed_from: "socratic-review"
+
+  - id: code-archaeology
+    name: "Code Archaeology Scanner"
+    script: scripts/uip-code-archaeology.py
+    phases: [planning, dev]
+    quadrants: [unknown-known]
+    cost: high
+    description: "Git history analysis to surface tacit knowledge and implicit decisions"
+    technique: "Code-Maat temporal coupling + hotspot analysis"
+    validation: scripts/validate-archaeology.py
 
   - id: confidence-scorer
-    name: "Confidence Scorer"
-    type: "known-unknowns"
-    classification: "A+B"
-    phases: ["discovery", "planning", "review"]
-    path: ".agent/scripts/uip-confidence-scorer.py"
-    cost: "low"
-    absorbs: []
-    co_registers_with: null
-    deep_flag: true
-    bounded_adjustment: 0.1
-
-  # --- Type B Tools (LLM Prompt Templates) ---
-  - id: risk-scanner
-    name: "Risk Scanner"
-    type: "unknown-unknowns"
-    classification: "B"
-    phases: ["planning", "discovery"]
-    path: ".agent/scripts/uip-risk-scanner.py"
-    cost: "medium"
-    absorbs: ["pre-mortem", "assumption-map"]
-    co_registers_with: "idea-hardening"
-    deep_flag: false
-    modes: ["pre-mortem", "assumptions", "both"]
-
-  - id: market-audit
-    name: "Market Audit"
-    type: "unknown-unknowns"
-    classification: "B"
-    phases: ["discovery"]
-    path: ".agent/scripts/uip-market-audit.py"
-    cost: "medium"
-    absorbs: ["pmf-validator", "competitive-blindspot"]
-    co_registers_with: "unique-advantage-evaluator"
-    deep_flag: true
-    modes: ["pmf", "blindspot", "both"]
-
-  # --- Type A Enhanced (Deterministic Only) ---
-  - id: drift-detector
-    name: "Drift Detector + Deviation Logger"
-    type: "known-knowns"
-    classification: "A"
-    phases: ["dev", "review"]
-    path: ".agent/scripts/uip-drift-detector.py"
-    cost: "low"
-    absorbs: ["deviation-logger"]
-    co_registers_with: "spec-compliance-guardian"
-    deep_flag: false
-    deviation_flag: true
-
-# Killed tools (not rebuilt):
-# - socratic-drill: SOI ~0.80 with Socratic Review skill. Use that skill directly.
-# - code-archaeology: Deferred. Not enough value vs complexity.
+    name: "Epistemic Confidence Scorer"
+    script: scripts/uip-confidence-scorer.py
+    phases: [discovery, planning, story, dev, review, retro]
+    quadrants: [known-unknown]
+    cost: low
+    description: "Score epistemic uncertainty of any claim/decision"
+    technique: "Calibrated probability assessment"
+    validation: scripts/validate-confidence.py

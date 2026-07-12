@@ -2,16 +2,29 @@ id: workflow-unknowns
 name: unknowns
 kind: workflow
 shape: workflow
-role: process-primary
-phases: [discovery, planning, execution, monitoring]
-stages: [idea-discovery, architecture, epic-creation, story-creation, review, dev]
-triggers: [unknowns, macro risk, assumption check]
-anti_triggers: [deploy]
-primary_agents: [orch-agent, pm-agent, analyst-agent]
+role: gateway
+phases: [discover, plan, solution, implement, validate-deliver, operate-learn]
+stages: [unknowns-intelligence, risk-analysis, assumption-validation]
+triggers:
+  - unknowns
+  - blindspot
+  - assumption check
+  - risk scan
+  - macro risk
+  - confidence check
+  - pre-mortem
+  - unknown unknown
+anti_triggers:
+  - edge case only
+  - qa test
+  - unit test
+primary_agents: [orch-agent, analyst-agent, architect-agent]
 primary_workflows: [unknowns]
 supportive_skills: [unknowns-scanner]
-tool_dependencies: []
+tool_dependencies: [uip-filter.py, uip-pre-mortem.py, uip-assumption-map.py]
 constraints:
-  - Requires context files to scan.
+  - "Must run uip-filter.py for tool selection"
+  - "Must write to unknowns-ledger.yaml"
+  - "Must check macro-risks.yaml for cascade thresholds"
 source_path: /.agent/workflows/unknowns.md
-tags: [discovery, canonical, risk-management]
+tags: [unknowns-intelligence, macro-micro-bridge, cross-phase, gateway]
