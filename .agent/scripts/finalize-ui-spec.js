@@ -48,8 +48,15 @@ if (!fs.existsSync(draftPath)) {
 }
 
 try {
+    // Implement Immutable File Pattern: unlock, write, lock
+    if (fs.existsSync(outPath)) {
+        fs.chmodSync(outPath, 0o644);
+    }
     fs.renameSync(draftPath, outPath);
+    fs.chmodSync(outPath, 0o444);
+    
     console.log(`✅ [Strict Gate Passed] UI Spec successfully promoted to: ${outPath}`);
+    console.log(`🔒 [Immutable File Pattern] UI Spec is now locked as Read-Only (chmod 444).`);
     console.log(`👉 Next step: Run the Design Compliance Scanner on the generated UI Spec.`);
     process.exit(0);
 } catch (error) {

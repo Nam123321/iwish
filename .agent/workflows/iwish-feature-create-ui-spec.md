@@ -22,6 +22,9 @@ Do NOT attempt to run this workflow without reading the protocol!
 > Ensure the scan passes with Exit Code 0. If it fails, you must fix all unauthorized design tokens (e.g. replacing default violet colors like `#7C3AED` with allowed tokens from `DESIGN.md` such as `#00DF9A` or `#059669`) and re-run the check. Do NOT proceed to design generation or coding with compliance violations.
 
 <steps CRITICAL="TRUE">
+0. **[IMMUTABLE FILE PATTERN - HARD GATE]**: Before performing any generation, you MUST run a shell command to create an empty read-only placeholder for the final spec to prevent accidental direct writes.
+   `touch <path-to-ui-spec.md> && chmod 444 <path-to-ui-spec.md>`
+   If you try to bypass the script and write directly to `ui-spec.md`, the OS will reject it with `Permission denied`. You MUST use the `ui-spec-draft.md` pattern.
 1. Locate and load the target story file. This could be in `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md`, `_iwish-output/stories/story-{story_id}.md`, or `.agent/evolution-lab/stories/story-{story_id}.md`.
 2. Read Feature Hierarchy `_iwish-output/2. Product Planning/2.5. feature-hierarchy.md`. Halt if missing.
 3. Apply rules in UI Spec Protocol: `.agent/workflows/references/create-ui-spec-protocol.md`.
