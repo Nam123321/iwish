@@ -289,6 +289,7 @@ The following checks MUST be performed via `run_command` with `spec-compliance-c
 DETERMINISTIC GATES (Agent CANNOT fabricate):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ Component existence check    → grep-verified, exit code
+✅ AST data-testid constraints  → Component Scoped Tag-Aware Regex via checker.py
 ✅ Prisma model existence       → schema.prisma parse, exit code  
 ✅ AC count extraction          → regex parse from story.md
 ✅ Task count extraction        → regex parse from story.md
@@ -400,6 +401,7 @@ Level 4: Fabrication confirmed            → REJECT entire review/implementatio
 | Gate ID | Description | Category | Enforcement Mechanism | Evidence Trail |
 |---------|------------|----------|----------------------|----------------|
 | G-1 | Component existence | A (Deterministic) | grep exit code via checker.py | Script stdout |
+| G-1.5 | AST JSON Constraint | A (Deterministic) | parse JSON + grep via checker.py | Script stdout |
 | G-2 | Prisma model existence | A (Deterministic) | schema.prisma parse via checker.py | Script stdout |
 | G-3 | AC/Task count | A (Deterministic) | regex parse via checker.py | JSON output |
 | G-4 | Script SCS score | A (Deterministic) | checker.py calculation | `[JSON]` line |

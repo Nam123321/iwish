@@ -243,8 +243,42 @@ When a page requires a justified deviation from the portal Design System:
 
 Use this page override shape:
 
+### 4.8 Compile UI Compliance Policy (JSON Block)
+
+At the end of the `DESIGN.md` file, you MUST append a JSON block wrapped in specific comments `<!-- [UI_COMPLIANCE_POLICY_START] -->` and `<!-- [UI_COMPLIANCE_POLICY_END] -->`. 
+This block is evaluated by `validate-ui-tokens.py` during component implementation to enforce rules without LLM hallucination.
+1. Determine `forbidden_tokens` based on the Tech-Stack (e.g. ban `dark:` or hardcoded hex colors).
+2. Determine `allowed_tokens` based on the generated Color Palette (e.g. `bg-cowok-primary`).
+3. Define `mandatory_logic` for complex/heavy components (e.g. requiring `useDeferredValue` for Charts).
+
+```markdown
+<!-- [UI_COMPLIANCE_POLICY_START] -->
+```json
+{
+  "forbidden_tokens": [
+    {"pattern": "dark:", "message": "Use CSS variables instead of dark: variant"},
+    {"pattern": "text-\\[#|bg-\\[#", "message": "No hardcoded hex colors allowed"}
+  ],
+  "allowed_tokens": {
+    "colors": ["<Insert specific color classes based on palette>"]
+  },
+  "mandatory_logic": [
+    {
+      "match_filename": ["Chart", "Graph", "Timeseries", "KpiCard"],
+      "requires_code": ["useDeferredValue", "useMemo"],
+      "message": "Heavy UI components must use deferred values or memoization"
+    }
+  ]
+}
+```
+<!-- [UI_COMPLIANCE_POLICY_END] -->
+```
+
+> **EDGE-CASE (Continuous Discovery):** During project development or deployment, if a new forbidden token or mandatory hook is discovered (e.g., via Review-Agent or UX-Guardian), the team can run a `/update-design-policy` command or manually edit the JSON block in `DESIGN.md`. The `validate-ui-tokens.py` script dynamically reads this JSON at runtime, ensuring immediate enforcement without workflow modifications.
+
 ```markdown
 ## Page Override — {page}
+
 
 Page Scope: {page}
 Page Slug: {page-slug}

@@ -17,6 +17,9 @@ Execute the instructions defined in this step for the iwish-feature-dev-story.md
    - If it exists, you MUST rigidly obey its structural definitions (HStack, VStack, ZStack, GridArea, zones). 
    - You are FORBIDDEN from using CSS hacks (like absolute/fixed overlays or Portals) to fake layout positioning unless the AST explicitly provides a `CustomLayoutNode` or `CustomZone`.
    - **Bidirectional Negotiation:** If you determine the AST structure requires excessive DOM depth (Div-Soup) or is impossible to build responsively, you MUST NOT blindly generate messy code. Instead, you MUST propose a flattened/optimized AST mutation back to the User/UX-Agent for approval before continuing.
+1.6. **CRITICAL — UI TOKEN VALIDATION GATE:** After generating or modifying any UI component (`.jsx` or `.tsx`), the Dev-Agent MUST explicitly run `python3 .agent/scripts/validate-ui-tokens.py --file <path> --design <RESOLVED_PATH_TO_DESIGN.MD>`.
+   - *Note on Layout Mode:* The physical path of `DESIGN.md` varies based on the active layout (Flat vs Hierarchical). You MUST dynamically locate it first (e.g., using `find . -name "DESIGN.md"`) before passing it to the `--design` flag.
+   - If the script exits with an error (e.g., forbidden `dark:` classes, hardcoded hex colors, or missing mandatory hooks like `useDeferredValue`), you MUST remediate the code immediately and re-run the script until it passes. You are FORBIDDEN from finishing the task while this script fails.
 2. **Implementation Inspection:** The agent MUST read the relevant implementation files (UI components, `schema.prisma`, `api-routes.ts`, and `seed-accounts.js` or mock files) mapped from the graphs.
    3. **No Hallucination:** Tests MUST NOT be written blindly based on PRD/Stories alone. You must assert against exact DOM structures, true database types (e.g. UUIDs), existing mock data, and cover the documented edge cases.
 4.5. CRITICAL — SOCRATIC REVIEW GATE 2. Before generating any Implementation Plan output, you MUST execute the Socratic Review Mode (Gate 2: `technical`). Load `.agent/skills/socratic-review/SKILL.md` to stress-test the architectural impact, database migrations, and backward compatibility. You are FORBIDDEN from generating the Implementation Plan until the user has completed the Socratic loop and explicitly approved the Synthesis.
@@ -37,6 +40,9 @@ Execute the instructions defined in this step for the iwish-feature-dev-story.md
    - Run with: phase=dev, depth=quick
    - Tools: deviation-logger, drift-detector
    - If deviation impacts macro assumption → update macro confidence
+4.7d. CRITICAL — UI COMPLIANCE POLICY CHECKPOINT. After implementing any UI Component, you MUST run the UI Tokens validator against the implementation file to ensure compliance with the project's DESIGN.md policy.
+   - Execute: `python3 .agent/scripts/validate-ui-tokens.py --file <path_to_ui_file> --design <path_to_design.md>`
+   - If the script returns an error (Exit Code 1), you MUST HALT and fix the forbidden tokens or missing mandatory logic before continuing.
 
 ## Exit Criteria
 - [ ] Completed all instructions in this step successfully.

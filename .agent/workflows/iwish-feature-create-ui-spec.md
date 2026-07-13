@@ -42,6 +42,28 @@ Do NOT attempt to run this workflow without reading the protocol!
    - **Governed Escape Hatches:** If the layout requires complex/irregular CSS that cannot be expressed purely by layout primitives, you may insert a `CustomLayoutNode`. Any `CustomLayoutNode` MUST include an `annotation` field explaining the necessity for manual CSS.
    - Embed a reference to this JSON inside the UI Spec Draft.
 
+6.2. **[DETERMINISTIC AST JSON MANIFEST]**: The `ast-constraint-story-{story_id}.json` MUST follow this deterministic structure, mapping UI elements to `data-testid` or `required_fields`, bounded by Component file scope (`file`), and optionally hierarchical (`children`).
+   - The `data-testid` and `required_fields` will be evaluated by `spec-compliance-checker.py` as a Category A script check.
+   - Example format:
+   ```json
+   {
+     "TopicHeader": {
+       "file": "components/TopicHeader.tsx",
+       "data-testid": "topic-header",
+       "required_fields": ["topic-title", "privacy-icon", "more-options-btn"]
+     },
+     "CreateTopicModal": {
+       "file": "components/CreateTopicModal.tsx",
+       "data-testid": "create-topic-modal",
+       "children": [
+         { "data-testid": "topic-name-input" },
+         { "data-testid": "privacy-toggle" }
+       ]
+     }
+   }
+   ```
+
+6.3. **[AST CONSTRAINT CLEAN-UP RULE]**: Ensure the UI spec includes an instruction for the `dev-agent` to configure Vite/Babel plugin (e.g. `babel-plugin-jsx-remove-data-test-id` or Vite `esbuild` drop rules) to automatically strip `data-testid` from the DOM during production builds to maintain zero runtime bloat.
 6.5. **[STRICT GATE GUARDIAN]** Save the UI Spec Draft:
    - **DO NOT save directly as `ui-spec.md`**. You MUST save the file as a draft: `ui-spec-draft.md` (or `ui-spec-draft-story-{story_id}.md` for flat layouts).
    - **CRITICAL - OKF FRONTMATTER**: You MUST start the generated file with this exact YAML frontmatter structure to ensure Graph connectivity:

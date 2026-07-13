@@ -49,6 +49,16 @@ class ComplianceReport:
     data_checks: list = field(default_factory=list)
     ac_checks: list = field(default_factory=list)
     task_checks: list = field(default_factory=list)
+    ast_checks: list = field(default_factory=list)
+
+    @property
+    def scs_ast(self) -> float:
+        if not self.ast_checks:
+            return -1  # N/A
+        passed = sum(1 for c in self.ast_checks if c.status == Status.PASS)
+        partial = sum(1 for c in self.ast_checks if c.status == Status.PARTIAL)
+        total = len([c for c in self.ast_checks if c.status != Status.SKIP])
+        return ((passed + 0.5 * partial) / total * 100) if total > 0 else 0
 
     @property
     def scs_ui(self) -> float:
@@ -83,12 +93,15 @@ class ComplianceReport:
         weights = []
         if self.scs_ui >= 0:
             scores.append(self.scs_ui)
-            weights.append(0.30)
+            weights.append(0.15)
+        if self.scs_ast >= 0:
+            scores.append(self.scs_ast)
+            weights.append(0.25)
         if self.scs_data >= 0:
             scores.append(self.scs_data)
             weights.append(0.30)
         scores.append(self.scs_ac)
-        weights.append(0.40)
+        weights.append(0.30)
         # Normalize weights
         total_weight = sum(weights)
         return sum(s * w / total_weight for s, w in zip(scores, weights))
@@ -240,6 +253,7 @@ def check_component_exists(component_name: str, project_root: str) -> tuple:
         result = subprocess.run(
             ['grep', '-rl', f'function {component_name}\\|const {component_name}\\|export.*{component_name}',
              '--include=*.tsx', '--include=*.jsx', '--include=*.ts',
+             '--exclude-dir=node_modules', '--exclude-dir=.git',
              project_root],
             capture_output=True, text=True, timeout=10
         )
@@ -248,6 +262,46 @@ def check_component_exists(component_name: str, project_root: str) -> tuple:
             return True, files[0]
     except (subprocess.TimeoutExpired, Exception):
         pass
+    return False, None
+
+
+def check_ast_node_exists(identifier: str, search_path: str) -> tuple:
+    """
+    Check if a data-testid or required field identifier exists in the codebase using Tag-Aware Regex.
+    It verifies that the identifier is inside an HTML/JSX tag, ignoring comments or random text.
+    """
+    import subprocess
+    import re
+    try:
+        if os.path.isdir(search_path):
+            result = subprocess.run(
+                ['grep', '-rl', identifier, '--include=*.tsx', '--include=*.jsx', '--exclude-dir=node_modules', '--exclude-dir=.git', search_path],
+                capture_output=True, text=True, timeout=10
+            )
+            files = result.stdout.strip().split('\n')
+        elif os.path.isfile(search_path):
+            files = [search_path]
+        else:
+            # Fallback to search in project root if file path is not found yet
+            # e.g. when component file is not created
+            return False, None
+
+        files = [f for f in files if f.strip()]
+        
+        # Tag-aware regex: matches <Tag ... data-testid="identifier" ...>
+        # or <Tag ... data-testid='identifier' ...>
+        # Looks for < followed by word, any chars except >, then identifier in quotes
+        tag_pattern = re.compile(rf'<[a-zA-Z0-9_-]+[^>]*?[\'"]{re.escape(identifier)}[\'"][^>]*?>')
+        
+        for file_path in files:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                if tag_pattern.search(content):
+                    return True, file_path
+                    
+    except (subprocess.TimeoutExpired, Exception) as e:
+        print(f"Error checking node {identifier}: {e}", file=sys.stderr)
+        
     return False, None
 
 
@@ -262,8 +316,29 @@ def check_prisma_model(model_name: str, schema_path: str) -> bool:
 
 def run_compliance_check(args) -> ComplianceReport:
     """Main compliance check logic."""
-    report = ComplianceReport(story_id=os.path.basename(args.story).replace('.md', ''))
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(args.story))))
+    basename = os.path.basename(args.story).replace('.md', '')
+    if basename == 'story':
+        # If it's hierarchical format: Story-36.3/story.md
+        parent_dir = os.path.basename(os.path.dirname(args.story))
+        story_id = parent_dir.lower().replace('story-', '')
+    else:
+        # If flat format: story-36.3.md
+        story_id = basename.replace('story-', '')
+        
+    report = ComplianceReport(story_id=story_id)
+    
+    # Find project root by walking up until we find package.json
+    curr_dir = os.path.abspath(args.story)
+    project_root = None
+    while curr_dir != '/' and curr_dir != '':
+        if os.path.exists(os.path.join(curr_dir, 'package.json')) or os.path.exists(os.path.join(curr_dir, '.git')):
+            project_root = curr_dir
+            break
+        curr_dir = os.path.dirname(curr_dir)
+        
+    if not project_root:
+        # Fallback
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(args.story))))
 
     # Read story file
     with open(args.story) as f:
@@ -325,6 +400,67 @@ def run_compliance_check(args) -> ComplianceReport:
                 status=Status.PASS if exists else Status.MISSING
             ))
 
+    # AST JSON checks
+    story_dir = os.path.dirname(args.story)
+    ast_json_path = os.path.join(story_dir, f"ast-constraint-{report.story_id}.json")
+    if os.path.exists(ast_json_path):
+        try:
+            with open(ast_json_path) as f:
+                ast_data = json.load(f)
+            
+            def extract_and_verify(node, parent_file=None):
+                if isinstance(node, dict):
+                    current_file = node.get("file", parent_file)
+                    
+                    search_path = project_root
+                    if current_file:
+                        candidate_path = os.path.join(project_root, current_file)
+                        if os.path.exists(candidate_path):
+                            search_path = candidate_path
+                        else:
+                            # Try to find the file if it's a relative path like components/X.tsx
+                            import glob
+                            matches = glob.glob(os.path.join(project_root, f"**/{current_file}"), recursive=True)
+                            if matches:
+                                search_path = matches[0]
+
+                    if "data-testid" in node:
+                        ident = node["data-testid"]
+                        exists, filepath = check_ast_node_exists(ident, search_path)
+                        report.ast_checks.append(CheckResult(
+                            check_id=f"AST-NODE-{ident}",
+                            dimension="AST JSON Constraint",
+                            spec_definition=f"Required identifier: {ident}",
+                            code_implementation=filepath if exists else "NOT FOUND",
+                            status=Status.PASS if exists else Status.MISSING
+                        ))
+                        
+                    if "required_fields" in node and isinstance(node["required_fields"], list):
+                        for ident in node["required_fields"]:
+                            exists, filepath = check_ast_node_exists(ident, search_path)
+                            report.ast_checks.append(CheckResult(
+                                check_id=f"AST-NODE-{ident}",
+                                dimension="AST JSON Constraint",
+                                spec_definition=f"Required identifier: {ident}",
+                                code_implementation=filepath if exists else "NOT FOUND",
+                                status=Status.PASS if exists else Status.MISSING
+                            ))
+                            
+                    if "children" in node:
+                        extract_and_verify(node["children"], current_file)
+                        
+                    for k, v in node.items():
+                        if k not in ["file", "data-testid", "required_fields", "children"]:
+                            extract_and_verify(v, current_file)
+                            
+                elif isinstance(node, list):
+                    for item in node:
+                        extract_and_verify(item, parent_file)
+            
+            extract_and_verify(ast_data)
+        except Exception as e:
+            print(f"Failed to parse AST JSON: {e}", file=sys.stderr)
+
     return report
 
 
@@ -341,6 +477,11 @@ Story: {report.story_id}
         passed_ui = sum(1 for c in report.ui_checks if c.status == Status.PASS)
         print(f"UI Spec Compliance:   {report.scs_ui:.0f}% ({passed_ui}/{total_ui} checks)")
 
+    if report.scs_ast >= 0:
+        total_ast = len([c for c in report.ast_checks if c.status != Status.SKIP])
+        passed_ast = sum(1 for c in report.ast_checks if c.status == Status.PASS)
+        print(f"AST Spec Compliance:  {report.scs_ast:.0f}% ({passed_ast}/{total_ast} checks)")
+
     if report.scs_data >= 0:
         total_data = len([c for c in report.data_checks if c.status != Status.SKIP])
         passed_data = sum(1 for c in report.data_checks if c.status == Status.PASS)
@@ -355,9 +496,9 @@ Story: {report.story_id}
 DISPOSITION:          {report.disposition}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━""")
 
-    # Print drift items
-    drift_items = [c for c in (report.ui_checks + report.data_checks)
-                   if c.status in (Status.MISSING, Status.DRIFT, Status.PARTIAL)]
+    # Collect all drift items
+    all_checks = report.ui_checks + report.ast_checks + report.data_checks + report.ac_checks + report.task_checks
+    drift_items = [c for c in all_checks if c.status in (Status.MISSING, Status.PARTIAL, Status.DRIFT)]
     if drift_items:
         print("\n[DRIFT ITEMS]")
         for i, item in enumerate(drift_items, 1):
@@ -367,6 +508,7 @@ DISPOSITION:          {report.disposition}
     result = {
         "story_id": report.story_id,
         "scs_ui": report.scs_ui if report.scs_ui >= 0 else None,
+        "scs_ast": report.scs_ast if report.scs_ast >= 0 else None,
         "scs_data": report.scs_data if report.scs_data >= 0 else None,
         "scs_ac": report.scs_ac,
         "scs_overall": report.scs_overall,
