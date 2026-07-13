@@ -35,6 +35,13 @@ Do NOT attempt to run this workflow without reading the protocol!
    - Log this as a "Candidate UX Pattern" inside the spec and propose updating the global `DESIGN.md` (or `project-context.md`) to standardize it for future reuse.
 6. **[MANDATORY HTML PREVIEW GATE]**: Generate a static zero-logic HTML/CSS preview file at `html-preview-story-{story_id}.html` (in the same directory where the UI spec will go) and prompt the user to open it in their browser for visual review. Do NOT proceed to the next step until the user approves this preview layout.
 
+6.1. **[SEMANTIC AST LAYOUT GENERATION]**: Immediately after the user approves the HTML Preview, you MUST parse the visual structure and generate a strict Semantic Layout AST JSON file at `ast-constraint-story-{story_id}.json`.
+   - This JSON must map the approved HTML into structural zones to serve as an architectural law for the Dev-Agent.
+   - **Supported Primitives:** `HStack`, `VStack`, `Flex`, `ZStack` (for explicit overlapping), `GridArea` (for 2D layouts), and `ResponsiveZone` (for breakpoint mutations).
+   - **Semantic Tagging:** Each node must explicitly state its semantic intent to avoid semantic downgrade (e.g., `{ type: 'VStack', as: 'section', role: 'region' }`).
+   - **Governed Escape Hatches:** If the layout requires complex/irregular CSS that cannot be expressed purely by layout primitives, you may insert a `CustomLayoutNode`. Any `CustomLayoutNode` MUST include an `annotation` field explaining the necessity for manual CSS.
+   - Embed a reference to this JSON inside the UI Spec Draft.
+
 6.5. **[STRICT GATE GUARDIAN]** Save the UI Spec Draft:
    - **DO NOT save directly as `ui-spec.md`**. You MUST save the file as a draft: `ui-spec-draft.md` (or `ui-spec-draft-story-{story_id}.md` for flat layouts).
    - **CRITICAL - OKF FRONTMATTER**: You MUST start the generated file with this exact YAML frontmatter structure to ensure Graph connectivity:
