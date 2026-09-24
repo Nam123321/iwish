@@ -381,7 +381,7 @@ function getStatus(projectRoot) {
     const catalogRoot = path.join(runtimeRoot, 'catalog');
     const graphProfile = path.join(runtimeRoot, 'graphs', 'graph-profile.yaml');
     const toolProfile = readToolProfile(projectRoot);
-    const toolSetupPrompts = (0, tooling_1.buildToolSetupPrompts)(['graph'], toolProfile?.selections || {});
+    const toolSetupPrompts = getToolSetupStatus(projectRoot);
     const reconciliation = (0, reconciliation_1.getReconciliationStatus)(projectRoot);
     return {
         runtimeRoot,
@@ -944,9 +944,10 @@ async function writeGraphProfileSelection(projectRoot, adapter) {
     await fs.ensureDir(path.dirname(getGraphProfilePath(projectRoot)));
     await fs.writeFile(getGraphProfilePath(projectRoot), yaml_1.default.stringify(updated), 'utf8');
 }
-function getToolSetupStatus(projectRoot) {
+function getToolSetupStatus(projectRoot, groups) {
     const selections = readToolProfile(projectRoot)?.selections || {};
-    return (0, tooling_1.buildToolSetupPrompts)(['graph'], selections);
+    const targetGroups = groups || ['graph', 'design', 'database', 'testing'];
+    return (0, tooling_1.buildToolSetupPrompts)(targetGroups, selections);
 }
 async function ensureCapabilityPackageTemplates(projectRoot) {
     const destinationRoot = path.join((0, constants_1.getRuntimeRoot)(projectRoot, 'iwish'), 'capability-package');

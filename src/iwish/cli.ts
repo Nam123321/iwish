@@ -84,74 +84,87 @@ async function resolveInstallTargets(rawTargets?: string[]): Promise<string[]> {
   }
 }
 
-async function promptGraphToolSelection(projectRoot: string): Promise<void> {
+async function promptBaselineToolSelections(projectRoot: string): Promise<void> {
   const prompts = getToolSetupStatus(projectRoot);
-  const graphPrompt = prompts.find((prompt) => prompt.group === 'graph');
-  if (!graphPrompt) {
+  if (prompts.length === 0) {
     return;
   }
 
   const rl = createInterface({ input, output });
   const platform = getPlatformMode();
-  const recommendedOverride = platform === 'AG_MAO' ? 'antigravity-memory' : graphPrompt.recommended;
+
+  const groupTitles: Record<string, { icon: string; title: string }> = {
+    graph: { icon: '📊', title: 'GRAPH SOLUTION SETUP' },
+    design: { icon: '🎨', title: 'DESIGN SYSTEM & UI GATE SETUP' },
+    database: { icon: '🗄️', title: 'DATABASE & ORM SCHEMA SETUP' },
+    testing: { icon: '🧪', title: 'TESTING & QA AUTOMATION SETUP' },
+  };
 
   try {
-    console.log('');
-    console.log(chalk.blue('=============================================='));
-    console.log(chalk.yellow('📊 MANDATORY GRAPH SETUP'));
-    console.log(chalk.blue('A graph solution is required for I-Wish execution.'));
-    if (platform === 'AG_MAO') {
-      console.log(chalk.green('Google Antigravity 2.0 runtime detected! Recommended: antigravity-memory'));
-    }
-    console.log(chalk.blue('=============================================='));
+    for (const prompt of prompts) {
+      const header = groupTitles[prompt.group] || { icon: '⚙️', title: `${prompt.group.toUpperCase()} SETUP` };
+      const recommendedOverride = prompt.group === 'graph' && platform === 'AG_MAO' ? 'antigravity-memory' : prompt.recommended;
 
-    while (true) {
-      graphPrompt.options.forEach((option: { id: string; description: string }, index: number) => {
-        const recommended = option.id === recommendedOverride ? ' (recommended)' : '';
-        console.log(`${index + 1}. ${option.id}${recommended}`);
-        if (option.description) {
-          console.log(`   ${option.description}`);
-        }
-      });
-      console.log(`${graphPrompt.options.length + 1}. other / custom (custom-adapter)`);
-      console.log('----------------------------------------------');
-
-      const answer = (await rl.question('Select a graph solution (enter number or name): ')).trim();
-      if (!answer) {
-        console.log(chalk.red('Graph setup is mandatory. Please make a selection to continue.'));
-        continue;
+      console.log('');
+      console.log(chalk.blue('=============================================='));
+      console.log(chalk.yellow(`${header.icon} ${header.title}`));
+      console.log(chalk.blue(prompt.reason));
+      if (prompt.group === 'graph' && platform === 'AG_MAO') {
+        console.log(chalk.green('Google Antigravity 2.0 runtime detected! Recommended: antigravity-memory'));
       }
+      console.log(chalk.blue('=============================================='));
 
-      const numeric = Number(answer);
-      let selected = '';
-      if (Number.isInteger(numeric) && numeric >= 1 && numeric <= graphPrompt.options.length) {
-        selected = graphPrompt.options[numeric - 1].id;
-      } else if (Number.isInteger(numeric) && numeric === graphPrompt.options.length + 1) {
-        selected = 'custom-adapter';
-      } else {
-        // Check if matching by id directly
-        const matched = graphPrompt.options.find((opt) => opt.id.toLowerCase() === answer.toLowerCase());
-        if (matched) {
-          selected = matched.id;
-        } else if (answer.toLowerCase() === 'custom-adapter') {
-          selected = 'custom-adapter';
-        }
-      }
+      while (true) {
+        prompt.options.forEach((option: { id: string; description: string }, index: number) => {
+          const recommended = option.id === recommendedOverride ? ' (recommended)' : '';
+          console.log(`${index + 1}. ${option.id}${recommended}`);
+          if (option.description) {
+            console.log(`   ${option.description}`);
+          }
+        });
+        console.log(`${prompt.options.length + 1}. other / custom (custom-adapter)`);
+        console.log('----------------------------------------------');
 
-      if (selected) {
-        await selectToolProfile(projectRoot, 'graph', selected);
-        console.log(chalk.green(`Selected ${selected} for tool group graph`));
-        if (selected === 'custom-adapter') {
-          console.log('Next: define the custom graph adapter contract and usage pack before using graph-backed workflows.');
+        const defaultChoice = recommendedOverride || prompt.options[0]?.id || '1';
+        const answer = (await rl.question(`Select a ${prompt.group} solution (number or name) [default: ${defaultChoice}]: `)).trim();
+        let selected = '';
+        if (!answer) {
+          selected = defaultChoice;
+        } else {
+          const numeric = Number(answer);
+          if (Number.isInteger(numeric) && numeric >= 1 && numeric <= prompt.options.length) {
+            selected = prompt.options[numeric - 1].id;
+          } else if (Number.isInteger(numeric) && numeric === prompt.options.length + 1) {
+            selected = 'custom-adapter';
+          } else {
+            const matched = prompt.options.find((opt) => opt.id.toLowerCase() === answer.toLowerCase());
+            if (matched) {
+              selected = matched.id;
+            } else if (answer.toLowerCase() === 'custom-adapter') {
+              selected = 'custom-adapter';
+            }
+          }
         }
-        break;
-      } else {
-        console.log(chalk.red('Invalid selection. Please try again.'));
+
+        if (selected) {
+          await selectToolProfile(projectRoot, prompt.group, selected);
+          console.log(chalk.green(`Selected ${selected} for tool group ${prompt.group}`));
+          if (selected === 'custom-adapter') {
+            console.log(`Next: define the custom ${prompt.group} adapter contract and usage pack before using matching workflows.`);
+          }
+          break;
+        } else {
+          console.log(chalk.red('Invalid selection. Please try again.'));
+        }
       }
     }
   } finally {
     rl.close();
   }
+}
+
+async function promptGraphToolSelection(projectRoot: string): Promise<void> {
+  return promptBaselineToolSelections(projectRoot);
 }
 
 async function promptPlatformIngestion(projectRoot: string, targets: string[]): Promise<string[]> {
@@ -256,7 +269,7 @@ export async function runCli(): Promise<void> {
         await installRuntime(projectRoot, targets, 'install');
         await ensureCapabilityPackageTemplates(projectRoot);
         if (!options.skipToolSetup) {
-          await promptGraphToolSelection(projectRoot);
+          await promptBaselineToolSelections(projectRoot);
         } else {
           console.log(chalk.yellow('Skipped baseline tool setup.'));
           console.log('Run later: iwish tool-setup-status');
@@ -286,7 +299,7 @@ export async function runCli(): Promise<void> {
         await installRuntime(projectRoot, targets, 'update');
         await ensureCapabilityPackageTemplates(projectRoot);
         if (!options.skipToolSetup) {
-          await promptGraphToolSelection(projectRoot);
+          await promptBaselineToolSelections(projectRoot);
         } else {
           console.log(chalk.yellow('Skipped baseline tool setup.'));
           console.log('Run later: iwish tool-setup-status');

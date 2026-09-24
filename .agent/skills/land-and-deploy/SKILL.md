@@ -17,6 +17,9 @@ Prevent broken merges, incomplete features, and undocumented releases by enforci
 
 Before attempting to merge, verify that the story/epic is truly complete:
 
+**[ZERO-TRUST GATE]** Run: `python3 .agent/scripts/validate-plan-completion.py <story_id>`.
+If this fails, HALT. No merge allowed.
+
 ```markdown
 ## Plan Completion Audit
 
@@ -31,6 +34,9 @@ Before attempting to merge, verify that the story/epic is truly complete:
 ```
 
 ### Step 2: Code Quality Gate
+
+**[ZERO-TRUST GATE]** Run: `python3 .agent/scripts/validate-code-quality.py <story_id>`. 
+This script must pass before proceeding. It verifies:
 
 | Check | Tool/Method | Required |
 |-------|-------------|----------|
@@ -47,15 +53,19 @@ Before attempting to merge, verify that the story/epic is truly complete:
 |------|--------|
 | **Story file** updated with final status | ☐ |
 | **Sprint status** updated | ☐ |
+| **Feature hierarchy** exists and is current (`2. Product Planning/2.5. feature-hierarchy.md`) | ☐ |
 | **Changelog** entry added (if applicable) | ☐ |
 | **API docs** updated (if API changed) | ☐ |
 | **Migration notes** documented (if DB changed) | ☐ |
 
-### Step 4: Merge Execution
+### Step 4: Merge Execution & Version Bump
 
 1. **Rebase** on latest main (resolve conflicts if any).
 2. **Final CI run** passes on the rebased branch.
-3. **Squash merge** with a descriptive commit message following conventional commits:
+3. **Version Bump**: Calculate the new semantic version by running:
+   `python3 .agent/scripts/semver-bump.py --current $(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[", ]//g') --type <major|minor|patch>`
+   Update `package.json` or equivalent version tracking files.
+4. **Squash merge** with a descriptive commit message following conventional commits:
    ```
    feat(module): short description (#PR-number)
    
@@ -64,14 +74,17 @@ Before attempting to merge, verify that the story/epic is truly complete:
    
    Closes: STORY-X.Y
    ```
-4. **Delete** the feature branch after merge.
+5. **Delete** the feature branch after merge.
 
-### Step 5: Post-Merge Verification
+### Step 5: Post-Merge Verification & Changelog
 
 1. Verify main branch CI is green after merge.
 2. Deploy to staging (invoke `canary` skill if production deploy).
 3. Smoke test the deployed changes.
-4. Update sprint-status.yaml: story → `done`, deployment → `deployed`.
+4. **Update Changelog**: Generate the changelog by running:
+   `python3 .agent/scripts/generate-changelog.py --since <LAST_TAG>`
+   Append the output to `CHANGELOG.md`.
+5. Update sprint-status.yaml: story → `done`, deployment → `deployed`.
 
 ## Landing Report Template
 

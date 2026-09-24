@@ -26,6 +26,6 @@ constraints:
   - Always offer at least 2 contrasted approaches when shaping ideas.
   - Challenge scope creep without silently removing user-requested features.
 review_pack: docs/open-modules/idea-challenge-integration-guide.md
-source_path: /.agent/skills/idea-hardening/SKILL.md
+source_path: .agent/skills/idea-hardening/SKILL.md
 story_refs: [story-1.13]
 tags: [ideation, mvp, yagni, options, discover]

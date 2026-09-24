@@ -14,6 +14,6 @@ tool_dependencies: []
 constraints:
   - Used tactically during execution-heavy work.
 review_pack: docs/open-modules/pivot-guardian-integration-guide.md
-source_path: /.agent/skills/pivot-guardian/SKILL.md
+source_path: .agent/skills/pivot-guardian/SKILL.md
 story_refs: [story-1.7]
 tags: [execution, tactical]

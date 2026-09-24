@@ -181,8 +181,10 @@ The specialist must return a compact I-Wish-facing recommendation using exactly 
 When invoked during UI Spec generation or enrichment, the specialist MUST generate the exact payloads for the two-phase pipeline based on the UI/UX Pro Max library rules:
 
 **Phase 1: Static Layout (Stitch Prompt Generation)**
-If invoked during `/create-ui-spec`, generate the `[STITCH_PROMPT_INJECTION]` payload:
-- **Include:** Static layout constraints, CSS Grid/Flexbox rules, specific class naming conventions, color tokens, typography scales, and CSS anti-patterns to avoid.
+If invoked during `/create-ui-spec`, generate the `[STITCH_PROMPT_INJECTION]` payload using the structured Markdown payload format containing:
+- **`[DESIGN_SYSTEM_CONTEXT]`**: The active Design System Asset ID (`designSystemId`), brand asset paths, and page override rules.
+- **`[MANDATORY_LAYOUT_STRUCTURE]`**: Sourced from the page's Mermaid component layout diagram with instructions to strictly follow its structure.
+- **`[CONTENT_&_INTERACTION_REQUIREMENTS]`**: Sourced from the story's Acceptance Criteria, target persona, device context, and the Nav Tree from `feature-hierarchy.md`.
 - **Exclude:** Javascript, IntersectionObservers, dynamic state logic, or complex animations.
 
 **Phase 2: Dynamic Enrichment (Dev Implementation)**
@@ -291,8 +293,8 @@ Suggested node metadata:
 ```text
 id: skill-ux-pro-max
 type: skill
-path: /.agent/skills/ux-pro-max/SKILL.md
+path: .agent/skills/ux-pro-max/SKILL.md
 description: Specialist wrapper for invoking UI/UX Pro Max design intelligence inside I-Wish without replacing I-Wish UX governance.
 tags: ui,ux,design-system,specialist,frontend,review,typography,color,interaction,animation,accessibility,stitch,palette
-depends_on: skill-ux-guardian,skill-design-consultation,skill-stitch-design-taste,skill-user-simulation-guardian
+depends_on: skill-ux-guardian,skill-design-consultation,skill-visual-fidelity-gate,skill-user-simulation-guardian
 ```

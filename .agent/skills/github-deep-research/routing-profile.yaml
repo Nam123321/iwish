@@ -14,6 +14,6 @@ tool_dependencies: []
 constraints:
   - Use when external repository evidence is required.
 review_pack: docs/open-modules/github-deep-research-integration-guide.md
-source_path: /.agent/skills/github-deep-research/SKILL.md
+source_path: .agent/skills/github-deep-research/SKILL.md
 story_refs: [story-1.7]
 tags: [github, research]

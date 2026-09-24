@@ -489,7 +489,7 @@ export function getStatus(projectRoot: string) {
   const catalogRoot = path.join(runtimeRoot, 'catalog');
   const graphProfile = path.join(runtimeRoot, 'graphs', 'graph-profile.yaml');
   const toolProfile = readToolProfile(projectRoot);
-  const toolSetupPrompts = buildToolSetupPrompts(['graph'], toolProfile?.selections || {});
+  const toolSetupPrompts = getToolSetupStatus(projectRoot);
   const reconciliation = getReconciliationStatus(projectRoot);
 
   return {
@@ -1211,9 +1211,10 @@ export async function writeGraphProfileSelection(projectRoot: string, adapter: s
   await fs.writeFile(getGraphProfilePath(projectRoot), YAML.stringify(updated), 'utf8');
 }
 
-export function getToolSetupStatus(projectRoot: string): ToolSetupPrompt[] {
+export function getToolSetupStatus(projectRoot: string, groups?: string[]): ToolSetupPrompt[] {
   const selections = readToolProfile(projectRoot)?.selections || {};
-  return buildToolSetupPrompts(['graph'], selections);
+  const targetGroups = groups || ['graph', 'design', 'database', 'testing'];
+  return buildToolSetupPrompts(targetGroups, selections);
 }
 
 export async function ensureCapabilityPackageTemplates(projectRoot: string): Promise<void> {

@@ -1,5 +1,5 @@
 ---
-name: 'idea-hardening-wrapper'
+name: 'idea-hardening'
 description: "Core ideation policies: mandatory 2-3 approaches with trade-offs, YAGNI ruthlessness (challenge-back), and visual companion routing (Stitch vs HTML/Mermaid)."
 ---
 

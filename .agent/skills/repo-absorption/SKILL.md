@@ -1,5 +1,5 @@
 ---
-name: 'repo-absorption-wrapper'
+name: 'repo-absorption'
 description: "Core engine for deep-learning an external repository in 5 phases: INGEST (pack with Repomix), INDEX (Dual-Indexer with Hybrid Resolution), MAP (Graph-Directed architecture mapping), DISSECT (Dual-Layer priority-based deep reading), and DOCUMENT (generate repo-dna.md with Symlink)."
 ---
 
@@ -15,6 +15,7 @@ Use this skill when you need to deeply understand, analyze, and map a cloned rep
 1. The target repository MUST have been successfully vetted by the `security-guardian` skill.
 2. The repository MUST be cloned into the sandbox: `${IWISH_HOME}/sandbox/{repo-name}/`.
 3. Runtime output directories MUST exist under `${IWISH_HOME:-~/.iwish}`. Reports go to `${IWISH_HOME}/absorbed-repos/{repo-name}/`; generated capability drafts go to `${IWISH_HOME}/generated-*`.
+4. For Phase 1 `.repomixignore` setup and Phase 3 file traversal, reference `@.agent/fragments/scout-rules.md` for the canonical exclusion patterns.
 
 ---
 
@@ -38,6 +39,7 @@ Use this skill when you need to deeply understand, analyze, and map a cloned rep
    .git/
    *.lock
    ```
+2.5. **Run Binary Filter:** Execute `bash .agent/skills/magika-binary-filter/scripts/magika-filter.sh ${IWISH_HOME}/sandbox/{repo-name} ${IWISH_HOME}/sandbox/{repo-name}/.repomixignore` to block ML weights, images, and compiled binaries from token consumption.
 3. **Run Repomix:** Execute the following command:
    ```bash
    npx repomix --output ${IWISH_HOME}/absorbed-repos/{repo-name}/context.md --style markdown ${IWISH_HOME}/sandbox/{repo-name}/
@@ -233,6 +235,7 @@ For EACH Behavioral Asset, extract and document:
      mcp_tools_required: [mcp_tools]
      subagent_triggers: [triggers]
      ```
+   - **3-Layer Progressive Disclosure Enforcement:** When advising how to ADOPT or MERGE external code into `SYSTEM_SKILL`s, you MUST specify how the code will be broken down into a concise (< 500 lines) `SKILL.md`. Instruct that all heavy architecture, long context, and complex schemas be routed into a `references/` directory.
    - Invocation and routing mechanisms (how host agents load, RAG-inject, or trigger the skill/workflow based on the synthesized operational model).
 7. **Save Output:**
    - Save the Comparison Report to `${IWISH_HOME}/gap-analysis/{repo-name}-comparison.md`.

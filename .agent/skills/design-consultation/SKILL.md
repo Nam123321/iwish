@@ -1,5 +1,5 @@
 ---
-name: 'design-consultation-wrapper'
+name: 'design-consultation'
 description: 'Use when validating UI component implementations against design principles (typography, color, layout) to detect UX regressions.'
 ---
 
@@ -44,6 +44,7 @@ The agent MUST cycle through the following 5 specialist lenses when reviewing an
 - Are empty states, loading states, and error states designed?
 - Is the labeling clear and jargon-free for the target persona?
 - Are destructive actions properly gated (confirmation dialogs, undo)?
+- Is the system integration and navigation model clearly mapped out? (Does the reviewer know exactly what URL route, menu category, parent/child tab, or navigation flow connects this component/screen to the rest of the application?)
 
 ## Output Format
 

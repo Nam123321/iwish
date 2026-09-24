@@ -14,6 +14,6 @@ tool_dependencies: [graph]
 constraints:
   - Use through absorb-repo workflow rather than as a standalone user-facing route in most cases.
 review_pack: docs/open-modules/absorb-repo-integration-guide.md
-source_path: /.agent/skills/repo-absorption/SKILL.md
+source_path: .agent/skills/repo-absorption/SKILL.md
 story_refs: [story-1.7]
 tags: [repo, absorption]

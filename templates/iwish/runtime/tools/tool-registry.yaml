@@ -14,11 +14,17 @@ groups:
   - name: design
     recommended: stitch
     adapters:
+      - id: stitch
+        description: Stitch-first design generation and synchronization. Backed by stitch-first-dev / stitch-to-code usage workflows.
+        usage_pack_status: default-pack
       - id: figma
         description: Figma-based design inspection and implementation handoff. Requires a usage pack such as figma-first-dev / figma-to-code for full orchestration.
         usage_pack_status: default-skeleton
-      - id: stitch
-        description: Stitch-first design generation and synchronization. Backed by stitch-first-dev / stitch-to-code usage workflows.
+      - id: penpot
+        description: Penpot open-source design workflow and token synchronization.
+        usage_pack_status: default-skeleton
+      - id: html-mermaid
+        description: Lightweight HTML/SVG and Mermaid wireframes and DOM mockups without external SaaS design tools.
         usage_pack_status: default-pack
       - id: claude-design
         description: Design-oriented generation and handoff. Requires a usage pack such as claude-design-first-dev / claude-design-to-code for full orchestration.
@@ -26,6 +32,9 @@ groups:
       - id: canva
         description: Canva-based design authoring and handoff. Requires a usage pack such as canva-first-dev / canva-to-code for full orchestration.
         usage_pack_status: default-skeleton
+      - id: none
+        description: No automated visual design gate required.
+        usage_pack_status: default-pack
   - name: graph
     recommended: falkordb-full
     adapters:
@@ -47,4 +56,46 @@ groups:
       - id: custom-adapter
         description: Project-supplied graph backend that must pass adapter checks and should ship with a matching usage pack.
         usage_pack_status: adapter-only
+  - name: database
+    recommended: prisma
+    adapters:
+      - id: prisma
+        description: Prisma ORM schema validation, migrations, and model introspection.
+        usage_pack_status: default-pack
+      - id: drizzle
+        description: Drizzle ORM TypeScript-first schema definitions and migration validation.
+        usage_pack_status: default-pack
+      - id: typeorm
+        description: TypeORM entity definitions and decorator validation.
+        usage_pack_status: default-skeleton
+      - id: neo4j
+        description: Direct Neo4j graph and Cypher-driven data layer.
+        usage_pack_status: default-skeleton
+      - id: raw-sql
+        description: Pure SQL migrations, DDL scripts, and database driver checks.
+        usage_pack_status: default-skeleton
+      - id: none
+        description: No database schema or ORM enforcement.
+        usage_pack_status: default-pack
+  - name: testing
+    recommended: playwright
+    adapters:
+      - id: playwright
+        description: Playwright browser automation, E2E flows, and visual regression testing.
+        usage_pack_status: default-pack
+      - id: vitest
+        description: Fast TypeScript/Vite unit and integration test runner.
+        usage_pack_status: default-pack
+      - id: jest
+        description: Standard Jest test runner for unit and integration testing.
+        usage_pack_status: default-skeleton
+      - id: cypress
+        description: Cypress browser automation and component testing.
+        usage_pack_status: default-skeleton
+      - id: k6
+        description: Performance, load, and threshold testing.
+        usage_pack_status: default-skeleton
+      - id: none
+        description: No automated testing framework gate enforced.
+        usage_pack_status: default-pack
 
