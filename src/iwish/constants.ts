@@ -148,7 +148,10 @@ export function getPlatformMode(): PlatformMode {
 }
 
 
-export function getRuntimeRoot(projectRoot: string, namespace: RuntimeNamespace): string {
+export function getRuntimeRoot(projectRoot: string, namespace: RuntimeNamespace = 'iwish'): string {
+  if (namespace === 'legacy-bmad') {
+    return path.join(projectRoot, '_bmad');
+  }
   return path.join(projectRoot, '_iwish');
 }
 
