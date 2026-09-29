@@ -27,6 +27,6 @@ constraints:
   - Ask at most 1-2 questions per turn and end with synthesis.
   - Do not auto-overwrite planning or context artifacts without approval.
 review_pack: docs/open-modules/idea-challenge-integration-guide.md
-source_path: /.agent/skills/socratic-review/SKILL.md
+source_path: .agent/skills/socratic-review/SKILL.md
 story_refs: [story-1.13]
 tags: [questioning, gate, discovery, business, technical, drift]

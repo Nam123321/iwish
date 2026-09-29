@@ -8,4 +8,4 @@ To keep the public framework clean and independent:
 2. **Internal SDLC Artifacts** (Private/Gitignored): All internal PRDs, epics, stories, task checklists, and debug run outputs must go to `_iwish-output/` according to the standard folders. Never place them in the root directory or in `src/`.
 3. **Phase-to-Folder Mapping**: Strictly adhere to the mapping table in project-context.md. Never create ad-hoc folder names like "2. Domain & Technical Research" or "3. Product Requirements" when executing Phases. Write files exactly into the mapped paths.
 
-Always read [project-context.md](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/project-context.md) for full context, structure guidelines, and specific agent instructions before writing any code.
+Always read [project-context.md](./project-context.md) for full context, structure guidelines, and specific agent instructions before writing any code.

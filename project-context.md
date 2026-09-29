@@ -10,16 +10,16 @@ To ensure that the **I-Wish framework** remains completely independent, clean, a
 
 ### 1. Core Framework Assets (Public / Packaged)
 These directories contain the actual product that end-users install and run. They must remain clean and free of local development logs, tasks, epics, or stories:
-- [src/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/src): TypeScript source code for the CLI and core framework logic.
-- [dist/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/dist): Compiled CLI distribution files (published to npm).
-- [.agent/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/.agent): Canonical workflows, agents, and skills provided as the user-facing runtime.
-- [templates/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/templates): Scaffolding templates for `iwish install`.
-- [docs/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/docs): Official, public user documentation.
+- [src/](./src): TypeScript source code for the CLI and core framework logic.
+- [dist/](./dist): Compiled CLI distribution files (published to npm).
+- [.agent/](./.agent): Canonical workflows, agents, and skills provided as the user-facing runtime.
+- [templates/](./templates): Scaffolding templates for `iwish install`.
+- [docs/](./docs): Official, public user documentation.
 
 ### 2. Internal SDLC & Development Artifacts (Private / Gitignored)
 These directories are used strictly for the internal tracking, design, and validation of upgrades to the I-Wish framework. They are gitignored and excluded from NPM packages:
-- [_iwish-output/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/_iwish-output): **Mandatory directory** for all internal PRD files, Epics lists, Stories, `sprint-status.yaml`, local test databases, and intermediate agent run outputs.
-- [_iwish-output/](file:///Users/hatrang20061988/Desktop/AI%20Project/iwish/_iwish-output): Directory for migration outputs and local development outputs.
+- [_iwish-output/](./_iwish-output): **Mandatory directory** for all internal PRD files, Epics lists, Stories, `sprint-status.yaml`, local test databases, and intermediate agent run outputs.
+- [_iwish-output/](./_iwish-output): Directory for migration outputs and local development outputs.
 - **Scratch Space**: All temporary debug scripts or one-off code snippets must be saved under `_iwish-output/scratch/` or similar. Do not leave temporary files in the root folder.
 
 ### 📁 Standard Phase & Folder Mapping (VERY IMPORTANT)

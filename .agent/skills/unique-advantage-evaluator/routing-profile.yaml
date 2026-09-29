@@ -34,6 +34,6 @@ constraints:
   - Treat unknown strategic claims as hypotheses until research evidence exists.
   - Do not force moat language on users; accept business-friendly and local vocabulary.
 review_pack: docs/open-modules/unique-advantage-evaluator-integration-guide.md
-source_path: /.agent/skills/unique-advantage-evaluator/SKILL.md
+source_path: .agent/skills/unique-advantage-evaluator/SKILL.md
 story_refs: [story-1.13]
 tags: [strategy, business, supportive, biz-stack]

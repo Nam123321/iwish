@@ -1,0 +1,8 @@
+capability: dependency-governance-enforcer
+type: SKILL
+status: spec-approved
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: pending

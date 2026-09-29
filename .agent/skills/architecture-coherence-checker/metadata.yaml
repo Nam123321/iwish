@@ -1,0 +1,25 @@
+id: architecture-coherence-checker
+type: SKILL
+status: promoted
+origin:
+  type: manual
+  created_by: create-skill
+  created_at: "2026-07-30"
+  trigger: "Root Cause Analysis — Epic 46 Temporal.io vs BullMQ undetected infrastructure conflict"
+  trigger_id: "RCA-EPIC-46-INFRA"
+lineage:
+  parent: null
+  generation: 1
+enforcement_maturity:
+  category_a_percentage: 100
+  gates:
+    - name: ADR Parse Gate
+      category: A
+    - name: Story Tech Extract Gate
+      category: A
+    - name: Cross-Reference Gate
+      category: A
+soi_score: 20.78
+slash_command: /architecture-checker
+companion_script: .agent/scripts/architecture-coherence-checker.py
+companion_workflow: .agent/workflows/architecture-checker.md

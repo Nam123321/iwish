@@ -145,7 +145,7 @@ Các mẫu hành vi thực tế cần giả định:
 
 ## 3. Scenario System
 
-Scenarios are stored in `{project-root}/.agent/skills/user-simulation-guardian/scenarios/`.
+Scenarios are stored in `{project-root}.agent/skills/user-simulation-guardian/scenarios/`.
 
 ### Scenario Selection
 
@@ -167,7 +167,7 @@ MANDATORY: Every feature MUST be tested against AT LEAST 2 scenarios relevant to
 
 > [!IMPORTANT]
 > **DOUBLE-LOCK CONTEXT INJECTION:**
-> You MUST use `view_file` to load `/.agent/fragments/feature-validation.md` before proceeding.
+> You MUST use `view_file` to load `.agent/fragments/feature-validation.md` before proceeding.
 
 ### Quick Gate Check (for inline use)
 

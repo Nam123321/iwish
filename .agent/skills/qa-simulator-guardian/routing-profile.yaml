@@ -14,6 +14,6 @@ tool_dependencies: []
 constraints:
   - Prefer as a subroutine under review/QA workflows.
 review_pack: docs/open-modules/qa-simulator-guardian-integration-guide.md
-source_path: /.agent/skills/qa-simulator-guardian/SKILL.md
+source_path: .agent/skills/qa-simulator-guardian/SKILL.md
 story_refs: [story-1.7]
 tags: [qa, tactical]

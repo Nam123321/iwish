@@ -8,7 +8,7 @@ This report applies the `research-solution-sources` concept to itself:
 - which candidates should become benchmarks, supportive tools, or later absorption targets
 - which stack composition gives Orch the best chance of returning strong GitHub research results with evidence, speed, and low noise
 
-This report follows the council memo in [party-mode-github-solution-search-council-review.md](/Users/hatrang20061988/Desktop/AI%20Project/BMAD-DragonBall/docs/party-mode-github-solution-search-council-review.md).
+This report follows the council memo in `party-mode-github-solution-search-council-review.md`.
 
 ## Problem-to-Solve
 

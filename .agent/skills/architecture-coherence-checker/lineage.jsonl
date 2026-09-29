@@ -1,0 +1,5 @@
+{"ts": "2026-07-30", "event": "skill_created", "capability_id": "architecture-coherence-checker@gen1", "origin": "RCA-EPIC-46-INFRA", "soi_score": 20.78}
+{"ts": "2026-07-30", "event": "script_created", "file": ".agent/scripts/architecture-coherence-checker.py"}
+{"ts": "2026-07-30", "event": "workflow_created", "file": ".agent/workflows/architecture-checker.md"}
+{"ts": "2026-07-30", "event": "stub_replaced", "file": ".agent/scripts/evaluate-epic-drift.py", "reason": "Original was a dummy no-op that always returned True"}
+{"ts": "2026-07-30", "event": "validation_passed", "test": "Epic 46 correctly detects Temporal.io as future-phase conflict, 21 PASS + 2 HIGH conflicts"}

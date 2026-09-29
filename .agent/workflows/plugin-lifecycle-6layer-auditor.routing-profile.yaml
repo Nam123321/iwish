@@ -1,0 +1,38 @@
+id: skill-plugin-lifecycle-6layer-auditor
+name: plugin-lifecycle-6layer-auditor
+kind: skill
+shape: skill
+role: supportive
+phases:
+- solution
+- implementation
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- plugin-lifecycle-6layer-auditor
+- /plugin-lifecycle-6layer-auditor
+- deep-audit
+- reconcile-change
+- plugin-import
+- advisor-detect
+- evolution-propose
+anti_triggers: []
+primary_agents:
+- orch-agent
+- review-agent
+- qa-agent
+primary_workflows:
+- plugin-lifecycle-6layer-auditor
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/plugin-lifecycle-6layer-auditor/SKILL.md
+tags:
+- skill
+- canonical
+- plugin-lifecycle-6layer-auditor

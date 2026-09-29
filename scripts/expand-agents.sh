@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Generates 17 I-Wish agent persona files
-
-cd /Users/hatrang20061988/Desktop/AI\ Project/iwish/.agent/agents
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT/.agent/agents"
 
 cat << 'EOF' > ai-agent.md
 ---

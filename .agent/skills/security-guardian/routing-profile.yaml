@@ -14,6 +14,6 @@ tool_dependencies: []
 constraints:
   - Treat as a gate, not a substitute for the parent workflow.
 review_pack: docs/open-modules/security-guardian-integration-guide.md
-source_path: /.agent/skills/security-guardian/SKILL.md
+source_path: .agent/skills/security-guardian/SKILL.md
 story_refs: [story-1.7]
 tags: [security, gate]
