@@ -1,0 +1,17 @@
+id: workflow-gen-dashboard
+name: gen-dashboard
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [operate]
+stages: [dashboard-generation]
+triggers: [gen-dashboard, gen dashboard, generate dashboard, idea navigator]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [gen-dashboard]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+review_pack: docs/iwish-introduction.md
+source_path: /.agent/workflows/gen-dashboard.md
+tags: [dashboard, canonical, tool]

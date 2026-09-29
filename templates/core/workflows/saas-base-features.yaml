@@ -1,0 +1,303 @@
+# SaaS Base Feature Library (Standard Fundamental Features)
+# This file provides pre-defined, standardized functional requirements (FRs) for different SaaS project categories.
+# Agents should load this library, detect/confirm the category with the user, and directly inject these FRs to save token cost and prevent omissions.
+
+categories:
+  b2b_enterprise:
+    name: "B2B / Enterprise SaaS"
+    description: "Enterprise multi-tenant platforms featuring workspace isolation, hierarchical RBAC, multi-level billing, MoR global payments, PRM partner tiers, advanced IAM security (SSO/SCIM/MFA), canary rollouts, and trust center compliance."
+    
+    portals:
+      main_web:
+        domain: "example.com"
+        description: "Public website: Marketing, Landing Page, Pricing, Features, and Contact."
+      tenant_portal:
+        domain: "workspace.example.com"
+        description: "Workspace app: Productive tenant dashboard, workspace settings, resource management."
+      superadmin_portal:
+        domain: "admin.example.com"
+        description: "Global backend administration: Tenant moderation, plan configuration, global audits."
+      developer_portal:
+        domain: "Vegeta.example.com"
+        description: "3rd-Party & Integration: API keys, webhook logs, developer tools."
+
+    features:
+      - area: "Multi-Portal & Subdomain Topology"
+        portal: "General"
+        items:
+          - "FR-TOP-1: System routes users dynamically based on subdomains (main marketing site on example.com, workspaces on *.example.com, management on admin.example.com, and API console on Vegeta.example.com)."
+          - "FR-TOP-2: System maintains isolated session cookies or JWT tokens across subdomains, enabling single sign-on (SSO) context where permitted."
+      
+      - area: "Detailed Authentication & Account Flows"
+        portal: "tenant_portal"
+        items:
+          - "FR-AUTH-1: Users can register using email/password or OAuth (Google, GitHub)."
+          - "FR-AUTH-2: System performs auto-login immediately after a user successfully validates their email address or finishes registration."
+          - "FR-AUTH-3: Users can check a 'Remember Me' box during login to persist their session securely for 30 days via encrypted cookies."
+          - "FR-AUTH-4: Users can request a password reset via email magic link when they forget their password."
+          - "FR-AUTH-5: Users can set/change their password with enforced complexity validation (minimum 12 characters, including 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special symbol)."
+          - "FR-AUTH-6: Users can toggle password visibility on any password input field using an eye icon button."
+          - "FR-AUTH-7: System puts new registrations into a 'Pending Review' state if admin moderation is enabled, alerting the registering user and sending an email notification once approved."
+
+      - area: "Global Moderation & Account Approval"
+        portal: "superadmin_portal"
+        items:
+          - "FR-MOD-1: Superadmins can view a dashboard of all pending tenant registrations."
+          - "FR-MOD-2: Superadmins can approve or reject pending tenant registrations with optional reason notes."
+
+      - area: "Hierarchical Role-Based Access Control (RBAC)"
+        portal: "General"
+        items:
+          - "FR-RBAC-1: Superadmins can manage system-level RBAC roles (Global Superadmin, Customer Support Admin, System Auditor) to restrict access to the Superadmin Portal."
+          - "FR-RBAC-2: Tenant Owners can manage workspace-level RBAC roles (Workspace Owner, Workspace Admin, Workspace Member, Workspace Guest) to restrict actions inside the Tenant Portal."
+          - "FR-RBAC-3: Workspace Admins can assign project-level or group-level roles (Project Lead, Contributor, Read-only Viewer) to limit actions on specific collaborative resource groups."
+          - "FR-RBAC-4: The system enforces RBAC permissions at the API layer, returning 403 Forbidden for unauthorized requests across all portals."
+
+      - area: "Tenant & Workspace Management"
+        portal: "tenant_portal"
+        items:
+          - "FR-TEN-1: Users can create and manage multiple isolated workspaces/tenants."
+          - "FR-TEN-2: Workspace admins can invite external members via email, assigning them workspace-level roles."
+          - "FR-TEN-3: Invited members can accept or decline workspace invitations via an email link."
+          - "FR-TEN-4: Workspace admins can remove members or modify their active workspace roles."
+          - "FR-TEN-5: The system guarantees complete database-level or schema-level isolation, ensuring users cannot access or leak data outside their currently active workspace."
+
+      - area: "Multi-Level Payment & Payment Management"
+        portal: "General"
+        items:
+          - "FR-PAY-1 [Superadmin]: Superadmins can configure global subscription plans (Free, Pro, Enterprise), including base price, seat costs, and feature gates."
+          - "FR-PAY-2 [Superadmin]: Superadmins can manage payment gateways (e.g., Stripe API keys, sandbox vs live mode) and transaction monitoring logs."
+          - "FR-PAY-3 [Superadmin]: Superadmins can create, activate, and deactivate discount codes and promotional campaigns (percentage off, trial extensions)."
+          - "FR-PAY-4 [Tenant]: Tenant Owners can view plans, select a subscription tier, input billing detail, and complete checkout via payment gateway integration."
+          - "FR-PAY-5 [Tenant]: Tenant Owners can update payment methods (credit cards, digital wallets) and view/download historical billing invoices and receipts."
+          - "FR-PAY-6 [Tenant]: Tenant Owners can upgrade or downgrade workspace subscription tiers, with the system calculating prorated charges or credits dynamically."
+          - "FR-PAY-7 [Partner]: Partners/Integrators can configure profit-sharing and commission rates, tracking payout thresholds and earned commissions."
+          - "FR-PAY-8 [Partner]: Partners can purchase API credit allocations to resell or provision to sub-tenants."
+
+      - area: "Notifications & System Alerts"
+        portal: "tenant_portal"
+        items:
+          - "FR-NOT-1: System delivers transactional emails for critical security events (login attempts, password modifications)."
+          - "FR-NOT-2: Users receive in-app notifications for workspace activities (new invitations, project mentions)."
+          - "FR-NOT-3: Users can configure delivery preferences (toggle email/in-app channels per notification category)."
+
+      - area: "Telemetry, Usage Metrics & System Auditing"
+        portal: "General"
+        items:
+          - "FR-AUD-1: System records an immutable log of administrative actions (invite member, change billing, update roles) for compliance tracking."
+          - "FR-AUD-2: Workspace owners can view audit logs for their specific workspace in the Tenant Portal."
+          - "FR-AUD-3: System meters tenant usage metrics (e.g., API calls, storage used) and enforces plan limits or alerts when thresholds are reached."
+
+      - area: "Legal, Privacy & Compliance Documents"
+        portal: "main_web"
+        items:
+          - "FR-LEG-1: System provides a public Terms of Service (ToS) page."
+          - "FR-LEG-2: System provides a public Privacy Policy page detailing data protection practices."
+          - "FR-LEG-3: System displays a Cookie Consent Banner on user's first visit, allowing them to opt-in or opt-out of optional cookies."
+          - "FR-LEG-4 [Tenant]: Users can request a self-service download of all personal data held by the platform (GDPR Data Portability)."
+          - "FR-LEG-5 [Tenant]: Users can request permanent account and data deletion (GDPR Right to Be Forgotten)."
+
+      - area: "Settings & System Configurations"
+        portal: "General"
+        items:
+          - "FR-SET-1 [Tenant]: Workspace Admins can edit general workspace settings (workspace name, description, upload organization logo, or request workspace deletion)."
+          - "FR-SET-2 [Tenant]: Workspace Admins can configure security policies, such as enforcing Two-Factor Authentication (2FA) for all members and setting session idle timeout limits."
+          - "FR-SET-3 [Tenant]: Workspace Admins can configure integrations, including incoming/outgoing webhooks (Slack, Discord, custom URLs) and third-party service credentials."
+          - "FR-SET-4 [Tenant]: Users can manage their personal account settings (change email, modify display name, update avatar, select timezone/language, and toggle personal notification channels)."
+          - "FR-SET-5 [Superadmin]: Superadmins can configure global system settings, including toggle sign-up moderation (approval mode), maximum tenants limits, and default user roles."
+          - "FR-SET-6 [Superadmin]: Superadmins can manage system integrations, such as SMTP mail server keys, LLM API keys (OpenAI, Anthropic, Gemini), and object storage credentials."
+          - "FR-SET-7 [Superadmin]: Superadmins can manage billing definitions, including Stripe webhook secret keys, base currency settings, and toggle active tax calculations."
+          - "FR-SET-8 [Partner]: Partners can view and modify their business profile details, bank transfer/Stripe Connect payout methods, and contact configurations."
+          - "FR-SET-9 [Partner]: Partners can customize branding options for their sub-tenants (whitelabel settings: custom email template sender, partner sub-logo, support links)."
+
+      - area: "Localization, Currency & System Conventions"
+        portal: "General"
+        items:
+          - "FR-LOC-1: System supports multi-language localization (e.g., English, Vietnamese), allowing users to switch languages on storefronts and portals."
+          - "FR-LOC-2: System dynamically formats dates, times, and calendars based on the user's selected locale or timezone."
+          - "FR-LOC-3: System supports configuring a base currency (e.g., USD, VND) and optionally multi-currency transactions with automated exchange rate updates."
+          - "FR-LOC-4: System formats currency symbols and codes correctly based on local standards (e.g., placement of currency symbol, thousands and decimal separators)."
+          - "FR-LOC-5: System supports measurement unit conventions (Metric vs Imperial) for shipping, inventory, and dimension inputs."
+          - "FR-LOC-6: System handles weight units (e.g., kg, g, lbs, oz) and volume units (e.g., liters, gallons) consistently across checkout, shipping carrier APIs, and inventory databases."
+
+      - area: "Payment Method Prioritization & Fallbacks"
+        portal: "General"
+        items:
+          - "FR-PAY-PRIO-1 [Tenant]: Add multiple payment methods (Credit Card, PayPal, Bank Transfer)."
+          - "FR-PAY-PRIO-2 [Tenant]: Assign Priority 1 (Primary), Priority 2 (Secondary), and Priority 3 (Fallback)."
+          - "FR-PAY-PRIO-3 [System]: Auto-billing fallback logic (attempts P1 -> P2 -> P3 before failing)."
+          - "FR-PAY-PRIO-4 [System]: Automated alerts for expiring or failed payment methods."
+
+      - area: "International Payments, Tax & Pricing Display"
+        portal: "General"
+        items:
+          - "FR-TAX-1 [Superadmin]: Configure global tax regions and rates (e.g., VAT, GST). Provide mechanisms to auto-update these rates (via 3rd-party API like Stripe Tax/TaxJar) or manual updates."
+          - "FR-TAX-2 [Superadmin]: Define if base plan prices are 'Tax Inclusive' or 'Tax Exclusive'."
+          - "FR-TAX-3 [Tenant]: If prices are 'Tax Exclusive', the checkout UI dynamically calculates and displays the local tax amount and the final total payment based on the tenant's country/billing address."
+          - "FR-LOC-PAY-1 [System/Superadmin]: System supports routing payments through different gateways based on the tenant's country (e.g., Stripe for US/EU, local gateways for VN). Superadmins can evaluate the combined cost structures (Gateway fee + Invoicing fee) per region."
+          - "FR-GLB-PAY-1 [Superadmin]: System supports integration with a Merchant of Record (MoR) like Paddle/FastSpring to offload global tax compliance, local gateway routing, and invoicing liabilities. Alternatively, integrates Stripe Tax + Regional Gateways (e.g., VNPay)."
+          - "FR-GLB-PAY-2 [Superadmin]: Support for 'Custom Quotes' and 'Contact Sales' flows for enterprise plans, allowing manual invoicing with Net-30/Net-60 payment terms."
+
+      - area: "Invoicing & Billing Document Management"
+        portal: "General"
+        items:
+          - "FR-INV-SETUP-1 [Superadmin]: Configure global and multi-country invoicing templates (Tax IDs, Logos, Terms)."
+          - "FR-TEN-ONB-1 [Tenant]: During account registration or initial workspace setup, the onboarding flow strictly requires the tenant to provide their billing/invoicing information (Company Name, Address, Tax ID)."
+          - "FR-INV-GEN-1 [System]: Auto-generate PDF invoices compliant with the local region for every successful payment/renewal."
+          - "FR-INV-MGT-1 [Tenant]: View, filter, and download historical invoices from the dashboard."
+          - "FR-INV-UPD-1 [Tenant/Superadmin]: Tenant can request an invoice update (e.g., incorrect address); Superadmin can approve and re-issue the invoice."
+          - "FR-INV-REF-1 [System]: When a refund is processed, the system automatically generates a Credit Note (Hóa đơn điều chỉnh giảm/Hoàn tiền) and sends it to the tenant."
+
+      - area: "Refund & Dispute Management"
+        portal: "General"
+        items:
+          - "FR-REF-1 [Tenant]: Tenants can initiate a refund or partial refund request through their dashboard based on the refund policy terms."
+          - "FR-REF-2 [Superadmin]: Superadmins can process, approve, or reject refund requests. Upon approval, the system triggers the payment gateway refund, updates revenue metrics, and optionally revokes premium access."
+
+      - area: "Enterprise Security, Identity (IAM) & Compliance"
+        portal: "General"
+        items:
+          - "FR-IAM-1 [Tenant]: Enterprise tenants can configure Single Sign-On (SSO) using SAML 2.0 or OIDC to integrate with their identity providers (e.g., Okta, Azure AD)."
+          - "FR-IAM-2 [Tenant]: Enterprise tenants can configure SCIM (System for Cross-domain Identity Management) for automated user provisioning and de-provisioning from their HRIS."
+          - "FR-SEC-1 [Tenant]: Workspace Admins can enforce mandatory Multi-Factor Authentication (MFA) for all members of their workspace."
+          - "FR-SEC-2 [System]: Advanced password policies (e.g., blocking breached passwords via HaveIBeenPwned integration, enforcing password rotation)."
+          - "FR-SEC-3 [System]: Rate limiting and brute-force protection mechanisms (e.g., IP blocklisting/allowlisting at both global and tenant levels)."
+          - "FR-SEC-4 [System]: Advanced session management (concurrent session limits, forced session revocation by admins, and idle session timeouts)."
+          - "FR-SEC-5 [System]: Data encryption at rest (AES-256) and in transit (TLS 1.3)."
+          - "FR-COM-1 [Tenant]: During onboarding or plan upgrade, Enterprise tenants can select their Data Residency region (e.g., US, EU, APAC) to comply with local data sovereignty laws."
+
+      - area: "Release Management & Compliance Tracking (Trust Center)"
+        portal: "General"
+        items:
+          - "FR-DEP-1 [Superadmin]: Manage Feature Flags and Canary Rollouts, allowing new features to be selectively tested on a subset of tenants (e.g., 10% traffic) before global release."
+          - "FR-SEC-CHK-1 [System]: Require automated security scans (SAST/DAST/Dependency Audits) to pass successfully before promoting any canary or production release."
+          - "FR-TRUST-1 [Superadmin]: Manage, track expiration, and upload compliance certificates and security licenses (e.g., SOC 2 Type II, ISO 27001, HIPAA, PCI-DSS)."
+          - "FR-TRUST-2 [Tenant]: Access an integrated 'Trust Center' to view real-time system uptime, verify active security licenses, and securely download compliance reports (behind an automated NDA wall)."
+
+      - area: "Partner Relationship Management (PRM)"
+        portal: "General"
+        items:
+          - "FR-PRT-INC-1 [Superadmin]: Configure 3-Tier Partner Programs (e.g., Registered, Select, Elite) using outcome-based criteria (certifications, deal volume) to unlock higher margins and Marketing Development Funds (MDF)."
+          - "FR-PRT-INC-2 [Partner]: Partners can submit 'Deal Registration' requests via their portal to claim a lead, avoiding channel conflict with internal sales teams."
+          - "FR-PRT-INC-3 [System]: Automatically calculate incentives/commissions when a referred tenant pays, applying the correct rate corresponding to the partner's tier."
+          - "FR-PRT-PERF-1 [Superadmin]: View unified Partner Analytics Dashboard tracking key metrics (Lead Conversion Rate, Total Generated Revenue, Churn Rate of referred tenants, Customer Lifetime Value)."
+          - "FR-PRT-PERF-2 [System]: System periodically scores/ranks partners based on performance data to trigger automated tier upgrades/downgrades."
+          - "FR-PRT-PRC-1 [Superadmin]: Define tiered wholesale/reseller pricing plans for Software Development Partners (OEMs/Whitelabel)."
+          - "FR-PRT-PRC-2 [Partner]: Resellers can purchase bulk licenses/API credits at their assigned tier's wholesale price to distribute to their own clients."
+
+      - area: "Financial Analytics & Dashboard"
+        portal: "superadmin_portal"
+        items:
+          - "FR-REV-1 [Superadmin]: Financial dashboard displays revenue separated into Pre-tax Revenue (Gross/Net) and Collected Taxes, allowing filtering by region and time period."
+
+      - area: "Product-Led Growth (PLG) & Telemetry Integrations"
+        portal: "General"
+        items:
+          - "FR-PLG-1 [Superadmin]: Configure global tracking IDs and snippets (e.g., GTM, Segment, PostHog) to inject scripts automatically into the <head> or Data Layer of all tenant pages."
+          - "FR-PLG-2 [System]: Auto-push standard core events (e.g., User Signed Up, Workspace Created, Payment Succeeded) to the Data Layer for third-party tools (Mixpanel, Appcues) to trigger in-app tutorials."
+
+      - area: "Customer Success, Support & Feedback"
+        portal: "General"
+        items:
+          - "FR-SUP-1 [Superadmin]: Impersonation Mode (Login as User). Allows customer support to access a tenant's account for debugging. Must enforce strict Audit Logging (Admin A accessed as User B) and display a permanent warning banner on the UI."
+          - "FR-SUP-2 [Superadmin/System]: Changelog & In-app Announcements Widget. Support rendering release notes from third-party platforms (Beamer, AnnounceKit) or native modals for new build announcements."
+          - "FR-SUP-3 [Tenant]: Report Bug & Feedback Widget. Users can submit feedback from the UI, automatically capturing their UserID, OS, Browser, and current URL to send to a Helpdesk (Jira/Zendesk)."
+
+  b2c_consumer:
+    name: "B2C Consumer SaaS"
+    description: "Single-user subscription apps focusing on personal usage, social features, and consumer billing."
+    features:
+      - area: "User Account & Authentication"
+        items:
+          - "FR-AUTH-1: Users can register using email/password or social logins (Google, Apple, Facebook)."
+          - "FR-AUTH-2: System performs auto-login immediately after a user successfully validates their email address."
+          - "FR-AUTH-3: Users can reset/recover forgotten passwords via email magic links."
+          - "FR-AUTH-4: Users can view and edit their user profile (avatar, display name, biography)."
+          - "FR-AUTH-5: Users can toggle password visibility on any input field using an eye icon button."
+      - area: "Subscriptions & Payments"
+        items:
+          - "FR-BIL-1: Users can view and choose premium subscription plans."
+          - "FR-BIL-2: Users can purchase subscriptions or one-time premium features via credit card, Apple Pay, or Google Pay."
+          - "FR-BIL-3: Users can manage subscription status (upgrade, downgrade, cancel autorenewal)."
+          - "FR-BIL-4: Users can view billing history and download receipts."
+      - area: "Notification Preferences"
+        items:
+          - "FR-NOT-1: System sends push notifications and emails for user engagement and system updates."
+          - "FR-NOT-2: Users can toggle notification channels and categories in their settings."
+      - area: "Legal & GDPR Compliance"
+        items:
+          - "FR-LEG-1: System displays a Cookie Consent Banner on first visit."
+          - "FR-LEG-2: Users can self-service delete their account and personal data (GDPR Right to Be Forgotten)."
+
+  developer_api:
+    name: "Developer & API SaaS"
+    description: "API-first platforms with developer consoles, API key management, usage quotas, and webhooks."
+    features:
+      - area: "Developer Identity & Keys"
+        items:
+          - "FR-Vegeta-1: Developers can sign up, log in, and manage their profile."
+          - "FR-Vegeta-2: Developers can generate, name, retrieve, and revoke API keys."
+          - "FR-Vegeta-3: API keys are securely hashed and stored, shown only once to the developer during generation."
+      - area: "API Gateway & Traffic Management"
+        items:
+          - "FR-GATE-1: System authenticates incoming API requests using API keys or OAuth tokens."
+          - "FR-GATE-2: System enforces rate limits and quotas based on the developer's subscription tier."
+          - "FR-GATE-3: System returns standard HTTP error codes and JSON error responses for failed requests."
+      - area: "Developer Dashboard & Webhooks"
+        items:
+          - "FR-Vegeta-4: Developers can view API usage metrics (request volume, error rates, latency) on a dashboard."
+          - "FR-WEB-1: Developers can register and configure webhook endpoints for receiving real-time event updates."
+          - "FR-WEB-2: System signs outgoing webhook payloads with a secret key for payload verification."
+          - "FR-WEB-3: Developers can view webhook delivery logs and manually retry failed webhook deliveries."
+      - area: "Billing & Monetization"
+        items:
+          - "FR-BIL-1: System charges developers based on metered API usage or fixed tiers."
+          - "FR-BIL-2: Developers can set spending caps and usage alerts to prevent unexpected bills."
+
+  ecommerce_marketplace:
+    name: "E-commerce & Marketplace SaaS"
+    description: "Multi-merchant platforms with product catalogs, shopping carts, checkout pipelines, and merchant portals."
+    features:
+      - area: "Merchant & Storefront Management"
+        items:
+          - "FR-MER-1: Merchants can register, create, and configure their online store/brand storefront."
+          - "FR-MER-2: Merchants can customize their store theme, branding, and custom domain configuration."
+      - area: "Product Inventory & Catalog"
+        items:
+          - "FR-PROD-1: Merchants can create, edit, organize, and delete products (name, images, descriptions, pricing, inventory)."
+          - "FR-PROD-2: Merchants can manage product variants (size, color, material) and pricing variations."
+          - "FR-PROD-3: Customers can search, filter, and browse products by category, price, and tags."
+      - area: "Cart, Checkout & Payments"
+        items:
+          - "FR-CART-1: Customers can add, update quantity, and remove products in a persistent shopping cart."
+          - "FR-CHK-1: Customers can input shipping, billing addresses, and contact details."
+          - "FR-PAY-1: System processes credit card, digital wallet, and alternative payments securely."
+          - "FR-CHK-2: System calculates taxes, shipping rates, and discounts (coupon codes) dynamically."
+      - area: "Order & Shipping Management"
+        items:
+          - "FR-ORD-1: Customers receive order confirmation emails and can track order status."
+          - "FR-ORD-2: Merchants can view, filter, process, fulfill, or refund orders from their dashboard."
+          - "FR-SHP-1: System integrates with carrier APIs to generate shipping labels and tracking numbers."
+
+  ai_agent_native:
+    name: "AI & Agentic SaaS"
+    description: "AI-native platforms featuring model management, custom prompt templates, agent setup, and session logs."
+    features:
+      - area: "AI Model & Provider Config"
+        items:
+          - "FR-MOD-1: Administrators can configure LLM providers (OpenAI, Anthropic, Gemini) and API keys."
+          - "FR-MOD-2: System tracks API costs and token usage per model, tenant, or user."
+      - area: "Agent Setup & Orchestration"
+        items:
+          - "FR-AGT-1: Users can create, configure, and delete custom AI agents (set system prompt, temperature, tools)."
+          - "FR-AGT-2: Users can upload knowledge base files (RAG) to embed contextual data for agents."
+          - "FR-AGT-3: Users can run agents interactively or schedule agents to run in the background."
+      - area: "Session Logs & History"
+        items:
+          - "FR-SESS-1: System preserves chat/execution history for all agent sessions."
+          - "FR-SESS-2: Users can view, search, export, and delete session transcript logs."
+          - "FR-SESS-3: Users can rate agent responses (thumb up/down) and provide qualitative feedback."
+      - area: "Guardrails & Moderation"
+        items:
+          - "FR-GRD-1: System scans input queries for prompt injection, hate speech, or PII before sending to the model."
+          - "FR-GRD-2: System filters model output to ensure brand alignment and block harmful content."

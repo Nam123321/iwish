@@ -1,0 +1,33 @@
+id: workflow-spec-compliance
+name: spec-compliance
+kind: workflow
+shape: process
+role: process-primary
+phases: [solution, delivery]
+stages: [implementation, code-review, testing]
+triggers:
+  - spec compliance
+  - spec drift
+  - spec check
+  - code matches spec
+  - ui spec verification
+  - data spec verification
+  - ac traceability
+  - SCS score
+  - implementation drift
+anti_triggers:
+  - create spec
+  - write spec
+  - design UI
+  - generate spec
+primary_agents: [dev-agent, review-agent, qa-agent]
+primary_workflows: [spec-compliance]
+supportive_skills: [spec-compliance-guardian]
+tool_dependencies: []
+constraints:
+  - Requires existing story file with ACs
+  - Requires at least one spec file (UI Spec or Data Spec) for full coverage
+  - Must run spec-compliance-checker.py for deterministic verification
+source_path: /.agent/workflows/spec-compliance.md
+story_refs: []
+tags: [compliance, verification, quality-gate, anti-drift]

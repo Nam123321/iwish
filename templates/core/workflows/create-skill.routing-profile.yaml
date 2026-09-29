@@ -1,0 +1,19 @@
+id: workflow-create-skill
+name: create-skill
+kind: workflow
+shape: workflow
+role: supportive
+phases: [operate-learn]
+stages: [capability-authoring, capability-forge]
+triggers: [create skill, create workflow, create agent, new capability]
+anti_triggers: [small-fix-to-existing-skill]
+primary_agents: [capability-agent, orch-agent]
+primary_workflows: [create-skill]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Draft-first governance under IWISH_HOME before promotion.
+review_pack: docs/open-modules/create-skill-integration-guide.md
+source_path: /.agent/workflows/create-skill.md
+story_refs: [story-1.7]
+tags: [capability-authoring, canonical]

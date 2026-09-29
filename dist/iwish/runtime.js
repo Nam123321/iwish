@@ -120,22 +120,45 @@ function readFrontmatterValue(content, key) {
     const value = frontmatter[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
     return value ? value[1].trim() : null;
 }
-function repairMissingAgentDescription(destinationContent, sourceContent) {
-    if (!destinationContent.startsWith('---\n') || readFrontmatterValue(destinationContent, 'description')) {
+function migrateAgentFrontmatter(destinationContent, sourceContent) {
+    const destMatch = destinationContent.match(/^---\n([\s\S]*?)\n---/);
+    const srcMatch = sourceContent.match(/^---\n([\s\S]*?)\n---/);
+    if (!destMatch || !srcMatch) {
         return null;
     }
-    const description = readFrontmatterValue(sourceContent, 'description');
-    if (!description) {
+    try {
+        const destYaml = yaml_1.default.parse(destMatch[1]) || {};
+        const srcYaml = yaml_1.default.parse(srcMatch[1]) || {};
+        let modified = false;
+        // Migrate description if missing
+        if (destYaml.description === undefined && srcYaml.description !== undefined) {
+            destYaml.description = srcYaml.description;
+            modified = true;
+        }
+        // Migrate required array fields if missing
+        const requiredArrays = ['inputs', 'outputs', 'mcp_tools_required', 'subagent_triggers'];
+        for (const field of requiredArrays) {
+            if (destYaml[field] === undefined && srcYaml[field] !== undefined) {
+                destYaml[field] = srcYaml[field];
+                modified = true;
+            }
+        }
+        if (modified) {
+            const updatedFrontmatter = yaml_1.default.stringify(destYaml).trim();
+            const bodyText = destinationContent.substring(destMatch[0].length);
+            return `---\n${updatedFrontmatter}\n---${bodyText}`;
+        }
+    }
+    catch (error) {
+        // Fail-safe: if YAML parsing fails, return null to avoid breaking the install process
         return null;
     }
-    const nameLine = destinationContent.match(/^name:\s*.+$/m);
-    if (!nameLine || nameLine.index === undefined) {
-        return null;
-    }
-    const insertAt = nameLine.index + nameLine[0].length;
-    return `${destinationContent.slice(0, insertAt)}\ndescription: ${description}${destinationContent.slice(insertAt)}`;
+    return null;
 }
 function getPlanningArtifactsRoot(projectRoot) {
+    if (fs.existsSync(path.join(projectRoot, '_iwish-output'))) {
+        return path.join(projectRoot, '_iwish-output', '1. Idea Discovery');
+    }
     return path.join(projectRoot, '_bmad-output', 'planning');
 }
 function getIdeaChallengeArtifactRoot(projectRoot, projectName) {
@@ -199,7 +222,8 @@ async function materializeRuntimeTemplates(projectRoot, overwrite = false) {
 function getAgentAssetFiles() {
     const agentRoot = path.join(constants_1.REPO_ROOT, '.agent');
     if (!fs.existsSync(agentRoot)) {
-        return [];
+        const empty = [];
+        return empty;
     }
     const files = [];
     const visit = (directory) => {
@@ -235,7 +259,7 @@ async function materializeAgentAssets(projectRoot, overwrite = false) {
         else if (relative.startsWith('agents/') && relative.endsWith('.md')) {
             const destinationContent = await fs.readFile(destination, 'utf8');
             const sourceContent = content.toString('utf8');
-            const repairedContent = repairMissingAgentDescription(destinationContent, sourceContent);
+            const repairedContent = migrateAgentFrontmatter(destinationContent, sourceContent);
             if (repairedContent) {
                 await fs.writeFile(destination, repairedContent, 'utf8');
                 status = 'updated';
@@ -332,22 +356,97 @@ async function compileUserGuideDashboard(projectRoot) {
     }
     const templateContent = await fs.readFile(templatePath, 'utf8');
     const graphData = (0, graph_parser_1.extractGraphData)(projectRoot);
-    const sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
+    let sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
+    const devSprintStatusPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+    const flatSprintStatusPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
+    const bmadSprintStatusPath = path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml');
+    const effectiveSprintPath = fs.existsSync(devSprintStatusPath) ? devSprintStatusPath :
+        fs.existsSync(flatSprintStatusPath) ? flatSprintStatusPath :
+            bmadSprintStatusPath;
+    const hasEpicsAndStories = fs.existsSync(path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', 'epics.md')) ||
+        fs.existsSync(path.join(projectRoot, '_bmad-output', 'epics.md')) ||
+        fs.existsSync(path.join(projectRoot, 'docs', 'epics.md')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story'));
+    if (hasEpicsAndStories && (!fs.existsSync(effectiveSprintPath) || !sprintData || sprintData.length === 0)) {
+        console.log(chalk_1.default.yellow('\n⚠️  Đã phát hiện sprint-status.yaml bị thiếu hoặc trống. Đang tự động sửa chữa (Auto-Repair)...'));
+        (0, graph_parser_1.autoRepairSprintStatus)(projectRoot);
+        sprintData = (0, graph_parser_1.extractSprintData)(projectRoot);
+    }
     const agentTrace = (0, graph_parser_1.extractAgentTrace)(projectRoot);
     const ideaToPrdData = (0, graph_parser_1.extractIdeaToPrdData)(projectRoot);
+    const codeGraphData = (0, graph_parser_1.extractCodeGraphData)(projectRoot);
+    const featureGraphData = (0, graph_parser_1.extractFeatureGraphData)(projectRoot);
+    const evolverData = (0, graph_parser_1.extractEvolverData)(projectRoot);
+    // Load locale files
+    const localesDir = path.join(constants_1.TEMPLATES_ROOT, 'locales');
+    const localesData = {};
+    if (fs.existsSync(localesDir)) {
+        const files = await fs.readdir(localesDir);
+        for (const file of files) {
+            if (file.endsWith('.yaml') || file.endsWith('.yml')) {
+                const lang = path.basename(file, path.extname(file)); // e.g. "en"
+                const content = await fs.readFile(path.join(localesDir, file), 'utf8');
+                try {
+                    localesData[lang] = yaml_1.default.parse(content);
+                }
+                catch (e) {
+                    console.warn(`[Warning] Failed to parse locale file ${file}: ${e.message}`);
+                }
+            }
+        }
+    }
+    // Enforce English fallback for key mismatches
+    const enLocale = localesData['en'] || {};
+    function isObject(item) {
+        return (item && typeof item === 'object' && !Array.isArray(item));
+    }
+    function mergeDeep(target, source) {
+        if (isObject(target) && isObject(source)) {
+            for (const key in source) {
+                if (isObject(source[key])) {
+                    if (!target[key])
+                        target[key] = {};
+                    mergeDeep(target[key], source[key]);
+                }
+                else {
+                    if (target[key] === undefined) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+        }
+        return target;
+    }
+    for (const lang of Object.keys(localesData)) {
+        if (lang !== 'en') {
+            mergeDeep(localesData[lang], enLocale);
+        }
+    }
     const finalHtml = templateContent
+        .replace('/*PROJECT_ROOT*/ ""', JSON.stringify(projectRoot).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('/*NODES_EDGES*/ {}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{NODES_EDGES_PLACEHOLDER}', JSON.stringify(graphData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('/*SPRINT_DATA*/ {}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{SPRINT_DATA_PLACEHOLDER}', JSON.stringify(sprintData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('/*ORCHESTRATION_DATA*/ {}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
         .replace('{ORCHESTRATION_DATA_PLACEHOLDER}', JSON.stringify(agentTrace).replace(/<\/script>/ig, '<\\/script>'))
-        .replace('{IDEA_TO_PRD_DATA_PLACEHOLDER}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'));
+        .replace('/*IDEA_TO_PRD_DATA*/ {}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('{IDEA_TO_PRD_DATA_PLACEHOLDER}', JSON.stringify(ideaToPrdData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('/*EVOLVER_DATA*/ {}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('{EVOLVER_DATA_PLACEHOLDER}', JSON.stringify(evolverData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('/*LOCALES_DATA*/ {}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('{LOCALES_DATA_PLACEHOLDER}', JSON.stringify(localesData).replace(/<\/script>/ig, '<\\/script>'))
+        .replace('/*CODE_GRAPH_DATA*/ null', codeGraphData ? JSON.stringify(codeGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null')
+        .replace('/*FEATURE_GRAPH_DATA*/ null', featureGraphData && featureGraphData.nodes.length > 0 ? JSON.stringify(featureGraphData).replace(/<\/script>/ig, '<\\/script>') : 'null');
     await fs.ensureDir(path.dirname(outputPath));
     await fs.writeFile(outputPath, finalHtml, 'utf8');
     return outputPath;
 }
 async function installRuntime(projectRoot, installTargets, mode) {
     const existing = loadExistingManifest(projectRoot);
-    const templateResults = await materializeRuntimeTemplates(projectRoot, mode === 'install' ? false : false);
-    const agentAssetResults = await materializeAgentAssets(projectRoot, mode === 'install' ? false : false);
+    const templateResults = await materializeRuntimeTemplates(projectRoot, true);
+    const agentAssetResults = await materializeAgentAssets(projectRoot, true);
     await materializeInstallTargetDirs(projectRoot, installTargets);
     await writeInstallTargetMarkers(projectRoot, installTargets);
     const manifest = buildManifest(projectRoot, installTargets, existing);
@@ -369,9 +468,6 @@ async function installRuntime(projectRoot, installTargets, mode) {
     const keptAgentAssets = agentAssetResults.filter((entry) => entry.status === 'kept').length;
     const updatedAgentAssets = agentAssetResults.filter((entry) => entry.status === 'updated').length;
     console.log(chalk_1.default.blue(`Agent assets: ${createdAgentAssets} created, ${updatedAgentAssets} updated, ${keptAgentAssets} preserved`));
-    if (manifest.legacyRuntimeDetected) {
-        console.log(chalk_1.default.yellow('Legacy _bmad runtime detected. Compatibility shim is active.'));
-    }
 }
 function getStatus(projectRoot) {
     const manifest = loadExistingManifest(projectRoot);
@@ -422,12 +518,51 @@ function printStatus(projectRoot) {
 }
 function printDoctor(projectRoot) {
     const status = getStatus(projectRoot);
+    // Feature hierarchy canonical path: _iwish-output/2. Product Planning/2.5. feature-hierarchy.md
+    // Fallback: _iwish-output/feature-hierarchy.md (pre-S14.1) or _bmad-output/planning-artifacts/feature-hierarchy.md (legacy)
+    const featureHierarchyExists = [
+        path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.5. feature-hierarchy.md'),
+        path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
+        path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
+    ].some(p => fs.existsSync(p));
+    // Perform OKF schema validation on output directory files
+    const iwishOutputDir = path.join(projectRoot, '_iwish-output');
+    const okfValidationErrors = [];
+    let okfFileCount = 0;
+    if (fs.existsSync(iwishOutputDir)) {
+        const collectAndValidate = (dir) => {
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                    if (entry.name !== 'scratch' && entry.name !== 'node_modules' && !entry.name.startsWith('.')) {
+                        collectAndValidate(fullPath);
+                    }
+                }
+                else if (entry.name.endsWith('.md') && !entry.name.endsWith('DESIGN.md') && !entry.name.endsWith('user-guide.md')) {
+                    try {
+                        const content = fs.readFileSync(fullPath, 'utf8');
+                        if (content.match(/^---\n([\s\S]*?)\n---/)) {
+                            okfFileCount++;
+                            (0, schema_validator_1.validateOKFDocument)(content, fullPath, projectRoot);
+                        }
+                    }
+                    catch (error) {
+                        okfValidationErrors.push(`${path.relative(projectRoot, fullPath)}: ${error.message}`);
+                    }
+                }
+            }
+        };
+        collectAndValidate(iwishOutputDir);
+    }
     const checks = [
         ['runtime manifest', status.manifestExists],
         ['graph profile', status.graphProfileExists],
         ['catalog', status.catalogExists],
         ['custom directory', status.customExists],
         ['graph tool selected', Boolean(status.selectedTools.graph)],
+        ['feature hierarchy', featureHierarchyExists],
+        ['OKF validation', okfValidationErrors.length === 0],
     ];
     console.log(chalk_1.default.blue('I-Wish doctor report'));
     for (const [label, ok] of checks) {
@@ -438,6 +573,18 @@ function printDoctor(projectRoot) {
     }
     if (status.legacyDetected) {
         console.log(chalk_1.default.yellow('Legacy `_bmad` runtime was detected. Keep compatibility shims enabled until migration is complete.'));
+    }
+    if (!featureHierarchyExists) {
+        console.log(chalk_1.default.yellow('Feature hierarchy not found. Run `/feature-hierarchy` or `iwish featuregraph-retrofit` to generate it.'));
+    }
+    if (okfValidationErrors.length > 0) {
+        console.log(chalk_1.default.yellow(`\n⚠️  Found ${okfValidationErrors.length} OKF validation errors:`));
+        for (const err of okfValidationErrors) {
+            console.log(chalk_1.default.yellow(`  - ${err}`));
+        }
+    }
+    else if (okfFileCount > 0) {
+        console.log(chalk_1.default.green(`\n✨ Successfully validated ${okfFileCount} OKF documents!`));
     }
 }
 function printModules() {
@@ -949,7 +1096,7 @@ function getToolSetupStatus(projectRoot, groups) {
     const targetGroups = groups || ['graph', 'design', 'database', 'testing'];
     return (0, tooling_1.buildToolSetupPrompts)(targetGroups, selections);
 }
-async function ensureCapabilityPackageTemplates(projectRoot) {
+async function ensureCapabilityPackageTemplates(projectRoot, overwrite = false) {
     const destinationRoot = path.join((0, constants_1.getRuntimeRoot)(projectRoot, 'iwish'), 'capability-package');
     const sourceFiles = fs
         .readdirSync(constants_1.CAPABILITY_TEMPLATE_ROOT, { recursive: true })
@@ -960,7 +1107,7 @@ async function ensureCapabilityPackageTemplates(projectRoot) {
         const relative = path.relative(constants_1.CAPABILITY_TEMPLATE_ROOT, sourceFile);
         const destination = path.join(destinationRoot, relative);
         const content = await fs.readFile(sourceFile, 'utf8');
-        await writeIfMissing(destination, content, false);
+        await writeIfMissing(destination, content, overwrite);
     }
 }
 function normalizeInstallTargets(rawTargets) {

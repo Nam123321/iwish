@@ -30,6 +30,7 @@ Verify that the newly created draft capability files are structurally sound, fol
 - [ ] Contains required sections: "When to Use", "Core Rules", "Anti-Patterns", "Best Practices"
 - [ ] No broken markdown formatting (unclosed code blocks, missing headers)
 - [ ] File size is reasonable (500-5000 lines; flag if outside this range)
+- [ ] Skill contains a `## Gate Classification` or `## Anti-Fabrication` section classifying gates as Category A (Deterministic) vs Category B (Trust-Based) per `.agent/fragments/anti-fabrication-watchmen-pattern.md`. Enforcement Maturity (% Category A) must be ≥ 30%. Skills with 0% Category A are flagged as "paper-only".
 
 #### For WORKFLOW files:
 - [ ] Gateway `.md` file has valid YAML frontmatter with `name`, `description`, `inputs`, `outputs`, `mcp_tools_required`, and `subagent_triggers` fields
@@ -58,6 +59,17 @@ Run the following checks:
 - [ ] If creating a Skill draft: Verify another agent (e.g., dev-agent) can reference the draft via `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}/generated-skills/<name>/SKILL.md`; verify canonical `{project-root}/.agent/skills/<name>/SKILL.md` only after promotion approval.
 - [ ] If creating a Workflow draft: Verify the generated gateway `.md` under `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}/generated-workflows/<name>/` correctly chains to all generated step files; verify canonical `.agent/workflows/` paths only after promotion approval.
 - [ ] If creating an Agent draft: Verify the generated agent under `${IWISH_HOME:-${IWISH_HOME:-~/.iwish}}/generated-agents/<name>/` can be parsed and has menu structure; verify canonical `.agent/agents/` paths only after promotion approval.
+
+### 3b. Empirical Baseline Testing ("With vs Without" Validation)
+
+**CRITICAL RULE:** Do NOT promote a skill draft if it fails empirical baseline testing.
+
+- [ ] **Test Set Selection (Anti-Bias):** The test query MUST be extracted from the original user request/failure log that triggered the skill creation, or via Adversarial Sampling (e.g., edge cases). The authoring agent MUST NOT write the test.
+- [ ] **Parallel Execution (A/B Testing):** Spawn two parallel isolated workspaces (e.g., via `invoke_subagent` with `Workspace: branch` or `/tournament`).
+  - **Path A (Baseline):** Execute the test query WITHOUT loading the draft skill.
+  - **Path B (Candidate):** Execute the test query WITH the draft skill loaded.
+- [ ] **Double-Blind Evaluation:** Extract the outputs from Path A and Path B. Present them as "Output X" and "Output Y" to an independent evaluating agent (e.g., `review-agent`).
+- [ ] **Rejection Criteria (Bloat Prevention):** The judge evaluates based on Accuracy, Token Efficiency, and Robustness. If Path B does not empirically outperform Path A (or crashes on edge cases), the validation **FAILS**. The draft MUST be rejected or returned for refinement.
 
 ### 4. Promotion Gate
 
@@ -112,8 +124,10 @@ Next Steps:
 - [ ] All structural validations pass
 - [ ] Convention compliance verified
 - [ ] Integration smoke test passed
+- [ ] Empirical Baseline Testing (With vs Without) passed
 - [ ] User approved promotion or draft was left unpromoted
 - [ ] KG and portability validation pass after promotion
 - [ ] Instinct logged after promotion approval
 - [ ] Sprint tracker finalized
 - [ ] User has received the completion report
+- [ ] Anti-Fabrication gate classification exists and Enforcement Maturity ≥ 30%

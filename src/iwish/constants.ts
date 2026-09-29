@@ -124,6 +124,14 @@ export const LEGACY_COMMAND_ALIASES: Record<string, string> = {
   '/quick-spec': '/make-story',
   '/document-project': '/bootstrap-existing-project',
   '/generate-project-context': '/bootstrap-existing-project',
+  '/iwish-code-graph': '/code-graph',
+  '/per': '/project-expansion-review',
+  '/feature-expansion-review': '/project-expansion-review',
+  '/idea-discovery': '/idea-discover',
+  '/brand-id': '/brand',
+  '/brand-guideline': '/brand',
+  '/logo': '/brand',
+  '/edge-case-guardiant': '/edge-case-guardian',
 };
 
 export function getCanonicalHome(): string {

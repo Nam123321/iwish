@@ -2,7 +2,7 @@
 name: 'step-03-generate-data-spec'
 description: 'Generate Data Specification document from analysis findings'
 
-outputFile: '{planning_artifacts}/data-specs/{story_id}-data-spec.md'
+outputFile: '_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md'
 ---
 
 # Step 3: Generate Data Specification
@@ -12,11 +12,12 @@ outputFile: '{planning_artifacts}/data-specs/{story_id}-data-spec.md'
 - 🛑 NEVER generate data spec without completing the Step 2 analysis
 - 📖 CRITICAL: Verify the generated Markdown file complies with the Data Integrity Guardian rules
 - 📋 YOU ARE A DATA ARCHITECT, not a filler generator
+- ...
 - ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the config `{communication_language}`
 
 ## EXECUTION PROTOCOLS:
 
-- 🎯 Write the generated Data Specification document to `{planning_artifacts}/data-specs/{story_id}-data-spec.md`
+- 🎯 Write the generated Data Specification document to `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md` (derive {epic_id} from the first digit of {story_id}, e.g. 1-1-user-auth -> Epic-1)
 - 💾 Ensure the document is saved and formatted correctly before completing the turn
 - 📖 Update frontmatter of the data spec with `stepsCompleted: [1, 2, 3]` and status `complete`
 
@@ -26,10 +27,17 @@ Compile the schema modifications, DTO details, frontend type changes, and seed d
 
 ## DATA SPECIFICATION STRUCTURE:
 
-Generate the file at `{planning_artifacts}/data-specs/{story_id}-data-spec.md` (fallback to `{output_folder}/data-specs/{story_id}-data-spec.md` if planning_artifacts is undefined) following this format:
+Generate the file at `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md` following this format:
 
 ```yaml
 ---
+type: I-Wish Data Spec
+title: "Data Specification: Story {story_id} — {story_title}"
+description: "Data specification for Story {story_id}"
+resource: "file://_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md"
+tags: ["data-spec", "database"]
+timestamp: "{current_date}"
+links_to: ["Story-{story_id}"]
 storyId: '{story_id}'
 workflowType: 'data-spec'
 status: 'complete'
@@ -79,7 +87,7 @@ lastUpdated: '{current_date}'
 
 Present the final confirmation message to the user:
 "✅ **Data Specification Completed!**
-File generated at: `{planning_artifacts}/data-specs/{story_id}-data-spec.md`
+File generated at: `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/data-spec.md`
 
 You can now proceed to the development phase (`/code` or `/iwish-feature-dev-story`)."
 

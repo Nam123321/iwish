@@ -1,0 +1,41 @@
+# Knowledge Graph Patch: TDD London School Fragment
+# Apply this patch to the main knowledge-graph.yaml to register the TDD fragment.
+
+nodes:
+- id: fragment-tdd-london-principles
+  type: fragment
+  path: /.agent/fragments/tdd-london-principles.md
+  draft_path: /_iwish-output/iwish-skills/draft-rules/tdd-london-principles.md
+  description: >
+    London School TDD (mockist) principles and practical mock/stub/spy patterns
+    for Vitest and Jest. Includes Double-Lock directive that forces agents to
+    read this fragment before writing mock-heavy tests.
+  trigger_condition: >
+    Agent is writing or reviewing tests that involve mocking, stubbing, or
+    spying on collaborator dependencies. Also triggers when a story is
+    classified as mock-heavy or when test files import vi.fn/jest.fn.
+  priority: high
+  tags:
+  - tdd
+  - london-school
+  - mock
+  - stub
+  - spy
+  - vitest
+  - jest
+  - testing
+  - double-lock
+
+edges:
+- from: fragment-tdd-london-principles
+  to: skill-agent-booster
+  relation: informs-testing
+  description: Booster skill tests should follow London School patterns when mocking regex engines.
+- from: fragment-tdd-london-principles
+  to: skill-workflow-rollback
+  relation: informs-testing
+  description: Rollback engine tests should use stubs for task registries and mocks for rollback hooks.
+- from: fragment-tdd-london-principles
+  to: skill-thompson-router
+  relation: informs-testing
+  description: Thompson router tests should stub stats storage and mock provider API calls.

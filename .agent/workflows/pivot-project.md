@@ -63,32 +63,69 @@ Typical follow-up:
 - `make-story`
 - `plan`
 - `reconcile-change`
+- *Note: Evaluate if these PRD/Epic changes necessitate updates to `product-strategy.md` or `project-context.md`.*
+- **MANDATORY:** Regenerate `feature-hierarchy.md` after PRD/Epic updates to keep navigation source-of-truth synchronized.
 
 ### 4. Plan
 
-The change invalidates the current roadmap, PRD assumptions, or architecture direction.
+The change invalidates the current roadmap, PRD assumptions, architecture direction, **Product Strategy**, or **Project Context**.
 
 Typical follow-up:
 
 - `plan`
 - `research`
+- `/product-strategy` (to regenerate Go/No-Go and Product Strategy)
+- `/generate-project-context`
 - `bootstrap-existing-project` if context is weak
 - `reconcile-change`
+- **MANDATORY:** Regenerate `feature-hierarchy.md` after PRD/roadmap updates to keep navigation source-of-truth synchronized.
+
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> If the pivot or rescope is triggered by a **new feature, feature group, or project expansion**, you MUST load and read `/.agent/fragments/project-expansion-review.md` and conduct the full **Project Expansion Review (PER)** before deciding severity or updating source-of-truth.
 
 ## Required Sequence
 
 1. Identify the trigger and affected execution surface.
+   - *Check:* If it is a new feature or feature group, perform the **Project Expansion Review (PER)** using `/.agent/fragments/project-expansion-review.md` first.
 2. Determine whether the issue is `local`, `story`, `epic`, or `plan`.
-3. Determine whether current context is still strong enough:
+   - *Note:* If PER indicates a medium or high impact (Medium/High Pivot Risk), escalate severity to `epic` or `plan` and follow the Funnel Routing Protocol to update the PRD/research first.
+3. **Run Regression & Architectural Impact Check** (MANDATORY for `epic` or `plan` severity pivots):
+   - If the pivot severity is classified as `epic` or `plan`, you MUST invoke the Review Agent (`/.agent/agents/review-agent.md`) loading the Edge Case Guardian SKILL (`/.agent/skills/edge-case-guardian/SKILL.md`) to run a Regression & Architectural Impact Check on the proposed redirection.
+   - Analyze the findings of the Review Agent to ensure no circular dependencies, broken integrations, or regression risks are introduced by the redirect.
+4. Determine whether current context is still strong enough:
    - if yes, stay in `pivot-project`
    - if no, route into `bootstrap-existing-project`
-4. Determine whether outside repo/capability intake is needed:
+5. Determine whether outside repo/capability intake is needed:
    - if yes, route into `absorb-repo`
-5. Record reconciliation and required source-of-truth updates.
-6. Recommend the next canonical workflow instead of continuing blindly.
+6. Generate Pivot Audit Log.
+   - You MUST create a persistent audit document detailing the pivot context, severity, root cause, and the required scope changes.
+   - The file MUST begin with a valid OKF YAML frontmatter block:
+     ```yaml
+     ---
+     type: I-Wish Pivot Log
+     title: "Pivot Log: [summary]"
+     description: "[Brief description of the pivot cause]"
+     resource: "file://{project-root}/_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md"
+     tags: ["pivot", "development"]
+     timestamp: "[ISO-8601]"
+     links_to: [] # links to affected stories, PRD or architecture specs
+     ---
+     ```
+   - Save this file to `_iwish-output/3. Development/pivot-project/PIVOT-[YYYYMMDD-HHMM]-[summary].md`.
+   - This ensures traceability and provides context for the subsequent reconciliation.
+7. Regenerate Feature Hierarchy (MANDATORY for `epic` and `plan` severity).
+   - If pivot severity is `epic` or `plan`, you MUST add `feature-hierarchy.md` to the reconciliation targets.
+   - After PRD/Epic updates are complete, regenerate `{planning_artifacts}/feature-hierarchy.md` to reflect the new feature structure, sidebar positions, and cross-portal navigation changes.
+   - Log: "✅ Feature Hierarchy regenerated after [epic|plan] pivot to synchronize navigation source-of-truth."
+   - If `feature-hierarchy.md` does not yet exist, note that it will be created when `/create-epics-and-stories` runs.
+8. Record reconciliation and required source-of-truth updates.
+   - **MANDATORY ENFORCEMENT:** You MUST run the `iwish reconcile-change` CLI command to queue the drift record. Example: `iwish reconcile-change --type feature-tweak --summary "Changed scope to X" --story "1-1-abc" --log "path/to/PIVOT-log.md"`. This ensures the development agent will be blocked from implementation until the specs are updated.
+9. Recommend the next canonical workflow instead of continuing blindly.
 
 ## Outputs
 
+- 📄 `_iwish-output/3. Development/pivot-project/PIVOT-*.md` (Pivot Audit Log)
 - pivot severity
 - impacted source-of-truth layers
 - required reconciliation scope

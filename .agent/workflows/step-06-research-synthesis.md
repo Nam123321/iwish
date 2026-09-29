@@ -61,6 +61,7 @@ Produce a comprehensive, authoritative technical research document on **{{resear
 - Implementation Roadmap and Risk Assessment
 - Future Technical Outlook and Innovation Opportunities
 - Technical Research Methodology and Source Documentation
+- Unknowns Gate: Research Confidence Assessment
 - Technical Appendices and Reference Materials
 ```
 
@@ -122,7 +123,8 @@ Search the web: "{{research_topic}} technical significance importance"
 9. Implementation Roadmap and Risk Assessment
 10. Future Technical Outlook and Innovation Opportunities
 11. Technical Research Methodology and Source Verification
-12. Technical Appendices and Reference Materials
+12. Unknowns Gate: Research Confidence Assessment
+13. Technical Appendices and Reference Materials
 
 ## 1. Technical Research Introduction and Methodology
 
@@ -334,7 +336,17 @@ _Technical Confidence Levels: [Confidence assessments for uncertain technical da
 _Technical Limitations: [Technical research limitations and areas for further investigation]_
 _Methodology Transparency: [Complete transparency about technical research approach]_
 
-## 12. Technical Appendices and Reference Materials
+## 12. Unknowns Gate: Research Confidence Assessment
+
+[Run the `unknowns-scanner` skill with: `phase: research`, `depth: deep`, `tools: bias-detector, confidence-score`]
+
+### Research Bias Analysis
+[Findings on potential cognitive or confirmation biases in the research sources and analysis]
+
+### Confidence Scoring
+[Quantitative assessment of our knowns vs unknowns. Highlight critical blindspots that require primary research]
+
+## 13. Technical Appendices and Reference Materials
 
 ### Detailed Technical Data Tables
 

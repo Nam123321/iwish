@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id               String            @id @default(uuid())
+  webhookEndpoints WebhookEndpoint[]
+  apiKeys          ApiKey[]
+}
+
+model WebhookEndpoint {
+  id          String         @id @default(uuid())
+  tenantId    String
+  url         String
+  secret      String
+  description String?
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  tenant      Tenant         @relation(fields: [tenantId], references: [id])
+  events      WebhookEvent[]
+}
+
+model WebhookEvent {
+  id                 String          @id @default(uuid())
+  tenantId           String
+  endpointId         String
+  eventType          String
+  payload            String
+  status             String
+  responseStatusCode Int?
+  responseBody       String?
+  retryCount         Int             @default(0)
+  nextRetryAt        DateTime?
+  createdAt          DateTime        @default(now())
+  endpoint           WebhookEndpoint @relation(fields: [endpointId], references: [id])
+}
+
+model ApiKey {
+  id         String    @id @default(uuid())
+  tenantId   String
+  keyHash    String
+  keyPrefix  String
+  name       String
+  isActive   Boolean   @default(true)
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+}
+
+model AuditLog {
+  id            String   @id @default(uuid())
+  entityType    String
+  entityId      String
+  action        String
+  actorId       String
+  actorContext  String?
+  previousData  String?
+  newData       String?
+  transactionId String?
+  createdAt     DateTime @default(now())
+
+  @@index([entityType])
+  @@index([entityId])
+  @@index([actorId])
+  @@index([transactionId])
+}
+
+model NotificationTemplate {
+  id                 String            @id @default(uuid())
+  name               String            @unique
+  category           String
+  channel            String
+  provider           String
+  subject_template   String?
+  body_template      String
+  required_variables String
+  is_active          Boolean           @default(true)
+  created_at         DateTime          @default(now())
+  updated_at         DateTime          @updatedAt
+  logs               NotificationLog[]
+}
+
+model NotificationLog {
+  id                String               @id @default(uuid())
+  template_id       String
+  recipient_id      String
+  status            String
+  provider_response String?
+  error_message     String?
+  retry_count       Int                  @default(0)
+  dispatched_at     DateTime?
+  created_at        DateTime             @default(now())
+  updated_at        DateTime             @updatedAt
+  template          NotificationTemplate @relation(fields: [template_id], references: [id])
+}

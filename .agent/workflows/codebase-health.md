@@ -4,7 +4,7 @@ description: 'Run comprehensive codebase health evaluation using CodeGraphContex
 
 # /codebase-health — Codebase Health Evaluation
 
-> **Prerequisite:** CodeGraphContext đã được index (`cgc index`) và FalkorDB Docker đang chạy.
+> **Prerequisite:** CodeGraphContext đã được index (`FALKORDB_PORT=<PORT> cgc index`) và FalkorDB Docker đang chạy.
 > **Persona:** architect-agent (Architect) + QA Guardian
 > **Graph Profile Gate:** Load `.agent/fragments/graph-backend-selection-policy.md` before running. This workflow is fully trusted only when the CodebaseGraph surface is backed by `falkordb-full` or a custom adapter with `pass` for CodebaseGraph. In `lite-static` or unsupported custom modes, produce an advisory static-health report and label graph evidence unavailable.
 
@@ -17,7 +17,7 @@ docker exec distro-falkordb redis-cli GRAPH.QUERY codegraph "MATCH (n) RETURN co
 docker exec distro-falkordb redis-cli GRAPH.QUERY codegraph "MATCH (n:File) RETURN count(n)"
 ```
 
-Nếu count = 0 → Chạy `cgc index --force .` trước.
+Nếu count = 0 → Chạy `FALKORDB_PORT=<PORT> cgc index --force .` trước.
 
 ---
 
@@ -182,7 +182,7 @@ find ./distro -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name 
   -not -path "*/build/*" -not -path "*/out/*" | wc -l
 ```
 
-So sánh với `File` count trong graph. Nếu chênh lệch > 10% → khuyến nghị `cgc index --force .`
+So sánh với `File` count trong graph. Nếu chênh lệch > 10% → khuyến nghị `FALKORDB_PORT=<PORT> cgc index --force .`
 
 ---
 

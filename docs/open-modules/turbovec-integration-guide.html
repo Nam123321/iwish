@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-Wish Integration Guide: turbovec</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(20, 26, 46, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
+            --font-main: 'Outfit', sans-serif;
+            --font-code: 'Space Grotesk', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Hero Header */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border-radius: 99px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            margin: 0.25rem;
+        }
+
+        .meta-tag.purple {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title svg {
+            color: var(--accent-cyan);
+        }
+
+        /* Highlights list */
+        ul {
+            list-style: none;
+        }
+
+        li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Tabs System */
+        .tabs-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            box-shadow: 0 0 0 1px var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        pre {
+            background: #070913;
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: #e5e7eb;
+        }
+
+        .keyword { color: #f472b6; }
+        .string { color: #34d399; }
+        .comment { color: #6b7280; }
+        .number { color: #fbbf24; }
+
+        /* Security Report section */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            color: #34d399;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+
+        /* Micro animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🌀</div>
+            <h1>turbovec</h1>
+            <p style="color: var(--text-secondary); font-size: 1.25rem; margin-bottom: 1.5rem;">Memory-efficient vector search using TurboQuant quantization algorithm</p>
+            <div>
+                <span class="meta-tag">Shape: skill</span>
+                <span class="meta-tag">Role: supportive</span>
+                <span class="meta-tag purple">Status: Draft Registered</span>
+                <span class="meta-tag purple">Maturity: Production-ready</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    Why Adopt? / Tại sao tích hợp?
+                </div>
+                <ul>
+                    <li>16x memory compression (2-bit or 4-bit config).</li>
+                    <li>Data-oblivious: no offline codebook training required.</li>
+                    <li>SIMD acceleration (NEON/AVX-512BW) on local CPUs.</li>
+                    <li>Out-of-the-box support for popular RAG frameworks.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    Exclusions / Giới hạn & Điểm lưu ý
+                </div>
+                <ul>
+                    <li>Max-Marginal Relevance (MMR) search is NOT supported.</li>
+                    <li>Only Cosine distance is supported (vectors normalized at entry).</li>
+                    <li>Bus Factor = 1: entirely maintained by a single developer.</li>
+                    <li>Sub-byte deletions shift elements internally.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <div class="card-title">🚀 Code Usage Examples / Ví dụ sử dụng</div>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab(event, 'agno')">Agno</button>
+                <button class="tab-btn" onclick="switchTab(event, 'langchain')">LangChain</button>
+                <button class="tab-btn" onclick="switchTab(event, 'llamaindex')">LlamaIndex</button>
+                <button class="tab-btn" onclick="switchTab(event, 'rust')">Rust Core</button>
+                <button class="tab-btn" onclick="switchTab(event, 'patches')">Connector Patches</button>
+            </div>
+
+            <div id="agno" class="tab-content active">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Using <code>TurboQuantVectorDb</code> with Agno RAG:</p>
+                <pre><code><span class="keyword">from</span> agno.knowledge.embedder.openai <span class="keyword">import</span> OpenAIEmbedder
+<span class="keyword">from</span> turbovec.agno <span class="keyword">import</span> TurboQuantVectorDb
+
+<span class="comment"># Dimensions must match OpenAI embedder (1536)</span>
+vector_db = TurboQuantVectorDb(
+    embedder=OpenAIEmbedder(),
+    bit_width=<span class="number">4</span>,
+    path=<span class="string">"./memory"</span>
+)
+vector_db.create()</code></pre>
+            </div>
+
+            <div id="langchain" class="tab-content">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Using <code>TurboQuantVectorStore</code> in LangChain:</p>
+                <pre><code><span class="keyword">from</span> turbovec.langchain <span class="keyword">import</span> TurboQuantVectorStore
+<span class="keyword">from</span> langchain_openai <span class="keyword">import</span> OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings()
+vector_store = TurboQuantVectorStore(
+    embedding=embeddings,
+    bit_width=<span class="number">4</span>
+)</code></pre>
+            </div>
+
+            <div id="llamaindex" class="tab-content">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Using <code>TurboQuantVectorStore</code> in LlamaIndex:</p>
+                <pre><code><span class="keyword">from</span> turbovec.llama_index <span class="keyword">import</span> TurboQuantVectorStore
+
+vector_store = TurboQuantVectorStore(
+    dim=<span class="number">1536</span>,
+    bit_width=<span class="number">4</span>,
+    persist_path=<span class="string">"./storage"</span>
+)</code></pre>
+            </div>
+
+            <div id="rust" class="tab-content">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Using <code>TurboQuantIndex</code> in Rust core:</p>
+                <pre><code><span class="keyword">use</span> turbovec::TurboQuantIndex;
+
+<span class="comment">// 1536-dim vectors compressed to 4 bits</span>
+<span class="keyword">let</span> <span class="keyword">mut</span> index = TurboQuantIndex::new(<span class="number">1536</span>, <span class="number">4</span>).unwrap();
+index.add(&vectors);
+<span class="keyword">let</span> results = index.search(&queries, <span class="number">10</span>);</code></pre>
+            </div>
+
+            <div id="patches" class="tab-content">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Issue #89 Fix:</strong> Transactional Upsert (Validate First, Delete Second)</p>
+                <pre><code><span class="keyword">def</span> <span class="title">upsert_safe</span>(self, content_hash: str, documents: List[Document]):
+    <span class="comment"># 1. Embed and pre-validate embeddings first</span>
+    self._embed_missing(documents)
+    missing = [d <span class="keyword">for</span> d <span class="keyword">in</span> documents <span class="keyword">if</span> <span class="keyword">not</span> d.embedding]
+    <span class="keyword">if</span> missing:
+        <span class="keyword">raise</span> ValueError(<span class="string">"Missing embeddings"</span>)
+    
+    <span class="comment"># Check shapes</span>
+    <span class="keyword">for</span> doc <span class="keyword">in</span> documents:
+        qvec = np.asarray(doc.embedding, dtype=np.float32)
+        <span class="keyword">if</span> qvec.shape[-1] != self.dimensions:
+            <span class="keyword">raise</span> ValueError(f<span class="string">"Dim mismatch: got {qvec.shape[-1]}, expected {self.dimensions}"</span>)
+            
+    <span class="comment"># 2. Deletions happen safely only after validation passes</span>
+    <span class="keyword">if</span> self.content_hash_exists(content_hash):
+        self._delete_by_content_hash(content_hash)
+        
+    <span class="comment"># 3. Final insert</span>
+    self.insert_validated(content_hash, documents)</code></pre>
+
+                <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Issue #90 Fix:</strong> Intra-batch Duplicate ID Guard</p>
+                <pre><code><span class="keyword">def</span> <span class="title">check_duplicate_ids</span>(self, documents: List[Document]):
+    seen = set()
+    <span class="keyword">for</span> doc <span class="keyword">in</span> documents:
+        <span class="keyword">if</span> <span class="keyword">not</span> doc.id:
+            <span class="keyword">continue</span>
+        <span class="keyword">if</span> doc.id <span class="keyword">in</span> seen:
+            <span class="keyword">raise</span> ValueError(f<span class="string">"Duplicate document ID '{doc.id}' detected in the same batch"</span>)
+        seen.add(doc.id)</code></pre>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🛡️ Security Assessment Summary / Kết quả đánh giá bảo mật</div>
+            <div class="security-badge">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span><strong>Security Verdict: PASS</strong> — No secrets or behavioral threats detected.</span>
+            </div>
+            <ul style="margin-top: 1rem;">
+                <li><strong>Gitleaks:</strong> CLEAN (No exposed tokens or private keys).</li>
+                <li><strong>Behavioral Audit:</strong> CLEAN (No dynamic exfiltration or obfuscation found).</li>
+                <li><strong>Trust Score:</strong> HIGH (6,818 stars, 674 forks, active commits, MIT License).</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>I-Wish Open Module Registry &bull; Continuous Integration &bull; 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(evt, tabId) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabId).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+id: workflow-skill
+name: skill
+kind: workflow
+shape: workflow
+role: gateway
+phases: [operate-learn]
+stages: [capability-intake]
+triggers: [skill, new skill, enhance skill, refactor skill, capability]
+anti_triggers: []
+primary_agents: [orch-agent, capability-agent]
+primary_workflows: [skill]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Route based on CWI and SOI indices.
+review_pack: docs/open-modules/skill-integration-guide.md
+source_path: /.agent/workflows/skill.md
+story_refs: [story-1.7]
+tags: [capability-authoring, canonical, gateway]

@@ -17,7 +17,7 @@ Analyze all stories and map their data layer dependencies.
 
 Load all story files and extract:
 - Story ID and title
-- Status (backlog/ready-for-dev-agent/in-dev-agent/done)
+- Status (backlog/ready-for-dev-agent/in-dev-agent/completed)
 - Tasks that touch data layer (look for: schema, API, seed, DB keywords)
 
 ### 2. Table Dependency Extraction
@@ -41,7 +41,7 @@ Identify stories that:
 ### 4. Generate Dependency Graph
 
 Create mermaid diagram type `graph LR` showing:
-- Each story as a node (color by status: green=done, orange=in-dev-agent, gray=backlog)
+- Each story as a node (color by status: green=completed, orange=in-dev-agent, gray=backlog)
 - Arrows labeled with table name for dependencies
 - Dashed arrows for weak dependencies (shared reads)
 - Bold arrows for strong dependencies (one must precede the other)
@@ -74,7 +74,7 @@ Generate dependency map document:
 **Conflicts:**
 {table of conflicts with: Story A | Story B | Table | Conflict Type | Resolution}
 
-Save to: `{output_folder}/data-specs/data-dependency-map.md`
+Save to: `{planning_artifacts}/2. Product Planning/2.2b. data-dependency-map.md`
 
 [S] Save map
 [DA] Dismiss"

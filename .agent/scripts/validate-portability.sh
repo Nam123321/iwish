@@ -8,7 +8,7 @@ SCAN_PATHS=(
   ".agent"
   "templates"
   "docs"
-  "_bmad-output"
+  "_iwish-output"
 )
 
 USER_HOME_PATTERN='/''Users/'

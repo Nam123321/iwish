@@ -122,7 +122,7 @@ function run() {
     console.log("🐛 Syncing Bug Tracker Metrics...");
     execGraphQuery(`MATCH (f:File) SET f += {bug_count: 0}`); // Reset
     
-    const bugTrackerPath = path.resolve(process.cwd(), '_bmad-output/bug-tracker.yaml');
+    const bugTrackerPath = path.resolve(process.cwd(), '_iwish-output/bug-tracker.yaml');
     const bugCounts = {}; // filename -> count
     
     if (fs.existsSync(bugTrackerPath)) {

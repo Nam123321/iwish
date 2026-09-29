@@ -4,7 +4,7 @@ description: 'Map ALL user types that interact with the system with narrative st
 
 # File References
 nextStepFile: './step-05-domain.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

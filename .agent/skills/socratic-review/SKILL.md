@@ -107,7 +107,7 @@ Feature **[X]** có vẻ vượt quá MVP scope. Bạn chắc chắn cần nó n
 - **Integration:** The Prediction Report output replaces the need for a separate `/predict` invocation — it is embedded in the Socratic Review flow.
 
 ### Gate 0: Discovery Loop (The "Stop & Think" Phase)
-Before proposing any solution, you MUST load and execute the `.agent/fragments/idea-discovery-framework.md` fragment to structure the elicitation and challenge loop, ensuring all 5 Lenses of Idea Discovery are fully answered.
+Before proposing any solution, you MUST load and execute the `/.agent/fragments/idea-discovery-framework.md` fragment to structure the elicitation and challenge loop, ensuring all 5 Lenses of Idea Discovery are fully answered.
 
 Additionally, answer the following questions based on the **Complexity Score (CS)**:
 

@@ -70,7 +70,7 @@ function walkDir(dir) {
   }
 }
 
-console.log('🛡️  BMAD Registry Hook: Checking for unregistered source files in core directories...');
+console.log('🛡️  I-Wish Registry Hook: Checking for unregistered source files in core directories...');
 walkDir(process.cwd());
 
 if (unregistered.length > 0) {

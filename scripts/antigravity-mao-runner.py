@@ -182,6 +182,39 @@ WORKFLOW_CONFIGS = {
                 "checkpoint": False
             }
         ]
+    },
+    "tournament": {
+        "phases": [
+            {
+                "phase": "setup",
+                "name": "Arena Setup",
+                "agent": "orch-agent",
+                "prompt_template": "Execute Arena Setup (Phase 1) for A/B tournament on task: '{target}'. Set up git branches for candidates: '{candidates}'.",
+                "checkpoint": False
+            },
+            {
+                "phase": "dispatch",
+                "name": "Agent Dispatch",
+                "agent": "orch-agent",
+                "prompt_template": "Execute Agent Dispatch (Phase 2) for A/B tournament on task: '{target}'. Dispatch subagents on their respective candidate branches.",
+                "checkpoint": False
+            },
+            {
+                "phase": "gate",
+                "name": "Resolution Gate",
+                "agent": "review-agent",
+                "prompt_template": "Execute Resolution Gate (Phase 3) for A/B tournament on task: '{target}'. Run tests, evaluate performance, and generate a scorecard. Previous outputs: {prev_outputs}",
+                "checkpoint": True,
+                "checkpoint_msg": "Resolution Gate complete! Please review the Tournament Scorecard at {project_root}/_iwish-output/tournaments/{task_slug}-scorecard.md. Type 'continue' or 'yes' to approve and proceed to merge, or 'no' / 'abort' to cancel."
+            },
+            {
+                "phase": "merge",
+                "name": "Merge & Cleanup",
+                "agent": "orch-agent",
+                "prompt_template": "Execute Merge & Cleanup (Phase 5) for A/B tournament on task: '{target}'. Merge winning branch and delete temporary branches. Scorecard context: {prev_outputs}",
+                "checkpoint": False
+            }
+        ]
     }
 }
 
@@ -279,6 +312,64 @@ async def main():
         save_active_workflow(active_wf)
         print(f"[MAO Runner] Initialized workflow 'create-skill' for target '{target}'")
 
+    elif normalized_request.startswith("/tournament") and not active_wf:
+        task_match = re.search(r'--task\s+["\']?([^"\'\n]+)["\']?', request)
+        candidates_match = re.search(r'--candidates\s+["\']?([^"\'\n]+)["\']?', request)
+        
+        def normalize_candidate(c_name: str) -> str:
+            val = c_name.lower().strip()
+            val = re.sub(r'[\(\)\"\']', '', val)
+            if "ui" in val and "ux" in val:
+                return "ui-ux-pro-max"
+            if "taste" in val:
+                return "taste-skill"
+            if "stitch" in val:
+                return "stitch"
+            if "super" in val or "power" in val:
+                return "Superpower"
+            if "vibe" in val or "vibecode" in val:
+                return "vibecode-pro-max"
+            if "native" in val or "tự nền tảng" in val or "tự" in val or "platform" in val or "mặc định" in val:
+                return "native"
+            return re.sub(r'[^a-zA-Z0-9-_]', '', val)
+
+        if task_match and candidates_match:
+            target = task_match.group(1).strip()
+            candidates_raw = candidates_match.group(1).strip()
+            candidates_list = [normalize_candidate(c) for c in candidates_raw.split(',') if c.strip()]
+            candidates = ", ".join(candidates_list)
+        else:
+            # Match natural language format
+            connectors = r'(?:với các module|với các plugin|với các workflow|với các|với|sử dụng các module|sử dụng các plugin|sử dụng|dùng các module|dùng các plugin|dùng|with candidates|with modules|with|using)'
+            nl_match = re.search(
+                r'^/tournament\s+(.+?)\s+' + connectors + r'\s+([^.\n]+)',
+                request,
+                re.IGNORECASE
+            )
+            if nl_match:
+                target = nl_match.group(1).strip()
+                candidates_raw = nl_match.group(2).strip()
+                candidates_cleaned = re.sub(r'\b(và|and)\b', ',', candidates_raw, flags=re.IGNORECASE)
+                candidates_list = [normalize_candidate(c) for c in candidates_cleaned.split(',') if c.strip()]
+                candidates = ", ".join(candidates_list)
+            else:
+                target = request[len("/tournament"):].strip()
+                if not target:
+                    target = "A/B Tournament Task"
+                candidates = "native"
+                print(f"[MAO Runner] [Warning] Candidates not specified. Defaulting to 'native' for task '{target}'.")
+        
+        active_wf = {
+            "workflow": "tournament",
+            "target": target,
+            "candidates": candidates,
+            "current_phase": "setup",
+            "status": "in-progress",
+            "accumulated_outputs": {}
+        }
+        save_active_workflow(active_wf)
+        print(f"[MAO Runner] Initialized workflow 'tournament' for task '{target}' with candidates '{candidates}'")
+
     # 2. Process active workflow if it exists
     if active_wf and active_wf.get("status") == "in-progress":
         wf_config = WORKFLOW_CONFIGS.get(active_wf["workflow"])
@@ -321,6 +412,8 @@ async def main():
         project_root = get_project_root()
         target = active_wf["target"]
         repo_name = target.split("/")[-1].replace(".git", "") if "/" in target else target
+        task_slug = re.sub(r'[^a-z0-9]+', '-', target.lower()).strip('-')[:30]
+        candidates = active_wf.get("candidates", "native")
         
         # Execution loop for non-checkpoint phases
         while True:
@@ -335,7 +428,9 @@ async def main():
                 target=target,
                 project_root=project_root,
                 repo_name=repo_name,
-                prev_outputs=prev_outputs
+                prev_outputs=prev_outputs,
+                task_slug=task_slug,
+                candidates=candidates
             )
             
             print(f"\n--- [MAO Runner] Executing Phase: {phase_name} ({agent_name}) ---")

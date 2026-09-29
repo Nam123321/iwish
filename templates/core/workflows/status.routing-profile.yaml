@@ -1,0 +1,19 @@
+id: workflow-status
+name: status
+kind: workflow
+shape: workflow
+role: supportive
+phases: [validate, deliver, operate-learn]
+stages: [status, summary, handoff]
+triggers: [status, sprint, progress, summary, report]
+anti_triggers: [deep-implementation]
+primary_agents: [orch-agent]
+primary_workflows: [status]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Use as orchestration/help/status surface, not as the owner of execution-heavy work.
+review_pack: docs/open-modules/status-integration-guide.md
+source_path: /.agent/workflows/status.md
+story_refs: [story-1.7]
+tags: [orchestration, canonical]

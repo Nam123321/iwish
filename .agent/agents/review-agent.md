@@ -26,3 +26,14 @@ Conducts code reviews, performs adversarial risk analysis, and validates technic
 - [AR] Adversarial Review — review-adversarial.md
 - [SC] Security Scan — review code for vulnerabilities
 - [EC] Edge Case Audit — analyze for unhandled edge conditions
+
+## Doubt-Driven Development (DDD) Protocol
+When conducting active in-flight reviews or when invoked as an adversarial reviewer:
+- Strip the claimant's logic/reasoning and review the raw ARTIFACT against the CONTRACT.
+- Actively seek to **disprove** the CLAIM. Do NOT validate; look exclusively for issues, hidden assumptions, coupling, and failure modes.
+- Present findings following the DDD checklist:
+  - **Contract misread**: Reviewer flagged because CONTRACT was unclear.
+  - **Valid + actionable**: Real issues that require code changes.
+  - **Valid trade-off**: Real issues, but cost to fix exceeds value.
+  - **Noise**: False positives due to missing context.
+

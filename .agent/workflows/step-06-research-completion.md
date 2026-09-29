@@ -100,6 +100,7 @@ Prepare comprehensive market research document with full structure:
 - Implementation Roadmap and Success Metrics
 - Future Market Outlook and Opportunities
 - Market Research Methodology and Source Documentation
+- Unknowns Gate: Research Confidence Assessment
 - Market Research Appendices and Additional Resources
 
 ## 1. Market Research Introduction and Methodology
@@ -307,9 +308,19 @@ _Market Web Search Queries: [Complete list of market search queries used]_
 _Market Source Verification: [All market claims verified with multiple sources]_
 _Market Confidence Levels: [Confidence assessments for uncertain market data]_
 _Market Research Limitations: [Market research limitations and areas for further investigation]_
-_Methodology Transparency: [Complete transparency about market research approach]_
+_Methodology Transparency: [Complete transparency about market research approach]
 
-## 11. Market Research Appendices and Additional Resources
+## 11. Unknowns Gate: Research Confidence Assessment
+
+[Run the `unknowns-scanner` skill with: `phase: research`, `depth: deep`, `tools: bias-detector, confidence-score`]
+
+### Research Bias Analysis
+[Findings on potential cognitive or confirmation biases in the research sources and analysis]
+
+### Confidence Scoring
+[Quantitative assessment of our knowns vs unknowns. Highlight critical blindspots that require primary research]
+
+## 12. Market Research Appendices and Additional Resources
 
 ### Detailed Market Data Tables
 

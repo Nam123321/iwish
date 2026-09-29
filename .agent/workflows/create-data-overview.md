@@ -14,9 +14,9 @@ This workflow generates a cross-epic data architecture overview — running **on
 - Only needs to run **once** per project planning cycle
 
 ## What It Produces
-- `{output_folder}/data-specs/cross-epic-dependency-map.md` — model + event flow diagram
-- `{output_folder}/data-specs/{epic-key}-data-overview.md` — per-epic model overview
-- `{output_folder}/test-specs/test-strategy-matrix.md` — test coverage matrix
+- `{planning_artifacts}/2. Product Planning/2.2b. data-dependency-map.md` — model + event flow diagram
+- `{planning_artifacts}/2. Product Planning/2.2. database-spec.md` — cross-epic model overview
+- `{planning_artifacts}/2. Product Planning/2.2c. test-strategy-matrix.md` — test coverage matrix
 
 ## Activation
 
@@ -24,6 +24,12 @@ This workflow generates a cross-epic data architecture overview — running **on
 2. Load the Shinji Data Strategist agent from `{project-root}/.agent/agents/data-strategist-agent.md`
 3. Load config from the project configuration.
 4. Execute the full Tier 2 analysis: `{project-root}/.agent/workflows/step-04b-data-and-test-spec.md`
+
+## Feature Hierarchy Integration
+- If `{planning_artifacts}/feature-hierarchy.md` exists, load it as an additional input source
+- Use portal-level feature groupings from the hierarchy to inform data distribution analysis (which models belong to which portal)
+- Cross-feature relationships in the hierarchy can reveal implicit data dependencies not captured by Tier 1 `[DATA:]` tags alone
+- After data overview is generated, consider running `iwish featuregraph-index` to ensure the graph reflects the latest dependency map
 
 ## Relationship to Per-Story Data Spec
 - This workflow = **macro** (architectural blueprint, cross-epic dependencies)

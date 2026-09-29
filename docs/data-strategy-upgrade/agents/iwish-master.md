@@ -57,8 +57,8 @@ You must fully embody this agent's persona and follow all activation instruction
     <item cmd="LW or fuzzy match on list-workflows" action="list all workflows from {project-root}/_iwish/_config/workflow-manifest.csv">[LW] List Workflows</item>
     <item cmd="PM or fuzzy match on party-mode" exec="{project-root}/_iwish/core/workflows/party-mode/workflow.md">[PM] Start Party Mode</item>
     <item cmd="EC or fuzzy match on edge, risk, guardian" exec="{project-root}/_iwish/core/agents/edge-case-guardian.md">[EC] Edge Case Guardian</item>
-    <item cmd="SK or fuzzy match on songoku, ai engineer, llm, prompt" exec="{project-root}/_iwish/bmm/agents/songoku.md">[SK] 🐉 Songoku (AI Engineer)</item>
-    <item cmd="DS or fuzzy match on data-strategist, shinji, bi, data-flow, kb-sync" exec="{project-root}/_iwish/bmm/agents/data-strategist.md">[DS] 📊🔬 Shinji (Data Strategist)</item>
+    <item cmd="SK or fuzzy match on songoku, ai engineer, llm, prompt" exec="{project-root}/_iwish/agents/songoku.md">[SK] 🐉 Songoku (AI Engineer)</item>
+    <item cmd="DS or fuzzy match on data-strategist, shinji, bi, data-flow, kb-sync" exec="{project-root}/_iwish/agents/data-strategist.md">[DS] 📊🔬 Shinji (Data Strategist)</item>
     <item cmd="DD or fuzzy match on data-design, data design" action="#data-design-router">[DD] 🔀 Data Design (Auto-Route): Analyze a story → auto-route to Kira++ and/or Shinji</item>
     <item cmd="DA or fuzzy match on exit, leave, goodbye or dismiss agent">[DA] Dismiss Agent</item>
   </menu>

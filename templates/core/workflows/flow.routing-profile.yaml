@@ -1,0 +1,17 @@
+id: workflow-flow
+name: flow
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution, implement, validate]
+stages: [orchestration, intent-triage, staged-planning]
+triggers: [flow, Vegeta-pipeline, Vegeta-story, quy trình, phát triển theo quy trình]
+anti_triggers: []
+primary_agents: [orch-agent, delivery-manager-agent]
+primary_workflows: [flow]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Must automatically pause at checkpoints requiring approval and automatically resume afterwards.
+source_path: /.agent/workflows/flow.md
+tags: [orchestrator, pipeline, canonical]

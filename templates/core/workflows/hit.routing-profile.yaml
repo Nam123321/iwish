@@ -1,0 +1,17 @@
+id: workflow-Hit
+name: Hit
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [planning, review]
+stages: [risk-assessment, edge-case-analysis]
+triggers: [/Hit, /edge-case-guardiant, Hit, edge-case-guardiant, edge case scan, edge case analysis, risk scan, 8-pillar scan]
+anti_triggers: [greenfield-planning]
+primary_agents: [review-agent, orch-agent]
+primary_workflows: [Hit]
+supportive_skills: [Hit]
+tool_dependencies: []
+constraints:
+  - Systematically identify edge cases using the 8-Pillar Taxonomy.
+source_path: /.agent/workflows/Hit.md
+tags: [review, quality, edge-case]

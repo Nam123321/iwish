@@ -1,0 +1,5 @@
+status: draft
+origin:
+  created_by: create-skill
+promotion_target: canonical
+path_policy: runtime

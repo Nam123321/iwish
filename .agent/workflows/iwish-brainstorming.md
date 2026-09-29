@@ -17,6 +17,11 @@ disable-model-invocation: true
     *   Yêu cầu người dùng mô tả ý tưởng/vấn đề.
     *   Thực hiện tính toán CS (1-5) dựa trên: Kỹ thuật, Dữ liệu, UI/UX, và Rủi ro.
     *   **VALIDATION:** Nếu CS không phải là số 1-5 hoặc không xác định được, mặc định đặt **CS = 5** (Hard Gate) để đảm bảo an toàn kiến trúc.
+    *   **Unknowns Gate (Scope Expansion):** 
+        - Load `unknowns-scanner` skill.
+        - Run with: phase=discovery, scope=macro, depth=quick, tools=competitive-blindspot
+        - Surface Adjacent Spaces to Explore (indirect competitors, adjacent markets).
+        - If hidden complexity is detected by the scanner, ADJUST the CS upward before routing.
     *   Nếu **CS ≤ 2**: Kích hoạt `quick-design-check.md`.
     *   Nếu **CS > 2**: Bắt buộc kích hoạt `idea-hardening/SKILL.md`.
 

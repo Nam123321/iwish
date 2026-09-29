@@ -1,0 +1,27 @@
+sprint:
+  name: "Semble and Multi-Agent Parallel Orch Integration"
+  status: "completed"
+  stories:
+    - id: "story-1.1"
+      title: "Semble CLI Wrapper Skill"
+      status: "DONE"
+      files:
+        - ".agent/skills/semble-search/SKILL.md"
+        - ".agent/skills/semble-search/scripts/semble-wrapper.sh"
+        - ".agent/skills/semble-search/scripts/semble-search.py"
+    - id: "story-1.2"
+      title: "Context-Aware Story Chunk Injector"
+      status: "DONE"
+      files:
+        - ".agent/skills/semble-search/scripts/story-chunk-injector.py"
+    - id: "story-2.1"
+      title: "Cross-Story Dependency Scanner"
+      status: "DONE"
+      files:
+        - ".agent/skills/semble-search/scripts/cross-story-scanner.py"
+    - id: "story-2.2"
+      title: "Semantic Merge Audit Hook"
+      status: "DONE"
+      files:
+        - ".agent/skills/semble-search/scripts/merge-audit-hook.sh"
+        - ".agent/skills/semble-search/scripts/merge-audit.py"

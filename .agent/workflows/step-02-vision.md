@@ -4,7 +4,7 @@ description: 'Discover and define the core product vision, problem statement, an
 
 # File References
 nextStepFile: './step-03-users.md'
-outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
@@ -59,6 +59,10 @@ Conduct comprehensive product vision discovery to define the core problem, solut
 ## Sequence of Instructions (Do not deviate, skip, or optimize)
 
 ### 1. Begin Vision Discovery
+
+> [!IMPORTANT]
+> **DOUBLE-LOCK CONTEXT INJECTION:**
+> Before asking the user about the vision, you MUST load and read `/.agent/fragments/idea-discovery-framework.md`. You must structure the vision elicitation and customer conversation around its **5 Lenses of Idea Discovery** to ensure rigorous, multi-dimensional clarification.
 
 **Opening Conversation:**
 "As your pm-agent peer, I'm excited to help you shape the vision for {{project_name}}. Let's start with the foundation.

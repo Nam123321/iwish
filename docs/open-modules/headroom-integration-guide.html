@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headroom Integration Guide</title>
+    <style>
+        body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; color: #333; }
+        h1, h2 { color: #2c3e50; }
+        ul { background: #f8f9fa; padding: 1.5rem 3rem; border-radius: 8px; }
+        li { margin-bottom: 0.5rem; }
+        .highlight { background-color: #e8f4f8; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Headroom Integration Guide (Adoption Review Pack)</h1>
+    
+    <h2>1. Classification & Placement</h2>
+    <ul>
+        <li><strong>Shape:</strong> <span class="highlight">SYSTEM_SKILL (Bundle)</span></li>
+        <li><strong>Role:</strong> <span class="highlight">supportive</span></li>
+        <li><strong>Framework Placement:</strong> Middleware / background proxy layer between I-Wish agents and the LLM API provider.</li>
+    </ul>
+
+    <h2>2. Core Use Cases</h2>
+    <ul>
+        <li>Tự động nén payload (JSON, AST, RAG context) giảm 60-95% token.</li>
+        <li>Cung cấp proxy drop-in không cần sửa code cốt lõi của I-Wish agents.</li>
+    </ul>
+
+    <h2>3. Constraints & Edge Cases</h2>
+    <ul>
+        <li><strong>Over-compression:</strong> Có thể làm mất stack trace quan trọng.</li>
+        <li><strong>Latency:</strong> Tăng thời gian phản hồi do overhead phân tích AST/JSON.</li>
+        <li><strong>Yêu cầu hệ thống:</strong> Python 3.10+.</li>
+    </ul>
+
+    <h2>4. Orch Routing Hints</h2>
+    <ul>
+        <li>Kích hoạt Headroom khi xử lý các file codebase cực lớn (như trong Repo Absorption hoặc Analyze Codebase).</li>
+        <li>Đề xuất dùng khi Dev-Agent báo lỗi vượt quá Context Window.</li>
+    </ul>
+</body>
+</html>

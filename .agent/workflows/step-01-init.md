@@ -41,7 +41,7 @@ Then discover the story file using smart search:
 Try to discover:
 - Architecture doc: `{output_folder}/*architecture*.md`
 - PRD: `{output_folder}/*prd*.md`
-- Existing data specs: `{output_folder}/data-specs/*.md`
+- Existing data specs: `{planning_artifacts}/2. Product Planning/2.2. database-spec.md`
 - Existing seed files: `{project-root}/distro/prisma/seeds/*.ts`
 
 ### 5. Report and Continue

@@ -1,0 +1,13 @@
+capability: growth-telemetry-architect
+type: skill
+routes:
+  - trigger: "generate tracking plan"
+    confidence: high
+  - trigger: "create telemetry schema"
+    confidence: high
+  - trigger: "extract marketing events from PRD"
+    confidence: high
+  - trigger: "posthog tracking"
+    confidence: medium
+  - trigger: "amplitude tracking"
+    confidence: medium

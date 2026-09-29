@@ -130,7 +130,7 @@ Các mẫu hành vi thực tế cần giả định:
 
 🚨 **DO NOT use hardcoded personas.** The agent MUST scan the target project dynamically to extract target users/customers:
 1. **Locate Target Users**: Scan `📄 2. Product Planning/2.1. product-brief-or-prd.md` (or `prd.md`/`product-brief.md`), `📄 1. Idea Discovery/` files, or `📄 project-context.md` for headings like `## Target Users`, `## Target Customers`, `## Focus Groups`, or `## Customer Persona`.
-2. **Read Specific Persona Files**: Check if custom personas are saved under `{project-root}.agent/skills/user-simulation-guardian/personas/` or `{project-root}/docs/personas/`.
+2. **Read Specific Persona Files**: Check if custom personas are saved under `{project-root}/.agent/skills/user-simulation-guardian/personas/` or `{project-root}/docs/personas/`.
 3. **Select Minimum 3 Personas**: Make sure the selected personas cover the key customer segments and portals involved in the feature.
 4. **Fallback Zero-Shot Deduction**: If no project-specific target users are defined yet in the documentation, deduce the user roles based on the target portals and features, and ask the user for confirmation.
 

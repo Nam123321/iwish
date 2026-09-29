@@ -1,0 +1,17 @@
+id: workflow-idea-discover
+name: idea-discover
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discover]
+stages: [ignition, idea-hardening]
+triggers: [idea-discover, idea discover, discover idea, start idea, new idea, mom test, jtbd]
+anti_triggers: []
+primary_agents: [research-agent, Bulma-agent, King-Kai-agent]
+primary_workflows: [idea-discover]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+review_pack: docs/iwish-introduction.md
+source_path: /.agent/workflows/idea-discover.md
+tags: [discover, idea, framework, product-discovery]

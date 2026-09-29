@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Guide: Autoresearch</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0914;
+            --card-bg: rgba(22, 19, 39, 0.45);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary-glow: linear-gradient(135deg, #7c3aed, #4f46e5);
+            --accent-glow: linear-gradient(135deg, #ec4899, #8b5cf6);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-accent: #c084fc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --font-outfit: 'Outfit', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: var(--font-inter);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Style */
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary-glow);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        h1 {
+            font-family: var(--font-outfit);
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #c084fc, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card (Glassmorphism) */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.1);
+        }
+
+        .card:hover::before {
+            background: var(--primary-glow);
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        h2 {
+            font-family: var(--font-outfit);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+        }
+
+        h2 span.icon {
+            font-size: 1.75rem;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--text-accent);
+            font-size: 0.9rem;
+        }
+
+        /* Snapshot Grid */
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .snapshot-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .snapshot-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .snapshot-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .snapshot-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: var(--font-outfit);
+            color: var(--text-accent);
+        }
+
+        /* Phase Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px dashed rgba(255, 255, 255, 0.1);
+            margin-left: 1rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-2rem - 6px);
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-accent);
+            box-shadow: 0 0 10px var(--text-accent);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: #ffffff;
+        }
+
+        .timeline-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Code Block */
+        pre {
+            background: rgba(10, 8, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #a78bfa;
+            margin-top: 1rem;
+        }
+
+        /* Status colors */
+        .status-success { color: var(--success); }
+        .status-warning { color: var(--warning); }
+        .status-error { color: var(--error); }
+
+        /* Footer styling */
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--card-border);
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="badge">Intake Complete</div>
+        <h1>Autoresearch</h1>
+        <p class="subtitle">Autonomous machine learning pretraining and optimization loop</p>
+    </header>
+
+    <div class="grid">
+        <!-- 1. Summary Snapshot -->
+        <div class="card card-full">
+            <h2><span class="icon">📊</span> Summary Snapshot</h2>
+            <p>An intelligent integration of Karpathy's pretraining loop into the I-Wish system, designed to allow developer agents to run closed-loop optimization on ML training scripts.</p>
+            <div class="snapshot-grid">
+                <div class="snapshot-item">
+                    <div class="snapshot-label">Shape / Role</div>
+                    <div class="snapshot-value">Workflow / Support</div>
+                </div>
+                <div class="snapshot-item">
+                    <div class="snapshot-label">Security Verdict</div>
+                    <div class="snapshot-value status-warning">PASS (WITH WARN)</div>
+                </div>
+                <div class="snapshot-item">
+                    <div class="snapshot-label">Target Area</div>
+                    <div class="snapshot-value">System Skill (Merged)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Placement -->
+        <div class="card">
+            <h2><span class="icon">🧭</span> Framework Placement</h2>
+            <ul>
+                <li><strong>Associated Workflows:</strong> Merged directly as a sub-profile under I-Wish canonical <code>/autoresearch</code> skill.</li>
+                <li><strong>Associated Agents:</strong> <code>dev-agent</code> (code generator/hyperparameter tuner) and <code>review-agent</code> (safety and metrics analyzer).</li>
+                <li><strong>Workspace promotion:</strong> Python math utilities (Muon, Best-fit loader) compiled to user workspace <code>_iwish-output/libs/</code>.</li>
+            </ul>
+        </div>
+
+        <!-- 3. Key Decisions -->
+        <div class="card">
+            <h2><span class="icon">⚡</span> Key Decisions</h2>
+            <ul>
+                <li><strong class="status-success">NO Loop-Forever:</strong> Rejected the infinite prose loop in favor of I-Wish's structured 8-phase state-machine with fixed 10-iteration budget bounds.</li>
+                <li><strong class="status-success">NO Destructive Resets:</strong> Banned raw <code>git reset --hard</code> commands on user workspace. Replaced with safe rollback hooks.</li>
+                <li><strong class="status-warning">Vulnerability Patching:</strong> Audit uncovered 10 vulnerabilities in secondary Python packages (Pillow, requests, idna). Mitigated by forcing pinned upgrades.</li>
+            </ul>
+        </div>
+
+        <!-- 4. Operational Flow -->
+        <div class="card card-full">
+            <h2><span class="icon">🔁</span> Input ➔ Process ➔ Output</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-title">1. Setup & Preconditions</div>
+                    <div class="timeline-desc">Validates PyTorch CUDA environment, ensures git working tree is clean, and reads target hyperparameters.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">2. Modify & Commit</div>
+                    <div class="timeline-desc">The optimization agent modifies model structure or optimizer weights in <code>train.py</code> and commits changes.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">3. Verify (Time-Budget Run)</div>
+                    <div class="timeline-desc">Runs a timed (5 minutes) validation run. Extracts final <code>val_bpb</code> (Bits-per-byte) metric and peak VRAM.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">4. Ratchet Decision</div>
+                    <div class="timeline-desc">Keeps the changes if validation loss improves. Performs safe rollback if metric degrades or training crashes. Logs to <code>loop-results.tsv</code>.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Examples -->
+        <div class="card">
+            <h2><span class="icon">💡</span> Routing & Trigger Examples</h2>
+            <p>Orch-Agent will automatically trigger this ML research profile on requests matching deep learning optimization.</p>
+            <pre>
+# Trigger Example:
+"Optimize the learning rate and transformer structure
+for train.py to reduce validation loss"
+
+# Orch Action:
+Selects /autoresearch with ML-Pretraining profile
+            </pre>
+        </div>
+
+        <!-- 6. Review Prompts -->
+        <div class="card">
+            <h2><span class="icon">❓</span> Review Prompts for User</h2>
+            <ul>
+                <li>Verify if you have CUDA GPUs ready before starting deep learning loops.</li>
+                <li>Review the generated utility library files inside <code>_iwish-output/libs/</code>.</li>
+                <li>Confirm if you want to override sub-dependency CVEs or let I-Wish force the upgrades.</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>I-Wish Autonomous Integration System • ab178b9f-f133-4627-af2c-1448198a3bea</p>
+    </footer>
+</div>
+
+</body>
+</html>

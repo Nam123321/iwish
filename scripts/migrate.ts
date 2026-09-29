@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-const SRC_DIR = path.join(__dirname, '../../');
+const SRC_DIR = path.join(__dirname, '../');
 const DEST_DIR = path.join(__dirname, '../templates');
 
 const NAME_MAP = [
@@ -87,7 +87,16 @@ async function scanAndCopy(relPath: string) {
 
       // Preserve agent/workflow subdirs
       const subType = relPath.includes('agents') ? 'agents' : (relPath.includes('workflows') ? 'workflows' : (relPath.includes('skills') ? 'skills' : 'misc'));
-      const destPath = path.join(DEST_DIR, targetFolder, subType, targetName);
+      let finalName = targetName;
+      if (subType === 'skills' && targetName.toLowerCase() === 'skill.md') {
+        const parts = relPath.split(path.sep);
+        const skillIndex = parts.indexOf('skills');
+        const skillFolder = skillIndex !== -1 ? parts[skillIndex + 1] : null;
+        if (skillFolder) {
+          finalName = `${skillFolder}.md`;
+        }
+      }
+      const destPath = path.join(DEST_DIR, targetFolder, subType, finalName);
       
       await fs.ensureDir(path.dirname(destPath));
       

@@ -41,6 +41,23 @@ exports.findSourceOfTruthMatches = findSourceOfTruthMatches;
 const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
 const yaml_1 = __importDefault(require("yaml"));
+function findFileRecursively(dir, predicate) {
+    if (!fs.existsSync(dir))
+        return null;
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+            const match = findFileRecursively(fullPath, predicate);
+            if (match)
+                return match;
+        }
+        else if (predicate(file, fullPath)) {
+            return fullPath;
+        }
+    }
+    return null;
+}
 function readYamlFile(filePath) {
     if (!fs.existsSync(filePath)) {
         return null;
@@ -53,18 +70,24 @@ function getSprintStatusPaths(projectRoot) {
         path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml'),
         path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml'),
         path.join(projectRoot, '_iwish-output', 'bmad-skills', 'sprint-status.yaml'),
+        path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml'),
     ].filter((filePath) => fs.existsSync(filePath));
 }
 function collectIdsFromSprintYaml(doc) {
     if (!doc) {
-        return { epicIds: [], storyIds: [] };
+        return { epicIds: [], storyIds: [], epicRecords: [] };
     }
     const epics = Array.isArray(doc.epics) ? doc.epics : [];
     const epicIds = [];
     const storyIds = [];
+    const epicRecords = [];
     for (const epic of epics) {
         if (typeof epic.id === 'string') {
             epicIds.push(epic.id);
+            epicRecords.push({
+                id: epic.id,
+                title: typeof epic.title === 'string' ? epic.title : epic.id,
+            });
         }
         const stories = Array.isArray(epic.stories) ? epic.stories : [];
         for (const story of stories) {
@@ -73,7 +96,7 @@ function collectIdsFromSprintYaml(doc) {
             }
         }
     }
-    return { epicIds, storyIds };
+    return { epicIds, storyIds, epicRecords };
 }
 function frontmatterValue(content, key) {
     const match = content.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)["']?`, 'm'));
@@ -112,11 +135,14 @@ function collectStoryPathsFromSprintYaml(doc) {
     const epics = Array.isArray(doc.epics) ? doc.epics : [];
     const records = [];
     for (const epic of epics) {
+        const epicId = typeof epic.id === 'string' ? epic.id : 'unknown-epic';
         const stories = Array.isArray(epic.stories) ? epic.stories : [];
         for (const story of stories) {
             if (typeof story.id === 'string') {
                 records.push({
                     id: story.id,
+                    epicId,
+                    title: typeof story.title === 'string' ? story.title : story.id,
                     path: typeof story.story_file === 'string' ? story.story_file : '',
                     sprintStatus: typeof story.status === 'string' ? story.status : null,
                 });
@@ -140,32 +166,45 @@ function findStoryFileById(projectRoot, id) {
         path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories'),
         path.join(projectRoot, '_iwish-output', 'stories'),
         path.join(projectRoot, '_iwish-output', 'bmad-skills', 'stories'),
+        path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story')
     ];
     for (const dir of candidateDirs) {
-        if (!fs.existsSync(dir)) {
+        if (!fs.existsSync(dir))
             continue;
-        }
+        // First try exact matches at the root of the directory
         const exact = path.join(dir, `${id}.md`);
-        if (fs.existsSync(exact)) {
+        if (fs.existsSync(exact))
             return exact;
-        }
-        const prefixed = fs
-            .readdirSync(dir)
-            .filter((entry) => entry.endsWith('.md') && entry.startsWith(`${id}-`))
-            .sort()[0];
-        if (prefixed) {
-            return path.join(dir, prefixed);
-        }
+        // Then try recursive search for this ID
+        const match = findFileRecursively(dir, (name, fullPath) => {
+            if (name === `${id}.md` || (name.endsWith('.md') && name.startsWith(`${id}-`)))
+                return true;
+            if (name === 'story.md') {
+                const dirName = path.basename(path.dirname(fullPath));
+                if (dirName.toLowerCase().replace(/-/g, '.') === id.toLowerCase().replace(/-/g, '.'))
+                    return true;
+                if (dirName.toLowerCase() === id.toLowerCase())
+                    return true;
+            }
+            return false;
+        });
+        if (match)
+            return match;
     }
     return null;
 }
 function loadSourceOfTruth(projectRoot) {
+    const devSprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
     const storiesSprintPath = path.join(projectRoot, '_bmad-output', 'stories', 'sprint-status.yaml');
     const skillsSprintPath = path.join(projectRoot, '_bmad-output', 'bmad-skills', 'sprint-status.yaml');
     const iwishStoriesSprintPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
     const iwishSkillsSprintPath = path.join(projectRoot, '_iwish-output', 'bmad-skills', 'sprint-status.yaml');
-    const storiesSprintDoc = readYamlFile(storiesSprintPath) || readYamlFile(iwishStoriesSprintPath);
+    const storiesSprintDoc = readYamlFile(devSprintPath) ||
+        readYamlFile(storiesSprintPath) ||
+        readYamlFile(iwishStoriesSprintPath);
     const skillsSprintDoc = readYamlFile(skillsSprintPath) || readYamlFile(iwishSkillsSprintPath);
+    const storiesSprintIds = collectIdsFromSprintYaml(storiesSprintDoc);
+    const skillsSprintIds = collectIdsFromSprintYaml(skillsSprintDoc);
     const sprintStatuses = getSprintStatusPaths(projectRoot).map((filePath) => {
         const doc = readYamlFile(filePath);
         const ids = collectIdsFromSprintYaml(doc);
@@ -181,25 +220,58 @@ function loadSourceOfTruth(projectRoot) {
             storyCount: ids.storyIds.length,
         };
     });
+    const devStoryDir = path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+    const devStoryIds = [];
+    if (fs.existsSync(devStoryDir)) {
+        const collectStoryFiles = (dir) => {
+            const files = fs.readdirSync(dir);
+            for (const file of files) {
+                const fullPath = path.join(dir, file);
+                if (fs.statSync(fullPath).isDirectory()) {
+                    collectStoryFiles(fullPath);
+                }
+                else if (file === 'story.md') {
+                    const dirName = path.basename(dir);
+                    const parts = dirName.match(/^Story-(\d+)-(\d+)$/i);
+                    if (parts) {
+                        devStoryIds.push(`story-${parts[1]}.${parts[2]}`);
+                    }
+                    else {
+                        devStoryIds.push(dirName.toLowerCase());
+                    }
+                }
+                else if (file.endsWith('.md') && !file.includes('spec') && !file.startsWith('review')) {
+                    devStoryIds.push(path.basename(file, '.md'));
+                }
+            }
+        };
+        try {
+            collectStoryFiles(devStoryDir);
+        }
+        catch (e) { }
+    }
     const storyIds = Array.from(new Set([
-        ...collectIdsFromSprintYaml(storiesSprintDoc).storyIds,
-        ...collectIdsFromSprintYaml(skillsSprintDoc).storyIds,
+        ...storiesSprintIds.storyIds,
+        ...skillsSprintIds.storyIds,
         ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'stories')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'stories')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'stories')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'bmad-skills', 'stories')),
+        ...devStoryIds,
     ]));
     const epicIds = Array.from(new Set([
-        ...collectIdsFromSprintYaml(storiesSprintDoc).epicIds,
-        ...collectIdsFromSprintYaml(skillsSprintDoc).epicIds,
+        ...storiesSprintIds.epicIds,
+        ...skillsSprintIds.epicIds,
         ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'epics')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_bmad-output', 'bmad-skills', 'epics')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'epics')),
         ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', 'bmad-skills', 'epics')),
+        ...collectIdsFromFilenames(path.join(projectRoot, '_iwish-output', '2. Product Planning')),
     ]));
+    const epicRecords = [...storiesSprintIds.epicRecords, ...skillsSprintIds.epicRecords];
     const reconciliationDir = path.join(projectRoot, '_bmad-output', 'reconciliation');
     const iwishReconciliationDir = path.join(projectRoot, '_iwish-output', 'reconciliation');
-    const reconciliationDirToUse = fs.existsSync(reconciliationDir) ? reconciliationDir : iwishReconciliationDir;
+    const reconciliationDirToUse = fs.existsSync(iwishReconciliationDir) ? iwishReconciliationDir : reconciliationDir;
     const reconciliationScopes = fs.existsSync(reconciliationDirToUse)
         ? fs.readdirSync(reconciliationDirToUse).filter((entry) => entry.endsWith('.md')).map((entry) => path.basename(entry, '.md'))
         : [];
@@ -208,46 +280,53 @@ function loadSourceOfTruth(projectRoot) {
         ...collectStoryPathsFromSprintYaml(skillsSprintDoc),
     ];
     const storyRecordMap = new Map();
-    for (const record of sprintStoryRecords) {
-        const absolutePath = record.path ? path.join(projectRoot, record.path) : null;
+    const processStory = (id, epicId, title, providedPath, sprintStatus) => {
+        const absolutePath = providedPath ? path.join(projectRoot, providedPath) : null;
         const resolvedPath = absolutePath && fs.existsSync(absolutePath)
             ? absolutePath
-            : findStoryFileById(projectRoot, record.id) || '';
+            : findStoryFileById(projectRoot, id) || '';
         const content = resolvedPath ? fs.readFileSync(resolvedPath, 'utf8') : '';
         const fileStatus = content ? frontmatterValue(content, 'status') : null;
         const readinessInfo = content
             ? getStoryReadiness(content)
             : { readiness: 'low', headingsCount: 0, hasAcceptanceCriteria: false, hasTaskBreakdown: false, contentLength: 0 };
-        storyRecordMap.set(record.id, {
-            id: record.id,
-            path: resolvedPath ? path.relative(projectRoot, resolvedPath) : record.path,
-            sprintStatus: record.sprintStatus,
-            fileStatus,
-            ...readinessInfo,
-        });
-    }
-    for (const id of storyIds) {
-        if (storyRecordMap.has(id)) {
-            continue;
+        // Attempt to extract UI Spec and Data Spec contents if they exist alongside the story
+        let uiSpecContent = '';
+        let dataSpecContent = '';
+        if (resolvedPath) {
+            const storyDir = path.dirname(resolvedPath);
+            const uiSpecMatch = findFileRecursively(storyDir, (name) => name === 'ui-spec.md' || name === 'uiux-spec.md' || name === 'ui-ux-spec.md');
+            if (uiSpecMatch)
+                uiSpecContent = fs.readFileSync(uiSpecMatch, 'utf8');
+            const dataSpecMatch = findFileRecursively(storyDir, (name) => name === 'data-spec.md' || name === 'database-spec.md');
+            if (dataSpecMatch)
+                dataSpecContent = fs.readFileSync(dataSpecMatch, 'utf8');
         }
-        const fallbackPath = findStoryFileById(projectRoot, id);
-        const content = fallbackPath ? fs.readFileSync(fallbackPath, 'utf8') : '';
-        const fileStatus = content ? frontmatterValue(content, 'status') : null;
-        const readinessInfo = content
-            ? getStoryReadiness(content)
-            : { readiness: 'low', headingsCount: 0, hasAcceptanceCriteria: false, hasTaskBreakdown: false, contentLength: 0 };
         storyRecordMap.set(id, {
             id,
-            path: fallbackPath ? path.relative(projectRoot, fallbackPath) : '',
-            sprintStatus: null,
+            epicId,
+            title,
+            path: resolvedPath ? path.relative(projectRoot, resolvedPath) : providedPath,
+            sprintStatus,
             fileStatus,
+            uiSpecContent,
+            dataSpecContent,
             ...readinessInfo,
         });
+    };
+    for (const record of sprintStoryRecords) {
+        processStory(record.id, record.epicId, record.title, record.path, record.sprintStatus);
+    }
+    for (const id of storyIds) {
+        if (!storyRecordMap.has(id)) {
+            processStory(id, 'unknown-epic', id, '', null);
+        }
     }
     return {
         sprintStatuses,
         storyIds,
         epicIds,
+        epicRecords,
         reconciliationScopes,
         storyRecords: Array.from(storyRecordMap.values()).sort((a, b) => a.id.localeCompare(b.id)),
     };

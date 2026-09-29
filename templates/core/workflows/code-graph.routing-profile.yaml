@@ -1,0 +1,18 @@
+id: workflow-code-graph
+name: code-graph
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [implement, review]
+stages: [code-intelligence, documentation, mapping]
+triggers: [code-graph, codegraph, code-intel, semantic-graph, graph-merge]
+anti_triggers: [sprint, prd, competitor-research]
+primary_agents: [Vegeta-agent, Bulma-agent, research-agent]
+primary_workflows: [code-graph]
+supportive_skills: [ux-guardian]
+tool_dependencies: [graph]
+constraints:
+  - Generates cache outputs in `.iwish/cache/`
+  - Regenerates the user guide dashboard
+source_path: /.agent/workflows/code-graph.md
+tags: [code-intelligence, visualization, documentation]

@@ -60,11 +60,14 @@ Validate Functional Requirements meet SMART quality criteria (Specific, Measurab
 
 **CRITICAL:** Follow this sequence exactly. Do not skip, reorder, or improvise unless user explicitly requests a change.
 
-### 1. Extract All Functional Requirements
+### 1. Extract All Functional Requirements & Scan Vague Words
 
-From the PRD's Functional Requirements section, extract:
-- All FRs with their FR numbers (FR-001, FR-002, etc.)
-- Count total FRs
+1. From the PRD's Functional Requirements section, extract all FRs with their FR numbers (FR-001, FR-002, etc.) and count total FRs.
+2. Execute the vague language scanner script in the terminal:
+   ```bash
+   python3 .agent/scripts/validate-vague-language.py {prdFile}
+   ```
+3. Parse the JSON output of the scanner to identify any lines/requirements containing vague words (e.g., "fast", "easy", "scalable", "secure", "mượt", "nhanh", "dễ dàng").
 
 ### 2. Attempt Sub-Process Validation
 
@@ -74,16 +77,22 @@ From the PRD's Functional Requirements section, extract:
 
 {List all FRs}
 
+**Vague Words Scan Results:**
+{Include any findings and penalized requirements from step 1.2}
+
 **For each FR, score on SMART criteria (1-5 scale):**
+*Note: Any functional requirement flagged with vague words from the scanner MUST be penalized on Specificity and Measurability (score limited to <= 2).*
 
 **Specific (1-5):**
 - 5: Clear, unambiguous, well-defined
 - 3: Somewhat clear but could be more specific
-- 1: Vague, ambiguous, unclear
+- 1-2: Contains vague, subjective terms (e.g., fast, simple, user-friendly)
+- 1: Ambiguous, unclear
 
 **Measurable (1-5):**
 - 5: Quantifiable metrics, testable
 - 3: Partially measurable
+- 1-2: Lacks specific numbers/targets; uses vague performance descriptors
 - 1: Not measurable, subjective
 
 **Attainable (1-5):**
@@ -107,7 +116,7 @@ From the PRD's Functional Requirements section, extract:
 Return scoring table with all FR scores and improvement suggestions for low-scoring FRs."
 
 **Graceful degradation (if no Task tool):**
-- Manually score each FR on SMART criteria
+- Manually score each FR on SMART criteria based on the vague words script output and guidelines above
 - Note FRs with low scores
 - Provide improvement suggestions
 

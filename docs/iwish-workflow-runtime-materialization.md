@@ -5,7 +5,7 @@
 I-Wish wrapper commands in `.agent/workflows/` are source assets. Installed I-Wish projects are expected to have a materialized runtime under `_iwish/`, especially:
 
 - `_iwish/core/tasks/workflow.xml`
-- `_iwish/bmm/workflows/4-implementation/<workflow>/workflow.yaml`
+- `_iwish/delivery/workflows/4-implementation/<workflow>/workflow.yaml`
 
 When these files are missing in this source/template repository, that is a packaging state, not a story implementation defect. Source mode may use explicit fallback. Project runtime mode must materialize or repair the files before running workflow commands.
 
@@ -28,13 +28,13 @@ When these files are missing in this source/template repository, that is a packa
 
 | Runtime Path | Source Path | Class | Materialization |
 |---|---|---|---|
-| `_iwish/bmm/workflows/4-implementation/create-story/workflow.yaml` | `.agent/workflows/iwish-bmm-create-story.md` | workflow config | generated manifest |
-| `_iwish/bmm/workflows/4-implementation/code-review/workflow.yaml` | `.agent/workflows/iwish-bmm-code-review.md` | workflow config | generated manifest |
-| `_iwish/bmm/workflows/4-implementation/Vegeta-story/workflow.yaml` | `.agent/workflows/iwish-bmm-dev-story.md` | workflow config | generated manifest |
-| `_iwish/bmm/workflows/4-implementation/sprint-planning/workflow.yaml` | `.agent/workflows/iwish-bmm-sprint-planning.md` | workflow config | generated manifest |
-| `_iwish/bmm/workflows/4-implementation/sprint-status/workflow.yaml` | `.agent/workflows/iwish-bmm-sprint-status.md` | workflow config | generated manifest |
-| `_iwish/bmm/workflows/4-implementation/correct-course/workflow.yaml` | `.agent/workflows/iwish-bmm-correct-course.md` | workflow config | generated manifest |
-| `_iwish/bmm/workflows/4-implementation/retrospective/workflow.yaml` | `.agent/workflows/iwish-bmm-retrospective.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/create-story/workflow.yaml` | `.agent/workflows/iwish-bmm-create-story.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/code-review/workflow.yaml` | `.agent/workflows/iwish-bmm-code-review.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/Vegeta-story/workflow.yaml` | `.agent/workflows/iwish-bmm-dev-story.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/sprint-planning/workflow.yaml` | `.agent/workflows/iwish-bmm-sprint-planning.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/sprint-status/workflow.yaml` | `.agent/workflows/iwish-bmm-sprint-status.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/correct-course/workflow.yaml` | `.agent/workflows/iwish-bmm-correct-course.md` | workflow config | generated manifest |
+| `_iwish/delivery/workflows/4-implementation/retrospective/workflow.yaml` | `.agent/workflows/iwish-bmm-retrospective.md` | workflow config | generated manifest |
 
 `dragonball_distribution/` is a packaged source mirror. It is not the active runtime source for this checkout.
 

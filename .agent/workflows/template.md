@@ -1,3 +1,13 @@
+---
+type: I-Wish UI Spec
+title: "UI Spec: Story {{story_key}} — {{story_title}}"
+description: "UI and UX specification for Story {{story_key}}"
+resource: "file://{project-root}/_iwish-output/2. Product Planning/2.3. ui-ux-spec.md"
+tags: ["ui-spec", "ux"]
+timestamp: "{{date}}"
+links_to: ["Story-{{story_key}}"]
+---
+
 # UI Spec: Story {{story_key}} — {{story_title}}
 
 **Status:** {{status}}
@@ -15,10 +25,34 @@
 
 ---
 
-## 2. Component Hierarchy
+## 2. Navigation, Routing & Menu Placement
+
+| Screen | Target Route (URL) | Parent Menu / Tab | Child / Sub-tab | Navigation Flow / Access Path | Menu Icon / Label |
+|:------:|--------------------|-------------------|-----------------|------------------------------|-------------------|
+| {{screen_name}} | {{route}} | {{parent_menu}} | {{child_tab}} | {{access_path}} | {{menu_icon_label}} |
+
+**Navigation Behavior:**
+- **Access Flow**: [Describe step-by-step how the user navigates to this screen from the landing or home view]
+- **Sidebar/Menu Highlight**: [Specify which menu item or sidebar item is active and highlighted when viewing this screen]
+- **Breadcrumbs**: [Define breadcrumb path, e.g. Home > Settings > Security]
+- **Redirects & Gating**: [Describe any auto-redirects, e.g. redirect to login if unauthenticated, or redirect to onboarding if workspace is new]
+- **Navigation State**: [Specify if any query params or state are passed during navigation, e.g. `?workspaceId=123`]
+
+**Navigation Tree Cross-Check:**
+- **Feature Hierarchy Nav Tree**: {{feature_hierarchy_nav_tree}}
+
+---
+
+## 3. Component Hierarchy
 
 ### Screen: {{screen_name}} (`{{route}}`)
 
+#### 3.1. Mermaid Layout Diagram
+```mermaid
+{{screen_layout_mermaid}}
+```
+
+#### 3.2. Detailed Tree Structure
 ```
 {{screen_name}}Page
 ├── {{SectionComponent}}
@@ -38,7 +72,7 @@
 
 ---
 
-## 3. Responsive Layout
+## 4. Responsive Layout
 
 ### Breakpoints for {{target_portal}}
 
@@ -71,7 +105,7 @@
 
 ---
 
-## 4. Design Tokens
+## 5. Design Tokens
 
 ### Colors (from UX Spec)
 
@@ -117,7 +151,7 @@
 
 ---
 
-## 5. Interaction Patterns
+## 6. Interaction Patterns
 
 | # | Component | User Action | System Response | Loading | Error | Animation |
 |:-:|-----------|------------|-----------------|---------|-------|-----------|
@@ -131,7 +165,7 @@
 
 ---
 
-## 6. Data Contracts (API ↔ Component)
+## 7. Data Contracts (API ↔ Component)
 
 ### {{Component}} → `{{API_ENDPOINT}}`
 
@@ -157,7 +191,7 @@ interface {{ResponseType}} {
 
 ---
 
-## 7. Accessibility Requirements
+## 8. Accessibility Requirements
 
 | Requirement | Implementation | WCAG |
 |-------------|---------------|------|
@@ -170,7 +204,7 @@ interface {{ResponseType}} {
 
 ---
 
-## 8. Visual References
+## 9. Visual References
 
 ### Design System Source
 - **Style:** {{style_name}} (from ui-ux)
@@ -186,16 +220,31 @@ interface {{ResponseType}} {
 
 ---
 
-## 9. [STITCH_PROMPT_INJECTION]
+## 10. [STITCH_PROMPT_INJECTION]
 
 > **For Stitch MCP Generation:** Copy and paste the block below into your Stitch tool.
 ```
-{{stitch_prompt_injection}}
+[DESIGN_SYSTEM_CONTEXT]
+Design System Asset ID: {{portal_design_system_id}}
+Brand Assets: {{brand_assets_list}}
+Page Override Rules: {{page_override_rules}}
+
+[MANDATORY_LAYOUT_STRUCTURE]
+Adhere strictly to the layout hierarchy and component relationships defined in this Mermaid diagram:
+{{screen_layout_mermaid}}
+
+[CONTENT_&_INTERACTION_REQUIREMENTS]
+Product Context: {{project_name}} - {{target_portals}}
+Feature Scope: Story {{story_key}} — {{story_title}}
+Navigation Context: {{feature_hierarchy_nav_tree}}
+Acceptance Criteria: {{story_acceptance_criteria}}
+Target Persona & Device: {{target_persona}} — {{target_device}}
+Specialist Notes: {{ui_ux_story_notes}}
 ```
 
 ---
 
-## 10. [POST_STITCH_ENRICHMENT_LOGIC]
+## 11. [POST_STITCH_ENRICHMENT_LOGIC]
 
 > **For Dev Implementation (dev-agent):** This section contains dynamic behaviors, animations, or observers that Stitch cannot generate. **MUST BE IMPLEMENTED.**
 ```javascript

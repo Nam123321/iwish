@@ -3,7 +3,7 @@ name: 'step-05-epic-quality-review'
 description: 'Validate epics and stories against create-epics-and-stories best practices'
 
 nextStepFile: './step-06-final-assessment.md'
-outputFile: '{planning_artifacts}/implementation-readiness-report-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/implementation-readiness-report-{{date}}.md'
 ---
 
 # Step 5: Epic Quality Review
@@ -247,7 +247,7 @@ Append to {outputFile}:
 - Verify `[KB-SYNC:]` tags have corresponding configurations
 
 #### C. Test Strategy Traceability
-- Verify `{output_folder}/test-specs/test-strategy-matrix.md` exists
+- Verify `{planning_artifacts}/2. Product Planning/2.2c. test-strategy-matrix.md` exists
 - Check that ALL epics appear in the test coverage summary
 - Verify `[MANUAL-TEST]` tagged ACs appear in the Manual Test Catalog
 - Flag epics with 0% automation coverage as ⚠️ **LOW-TEST-COVERAGE**

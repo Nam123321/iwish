@@ -1,0 +1,18 @@
+id: workflow-fix-bug
+name: fix-bug
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [implement, validate]
+stages: [bug-triage, root-cause-analysis, regression-validation]
+triggers: [fix bug, root cause, regression, bug report]
+anti_triggers: [greenfield-prd]
+primary_agents: [Vegeta-agent, review-agent]
+primary_workflows: [fix-bug]
+supportive_skills: [Tien-Shinhan-simulator-guardian, pivot-guardian]
+tool_dependencies: [graph, browser]
+constraints:
+  - Must not assume graph silence means no impact and should gather browser evidence when the bug touches UI behavior.
+source_path: /.agent/workflows/fix-bug.md
+story_refs: [story-1.9]
+tags: [active-noncanonical, bugfix, graph, browser]

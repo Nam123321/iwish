@@ -10,7 +10,8 @@ module.exports = [
       '.bmad-sandbox/**',
       '.agent/**',
       'artifacts/**',
-      '**/_bmad-output/**'
+      '**/_bmad-output/**',
+      '**/_iwish-output/**'
     ]
   },
   {

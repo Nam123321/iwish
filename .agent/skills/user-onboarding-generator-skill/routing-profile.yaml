@@ -1,0 +1,12 @@
+name: user-onboarding-generator-skill
+role: supportive
+shape: skill
+phase: Implement
+stage: User Onboarding
+triggers:
+  - "generate onboarding"
+  - "create user documentation"
+anti_triggers:
+  - "login user"
+primary_agents: []
+review_pack_link: "integration-guide.md"

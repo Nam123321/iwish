@@ -60,10 +60,13 @@ const CANONICAL_WORKFLOW_NAMES = new Set([
     'research-solution-sources',
     'register-skill-pack',
     'absorb-repo',
+    'tournament',
     'canary',
     'simulate-user',
     'fix-bug',
     'codebase-health',
+    'flow',
+    'update-knowledge-formatter',
 ]);
 const TRANSITIONAL_FUNCTION_AGENT_NAMES = new Set(['data-architect', 'data-strategist']);
 const LEGACY_PERSONA_WORKFLOW_NAMES = new Set(Object.keys(constants_1.LEGACY_AGENT_ALIASES));
@@ -100,7 +103,8 @@ function isWorkflowSupportAsset(name) {
 }
 function listBasenames(dirPath, matcher) {
     if (!fs.existsSync(dirPath)) {
-        return [];
+        const emptyBasenames = [];
+        return emptyBasenames;
     }
     return fs
         .readdirSync(dirPath)
@@ -110,7 +114,8 @@ function listBasenames(dirPath, matcher) {
 }
 function listSkillDirs(dirPath) {
     if (!fs.existsSync(dirPath)) {
-        return [];
+        const emptySkillDirs = [];
+        return emptySkillDirs;
     }
     return fs
         .readdirSync(dirPath)

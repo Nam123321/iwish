@@ -1,0 +1,19 @@
+id: workflow-competitor-research
+name: competitor-research
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discover]
+stages: [competitor-research]
+triggers: [competitor, rival, competitor-research, competitor-analysis, pricing, gtm, media-presence]
+anti_triggers: [final-code-patch]
+primary_agents: [research-agent, Bulma-agent, orch-agent]
+primary_workflows: [competitor-research]
+supportive_skills: [github-deep-research]
+tool_dependencies: [graph]
+constraints:
+  - Run during the discover phase to identify and analyze market alternatives.
+review_pack: docs/open-modules/research-integration-guide.md
+source_path: /.agent/workflows/iwish-feature-competitor-research.md
+story_refs: [story-1.7]
+tags: [research, competitor, canonical]

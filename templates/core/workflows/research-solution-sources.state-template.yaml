@@ -1,0 +1,20 @@
+workflow: research-solution-sources
+current_stage: discover
+completed_stages: []
+pending_stages:
+  - discover
+  - enrich
+  - trust-check
+  - deep-dive
+  - recommend
+produced_artifacts: {}
+requires_user_review: false
+review_checkpoint: null
+blocked_reason: null
+resume_from: step-rss-01-discover.md
+external_search_required: false
+internal_only_request: false
+preferred_shape: null
+final_verdict: null
+next_action: null
+notes: ""

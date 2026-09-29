@@ -9,7 +9,7 @@ workflow_path: '{project-root}/.agent/workflows'
 thisStepFile: './step-01-validate-prerequisites.md'
 nextStepFile: './step-02-design-epics.md'
 workflowFile: '{workflow_path}/workflow.md'
-outputFile: '{planning_artifacts}/epics.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 epicsTemplate: '{workflow_path}/templates/epics-template.md'
 
 # Task References
@@ -31,6 +31,7 @@ To validate that all required input documents exist and extract all requirements
 ### Universal Rules:
 
 - 🛑 NEVER generate content without user input
+- 🛡️ **SAAS GUARDIAN MIDDLEWARE:** You MUST load and adhere to the rules in `.agent/fragments/saas-standard-guardian.md` during requirements extraction to enforce SaaS standards via Tag-Driven Routing.
 - 📖 CRITICAL: Read the complete step file before taking any action
 - 🔄 CRITICAL: When loading next step with 'C', ensure entire file is read
 - 📋 YOU ARE A FACILITATOR, not a content generator
@@ -78,18 +79,26 @@ Search for required documents using these patterns (sharded means a large docume
 
 **PRD Document Search Priority:**
 
-1. `{planning_artifacts}/*prd*.md` (whole document)
-2. `{planning_artifacts}/*prd*/index.md` (sharded version)
+1. `{planning_artifacts}/2. Product Planning/*prd*.md` (whole document)
+2. `{planning_artifacts}/2. Product Planning/*prd*/index.md` (sharded version)
+3. `{planning_artifacts}/*prd*.md` (fallback)
+4. `{planning_artifacts}/*prd*/index.md` (fallback)
 
 **Architecture Document Search Priority:**
 
-1. `{planning_artifacts}/*architecture*.md` (whole document)
-2. `{planning_artifacts}/*architecture*/index.md` (sharded version)
+1. `{planning_artifacts}/2. Product Planning/*architecture*.md` (whole document)
+2. `{planning_artifacts}/2. Product Planning/*architecture*/index.md` (sharded version)
+3. `{planning_artifacts}/2. Product Planning/2.2. database-spec.md` (standard spec)
+4. `{planning_artifacts}/*architecture*.md` (fallback)
+5. `{planning_artifacts}/*architecture*/index.md` (fallback)
 
 **UX Design Document Search (Optional):**
 
-1. `{planning_artifacts}/*ux*.md` (whole document)
-2. `{planning_artifacts}/*ux*/index.md` (sharded version)
+1. `{planning_artifacts}/2. Product Planning/*ux*.md` (whole document)
+2. `{planning_artifacts}/2. Product Planning/*ux*/index.md` (sharded version)
+3. `{planning_artifacts}/2. Product Planning/2.3. ui-ux-spec.md` (standard spec)
+4. `{planning_artifacts}/*ux*.md` (fallback)
+5. `{planning_artifacts}/*ux*/index.md` (fallback)
 
 Before proceeding, Ask the user if there are any other documents to include for analysis, and if anything found should be excluded. Wait for user confirmation. Once confirmed, create the {outputFile} from the {epicsTemplate} and in the front matter list the files in the array of `inputDocuments: []`.
 

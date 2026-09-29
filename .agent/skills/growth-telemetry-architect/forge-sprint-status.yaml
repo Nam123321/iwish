@@ -1,0 +1,8 @@
+capability: growth-telemetry-architect
+type: SKILL
+status: spec-approved
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: pending

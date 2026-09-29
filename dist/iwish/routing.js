@@ -54,19 +54,37 @@ function countFiles(dirPath) {
     if (!fs.existsSync(dirPath)) {
         return 0;
     }
-    return fs.readdirSync(dirPath).filter((entry) => !entry.startsWith('.')).length;
+    let count = 0;
+    try {
+        const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+        for (const entry of entries) {
+            if (entry.name.startsWith('.'))
+                continue;
+            if (entry.isDirectory()) {
+                count += countFiles(path.join(dirPath, entry.name));
+            }
+            else {
+                count++;
+            }
+        }
+    }
+    catch (e) { }
+    return count;
 }
 function getTargetAgent(canonicalCommand) {
     switch (canonicalCommand) {
         case '/idea-challenge':
             return 'pm-agent';
         case '/plan':
+        case '/project-expansion-review':
             return 'pm-agent';
         case '/review':
+        case '/edge-case-guardian':
             return 'review-agent';
         case '/make-ui-spec':
             return 'ux-agent';
         case '/research':
+        case '/idea-discover':
             return 'research-agent';
         case '/pivot-project':
             return 'orch-agent';
@@ -83,6 +101,11 @@ function getTargetAgent(canonicalCommand) {
         case '/register-skill-pack':
         case '/absorb-repo':
             return 'capability-agent';
+        case '/brand':
+            return 'creative-agent';
+        case '/flow':
+        case '/update-knowledge-formatter':
+            return 'orch-agent';
         default:
             return 'orch-agent';
     }
@@ -114,6 +137,15 @@ function detectCommand(normalizedRequest) {
             routeReason: 'Existing-project or brownfield bootstrap intent detected',
         };
     }
+    if (/\b(idea-discover|idea discover|discover idea|mom test|jtbd|start idea|new idea)\b/.test(normalizedRequest) ||
+        /phỏng vấn ý tưởng|làm rõ ý tưởng|khám phá ý tưởng/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/idea-discover',
+            legacyAliasMatched: null,
+            targetAgent: 'research-agent',
+            routeReason: 'Initial idea discovery or elicitation intent detected',
+        };
+    }
     if (/\b(prfaq|working backwards|working-backwards|press release first|customer faq|internal faq|idea challenge|stress-test (this )?idea|validate (this )?(idea|concept)|product concept)\b/.test(normalizedRequest) ||
         normalizedRequest.includes('challenge assumptions') ||
         /phản biện ý tưởng|thử thách ý tưởng|đánh giá ý tưởng/.test(normalizedRequest)) {
@@ -130,6 +162,23 @@ function detectCommand(normalizedRequest) {
             legacyAliasMatched: null,
             targetAgent: /\b(pivot|re-route|reroute|scope drift|mid sprint|mid-sprint)\b/.test(normalizedRequest) ? 'orch-agent' : 'pm-agent',
             routeReason: 'Strategic advantage or business differentiation intent detected',
+        };
+    }
+    if (/\b(project expansion|feature expansion|expansion review|evaluate expansion|project-expansion-review|per review)\b/.test(normalizedRequest) ||
+        /đánh giá mở rộng|đánh giá tác động mở rộng|review mở rộng/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/project-expansion-review',
+            legacyAliasMatched: null,
+            targetAgent: 'pm-agent',
+            routeReason: 'Project expansion or impact evaluation intent detected',
+        };
+    }
+    if (/\b(retrofit okf|upgrade okf|update okf|update knowledge formatter|migrate okf|retrofit-okf|upgrade-okf|update-knowledge-formatter)\b/i.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/update-knowledge-formatter',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Open Knowledge Format retrofit or upgrade intent detected',
         };
     }
     if (/\b(course correct|course-correct|pivot|rescope|scope drift|major change|significant change|mid sprint|mid-sprint|wrong direction|re-route|reroute|change navigation)\b/.test(normalizedRequest)) {
@@ -186,6 +235,14 @@ function detectCommand(normalizedRequest) {
             routeReason: 'Review intent detected',
         };
     }
+    if (/\b(edge-case-guardian|edge-case-guardiant|edge case guardian|edge case guardiant|8-pillar|fmea)\b/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/edge-case-guardian',
+            legacyAliasMatched: null,
+            targetAgent: 'review-agent',
+            routeReason: 'Edge Case Guardian / 8-Pillar scan intent detected',
+        };
+    }
     if (/\b(enhance|evolve|upgrade|refine|improve|patch)\s+(an?\s+|the\s+)?(skill|workflow|agent)\b/.test(normalizedRequest)) {
         return {
             canonicalCommand: '/enhance-skill',
@@ -194,12 +251,31 @@ function detectCommand(normalizedRequest) {
             routeReason: 'Capability evolution intent detected',
         };
     }
-    if (/\b(ui|ux|design|figma|stitch|layout|screen)\b/.test(normalizedRequest)) {
+    if (/\b(brand|logo|guideline|brand identity|rebrand|branding|brand-id|brand-guideline)\b/.test(normalizedRequest) ||
+        /logo|nhãn hiệu|thương hiệu|guideline thương hiệu/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/brand',
+            legacyAliasMatched: null,
+            targetAgent: 'creative-agent',
+            routeReason: 'Brand identity or logo design/refactoring intent detected',
+        };
+    }
+    if (/\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
+        /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)) {
         return {
             canonicalCommand: '/make-ui-spec',
             legacyAliasMatched: null,
             targetAgent: 'ux-agent',
             routeReason: 'UI/design intent detected',
+        };
+    }
+    if (/\b(dev-pipeline|flow workflow|sdlc pipeline|sequenc(e|tial) flow)\b/.test(normalizedRequest) ||
+        /phát triển epic và story theo quy trình|go ahead với story|go ahead story|dev story|deploy story|deploy epic|quy trình|phát triển.*quy trình|chạy story.*quy trình|phát triển epic.*quy trình/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/flow',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Sequential SDLC flow / pipeline intent detected',
         };
     }
     if (/\b(plan|prd|brief|roadmap|priorit(y|ize)|product strategy|product plan)\b/.test(normalizedRequest)) {
@@ -208,6 +284,23 @@ function detectCommand(normalizedRequest) {
             legacyAliasMatched: null,
             targetAgent: 'pm-agent',
             routeReason: 'Product planning intent detected',
+        };
+    }
+    if (/\b(reconcile|reconciliation|sync requirements|sync stories|sync epics|rebuild index|rebuild status|broken link|broken links|validate links|validate-links)\b/.test(normalizedRequest) ||
+        /đồng bộ.*(story|epic|yêu cầu)|dong bo.*(story|epic|yeu cau)/.test(normalizedRequest) ||
+        /thay đổi.*(story|epic)|thay doi.*(story|epic)/.test(normalizedRequest) ||
+        /đổi tên.*(story|epic)|doi ten.*(story|epic)/.test(normalizedRequest) ||
+        /gộp.*(story|epic)|gop.*(story|epic)/.test(normalizedRequest) ||
+        /chuyển.*epic|chuyen.*epic/.test(normalizedRequest) ||
+        /xóa.*(story|epic)|xoa.*(story|epic)/.test(normalizedRequest) ||
+        /tạo mới.*(story|epic)|tao moi.*(story|epic)/.test(normalizedRequest) ||
+        /tạo thêm.*(story|epic)|tao them.*(story|epic)/.test(normalizedRequest) ||
+        /thêm mới.*(story|epic)|them moi.*(story|epic)/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/reconcile-change',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Epic/Story requirement modification or sync intent detected',
         };
     }
     if (/\b(story|epic|spec|acceptance criteria)\b/.test(normalizedRequest)) {
@@ -234,12 +327,28 @@ function detectCommand(normalizedRequest) {
             routeReason: 'Retrospective intent detected',
         };
     }
+    if (/\b(gen-dashboard|gen dashboard|generate dashboard|idea navigator)\b/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/gen-dashboard',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'Dashboard generation intent detected',
+        };
+    }
     if (/\b(status|sprint|progress|blocker|blockers|release note|summary|weekly update|report)\b/.test(normalizedRequest)) {
         return {
             canonicalCommand: '/status',
             legacyAliasMatched: null,
             targetAgent: 'orch-agent',
             routeReason: 'Status/communication intent detected',
+        };
+    }
+    if (/\b(tournament|ab-testing|ab-tournament|đấu trường|so tài|so sánh plugin)\b/.test(normalizedRequest)) {
+        return {
+            canonicalCommand: '/tournament',
+            legacyAliasMatched: null,
+            targetAgent: 'orch-agent',
+            routeReason: 'A/B Tournament intent detected',
         };
     }
     if (/\b(bug|fix|patch|refactor|implement|code|feature)\b/.test(normalizedRequest)) {
@@ -277,7 +386,8 @@ function getGraphStatus(projectRoot) {
 function loadRecentRouteDecisions(projectRoot, limit = 3) {
     const dir = path.join((0, constants_1.getRuntimeRoot)(projectRoot, 'iwish'), 'runtime', 'route-decisions');
     if (!fs.existsSync(dir)) {
-        return [];
+        const emptyDecisions = [];
+        return emptyDecisions;
     }
     return fs
         .readdirSync(dir)
@@ -289,7 +399,8 @@ function loadRecentRouteDecisions(projectRoot, limit = 3) {
             return fs.readJsonSync(path.join(dir, entry));
         }
         catch {
-            return {};
+            const emptyObj = {};
+            return emptyObj;
         }
     });
 }
@@ -308,6 +419,14 @@ function getKeywordScore(normalizedRequest, canonicalCommand) {
     }
     if (canonicalCommand === '/plan') {
         if (/\b(plan|prd|brief|roadmap)\b/.test(normalizedRequest))
+            return 18;
+    }
+    if (canonicalCommand === '/brand') {
+        if (/\b(brand|logo|guideline|identity|rebrand|prism)\b/.test(normalizedRequest))
+            return 18;
+    }
+    if (canonicalCommand === '/reconcile-change') {
+        if (/\b(reconcile|reconciliation|sync|rebuild|link|broken|merge|rename|move|đồng bộ|đổi tên|gộp|chuyển|xóa|tạo mới|tạo thêm|thêm mới|tao moi|tao them|them moi)\b/.test(normalizedRequest))
             return 18;
     }
     return 10;
@@ -446,6 +565,13 @@ function buildRecommendations(canonicalCommand, normalizedRequest) {
             artifactChain: ['pivot notes', 'impact analysis', 'updated plan / story / epic context'],
         };
     }
+    if (canonicalCommand === '/edge-case-guardian') {
+        return {
+            workflowChain: ['/edge-case-guardian'],
+            supportiveSkills: ['edge-case-guardian'],
+            artifactChain: ['risk-matrix', 'knowledge-graph'],
+        };
+    }
     if (canonicalCommand === '/research-solution-sources') {
         const explicitInternalOnly = /\b(internal only|internal capability|only internal|repo mình|nội bộ|existing iwish|existing i-wish)\b/.test(normalizedRequest);
         const explicitExternalSearch = /\b(github|repo|repository|framework|package|module|open source|open-source|external)\b/.test(normalizedRequest);
@@ -469,6 +595,27 @@ function buildRecommendations(canonicalCommand, normalizedRequest) {
                     'solution-research-verdict.md',
                     'next action: enhance-skill | create-skill | register-skill-pack | absorb-repo | reference only | compose multiple solutions',
                 ],
+        };
+    }
+    if (canonicalCommand === '/tournament') {
+        return {
+            workflowChain: ['/tournament', 'setup', 'dispatch', 'gate', 'human', 'merge'],
+            supportiveSkills: ['pivot-guardian', 'qa-simulator-guardian'],
+            artifactChain: ['_iwish-output/tournaments/{task-slug}-scorecard.md'],
+        };
+    }
+    if (canonicalCommand === '/brand') {
+        return {
+            workflowChain: ['/brand', 'strategy-intake', 'logo-brainstorm', 'prompt-generation', 'design-connection', 'logo-blocker', 'brand-refactoring'],
+            supportiveSkills: ['ux-guardian'],
+            artifactChain: ['questionnaire.md', 'logo-options.md', 'brand-guidelines.md'],
+        };
+    }
+    if (canonicalCommand === '/reconcile-change') {
+        return {
+            workflowChain: ['/reconcile-change'],
+            supportiveSkills: ['validate-links'],
+            artifactChain: ['impact-report.md', 'sprint-status.yaml'],
         };
     }
     return {
@@ -516,6 +663,17 @@ async function routeRequest(projectRoot, request) {
             };
             targetAgent = agentsMap[String(currentPhase)] || 'orch-agent';
             routeReason = `Continuing active Repo Absorption (Phase ${currentPhase}) using ${targetAgent}`;
+        }
+        else if (wfName === 'tournament') {
+            const agentsMap = {
+                'setup': 'orch-agent',
+                'dispatch': 'orch-agent',
+                'gate': 'review-agent',
+                'human': 'orch-agent',
+                'merge': 'orch-agent'
+            };
+            targetAgent = agentsMap[String(currentPhase)] || 'orch-agent';
+            routeReason = `Continuing active A/B Tournament (Phase ${currentPhase}) using ${targetAgent}`;
         }
         else if (wfName === 'create-skill') {
             const agentsMap = {
@@ -605,11 +763,28 @@ async function routeRequest(projectRoot, request) {
         canonical: entry.canonical,
         source: entry.source,
     }));
-    const storyCount = sourceOfTruth.storyIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'stories')) || countFiles(path.join(projectRoot, '_iwish-output', 'stories'));
-    const epicCount = sourceOfTruth.epicIds.length || countFiles(path.join(projectRoot, '_bmad-output', 'epics')) || countFiles(path.join(projectRoot, '_iwish-output', 'epics'));
-    const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) || fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml'));
+    const storyCount = sourceOfTruth.storyIds.length ||
+        countFiles(path.join(projectRoot, '_bmad-output', 'stories')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', 'stories')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story'));
+    const epicCount = sourceOfTruth.epicIds.length ||
+        countFiles(path.join(projectRoot, '_bmad-output', 'epics')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', 'epics')) ||
+        countFiles(path.join(projectRoot, '_iwish-output', '2. Product Planning'));
+    const bugTrackerPresent = fs.existsSync(path.join(projectRoot, '_bmad-output', 'bug-tracker.yaml')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', 'bug-tracker.yaml')) ||
+        fs.existsSync(path.join(projectRoot, '_iwish-output', '3. Development', 'bug-tracker.yaml'));
     const routeProfile = routingProfiles.find((profile) => profile.kind === 'workflow' && profile.name === route.canonicalCommand.replace(/^\//, ''));
-    const toolSetupPrompts = (0, tooling_1.buildToolSetupPrompts)(routeProfile?.tool_dependencies || [], status.selectedTools);
+    const toolDeps = new Set(routeProfile?.tool_dependencies || []);
+    if (route.targetAgent === 'ux-agent' ||
+        route.canonicalCommand === '/ux-agent' ||
+        route.canonicalCommand === '/create-ux-design' ||
+        route.canonicalCommand === '/make-ui-spec' ||
+        /\b(ui|ux|design|figma|stitch|canva|claude design|layout|screen)\b/.test(normalizedRequest) ||
+        /thiết kế|tạo thiết kế|tool thiết kế|website thiết kế|công cụ thiết kế/.test(normalizedRequest)) {
+        toolDeps.add('design');
+    }
+    const toolSetupPrompts = (0, tooling_1.buildToolSetupPrompts)(Array.from(toolDeps), status.selectedTools);
     const scoring = computeScoring(projectRoot, normalizedRequest, route.canonicalCommand, route.routeReason, truthMatches, sourceOfTruth, Boolean(routeProfile));
     const recommendations = buildRecommendations(route.canonicalCommand, normalizedRequest);
     const requiresReconciliation = route.canonicalCommand === '/code' ||

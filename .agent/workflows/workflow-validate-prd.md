@@ -2,7 +2,7 @@
 legacy_name: validate-prd-legacy
 description: Validate an existing PRD against I-Wish standards - comprehensive
   review for completeness, clarity, and quality
-main_config: "{project-root}/_iwish/bmm/config.yaml"
+main_config: "{project-root}/_iwish/config.yaml"
 validateWorkflow: ./step-v-01-discovery.md
 ---
 

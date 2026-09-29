@@ -60,10 +60,13 @@ const CANONICAL_WORKFLOW_NAMES = new Set([
   'research-solution-sources',
   'register-skill-pack',
   'absorb-repo',
+  'tournament',
   'canary',
   'simulate-user',
   'fix-bug',
   'codebase-health',
+  'flow',
+  'update-knowledge-formatter',
 ]);
 
 const TRANSITIONAL_FUNCTION_AGENT_NAMES = new Set(['data-architect', 'data-strategist']);
@@ -109,7 +112,8 @@ function isWorkflowSupportAsset(name: string): boolean {
 
 function listBasenames(dirPath: string, matcher: (entry: string) => boolean): string[] {
   if (!fs.existsSync(dirPath)) {
-    return [];
+    const emptyBasenames: string[] = [];
+    return emptyBasenames;
   }
 
   return fs
@@ -121,7 +125,8 @@ function listBasenames(dirPath: string, matcher: (entry: string) => boolean): st
 
 function listSkillDirs(dirPath: string): string[] {
   if (!fs.existsSync(dirPath)) {
-    return [];
+    const emptySkillDirs: string[] = [];
+    return emptySkillDirs;
   }
 
   return fs

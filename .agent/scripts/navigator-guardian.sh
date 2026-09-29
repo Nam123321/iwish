@@ -8,7 +8,7 @@ echo "========================================"
 
 # Resolve the absolute path to the project root assuming script is run from project root
 PROJECT_ROOT=$(pwd)
-SYNC_SCRIPT="$PROJECT_ROOT/_bmad-output/idea-navigator/scripts/sync-navigator.py"
+SYNC_SCRIPT="$PROJECT_ROOT/_iwish-output/idea-navigator/scripts/sync-navigator.py"
 
 if [ ! -f "$SYNC_SCRIPT" ]; then
   echo "⚠️ Navigator Guardian Warning: Sync script not found at $SYNC_SCRIPT"

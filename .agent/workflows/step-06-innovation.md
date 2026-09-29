@@ -4,7 +4,7 @@ description: 'Detect and explore innovative aspects of the product (optional ste
 
 # File References
 nextStepFile: './step-07-project-type.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Data Files
 projectTypesCSV: './project-types.csv'

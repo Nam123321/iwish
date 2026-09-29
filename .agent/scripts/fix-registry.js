@@ -39,6 +39,10 @@ textFiles.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
   const relativePath = path.relative(process.cwd(), file);
   
+  if (relativePath.includes('routing-profile')) return;
+  if (relativePath.includes('template') || relativePath.includes('instructions')) return;
+  if (relativePath.includes(path.sep + 'rules' + path.sep) || relativePath.includes(path.sep + 'references' + path.sep)) return;
+  
   let newContent = content;
   let modified = false;
 

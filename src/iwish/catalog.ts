@@ -53,6 +53,7 @@ type ToolRegistry = {
 
 const CANONICAL_COMMANDS: Array<{ command: string; description: string; tags: string[] }> = [
   { command: '/code', description: 'Implementation, bugfix, patch, and code change flow', tags: ['command', 'dev'] },
+  { command: '/idea-discover', description: 'Discover-phase idea elicitation via the 5 Lenses framework', tags: ['command', 'discover', 'strategy', 'idea'] },
   { command: '/idea-challenge', description: 'Discover-phase concept challenge and Working Backwards flow', tags: ['command', 'discover', 'strategy', 'idea'] },
   { command: '/plan', description: 'Product planning, PRD, roadmap, and strategy flow', tags: ['command', 'planning', 'product'] },
   { command: '/make-story', description: 'Story and spec creation flow', tags: ['command', 'planning'] },
@@ -74,6 +75,15 @@ const CANONICAL_COMMANDS: Array<{ command: string; description: string; tags: st
   { command: '/simulate-user', description: 'Simulate business persona user behavior and UX flows', tags: ['command', 'ux', 'testing'] },
   { command: '/fix-bug', description: '8-step hotfix and bug resolution process', tags: ['command', 'dev', 'maintenance'] },
   { command: '/codebase-health', description: 'Scan codebase structure for complexity, duplicates, and nops', tags: ['command', 'architecture', 'refactor'] },
+  { command: '/gen-dashboard', description: 'Synchronize the Idea Navigator and generate HTML user guide/dashboard', tags: ['command', 'tool', 'dashboard'] },
+  { command: '/project-expansion-review', description: 'Evaluate impact of new features or project expansions during development', tags: ['command', 'planning', 'review', 'change-navigation'] },
+  { command: '/tournament', description: 'Parallel A/B Tournament execution for multiple plugins/workflows', tags: ['command', 'testing', 'tournament', 'ab-test'] },
+  { command: '/brand', description: 'Brand identity, logo and brand guideline creation and refactoring flow', tags: ['command', 'design', 'strategy', 'brand'] },
+  { command: '/flow', description: 'Automated Epic/Story SDLC pipeline workflow', tags: ['command', 'sdlc', 'automation', 'pipeline'] },
+  { command: '/update-knowledge-formatter', description: 'Automatically upgrade legacy documentation files to standard OKF frontmatter, validate, index, and update dashboard', tags: ['command', 'maintenance', 'okf'] },
+  { command: '/edge-case-guardian', description: 'Edge Case Guardian 8-Pillar scan and risk analysis workflow', tags: ['command', 'review', 'quality'] },
+  { command: '/make-prototype', description: 'Create an interactive single-file HTML prototype for planning preview', tags: ['command', 'planning', 'prototype', 'design'] },
+  { command: '/create-sim', description: 'Analyze system layers, boundaries, and components, proposing 5 options for user evaluation', tags: ['command', 'planning', 'architecture', 'design'] },
 ];
 
 function readYaml<T>(filePath: string): T {
@@ -90,7 +100,8 @@ export function loadAliasRegistry(projectRoot: string): AliasRegistry {
 export function loadKnowledgeNodes(): KnowledgeNode[] {
   const graphPath = path.join(REPO_ROOT, '.agent', 'knowledge-graph.yaml');
   if (!fs.existsSync(graphPath)) {
-    return [];
+    const emptyNodes: KnowledgeNode[] = [];
+    return emptyNodes;
   }
 
   const doc = readYaml<{ nodes?: KnowledgeNode[] }>(graphPath);

@@ -4,7 +4,7 @@ description: 'Define MVP boundaries and prioritize features across development p
 
 # File References
 nextStepFile: './step-09-functional.md'
-outputFile: '{planning_artifacts}/prd.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

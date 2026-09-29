@@ -22,7 +22,7 @@ const TRIALS_DIR = path.join(AGENT_DIR, 'evolution-lab', 'trials');
 
 const manifestPath = path.join(TRIALS_DIR, `trial-manifest-${trialId}.yaml`);
 const scorecardPath = path.join(TRIALS_DIR, `scorecard-${trialId}.md`);
-const cssPath = path.join(__dirname, '../../_bmad-output/idea-navigator/css/navigator-theme.css');
+const cssPath = path.join(__dirname, '../../_iwish-output/idea-navigator/css/navigator-theme.css');
 
 if (!fs.existsSync(manifestPath)) {
     console.error(`Error: Manifest not found at ${manifestPath}`);

@@ -1,0 +1,17 @@
+id: workflow-code-search
+name: code-search
+kind: workflow
+shape: workflow
+role: supportive
+phases: [discover, solution]
+stages: [codebase-search, technical-research]
+triggers: [code search, semantic search, hybrid search, find related, search code]
+anti_triggers: []
+primary_agents: [orch-agent, Vegeta-agent]
+primary_workflows: [code-search]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/code-search.md
+story_refs: [story-1.1]
+tags: [utility, search]

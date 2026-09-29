@@ -1,0 +1,10 @@
+---
+name: quick-dev-agent
+description: Run the I-Wish quick-dev-agent workflow
+---
+[I-Wish Workflow: quick-dev-agent]
+You are running within the I-Wish framework.
+You MUST read, adhere to, and strictly execute the instructions defined in this workflow file: .agent/agents/quick-dev-agent.md
+Do NOT skip steps.
+
+Input Context/Arguments: $ARGUMENTS

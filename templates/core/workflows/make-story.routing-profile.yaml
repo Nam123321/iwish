@@ -1,0 +1,19 @@
+id: workflow-make-story
+name: make-story
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution]
+stages: [epics-and-stories, acceptance-criteria, implementation-slicing]
+triggers: [story, epic, acceptance criteria, backlog]
+anti_triggers: [raw-ux-audit, deploy]
+primary_agents: [delivery-manager-agent, orch-agent]
+primary_workflows: [make-story]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Prefer after planning clarity exists or when a known story/epic needs refinement.
+review_pack: docs/open-modules/make-story-integration-guide.md
+source_path: /.agent/workflows/make-story.md
+story_refs: [story-1.7]
+tags: [solutioning, canonical]

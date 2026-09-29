@@ -19,6 +19,12 @@ Every new or updated capability MUST have enough structure for another agent to 
 | Verification | Validation commands, manual review criteria, expected outputs, and failure signals are documented. |
 | Source/provenance | The source artifact, user request, memorygraph/KG node, story, or evolution trial that justified the capability is recorded compactly. |
 
+## Zero-Trust Architecture Rules
+
+Before a High-Stakes (Tier 1) capability is accepted as a draft or canonical patch, check:
+- It MUST adhere to the standards in `.agent/fragments/zero-trust-capability-standard.md`.
+- It MUST NOT use raw bash commands for mechanical execution; it MUST wrap them in a Python script using `iwish_runner_core.py`.
+
 ## Trigger Quality and Scope Rules
 
 Before a capability is accepted as a draft or canonical patch, check:

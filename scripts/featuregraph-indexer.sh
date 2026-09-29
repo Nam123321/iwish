@@ -1,7 +1,8 @@
 #!/bin/bash
 # ==============================================================
-# FeatureGraph Indexer — 4-Step Pipeline (AC6)
+# FeatureGraph Indexer — 4-Step Pipeline
 # Parse PRD, Epics, Stories, Feature-Hierarchy → FalkorDB
+# Includes: IMPACTS parser, dual Story-ID regex, path fallback
 # ==============================================================
 # IMPORTANT: Uses Multi-Graph keyspace "featuregraph"
 # All GRAPH.QUERY commands target "featuregraph", NOT "codegraph"
@@ -14,9 +15,118 @@ FALKORDB_HOST="${FALKORDB_HOST:-localhost}"
 FALKORDB_PORT="${FALKORDB_PORT:-6379}"
 GRAPH_NAME="featuregraph"
 PROJECT_ROOT="${1:-.}"
-PLANNING_DIR="${PROJECT_ROOT}/_bmad-output/planning-artifacts"
-STORIES_DIR="${PROJECT_ROOT}/_bmad-output/stories"
-OUTPUT_LOG="${PROJECT_ROOT}/_bmad-output/featuregraph-index.log"
+
+# --- Path Resolution (AC1): _iwish-output/ first, _bmad-output/ fallback ---
+resolve_paths() {
+  if [ -d "${PROJECT_ROOT}/_iwish-output" ]; then
+    local BASE="${PROJECT_ROOT}/_iwish-output"
+    log "Path resolution: using _iwish-output/"
+  elif [ -d "${PROJECT_ROOT}/_bmad-output" ]; then
+    local BASE="${PROJECT_ROOT}/_bmad-output"
+    warn "Path resolution: falling back to _bmad-output/ (legacy)"
+  else
+    error "No _iwish-output/ or _bmad-output/ directory found at ${PROJECT_ROOT}"
+    exit 1
+  fi
+
+  # Planning artifacts: check for planning-artifacts/ subdirectory, then base
+  if [ -d "${BASE}/planning-artifacts" ]; then
+    PLANNING_DIR="${BASE}/planning-artifacts"
+  else
+    PLANNING_DIR="${BASE}"
+  fi
+
+  # Stories directory: check standard path first, then custom path, then find
+  if [ -d "${BASE}/stories" ]; then
+    STORIES_DIR="${BASE}/stories"
+  elif [ -d "${BASE}/3. Development/1. Epic & Story" ]; then
+    STORIES_DIR="${BASE}/3. Development/1. Epic & Story"
+  else
+    # Dynamic find for any directory named "stories" or containing "Epic & Story"
+    local FOUND_STORIES
+    FOUND_STORIES=$(find "${BASE}" -type d \( -name "stories" -o -name "*Epic & Story*" \) -print -quit 2>/dev/null || true)
+    if [ -n "$FOUND_STORIES" ]; then
+      STORIES_DIR="$FOUND_STORIES"
+    else
+      STORIES_DIR="${BASE}"
+    fi
+  fi
+
+  OUTPUT_LOG="${BASE}/featuregraph-index.log"
+  REVIEW_QUEUE="${BASE}/featuregraph-review-queue.yaml"
+
+  # PRD Path: canonical first, then custom, then fallback, then search
+  if [ -f "${PLANNING_DIR}/prd.md" ]; then
+    PRD_PATH="${PLANNING_DIR}/prd.md"
+  elif [ -f "${BASE}/2. Product Planning/2.1. product-brief-or-prd.md" ]; then
+    PRD_PATH="${BASE}/2. Product Planning/2.1. product-brief-or-prd.md"
+  else
+    # Dynamic search for any file containing prd or product-brief, excluding templates/archives
+    local FOUND_PRD
+    FOUND_PRD=$(find "${BASE}" -type f \( -name "*prd*.md" -o -name "*product-brief*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_PRD" ]; then
+      PRD_PATH="$FOUND_PRD"
+    else
+      PRD_PATH="${PLANNING_DIR}/prd.md" # ultimate fallback
+    fi
+  fi
+
+  # Feature Hierarchy: canonical path first, then custom, then fallback
+  if [ -f "${BASE}/2. Product Planning/2.5. feature-hierarchy.md" ]; then
+    FEATURE_HIERARCHY_PATH="${BASE}/2. Product Planning/2.5. feature-hierarchy.md"
+  elif [ -f "${BASE}/2. Product Planning/2.8. feature-hierarchy.md" ]; then
+    FEATURE_HIERARCHY_PATH="${BASE}/2. Product Planning/2.8. feature-hierarchy.md"
+  elif [ -f "${PLANNING_DIR}/feature-hierarchy.md" ]; then
+    FEATURE_HIERARCHY_PATH="${PLANNING_DIR}/feature-hierarchy.md"
+  else
+    # Dynamic find for hierarchy file
+    local FOUND_HIERARCHY
+    FOUND_HIERARCHY=$(find "${BASE}" -type f \( -name "*feature-hierarchy*.md" -o -name "*hierarchy*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_HIERARCHY" ]; then
+      FEATURE_HIERARCHY_PATH="$FOUND_HIERARCHY"
+    else
+      FEATURE_HIERARCHY_PATH=""
+    fi
+  fi
+
+  # Epics file: canonical path first, then custom, then fallback
+  if [ -f "${BASE}/2. Product Planning/2.4. epics-and-stories.md" ]; then
+    EPICS_FILE_PATH="${BASE}/2. Product Planning/2.4. epics-and-stories.md"
+  elif [ -f "${PLANNING_DIR}/epics.md" ]; then
+    EPICS_FILE_PATH="${PLANNING_DIR}/epics.md"
+  else
+    # Dynamic find for epics file
+    local FOUND_EPICS
+    FOUND_EPICS=$(find "${BASE}" -type f \( -name "*epics-and-stories*.md" -o -name "*epics*.md" -o -name "*epics-list*.md" \) 2>/dev/null | grep -vE "(templates|archive|drafts)" | head -n 1 || true)
+    if [ -n "$FOUND_EPICS" ]; then
+      EPICS_FILE_PATH="$FOUND_EPICS"
+    else
+      EPICS_FILE_PATH=""
+    fi
+  fi
+
+  log "  PLANNING_DIR = ${PLANNING_DIR}"
+  log "  STORIES_DIR  = ${STORIES_DIR}"
+  log "  PRD_PATH     = ${PRD_PATH}"
+  if [ -n "$FEATURE_HIERARCHY_PATH" ]; then
+    log "  FEATURE_HIERARCHY = ${FEATURE_HIERARCHY_PATH}"
+  else
+    warn "  FEATURE_HIERARCHY = NOT FOUND (run /feature-hierarchy to generate)"
+  fi
+  if [ -n "$EPICS_FILE_PATH" ]; then
+    log "  EPICS_FILE_PATH   = ${EPICS_FILE_PATH}"
+  else
+    warn "  EPICS_FILE_PATH   = NOT FOUND"
+  fi
+}
+
+# Placeholders — set by resolve_paths()
+PLANNING_DIR=""
+STORIES_DIR=""
+OUTPUT_LOG=""
+REVIEW_QUEUE=""
+FEATURE_HIERARCHY_PATH=""
+PRD_PATH=""
 
 # --- Garbage Filter Lists (IGNORE patterns) ---
 IGNORE_DIRS="archive|templates|drafts|meeting-notes|backups"
@@ -40,6 +150,18 @@ cypher_query() {
     GRAPH.QUERY "$GRAPH_NAME" "$1" 2>&1
 }
 
+# --- FalkorDB Availability Check (AC6) ---
+check_falkordb() {
+  log "Checking FalkorDB availability at ${FALKORDB_HOST}:${FALKORDB_PORT}..."
+  if ! redis-cli -h "$FALKORDB_HOST" -p "$FALKORDB_PORT" PING 2>/dev/null | grep -qi "PONG"; then
+    error "FalkorDB is not reachable at ${FALKORDB_HOST}:${FALKORDB_PORT}"
+    error "Please start FalkorDB first:  docker start falkordb"
+    error "Or run:  docker run -d --name falkordb -p 6379:6379 falkordb/falkordb"
+    exit 1
+  fi
+  success "FalkorDB is running"
+}
+
 # ==============================================================
 # STEP 1: DISCOVERY — Scan & Filter Garbage
 # ==============================================================
@@ -47,8 +169,8 @@ step1_discovery() {
   log "Step 1: DISCOVERY — Scanning planning artifacts..."
   
   # Validate required files exist
-  if [ ! -f "$PLANNING_DIR/prd.md" ]; then
-    error "prd.md not found at $PLANNING_DIR/prd.md"
+  if [ ! -f "$PRD_PATH" ]; then
+    error "prd.md not found at $PRD_PATH"
     exit 1
   fi
 
@@ -72,7 +194,7 @@ step1_discovery() {
     fi
     
     VALID_FILES+=("$file")
-  done < <(find "$PLANNING_DIR" "$STORIES_DIR" -name "*.md" -o -name "*.yaml" 2>/dev/null)
+  done < <(find -L "$PLANNING_DIR" "$STORIES_DIR" -name "*.md" -o -name "*.yaml" 2>/dev/null)
   
   success "Discovery complete: ${#VALID_FILES[@]} valid files found"
 }
@@ -96,38 +218,38 @@ step2_extraction() {
     # Extract FR ID and name (pattern: FR## — Name or FR##: Name)
     if echo "$line" | grep -qE '^[#]*\s*FR[0-9]+'; then
       FR_ID=$(echo "$line" | grep -oE 'FR[0-9]+' | head -1)
-      FR_NAME=$(echo "$line" | sed "s/.*${FR_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs)
+      FR_NAME=$(echo "$line" | sed "s/.*${FR_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs || true)
       
       if [ -n "$FR_ID" ] && [ -n "$FR_NAME" ]; then
         cypher_query "MERGE (fr:FR {id: '${FR_ID}'}) SET fr.name = '${FR_NAME}', fr.updated_at = timestamp()" > /dev/null
         FR_COUNT=$((FR_COUNT + 1))
       fi
     fi
-  done < "$PLANNING_DIR/prd.md"
+  done < "$PRD_PATH"
   success "  Extracted $FR_COUNT FR nodes from prd.md"
 
   # --- Parse epics.md → Epic nodes ---
-  log "  Parsing epics.md for Epic nodes..."
+  log "  Parsing epics file for Epic nodes..."
   EPIC_COUNT=0
-  if [ -f "$PLANNING_DIR/epics.md" ]; then
+  if [ -n "$EPICS_FILE_PATH" ]; then
     while IFS= read -r line; do
       if echo "$line" | grep -qE '^#+\s*Epic\s+[0-9]+'; then
         EPIC_ID=$(echo "$line" | grep -oE '[0-9]+' | head -1)
-        EPIC_NAME=$(echo "$line" | sed "s/.*Epic[[:space:]]*${EPIC_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs)
+        EPIC_NAME=$(echo "$line" | sed "s/.*Epic[[:space:]]*${EPIC_ID}[[:space:]]*[—:–-][[:space:]]*//" | sed 's/[*#]//g' | xargs || true)
         
         cypher_query "MERGE (e:Epic {id: 'E${EPIC_ID}'}) SET e.name = '${EPIC_NAME}', e.updated_at = timestamp()" > /dev/null
         EPIC_COUNT=$((EPIC_COUNT + 1))
       fi
-    done < "$PLANNING_DIR/epics.md"
+    done < "$EPICS_FILE_PATH"
   fi
   success "  Extracted $EPIC_COUNT Epic nodes"
 
   # --- Parse feature-hierarchy.md → Portal nodes ---
   log "  Parsing feature-hierarchy.md for Portal nodes..."
   PORTAL_COUNT=0
-  if [ -f "$PLANNING_DIR/feature-hierarchy.md" ]; then
+  if [ -n "$FEATURE_HIERARCHY_PATH" ]; then
     for portal in "admin" "webstore" "sales-web" "sales-app" "driver-app"; do
-      if grep -qi "$portal" "$PLANNING_DIR/feature-hierarchy.md"; then
+      if grep -qi "$portal" "$FEATURE_HIERARCHY_PATH"; then
         cypher_query "MERGE (p:Portal {name: '${portal}'}) SET p.updated_at = timestamp()" > /dev/null
         PORTAL_COUNT=$((PORTAL_COUNT + 1))
       fi
@@ -135,14 +257,33 @@ step2_extraction() {
   fi
   success "  Extracted $PORTAL_COUNT Portal nodes"
 
-  # --- Parse story files → Story nodes ---
+  # --- Parse story files → Story nodes (AC3: dual-format Story ID) ---
   log "  Parsing story files..."
   STORY_COUNT=0
   if [ -d "$STORIES_DIR" ]; then
-    find "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
-      STORY_ID=$(grep -oE 'S[0-9]+\.[0-9]+' "$story_file" | head -1 || echo "")
-      STORY_NAME=$(head -5 "$story_file" | grep -E '^#' | head -1 | sed 's/^#*[[:space:]]*//' | xargs)
+    find -L "$STORIES_DIR" -name "*.md" -not -path "*archive*" | while read -r story_file; do
+      # AC3: Accept both "Story {N}.{M}" and "S{N}.{M}" formats, normalize to S{N}.{M}
+      RAW_ID=$(grep -oE '(Story[[:space:]]+|S)[0-9]+\.[0-9]+' "$story_file" | head -1 || echo "")
+      STORY_ID=$(echo "$RAW_ID" | sed -E 's/^Story[[:space:]]+/S/')
+      
+      if [ -z "$STORY_ID" ]; then
+        # Fallback: parse from filename (e.g., story-1.1-auth.md -> S1.1)
+        local filename
+        filename=$(basename "$story_file")
+        if [[ "$filename" =~ [sS](tory)?-?([0-9]+\.[0-9]+) ]]; then
+          STORY_ID="S${BASH_REMATCH[2]}"
+        fi
+      fi
+      
+      STORY_NAME=$(head -20 "$story_file" | grep -E '^#' | head -1 | sed 's/^#*[[:space:]]*//' | xargs || true)
       EPIC_REF=$(grep -oE 'E[0-9]+' "$story_file" | head -1 || echo "")
+      
+      if [ -z "$EPIC_REF" ] && [ -n "$STORY_ID" ]; then
+        # Extract Epic ID from STORY_ID (e.g., S1.2 -> E1, S10.3 -> E10)
+        if [[ "$STORY_ID" =~ S([0-9]+)\. ]]; then
+          EPIC_REF="E${BASH_REMATCH[1]}"
+        fi
+      fi
       
       if [ -n "$STORY_ID" ]; then
         cypher_query "MERGE (s:Story {id: '${STORY_ID}'}) SET s.name = '${STORY_NAME}', s.epic_id = '${EPIC_REF}', s.updated_at = timestamp()" > /dev/null
@@ -159,9 +300,9 @@ step2_extraction() {
 step3_mapping() {
   log "Step 3: MAPPING — Building relationships..."
   
-  # --- FR → Epic relationships from epics.md ---
+  # --- FR → Epic relationships from epics file ---
   log "  Mapping FR → Epic (BELONGS_TO)..."
-  if [ -f "$PLANNING_DIR/epics.md" ]; then
+  if [ -n "$EPICS_FILE_PATH" ]; then
     current_epic=""
     while IFS= read -r line; do
       if echo "$line" | grep -qE '^#+\s*Epic\s+[0-9]+'; then
@@ -175,12 +316,24 @@ step3_mapping() {
           " > /dev/null 2>&1
         done
       fi
-    done < "$PLANNING_DIR/epics.md"
+    done < "$EPICS_FILE_PATH"
   fi
+
+  # --- Epic → Story relationships ---
+  log "  Mapping Story → Epic and FR → Story..."
+  cypher_query "
+    MATCH (e:Epic), (s:Story) WHERE s.epic_id = e.id
+    MERGE (s)-[:BELONGS_TO]->(e)
+  " > /dev/null 2>&1
+
+  cypher_query "
+    MATCH (fr:FR)-[:BELONGS_TO]->(e:Epic)<-[:BELONGS_TO]-(s:Story)
+    MERGE (fr)-[:IMPLEMENTED_BY]->(s)
+  " > /dev/null 2>&1
 
   # --- FR → Portal relationships from feature-hierarchy.md ---
   log "  Mapping FR → Portal (DISPLAYED_ON)..."
-  if [ -f "$PLANNING_DIR/feature-hierarchy.md" ]; then
+  if [ -n "$FEATURE_HIERARCHY_PATH" ] && [ -f "$FEATURE_HIERARCHY_PATH" ]; then
     current_portal=""
     while IFS= read -r line; do
       for portal in "admin" "webstore" "sales-web" "sales-app" "driver-app"; do
@@ -196,10 +349,71 @@ step3_mapping() {
           " > /dev/null 2>&1
         done
       fi
-    done < "$PLANNING_DIR/feature-hierarchy.md"
+    done < "$FEATURE_HIERARCHY_PATH"
   fi
 
-  success "  Mapping complete"
+  success "  BELONGS_TO + DISPLAYED_ON mapping complete"
+
+  # --- Step 3b: FR → FR IMPACTS relationships from stories (AC2/AC5) ---
+  log "  Parsing Cross-Feature Dependencies → IMPACTS..."
+  IMPACTS_COUNT=0
+  if [ -d "$STORIES_DIR" ]; then
+    while IFS= read -r story_file; do
+      # Fast check if file has 'Impacts' heading
+      if ! grep -qiE '^###[[:space:]]+Impacts' "$story_file"; then
+        continue
+      fi
+
+      impact_lines=$(awk '
+        /^###[[:space:]]+Impacts/ {flag=1; next}
+        /^#{1,3}[[:space:]]/ && flag {flag=0; exit}
+        flag {print}
+      ' "$story_file")
+
+      if [ -z "$impact_lines" ]; then continue; fi
+
+      # Determine the source FR from the story filename (story-{epic}.{story}.md)
+      story_basename=$(basename "$story_file" .md)
+      source_fr=$(grep -oE 'FR[0-9]+' "$story_file" | head -1 || echo "")
+      if [ -z "$source_fr" ]; then continue; fi
+
+      while IFS= read -r line; do
+        if echo "$line" | grep -qE 'FR[0-9]+'; then
+          # Extract all FR references on this line
+          fr_refs=$(echo "$line" | grep -oE 'FR[0-9]+' | sort -u)
+          # Extract reason text (after the FR ref, strip markdown bullets/dashes)
+          reason=$(echo "$line" | sed -E 's/^[[:space:]]*[-*][[:space:]]*//' | sed "s/['\"]//g" | xargs || true)
+
+          for target_fr in $fr_refs; do
+            if [ "$target_fr" = "$source_fr" ]; then continue; fi
+
+            # AC5: Check if target FR exists in the graph
+            fr_exists=$(cypher_query "MATCH (fr:FR {id: '${target_fr}'}) RETURN count(fr)" | grep -oE '[0-9]+' | tail -1 || echo "0")
+
+            if [ "$fr_exists" = "0" ] || [ -z "$fr_exists" ]; then
+              # AC5: Unknown FR — create edge with warning flag
+              warn "  IMPACTS target ${target_fr} not found in PRD — adding with warning"
+              cypher_query "
+                MERGE (src:FR {id: '${source_fr}'})
+                MERGE (tgt:FR {id: '${target_fr}'})
+                MERGE (src)-[:IMPACTS {reason: '${reason}', confidence: 0.5, source: 'story-metadata', warning: 'FR not found in PRD'}]->(tgt)
+              " > /dev/null 2>&1
+              # Append to review queue
+              echo "- fr: ${target_fr}, source: ${source_fr}, story: ${story_basename}, reason: '${reason}'" >> "$REVIEW_QUEUE"
+            else
+              # Normal IMPACTS edge
+              cypher_query "
+                MATCH (src:FR {id: '${source_fr}'}), (tgt:FR {id: '${target_fr}'})
+                MERGE (src)-[:IMPACTS {reason: '${reason}', confidence: 0.9, source: 'story-metadata'}]->(tgt)
+              " > /dev/null 2>&1
+            fi
+            IMPACTS_COUNT=$((IMPACTS_COUNT + 1))
+          done
+        fi
+      done <<< "$impact_lines"
+    done < <(find -L "$STORIES_DIR" -name "*.md" -not -path "*archive*")
+  fi
+  success "  Created $IMPACTS_COUNT IMPACTS relationships"
 }
 
 # ==============================================================
@@ -234,7 +448,7 @@ step4_validation() {
   # --- Lớp 2: FR Count Cross-Check ---
   log "  Cross-checking FR count..."
   GRAPH_FR_COUNT=$(cypher_query "MATCH (fr:FR) RETURN count(fr)" | grep -oE '[0-9]+' | tail -1 || echo "0")
-  PRD_FR_COUNT=$(grep -cE '^[#]*\s*FR[0-9]+' "$PLANNING_DIR/prd.md" 2>/dev/null || echo "0")
+  PRD_FR_COUNT=$(grep -cE '^[#]*\s*FR[0-9]+' "$PRD_PATH" 2>/dev/null || echo "0")
   
   if [ "$GRAPH_FR_COUNT" != "$PRD_FR_COUNT" ]; then
     warn "  FR count mismatch: Graph=$GRAPH_FR_COUNT vs PRD=$PRD_FR_COUNT"
@@ -259,9 +473,11 @@ step4_validation() {
 # ==============================================================
 main() {
   echo "=============================================="
-  echo " FeatureGraph Indexer v1.0"
+  echo " FeatureGraph Indexer v1.1"
   echo " Graph: $GRAPH_NAME @ $FALKORDB_HOST:$FALKORDB_PORT"
   echo "=============================================="
+
+  check_falkordb
   
   step1_discovery
   step2_extraction  
@@ -272,4 +488,5 @@ main() {
   success "🎉 FeatureGraph indexing complete!"
 }
 
+resolve_paths
 main "$@" 2>&1 | tee "$OUTPUT_LOG"

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoption Review Pack: Magika</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; color: #333; }
+        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; color: #24292e; }
+        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 1.5em; color: #24292e; }
+        ul { padding-left: 2em; }
+        li { margin-bottom: 0.5em; }
+        strong { color: #005cc5; }
+        .alert { background-color: #fff3cd; color: #856404; padding: 1rem; border-left: 5px solid #ffeeba; margin-top: 1.5em; }
+    </style>
+</head>
+<body>
+    <h1>Adoption Review Pack: Magika</h1>
+    
+    <h2>1. What is it</h2>
+    <ul>
+        <li><strong>Capability/Repo name:</strong> Magika (google/magika)</li>
+        <li><strong>Source:</strong> https://github.com/google/magika</li>
+        <li><strong>Current registration state:</strong> Pending <code>SYSTEM_SKILL</code> integration</li>
+        <li><strong>Shape classification:</strong> <code>skill-attachment</code></li>
+        <li><strong>Role classification:</strong> <code>supportive</code></li>
+    </ul>
+
+    <h2>2. Why it exists</h2>
+    <ul>
+        <li><strong>What job it solves:</strong> ML-based, ultra-fast file type detection.</li>
+        <li><strong>Why I-Wish wants it:</strong> I-Wish currently relies on file extensions or slow heuristics to identify file content, leading to inefficiencies during repository indexing and cloning (processing binary files as text). Magika resolves this accurately.</li>
+        <li><strong>What gap it fills:</strong> Fills the gap of accurate binary/text discrimination before passing data to Repomix or CodeGraphContext.</li>
+    </ul>
+
+    <h2>3. Delivery framework placement</h2>
+    <ul>
+        <li><strong>Phase(s) it helps:</strong> Discovery (Repo Absorption Protocol), Codebase Analysis (Graph Indexing)</li>
+        <li><strong>Stage/task(s) it serves:</strong> Ingest step, preprocessing step</li>
+        <li><strong>Classification:</strong> <code>supportive</code></li>
+    </ul>
+
+    <h2>4. Input -> Process -> Output</h2>
+    <ul>
+        <li><strong>Inputs:</strong> Raw file paths or streams.</li>
+        <li><strong>Process:</strong> Reads chunks from start, middle, and end. Feeds into ONNX model.</li>
+        <li><strong>Outputs:</strong> High-confidence MIME type classification.</li>
+    </ul>
+
+    <h2>5. Use cases</h2>
+    <ul>
+        <li><strong>Core use cases:</strong> Pre-filtering files before running <code>repomix</code> (Phase 1 of <code>/absorb-repo</code>).</li>
+        <li><strong>Adjacent use cases:</strong> Quick file categorization in <code>clone-website</code>, skipping non-text binaries during <code>.agent/</code> scanning.</li>
+        <li><strong>Do-not-use cases:</strong> Do not use for deep semantic code analysis. Do not use to replace linting.</li>
+    </ul>
+
+    <h2>6. Edge cases / Stress cases / Constraints</h2>
+    <ul>
+        <li><strong>Edge cases:</strong> Zero-byte files or corrupted files may return generic <code>application/octet-stream</code>.</li>
+        <li><strong>Stress cases:</strong> High concurrency scanning of millions of files (requires batching).</li>
+        <li><strong>Operational constraints:</strong> Requires ONNX runtime. Adds ~1MB model dependency.</li>
+        <li><strong>Governance constraints:</strong> Must run locally without sending files to an external API to preserve privacy.</li>
+        <li><strong>Routing caveats:</strong> Must be invoked <em>before</em> text processing tools are triggered.</li>
+    </ul>
+
+    <h2>7. Agent / Workflow / Skill coordination</h2>
+    <ul>
+        <li><strong>Canonical agents:</strong> <code>capability-agent</code>, <code>architect-agent</code>.</li>
+        <li><strong>Workflows:</strong> <code>/absorb-repo</code>, <code>/analyze-codebase</code>.</li>
+        <li><strong>Supportive skills:</strong> Combines well with <code>repo-absorption</code> skill.</li>
+    </ul>
+
+    <h2>8. Orch routing hints</h2>
+    <ul>
+        <li><strong>Trigger phrases:</strong> "analyze this repo", "pack repo", "index codebase", "filter binary files"</li>
+        <li><strong>Anti-triggers:</strong> "write code", "fix bug", "design ui"</li>
+        <li><strong>Preferred routing stage:</strong> INGEST / Indexing phase.</li>
+        <li><strong>Proposal mode:</strong> Proposed automatically by <code>/absorb-repo</code> as a supportive preprocessing step.</li>
+    </ul>
+
+    <div class="alert">
+        <h2>9. Review questions for the user</h2>
+        <ol>
+            <li>Do you approve injecting Magika into the standard <code>/absorb-repo</code> workflow as a pre-filter step?</li>
+            <li>Are you comfortable with adding the ONNX Python dependency (<code>magika</code> pip package) to the I-Wish system environment?</li>
+            <li>Should we strictly drop all files identified as non-text binaries from AI processing, or keep a log of them?</li>
+        </ol>
+    </div>
+
+    <h2>10. Example scenarios</h2>
+    <ul>
+        <li><strong>Scenario A:</strong> <code>/absorb-repo</code> is triggered on a massive repo with many <code>.dat</code> files that are actually binary. Magika flags them as <code>application/octet-stream</code> and Repomix skips them automatically.</li>
+        <li><strong>Scenario B:</strong> A user runs <code>/analyze-codebase</code>. Magika quickly scans the <code>assets/</code> folder and excludes binary images despite them lacking proper extensions.</li>
+    </ul>
+</body>
+</html>

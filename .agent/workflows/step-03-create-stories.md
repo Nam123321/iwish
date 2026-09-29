@@ -9,7 +9,7 @@ workflow_path: '{project-root}/.agent/workflows'
 thisStepFile: './step-03-create-stories.md'
 nextStepFile: './step-04-final-validation.md'
 workflowFile: '{workflow_path}/workflow.md'
-outputFile: '{planning_artifacts}/epics.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
@@ -68,14 +68,21 @@ To generate all epics with their stories based on the approved epics_list, follo
 
 ## STORY GENERATION PROCESS:
 
-### 1. Load Approved Epic Structure
+### 1. Load Approved Epic Structure & SIM
 
-Load {outputFile} and review:
-
-- Approved epics_list from Step 2
-- FR coverage map
-- All requirements (FRs, NFRs, additional)
-- Template structure at the end of the document
+Load and review the prerequisites:
+- **Approved feature_groups_and_epics_list:** From {outputFile} (Step 2).
+- **System Integrity Map (SIM):** Load `{planning_artifacts}/2. Product Planning/2.3.5. system-integrity-map.md`. 
+  - 🛑 **HARD GATE:** If the SIM file is missing or empty, you MUST halt and warn the user: *"⚠️ SIM file chưa tồn tại. Vui lòng chạy /create-sim trước để khởi tạo System Integrity Map."*
+- **SIM Change Detection & Audit:** If the SIM file was modified after stories were generated, perform a change impact audit. Scan all stories for:
+  - *Orphaned components* (endpoints/entities without matching presentation).
+  - *FE-only fragments* (UI spec files without corresponding API contract).
+  - *Reusable engines* (duplicated core logic across epics).
+  - *Coverage gaps* (layers missing critical story coverage).
+  - ⚠️ **Emit a warning report** to the user detailing the drift before proceeding.
+- **FR coverage map**
+- **All requirements** (FRs, NFRs, additional)
+- **Template structure** at the end of the document
 
 ### 2. Explain Story Creation Approach
 
@@ -106,7 +113,13 @@ Stories must be independently completable in sequence:
 **STORY FORMAT (from template):**
 
 ```
-### Story {N}.{M}: {story_title}
+#### Story {N}.{M}: {story_title}
+
+**Feature Group:** FG-{FG}: {feature_group_name}
+**Epic:** Epic {N}: {epic_title}
+**Story Title:** {story_title}
+**FR Covered:** [{FR-ID}: {FR-Name}] (e.g., [FR-1.1: Platform Mode Detection](file:///path/to/prd.md#FR-1.1))
+**Goal:** {story_goal}
 
 As a {user_type},
 I want {capability},
@@ -142,26 +155,33 @@ _Epic 2: Content Creation_
 - Story: "Login UI (depends on Story 1.3 API endpoint)" (future dependency!)
 - Story: "Edit post (requires Story 1.4 to be implemented first)" (wrong order!)
 
-### 3. Process Epics Sequentially
+### 3. Process Feature Groups and Epics Sequentially
 
-For each epic in the approved epics_list:
+For each Feature Group and Epic in the approved feature_groups_and_epics_list:
 
 #### A. Epic Overview
 
 Display:
 
+- Feature Group name
 - Epic number and title
 - Epic goal statement
 - FRs covered by this epic
 - Any NFRs or additional requirements relevant
 
-#### B. Story Breakdown
+#### B. Story Breakdown (3-Option Standard)
 
-Work with user to break down the epic into stories:
+Before proposing stories, you MUST propose at least **3 distinct story decomposition options** for the epic:
+- **Option 1: Vertical Slice First (Tracer Bullet)** — Propose slicing stories where each story goes UI -> API -> DB. Good for early feedback but harder to manage parallel work on shared engines.
+- **Option 2: Core Engine / Platform First** — Propose building the core business domain models and services first, then wrapping them with UI stories. Best for complex logic to prevent duplicate reusable engines, but delays user feedback.
+- **Option 3: Contract / Interface Driven** — Propose defining the API contracts/schemas first, then parallelizing FE and BE stories. Excellent for swarm development, but requires strict validation gates.
 
-- Identify distinct user capabilities
-- Ensure logical flow within the epic
-- Size stories appropriately
+For each option, analyze:
+- **Pros (Ưu điểm)**
+- **Cons (Nhược điểm)**
+- **Recommendation:** Highlight which option you recommend and why based on the approved SIM (`2.3.5. system-integrity-map.md`).
+
+**[User Gate - Decomposition Approval]** Halt and wait for the user to select one of the 3 decomposition options before generating the specific user stories.
 
 #### C. Generate Each Story
 
@@ -175,7 +195,7 @@ For each story in the epic:
 
 - Use Given/When/Then format
 - Each AC should be independently testable
-- 🛡️ **EDGE CASES:** After writing happy-path ACs, the Edge Case Guardian SKILL (`{project-root}/.agent/skills/review-agent/SKILL.md`) will be invoked to systematically identify edge cases using the 8-Pillar Taxonomy. Edge case ACs will be tagged with `[EDGE-CASE]` prefix.
+- 🛡️ **EDGE CASES:** After writing happy-path ACs, the Review Agent (`{project-root}/.agent/agents/review-agent.md`) loading the Edge Case Guardian SKILL (`{project-root}/.agent/skills/edge-case-guardian/SKILL.md`) will be invoked to systematically identify edge cases using the 8-Pillar Taxonomy. Edge case ACs will be tagged with `[EDGE-CASE]` prefix.
 - Reference specific requirements when applicable
 
 #### D. Collaborative Review
@@ -241,7 +261,7 @@ Ask User: "Plan Tune hoàn tất. Xác nhận phương án tách/gộp trước 
 
 After all stories for an epic are written AND before getting user confirmation:
 
-**CRITICAL: Invoke the Edge Case Guardian agent (`{project-root}/.agent/agents/review-agent.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
+**CRITICAL: Invoke the Review Agent (`{project-root}/.agent/agents/review-agent.md`) loading the Edge Case Guardian SKILL (`{project-root}/.agent/skills/edge-case-guardian/SKILL.md`) to perform a Full Edge Case Analysis (8-Pillar Scan) on this epic.**
 
 #### A. Research Phase
 - Use the Research Prompt Library (`{project-root}/.agent/fragments/research-prompt-library.md`) to search for known edge cases related to this epic's features
@@ -260,7 +280,7 @@ After all stories for an epic are written AND before getting user confirmation:
 #### D. Knowledge Graph Update
 - Add new edge case nodes to the appropriate pillar files in `{output_folder}/edge-case-knowledge/pillars/`
 - Update the index at `{output_folder}/edge-case-knowledge/index.md`
-- Generate or update the epic risk matrix using template from `{project-root}/.agent/fragments/risk-matrix-template.md`
+- Generate or update the epic risk matrix at `{output_folder}/edge-case-knowledge/epics/Epic-{epic_id}-risk-matrix.md` (derive {epic_id} from the epic number, e.g. Epic 1 -> Epic-1) using the template from `{project-root}/.agent/fragments/risk-matrix-template.md`
 
 ### 5. Epic Completion
 
@@ -371,6 +391,39 @@ After all epics and stories are generated:
 - Ensure all placeholders are replaced
 - Confirm all FRs are covered
 - Check formatting consistency
+- **Run Phase 2 SIM Reverse-Sync & Audit (MANDATORY):**
+  - Execute: `iwish create-sim --sync`
+  - 🛑 **HARD GATE:** If the command output contains any `[COVERAGE-GAP]` warnings (such as `⚠️ Empty Epic`, `⚠️ FE-Only Fragment`, or `⚠️ Orphaned Backend`), you **MUST HALT** and present a mitigation plan (e.g., creating the missing backend or UI stories) to the user. Do not proceed until these architectural integrity gaps are resolved.
+
+### 6.5. TIER 1 HYBRID GRAPH UPDATE (MANDATORY)
+
+CRITICAL: BẮT BUỘC phải đưa file `epics-and-stories.md` này vào Knowledge Graph ngay khi hoàn thành bằng lệnh CLI:
+`iwish inject-node --file "{planning_artifacts}/2. Product Planning/2.4. epics-and-stories.md" --metadata '{"summary": "Toàn bộ Epics và Stories của dự án", "tags": ["epic", "story", "planning"], "layer": "documentation", "complexity": "medium"}'`
+Điều này đảm bảo FalkorDB và các AI Agent khác có thể truy xuất ngay lập tức các yêu cầu và user story.
+
+### 6.6. FEATURE HIERARCHY & FEATUREGRAPH INDEXING (MANDATORY)
+
+> [!IMPORTANT]
+> After the Hybrid Graph update, the **Feature Hierarchy** must be generated to ensure portal-level feature mapping and cross-feature relationships are captured before proceeding.
+
+1. **Trigger Feature Hierarchy Generation:**
+   - Execute Step 5c from `step-04-final-validation.md` — generate `feature-hierarchy.md` from PRD, Architecture, and Epics sources.
+   - Save to `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`.
+
+2. **Run FeatureGraph Indexer:**
+   - After `feature-hierarchy.md` is generated, run `iwish featuregraph-index` to parse the hierarchy and index all features, portals, and cross-feature relationships into FalkorDB.
+   - If FalkorDB is not available, the indexer will skip gracefully with a log message — this is non-blocking.
+
+3. **Verification:** Confirm `feature-hierarchy.md` exists and is non-empty before proceeding.
+
+### 6.7. POPULATE DEVELOPMENT PHYSICAL FILES (MANDATORY)
+
+> [!IMPORTANT]
+> To ensure the physical tracking structure matches the planning output, you MUST automatically generate the physical Epic and Story files in the Development tracking structure right after indexing.
+
+**Execute:** `python3 .agent/scripts/populate_development.py`
+
+This will parse the `2.4. epics-and-stories.md` file you just created and physically scaffold all `epic.md` and `story.md` files (with full goals and ACs) in the Development folder (or `_iwish-output/stories`), keeping them in `backlog` status for later sprint execution.
 
 ## TEMPLATE STRUCTURE COMPLIANCE:
 
@@ -379,12 +432,14 @@ The final {outputFile} must follow this structure exactly:
 1. **Overview** section with project name
 2. **Requirements Inventory** with all three subsections populated
 3. **FR Coverage Map** showing requirement to epic mapping
-4. **Epic List** with approved epic structure
-5. **Epic sections** for each epic (N = 1, 2, 3...)
-   - Epic title and goal
-   - All stories for that epic (M = 1, 2, 3...)
-     - Story title and user story
-     - Acceptance Criteria using Given/When/Then format
+4. **Feature Groups & Epic List** with approved epic structure
+5. **Feature Group sections** for each Feature Group (FG = 1, 2, 3...)
+   - Feature Group name
+   - **Epic sections** for each epic (N = 1, 2, 3...)
+     - Epic title and goal
+     - All stories for that epic (M = 1, 2, 3...)
+       - Story title and user story
+       - Acceptance Criteria using Given/When/Then format
 
 ### 7. Present FINAL MENU OPTIONS
 

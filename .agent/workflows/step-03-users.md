@@ -4,7 +4,7 @@ description: 'Define target users with rich personas and map their key interacti
 
 # File References
 nextStepFile: './step-04-metrics.md'
-outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'

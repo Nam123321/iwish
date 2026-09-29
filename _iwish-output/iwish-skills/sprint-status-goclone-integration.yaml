@@ -1,0 +1,13 @@
+sprint:
+  name: "goclone and hybrid cloner upgrade"
+  status: "active"
+  stories:
+    - id: "story-1.1"
+      title: "Node-based asset-harvesting script"
+      status: "READY-FOR-DEV"
+    - id: "story-1.2"
+      title: "Cheerio link rewriting"
+      status: "READY-FOR-DEV"
+    - id: "story-2.1"
+      title: "Integrated Hybrid Cloner ruleset"
+      status: "READY-FOR-DEV"

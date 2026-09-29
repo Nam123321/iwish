@@ -1,6 +1,8 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { loadSourceOfTruth } from './source-of-truth';
+import YAML from 'yaml';
 
 export type GraphNode = {
   id: string;
@@ -24,8 +26,13 @@ export function extractGraphData(projectRoot: string): GraphResult {
   const nodes: GraphNode[] = [];
   const edges: GraphEdge[] = [];
 
-  const epicsFile = path.join(projectRoot, '_iwish-output', 'epics.md');
-  if (!fs.existsSync(epicsFile)) {
+  const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_iwish-output', 'epics.md')
+  ];
+  const epicsFile = epicsCandidates.find(p => fs.existsSync(p));
+  
+  if (!epicsFile) {
     return { nodes, edges };
   }
 
@@ -104,17 +111,22 @@ export function extractSprintData(projectRoot: string): any[] {
       }
       return {
         id: record.id,
+        epicId: record.epicId,
+        title: record.title,
         path: record.path,
         status: record.sprintStatus || record.fileStatus || 'backlog',
         readiness: record.readiness,
         hasAcceptanceCriteria: record.hasAcceptanceCriteria,
         hasTaskBreakdown: record.hasTaskBreakdown,
-        content
+        content,
+        uiSpecContent: record.uiSpecContent,
+        dataSpecContent: record.dataSpecContent
       };
     });
   } catch (error) {
     console.warn('Error extracting sprint data:', error);
-    return [];
+    const fallback: any[] = [];
+    return fallback;
   }
 }
 
@@ -127,7 +139,8 @@ export function extractAgentTrace(projectRoot: string): any[] {
       console.warn('Error reading agent-trace.json:', e);
     }
   }
-  return [];
+  const fallbackTrace: any[] = [];
+  return fallbackTrace;
 }
 
 export type IdeaToPrdStep = {
@@ -235,7 +248,12 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   // Find dynamic idea challenges folder
   let ideaChallengeDistillatePath: string | null = null;
   let bizStackPath: string | null = null;
-  const ideaChallengesDir = path.join(projectRoot, '_bmad-output', 'planning', 'idea-challenges');
+  const ideaChallengesDirs = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', 'idea-challenges'),
+    path.join(projectRoot, '_iwish-output', 'planning', 'idea-challenges'),
+    path.join(projectRoot, '_bmad-output', 'planning', 'idea-challenges'),
+  ];
+  const ideaChallengesDir = ideaChallengesDirs.find(d => fs.existsSync(d)) || ideaChallengesDirs[0];
   if (fs.existsSync(ideaChallengesDir)) {
     try {
       const subs = fs.readdirSync(ideaChallengesDir);
@@ -255,8 +273,34 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
     } catch (e) {}
   }
 
+  // 0. Idea Discovery
+  const discoverCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.1. idea-discovery.md'),
+    path.join(projectRoot, 'docs', 'idea-discovery.md')
+  ];
+  let discoverPath = discoverCandidates.find(p => fs.existsSync(p)) || null;
+  const discoverInfo = discoverPath 
+    ? parseMarkdownFile(discoverPath, ['Làm rõ ý tưởng thô ban đầu', 'Mom Test & JTBD validation', 'Xác định bối cảnh và nỗi đau người dùng'])
+    : { title: 'Làm rõ Ý tưởng (Idea Discovery)', summary: ['Sử dụng bộ khung 5 thấu kính để phỏng vấn khách hàng.', 'Áp dụng Mom Test & JTBD loại bỏ các giả định mơ hồ.', 'Thiết lập tiền đề và nỗi đau cốt lõi trước khi brainstorm.'], extra: {} };
+  
+  slides.push({
+    id: 'idea-discover',
+    title: discoverInfo.title,
+    phase: 'Phase 1: Concept & Grounding',
+    path: discoverPath ? path.relative(projectRoot, discoverPath) : null,
+    exists: discoverPath !== null,
+    summary: discoverInfo.summary,
+    causality: 'Xác định chính xác nỗi đau và đối tượng mục tiêu, làm gốc rễ cho toàn bộ các bước tiếp theo.',
+    inputs: ['Ý tưởng thô ban đầu / Đề xuất thô từ người dùng'],
+    outputs: ['Tài liệu idea-discovery.md (Mom Test & JTBD)'],
+    visualType: 'mindmap',
+    status: discoverPath ? 'completed' : 'pending',
+    extra: discoverInfo.extra
+  });
+
   // 1. Brainstorming
   const brainstormCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.2. idea-bank.md'),
     path.join(projectRoot, 'docs', 'brainstorm.md'),
     path.join(projectRoot, 'docs', 'brainstorming.md')
   ];
@@ -281,8 +325,12 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   });
 
   // 2. Idea Challenge
-  const challengePath = ideaChallengeDistillatePath || path.join(projectRoot, 'docs', 'idea-challenge.md');
-  const challengeExists = fs.existsSync(challengePath);
+  const challengeCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.3. idea-challenge.md'),
+    path.join(projectRoot, 'docs', 'idea-challenge.md')
+  ];
+  const challengePath = ideaChallengeDistillatePath || challengeCandidates.find(p => fs.existsSync(p)) || null;
+  const challengeExists = challengePath !== null && fs.existsSync(challengePath);
   const challengeInfo = challengeExists
     ? parseMarkdownFile(challengePath, ['Working Backwards distillate', 'Thông cáo báo chí (Press Release)', 'Câu hỏi thường gặp từ khách hàng (Customer FAQ)'])
     : { title: 'Working Backwards (Idea Challenge)', summary: ['Thách thức ý tưởng bằng phương pháp Working Backwards của Amazon.', 'Tập trung viết Press Release và Customer FAQ giả tưởng để thấu hiểu khách hàng.', 'Lọc ra các giá trị cốt lõi và bỏ qua các tính năng không thiết thực.'], extra: {} };
@@ -291,7 +339,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
     id: 'idea-challenge',
     title: challengeInfo.title,
     phase: 'Phase 1: Concept & Grounding',
-    path: challengeExists ? path.relative(projectRoot, challengePath) : null,
+    path: challengeExists ? path.relative(projectRoot, challengePath!) : null,
     exists: challengeExists,
     summary: challengeInfo.summary,
     causality: 'Ép buộc đội ngũ tư duy ngược từ kết quả mong đợi của khách hàng, tránh phát triển các tính năng dư thừa (YAGNI).',
@@ -303,8 +351,12 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   });
 
   // 3. Moat Challenge
-  const moatFile = bizStackPath || path.join(projectRoot, 'docs', 'biz-stack.md');
-  const moatExists = fs.existsSync(moatFile);
+  const moatCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.3. idea-challenge.md'),
+    path.join(projectRoot, 'docs', 'biz-stack.md')
+  ];
+  const moatFile = bizStackPath || moatCandidates.find(p => fs.existsSync(p)) || null;
+  const moatExists = moatFile !== null && fs.existsSync(moatFile);
   const moatInfo = moatExists
     ? parseMarkdownFile(moatFile, ['Core advantage source', 'Business model evaluation', 'Pricing logic & locking factors'])
     : { title: 'Moat Challenge & Lợi thế Cạnh tranh', summary: ['Đánh giá các rào cản phòng thủ kinh doanh (Economic Moats) của sản phẩm.', 'Định hình mô hình kinh doanh (Business Model) và logic định giá.', 'Phân tích các yếu tố khóa chân khách hàng (Lock-in) và rủi ro xói mòn lợi thế.'], extra: {} };
@@ -313,7 +365,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
     id: 'moat-challenge',
     title: moatInfo.title,
     phase: 'Phase 1: Concept & Grounding',
-    path: moatExists ? path.relative(projectRoot, moatFile) : null,
+    path: moatExists ? path.relative(projectRoot, moatFile!) : null,
     exists: moatExists,
     summary: moatInfo.summary,
     causality: 'Thiết lập các lợi thế cạnh tranh bền vững để bảo vệ sản phẩm trước các đối thủ cạnh tranh trên thị trường lâu dài.',
@@ -326,6 +378,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 4a. Market Research
   const marketCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'market-research.md'),
     path.join(projectRoot, 'docs', 'market-research.md'),
     path.join(projectRoot, 'docs', 'market_research.md'),
     path.join(projectRoot, 'market-research.md')
@@ -351,12 +404,12 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   });
 
   // 4b. Competitor Research
-  let competitorPath: string | null = null;
   const competitorCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'competitor-research.md'),
     path.join(projectRoot, 'docs', 'competitor-research.md'),
     path.join(projectRoot, 'docs', 'competitor_research.md')
   ];
-  competitorPath = competitorCandidates.find(p => fs.existsSync(p)) || null;
+  let competitorPath = competitorCandidates.find(p => fs.existsSync(p)) || null;
   if (!competitorPath) {
     try {
       const docsDir = path.join(projectRoot, 'docs');
@@ -387,6 +440,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 4c. Domain Research
   const domainCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'domain-research.md'),
     path.join(projectRoot, 'docs', 'domain-research.md'),
     path.join(projectRoot, 'docs', 'domain_research.md'),
     path.join(projectRoot, 'domain-research.md')
@@ -413,6 +467,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 4d. Technical Research
   const techCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'technical-research.md'),
     path.join(projectRoot, 'docs', 'technical-research.md'),
     path.join(projectRoot, 'docs', 'technical_research.md'),
     path.join(projectRoot, 'docs', 'research_notes.md'),
@@ -450,6 +505,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 5. Project Context
   const contextCandidates = [
+    path.join(projectRoot, '_iwish-output', '1. Idea Discovery', '1.4. research', 'project-context.md'),
     path.join(projectRoot, 'project-context.md'),
     path.join(projectRoot, '.agent', 'project-context.md')
   ];
@@ -475,6 +531,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 6. PRD
   const prdCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.1. product-brief-or-prd.md'),
     path.join(projectRoot, 'docs', 'PRD.md'),
     path.join(projectRoot, 'docs', 'prd.md'),
     path.join(projectRoot, 'PRD.md')
@@ -511,6 +568,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 7. UX Design
   const uxCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.3. ui-ux-spec.md'),
     path.join(projectRoot, 'docs', 'ux_spec.md'),
     path.join(projectRoot, 'docs', 'design.md'),
     path.join(projectRoot, 'docs', 'ui-ux-integration', 'implementation-plan.md')
@@ -537,6 +595,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 8. Architecture
   const archCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.2. database-spec.md'),
     path.join(projectRoot, 'docs', 'architecture.md'),
     path.join(projectRoot, 'docs', 'decisions', 'ADR-001-data-workflow-architecture.md')
   ];
@@ -571,6 +630,7 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
 
   // 9. Epics & Stories
   const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
     path.join(projectRoot, 'docs', 'epics_list.md'),
     path.join(projectRoot, '_iwish-output', 'epics.md'),
     path.join(projectRoot, 'docs', 'ui-ux-integration', 'epics.md')
@@ -611,3 +671,410 @@ export function extractIdeaToPrdData(projectRoot: string): IdeaToPrdData {
   };
 }
 
+export type CodeGraphData = {
+  nodes: Array<{
+    id: string;
+    label: string;
+    group: string;
+    layer: string;
+    summary: string | null;
+    complexity: string;
+    tags: string[];
+  }>;
+  edges: Array<{
+    from: string;
+    to: string;
+    type: string;
+    label: string;
+  }>;
+  metadata: {
+    generatedAt: string;
+    adapterUsed: string;
+    nodeCount: number;
+    edgeCount: number;
+  };
+};
+
+export function extractCodeGraphData(projectRoot: string): CodeGraphData | null {
+  const codeGraphPath = path.join(projectRoot, '.iwish', 'cache', 'iwish-code-graph.json');
+  if (!fs.existsSync(codeGraphPath)) {
+    return null;
+  }
+
+  try {
+    const data = fs.readJsonSync(codeGraphPath) as CodeGraphData;
+    if (!data.nodes || !data.edges) {
+      console.warn('Code graph JSON exists but has invalid structure.');
+      return null;
+    }
+    return data;
+  } catch (error) {
+    console.warn('Error reading code graph JSON:', error);
+    return null;
+  }
+}
+
+// ===== Feature Graph Data Extraction =====
+export type FeatureGraphNode = {
+  id: string;
+  label: string;
+  group: 'FR' | 'Epic' | 'Story' | 'Portal' | 'DataEntity' | 'Event';
+  metadata?: Record<string, string>;
+};
+export type FeatureGraphEdge = {
+  from: string;
+  to: string;
+  relationship: 'BELONGS_TO' | 'DISPLAYED_ON' | 'IMPACTS' | 'USES_ENTITY' | 'CONSUMES';
+  label?: string;
+  confidence?: number;
+};
+export type FeatureGraphResult = {
+  nodes: FeatureGraphNode[];
+  edges: FeatureGraphEdge[];
+};
+export function extractFeatureGraphData(projectRoot: string): FeatureGraphResult {
+  const nodes: FeatureGraphNode[] = [];
+  const edges: FeatureGraphEdge[] = [];
+  const nodeIds = new Set<string>();
+
+  // Pre-load Epics
+  const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_iwish-output', 'epics.md')
+  ];
+  const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+  if (epicsPath) {
+    const epicsContent = fs.readFileSync(epicsPath, 'utf8');
+    const lines = epicsContent.split('\n');
+    for (const line of lines) {
+      const epicMatch = line.match(/^#+\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+      if (epicMatch) {
+        const id = `epic-${epicMatch[1]}`;
+        if (!nodeIds.has(id)) {
+           nodes.push({ id, label: `Epic ${epicMatch[1]}: ${epicMatch[2].trim().replace(/\*\*/g, '')}`, group: 'Epic' });
+           nodeIds.add(id);
+        }
+      }
+    }
+  }
+
+  // Locate feature-hierarchy.md
+  const candidates = [
+    path.join(projectRoot, '_iwish-output', 'feature-hierarchy.md'),
+    path.join(projectRoot, '_bmad-output', 'planning-artifacts', 'feature-hierarchy.md'),
+  ];
+  const hierarchyPath = candidates.find(p => fs.existsSync(p));
+  if (!hierarchyPath) {
+    return { nodes, edges };
+  }
+
+  try {
+    const content = fs.readFileSync(hierarchyPath, 'utf8');
+    const lines = content.split('\n');
+    let currentPortal: string | null = null;
+    let currentFR: string | null = null;
+
+    for (const line of lines) {
+      // Portal sections: ## 1. SaaS Dashboard (app.distro.vn) OR ## Portal: Dashboard
+      const portalMatch = line.match(/^##\s+(?:Portal[\s:—-]+)?(?:\d+\.\s+)?([^(\n]+)(?:\s+\(|(?:$))/i);
+      if (portalMatch && !line.includes('Overview') && !line.includes('Cross-Portal')) {
+        const label = portalMatch[1].trim();
+        const id = 'portal-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        if (!nodeIds.has(id)) {
+          nodes.push({ id, label: `Portal: ${label}`, group: 'Portal', metadata: { portalName: label } });
+          nodeIds.add(id);
+        }
+        currentPortal = id;
+        continue;
+      }
+
+      // Feature matching: - Connect & SSO Redirect (`FR7, FR43`) → `E1/S1.1` [MVP] (Free)
+      const featureMatch = line.match(/-\s+(.*?)\s+\(`?(FR[^`]+)`?\)\s*→\s*`?E(\d+)\/S(\d+\.\d+)`?/i);
+      if (featureMatch) {
+        const featureName = featureMatch[1].trim();
+        const frsString = featureMatch[2];
+        const epicNum = featureMatch[3];
+        const storyNum = featureMatch[4];
+        const storyId = `story-${storyNum}`;
+        const epicId = `epic-${epicNum}`;
+
+        // Parse FRs
+        const frNumbers = frsString.replace(/FR/g, '').split(',').map(s => s.trim());
+        for (const num of frNumbers) {
+          if (!num) continue;
+          const frId = `fr-${num}`;
+          if (!nodeIds.has(frId)) {
+             nodes.push({ id: frId, label: `FR${num}`, group: 'FR', metadata: { frNumber: num } });
+             nodeIds.add(frId);
+          }
+          currentFR = frId;
+          
+          if (currentPortal) {
+            edges.push({ from: frId, to: currentPortal, relationship: 'DISPLAYED_ON', label: 'displayed on' });
+          }
+          
+          // Connect Epic to FR directly
+          if (nodeIds.has(epicId)) {
+             edges.push({ from: epicId, to: frId, relationship: 'BELONGS_TO', label: 'implements' });
+             // Also link story to epic
+             edges.push({ from: storyId, to: epicId, relationship: 'BELONGS_TO', label: 'belongs to' });
+          }
+        }
+        continue;
+      }
+
+      // FR references (old format): ### FR01: ...
+      const frMatch = line.match(/^(?:###|-)\s*FR[-_]?(\d+)[\s:—-]+(.+)$/i);
+      if (frMatch) {
+        const num = frMatch[1];
+        const title = frMatch[2].trim();
+        const id = `fr-${num}`;
+        if (!nodeIds.has(id)) {
+          nodes.push({ id, label: `FR${num}: ${title}`, group: 'FR', metadata: { frNumber: num } });
+          nodeIds.add(id);
+        }
+        currentFR = id;
+        if (currentPortal) {
+          edges.push({ from: id, to: currentPortal, relationship: 'DISPLAYED_ON', label: 'displayed on' });
+        }
+        continue;
+      }
+
+      // Epic references within hierarchy (old format)
+      const epicMatch = line.match(/^(?:####|-\s+)\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+      if (epicMatch) {
+        const num = epicMatch[1];
+        const title = epicMatch[2].trim();
+        const id = `epic-${num}`;
+        if (!nodeIds.has(id)) {
+          nodes.push({ id, label: `Epic ${num}: ${title}`, group: 'Epic', metadata: { epicNumber: num } });
+          nodeIds.add(id);
+        }
+        if (currentFR) {
+          edges.push({ from: id, to: currentFR, relationship: 'BELONGS_TO', label: 'belongs to' });
+        }
+        continue;
+      }
+
+      // DataEntity references: [DataEntity: UserProfile] or DataEntity: UserProfile
+      const entityMatch = line.match(/(?:\[)?DataEntity[\s:—-]+([^\]\n]+)(?:\])?/i);
+      if (entityMatch) {
+        const label = entityMatch[1].trim();
+        const id = 'entity-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        if (!nodeIds.has(id)) {
+          nodes.push({ id, label: `Entity: ${label}`, group: 'DataEntity', metadata: { entityName: label } });
+          nodeIds.add(id);
+        }
+        if (currentFR) {
+          edges.push({ from: currentFR, to: id, relationship: 'USES_ENTITY', label: 'uses' });
+        }
+        continue;
+      }
+
+      // Event references: [Event: PaymentCompleted] or Event: PaymentCompleted
+      const eventMatch = line.match(/(?:\[)?Event[\s:—-]+([^\]\n]+)(?:\])?/i);
+      if (eventMatch) {
+        const label = eventMatch[1].trim();
+        const id = 'event-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        if (!nodeIds.has(id)) {
+          nodes.push({ id, label: `Event: ${label}`, group: 'Event', metadata: { eventName: label } });
+          nodeIds.add(id);
+        }
+        continue;
+      }
+    }
+
+    // Scan story files for Cross-Feature Dependencies
+    const storiesDir = path.join(projectRoot, '_iwish-output', 'stories');
+    const newStoriesDir = path.join(projectRoot, '_iwish-output', '3. Development', '1. Epic & Story');
+    const activeStoriesDir = fs.existsSync(newStoriesDir) ? newStoriesDir : (fs.existsSync(storiesDir) ? storiesDir : null);
+
+    if (activeStoriesDir) {
+      const storyFiles: string[] = [];
+      const walkSync = (dir: string) => {
+        const files = fs.readdirSync(dir);
+        for (const file of files) {
+          const filepath = path.join(dir, file);
+          if (fs.statSync(filepath).isDirectory()) {
+            walkSync(filepath);
+          } else if (filepath.endsWith('.md')) {
+            storyFiles.push(filepath);
+          }
+        }
+      };
+      walkSync(activeStoriesDir);
+
+      for (const filePath of storyFiles) {
+        const storyContent = fs.readFileSync(filePath, 'utf8');
+        const storyIdBase = path.basename(filePath, '.md');
+
+        // Add story node if referenced
+        const storyTitleMatch = storyContent.match(/^#\s+Story\s+(\d+\.\d+)[\s:—-]+(.+)$/im);
+        if (storyTitleMatch) {
+          const sId = `story-${storyTitleMatch[1]}`;
+          if (!nodeIds.has(sId)) {
+            nodes.push({ id: sId, label: `Story ${storyTitleMatch[1]}: ${storyTitleMatch[2].trim()}`, group: 'Story' });
+            nodeIds.add(sId);
+          }
+          // Link to parent epic
+          const epicNum = storyTitleMatch[1].split('.')[0];
+          const epicId = `epic-${epicNum}`;
+          if (nodeIds.has(epicId)) {
+            edges.push({ from: sId, to: epicId, relationship: 'BELONGS_TO', label: 'belongs to' });
+          }
+        }
+
+        const sourceId = storyTitleMatch ? `story-${storyTitleMatch[1]}` : storyIdBase;
+
+        // Find cross dependencies section
+        const depSectionMatch = storyContent.match(/##[^\n]*Dependencies([^\n]*\n)([\s\S]*?)(?=\n##|\n---|\Z)/i);
+        if (depSectionMatch) {
+           const depContent = depSectionMatch[2];
+           const impactsMatches = depContent.matchAll(/(?:IMPACTS|impacts)\s*[:\s]+\s*(?:story[-\s]?)?(\d+\.\d+)/gi);
+           for (const m of impactsMatches) {
+             const targetId = `story-${m[1]}`;
+             edges.push({ from: sourceId, to: targetId, relationship: 'IMPACTS', label: 'impacts', confidence: 0.8 });
+           }
+
+           const consumesMatches = depContent.matchAll(/(?:CONSUMES|consumes)\s*[:\s]+\s*(?:entity[-\s]?)?([A-Za-z0-9_-]+)/gi);
+           for (const m of consumesMatches) {
+             const entityId = 'entity-' + m[1].toLowerCase().replace(/[^a-z0-9]+/g, '-');
+             edges.push({ from: sourceId, to: entityId, relationship: 'CONSUMES', label: 'consumes' });
+           }
+
+           const sharedMatches = depContent.matchAll(/(?:SHARED_ENTITIES?|shared_entit(?:y|ies))\s*[:\s]+\s*([A-Za-z0-9_-]+)/gi);
+           for (const m of sharedMatches) {
+             const entityLabel = m[1].trim();
+             const entityId = 'entity-' + entityLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+             if (!nodeIds.has(entityId)) {
+               nodes.push({ id: entityId, label: `Entity: ${entityLabel}`, group: 'DataEntity', metadata: { entityName: entityLabel } });
+               nodeIds.add(entityId);
+             }
+             edges.push({ from: sourceId, to: entityId, relationship: 'USES_ENTITY', label: 'shared entity' });
+           }
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('Error extracting feature graph data:', error);
+    return { nodes, edges };
+  }
+
+  return { nodes, edges };
+}
+export function extractEvolverData(projectRoot: string): any {
+  const scriptPath = path.join(projectRoot, '.agent', 'skills', 'iwish-evolver', 'scripts', 'lineage-sync.py');
+  if (!fs.existsSync(scriptPath)) {
+    const emptyEvolver: any = {};
+    return emptyEvolver;
+  }
+
+  try {
+    const output = execSync(`python3 "${scriptPath}" query-all`, {
+      encoding: 'utf8',
+      env: process.env,
+    });
+    return JSON.parse(output);
+  } catch (error) {
+    console.warn('Error querying evolver data:', error);
+    const emptyEvolverFallback: any = {};
+    return emptyEvolverFallback;
+  }
+}
+
+export function autoRepairSprintStatus(projectRoot: string): void {
+  const epicsCandidates = [
+    path.join(projectRoot, '_iwish-output', '2. Product Planning', '2.4. epics-and-stories.md'),
+    path.join(projectRoot, '_iwish-output', 'epics.md'),
+    path.join(projectRoot, '_bmad-output', 'epics.md'),
+    path.join(projectRoot, 'docs', 'epics.md')
+  ];
+  const epicsPath = epicsCandidates.find(p => fs.existsSync(p));
+  
+  if (!epicsPath) {
+    return;
+  }
+
+  const epicsContent = fs.readFileSync(epicsPath, 'utf8');
+  const epicsList: any[] = [];
+  let currentEpic: any = null;
+
+  const lines = epicsContent.split('\n');
+  for (const line of lines) {
+    const epicMatch = line.match(/^#+\s*Epic\s+(\d+)[\s:—-]+(.+)$/i);
+    if (epicMatch) {
+      currentEpic = {
+        id: `epic-${epicMatch[1]}`,
+        title: epicMatch[2].trim().replace(/\*\*/g, ''),
+        status: 'not_started',
+        stories: []
+      };
+      epicsList.push(currentEpic);
+      continue;
+    }
+
+    const storyMatch = line.match(/^#+\s*Story\s+(\d+\.\d+)[\s:—-]+(.+)$/i);
+    if (storyMatch && currentEpic) {
+      const storyId = `story-${storyMatch[1]}`;
+      let status = 'not_started';
+      const storyPath = path.join(projectRoot, '_iwish-output', 'stories', `${storyId}.md`);
+      if (fs.existsSync(storyPath)) {
+        const content = fs.readFileSync(storyPath, 'utf8');
+        const statusMatch = content.match(/sprintStatus:\s*["']?(\w+)["']?/);
+        if (statusMatch) {
+          status = statusMatch[1];
+        }
+      }
+      currentEpic.stories.push({
+        id: storyId,
+        title: storyMatch[2].trim().replace(/\*\*/g, ''),
+        status: status
+      });
+    }
+  }
+
+  const devSprintPath = path.join(projectRoot, '_iwish-output', '3. Development', 'sprint-status.yaml');
+  const flatSprintPath = path.join(projectRoot, '_iwish-output', 'stories', 'sprint-status.yaml');
+  const hasHierarchical = fs.existsSync(path.join(projectRoot, '_iwish-output', '3. Development'));
+  
+  const sprintPath = hasHierarchical ? devSprintPath : flatSprintPath;
+  let existingData: any = {};
+  if (fs.existsSync(sprintPath)) {
+    try {
+      const existingYaml = fs.readFileSync(sprintPath, 'utf8');
+      existingData = YAML.parse(existingYaml) || {};
+    } catch(e) {}
+  }
+
+  const outputData = {
+    sprint_name: existingData.sprint_name || 'Auto-Repaired Sprint',
+    status: existingData.status || 'planning',
+    start_date: existingData.start_date || new Date().toISOString().split('T')[0],
+    epics: epicsList
+  };
+
+  // Preserve existing statuses if possible
+  if (Array.isArray(existingData.epics)) {
+    for (const newEpic of outputData.epics) {
+      const oldEpic = existingData.epics.find((e: any) => e.id === newEpic.id);
+      if (oldEpic) {
+        newEpic.status = oldEpic.status || 'not_started';
+        for (const newStory of newEpic.stories) {
+          const oldStory = Array.isArray(oldEpic.stories) ? oldEpic.stories.find((s: any) => s.id === newStory.id) : null;
+          if (oldStory) {
+            newStory.status = (newStory.status && newStory.status !== 'not_started')
+              ? newStory.status
+              : (oldStory.status || 'not_started');
+          }
+        }
+      }
+    }
+  }
+
+  const targetDir = path.dirname(sprintPath);
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirpSync(targetDir);
+  }
+
+  fs.writeFileSync(sprintPath, YAML.stringify(outputData));
+}

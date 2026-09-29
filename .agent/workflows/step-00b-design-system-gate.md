@@ -45,6 +45,15 @@ Ask user which portal to create the Design System for:
 | Sales App | Not started / In progress / Complete | 🟡 P1 |
 | SaaS Dashboard | Not started / In progress / Complete | 🟢 P2 |"
 
+### 1.5 Check for Brand Identity & Guidelines
+
+**Agent Actions:**
+1. Check for `_iwish-output/brand-identity/brand-guidelines.md` FIRST (as it is LLM-readable). Only check `_iwish-output/brand-identity/brand-guideline.html` if `.md` is missing.
+2. If it exists, read the guidelines to extract the approved brand identity (colors, typography, logo system, and visual direction). Incorporate this into `active_brand_or_bmad_constraints`.
+3. Check for any image assets in `_iwish-output/brand-identity/assets/` (e.g., logo SVGs, icons) and pass their paths as explicit `Brand Assets` requirements in the Stitch Context Template.
+4. If the user provides a raw logo without a brand guideline, propose running the `/brand` workflow first to ensure consistency.
+5. If no brand guideline exists and the user declines to run `/brand`, proceed with the standard generation flow.
+
 ### 2. Create Stitch Design System Project
 
 **Agent Actions:**
@@ -134,6 +143,7 @@ Style Direction Source: Use the active I-Wish-approved visual direction plus the
 Purpose: Design System component showcase — {category_name}
 Requirements: Show all {category_description} states and variants
 Active Brand / I-Wish Constraints: {active_brand_or_bmad_constraints}
+Brand Assets: {brand_assets_from_step_1_5}
 Active Color Direction: {active_color_direction}
 Active Typography Direction: {active_typography_direction}
 
@@ -181,9 +191,10 @@ After all 9 categories are approved:
 
 If the specialist seed block was not available yet at the moment this gate first ran, record that the workflow paused for missing context before Stitch generation instead of fabricating seed values.
 
-### Stitch Project
-- Project ID: {stitch_project_id}
-- Project URL: [View in Stitch](https://stitch.google.com/projects/{stitch_project_id})
+### Design Platform Project
+- Platform: {design_platform_name} (e.g., Stitch, Figma, Canva, Claude Design)
+- Project ID: {design_project_id}
+- Project URL: [View in Platform]({design_project_url})
 
 ### Color Palette
 [Selected variant description + token values]
@@ -232,8 +243,42 @@ When a page requires a justified deviation from the portal Design System:
 
 Use this page override shape:
 
+### 4.8 Compile UI Compliance Policy (JSON Block)
+
+At the end of the `DESIGN.md` file, you MUST append a JSON block wrapped in specific comments `<!-- [UI_COMPLIANCE_POLICY_START] -->` and `<!-- [UI_COMPLIANCE_POLICY_END] -->`. 
+This block is evaluated by `validate-ui-tokens.py` during component implementation to enforce rules without LLM hallucination.
+1. Determine `forbidden_tokens` based on the Tech-Stack (e.g. ban `dark:` or hardcoded hex colors).
+2. Determine `allowed_tokens` based on the generated Color Palette (e.g. `bg-cowok-primary`).
+3. Define `mandatory_logic` for complex/heavy components (e.g. requiring `useDeferredValue` for Charts).
+
+```markdown
+<!-- [UI_COMPLIANCE_POLICY_START] -->
+```json
+{
+  "forbidden_tokens": [
+    {"pattern": "dark:", "message": "Use CSS variables instead of dark: variant"},
+    {"pattern": "text-\\[#|bg-\\[#", "message": "No hardcoded hex colors allowed"}
+  ],
+  "allowed_tokens": {
+    "colors": ["<Insert specific color classes based on palette>"]
+  },
+  "mandatory_logic": [
+    {
+      "match_filename": ["Chart", "Graph", "Timeseries", "KpiCard"],
+      "requires_code": ["useDeferredValue", "useMemo"],
+      "message": "Heavy UI components must use deferred values or memoization"
+    }
+  ]
+}
+```
+<!-- [UI_COMPLIANCE_POLICY_END] -->
+```
+
+> **EDGE-CASE (Continuous Discovery):** During project development or deployment, if a new forbidden token or mandatory hook is discovered (e.g., via Review-Agent or UX-Guardian), the team can run a `/update-design-policy` command or manually edit the JSON block in `DESIGN.md`. The `validate-ui-tokens.py` script dynamically reads this JSON at runtime, ensuring immediate enforcement without workflow modifications.
+
 ```markdown
 ## Page Override — {page}
+
 
 Page Scope: {page}
 Page Slug: {page-slug}

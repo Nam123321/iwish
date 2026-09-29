@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-Wish Integration Guide: agent-skills</title>
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #030712;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --bg-sidebar: rgba(10, 15, 30, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.3);
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      
+      --color-sky: #38bdf8;
+      --color-purple: #c084fc;
+      --color-emerald: #34d399;
+      --color-rose: #f43f5e;
+      --color-amber: #fbbf24;
+      
+      --glow-sky: 0 0 20px rgba(56, 189, 248, 0.15);
+      --glow-purple: 0 0 20px rgba(192, 132, 252, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    /* Sidebar Navigation */
+    aside {
+      width: 300px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      backdrop-filter: blur(20px);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--color-sky), var(--color-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #000;
+      font-size: 1.25rem;
+      box-shadow: var(--glow-sky);
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, #fff, #9ca3af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 0.25rem;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      width: 4px;
+    }
+    .nav-links::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+    }
+
+    .nav-item a:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-item.active a {
+      color: var(--color-sky);
+      background: rgba(56, 189, 248, 0.06);
+      border-color: rgba(56, 189, 248, 0.15);
+      font-weight: 600;
+      box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.05);
+    }
+
+    /* Main Content Area */
+    main {
+      margin-left: 300px;
+      flex: 1;
+      padding: 3rem 4rem;
+      max-width: 1200px;
+    }
+
+    /* Top Stats / Metadata Header */
+    header {
+      margin-bottom: 3rem;
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(52, 211, 153, 0.1);
+      color: var(--color-emerald);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 15px rgba(52, 211, 153, 0.05);
+    }
+
+    h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(to right, #fff, #9ca3af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .meta-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .meta-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .meta-value a {
+      color: var(--color-sky);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .meta-value a:hover {
+      color: #7dd3fc;
+      text-decoration: underline;
+    }
+
+    /* Section Cards */
+    section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(16px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      scroll-margin-top: 2rem;
+    }
+
+    section:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 24px;
+      border-radius: 99px;
+      background: linear-gradient(to bottom, var(--color-sky), var(--color-purple));
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    ul, ol {
+      list-style-position: outside;
+      margin-left: 1.25rem;
+      margin-bottom: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    li strong {
+      color: var(--text-primary);
+    }
+
+    /* Highlight Cards */
+    .highlight-box {
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid var(--color-sky);
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box.warning {
+      border-left-color: var(--color-rose);
+      background: rgba(244, 63, 94, 0.02);
+    }
+
+    .highlight-box.info {
+      border-left-color: var(--color-purple);
+      background: rgba(192, 132, 252, 0.02);
+    }
+
+    .highlight-box-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .highlight-box-title.warning-title {
+      color: var(--color-rose);
+    }
+
+    .highlight-box-title.info-title {
+      color: var(--color-purple);
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* Code blocks */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: var(--color-purple);
+    }
+
+    pre {
+      background: #090d16;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: #e5e7eb;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* Accordion Tabs for Placements */
+    .tab-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .tab-item {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.01);
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .tab-header {
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .tab-header:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-header::after {
+      content: "+";
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      transition: transform 0.3s;
+    }
+
+    .tab-content {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s;
+      background: rgba(0, 0, 0, 0.15);
+      border-top: 1px solid transparent;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .tab-item.open {
+      border-color: var(--border-accent);
+      background: rgba(56, 189, 248, 0.02);
+    }
+
+    .tab-item.open .tab-header {
+      color: var(--color-sky);
+    }
+
+    .tab-item.open .tab-header::after {
+      content: "−";
+      transform: rotate(180deg);
+      color: var(--color-sky);
+    }
+
+    .tab-item.open .tab-content {
+      padding: 1.25rem;
+      max-height: 1000px;
+      border-top-color: var(--border-color);
+    }
+
+    /* Scroll Animation Indicator */
+    .scroll-nav-dots {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      z-index: 100;
+    }
+
+    .scroll-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .scroll-dot:hover, .scroll-dot.active {
+      background: var(--color-sky);
+      transform: scale(1.3);
+      box-shadow: var(--glow-sky);
+    }
+
+    @media (max-width: 1024px) {
+      aside {
+        display: none;
+      }
+      main {
+        margin-left: 0;
+        padding: 2rem;
+      }
+      .scroll-nav-dots {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Sidebar -->
+  <aside>
+    <div class="logo-container">
+      <div class="logo-icon">W</div>
+      <div class="logo-text">I-Wish Portal</div>
+    </div>
+    <ul class="nav-links">
+      <li class="nav-item active"><a href="#about">1. What is it</a></li>
+      <li class="nav-item"><a href="#purpose">2. Why it exists</a></li>
+      <li class="nav-item"><a href="#placement">3. Framework Placement</a></li>
+      <li class="nav-item"><a href="#pipeline">4. Input & Process Flow</a></li>
+      <li class="nav-item"><a href="#usecases">5. Use Cases</a></li>
+      <li class="nav-item"><a href="#constraints">6. Edge Cases & Risks</a></li>
+      <li class="nav-item"><a href="#coordination">7. Swarm Coordination</a></li>
+      <li class="nav-item"><a href="#routing">8. Router Hints</a></li>
+      <li class="nav-item"><a href="#feedback">9. Open Questions</a></li>
+      <li class="nav-item"><a href="#scenarios">10. Live Scenarios</a></li>
+      <li class="nav-item"><a href="#synergy">11. Health & Simplification</a></li>
+    </ul>
+  </aside>
+
+  <!-- Navigation Scroll Dots -->
+  <div class="scroll-nav-dots">
+    <div class="scroll-dot active" onclick="scrollToSec('about')" title="What is it"></div>
+    <div class="scroll-dot" onclick="scrollToSec('purpose')" title="Why it exists"></div>
+    <div class="scroll-dot" onclick="scrollToSec('placement')" title="Framework Placement"></div>
+    <div class="scroll-dot" onclick="scrollToSec('pipeline')" title="Input & Process Flow"></div>
+    <div class="scroll-dot" onclick="scrollToSec('usecases')" title="Use Cases"></div>
+    <div class="scroll-dot" onclick="scrollToSec('constraints')" title="Edge Cases & Risks"></div>
+    <div class="scroll-dot" onclick="scrollToSec('coordination')" title="Swarm Coordination"></div>
+    <div class="scroll-dot" onclick="scrollToSec('routing')" title="Router Hints"></div>
+    <div class="scroll-dot" onclick="scrollToSec('feedback')" title="Open Questions"></div>
+    <div class="scroll-dot" onclick="scrollToSec('scenarios')" title="Live Scenarios"></div>
+    <div class="scroll-dot" onclick="scrollToSec('synergy')" title="Health & Simplification"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <header>
+      <div class="meta-badge">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--color-emerald); margin-right:4px; box-shadow:0 0 8px var(--color-emerald)"></span>
+        APPROVED (Selective Extraction)
+      </div>
+      <h1>I-Wish Integration Guide: agent-skills</h1>
+      <p class="subtitle">Architectural Blueprint, Swarm Coordination, and Safety Hardening Specs</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Capability Source</div>
+          <div class="meta-value"><a href="https://github.com/addyosmani/agent-skills" target="_blank">addyosmani/agent-skills</a></div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Shape Axis</div>
+          <div class="meta-value">Compound (Fragment + Skill)</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Role Axis</div>
+          <div class="meta-value">Supportive / Foundational</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Date Generated</div>
+          <div class="meta-value">2026-06-18</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. What is it -->
+    <section id="about">
+      <h2>1. What is it</h2>
+      <p>
+        The <code>agent-skills</code> repository is a curated collection of production-grade engineering guidelines, workflows, and local execution hooks. Instead of treating it as a single monolithic block, I-Wish adopts it through <strong>Selective Extraction</strong>. Its architectural elements are mapped into specialized, lightweight <code>fragments</code> (which inject custom instructions directly into workflows) and independent <code>skills</code> (which package functional scripts).
+      </p>
+    </section>
+
+    <!-- 2. Why it exists -->
+    <section id="purpose">
+      <h2>2. Why it exists</h2>
+      <p>
+        AI agents naturally suffer from overconfidence, context-flooding, and "laziness" (e.g. leaving placeholders or avoiding rigorous validation). This integration introduces:
+      </p>
+      <ul>
+        <li><strong>Doubt-Driven Development (DDD):</strong> A system where the agent is forced to mentally test and disprove its own claims using a zero-logic sandbox.</li>
+        <li><strong>SDD Cache (Prompt Caching):</strong> An extremely secure, revalidating local cache layer for fetch tools that checks HTTP ETags/Last-Modified headers, saving massive token budgets.</li>
+        <li><strong>Code Simplification:</strong> Strict metrics targeting nesting levels and function lengths to ensure code readability isn't sacrificed for brevity.</li>
+      </ul>
+    </section>
+
+    <!-- 3. Framework Placement -->
+    <section id="placement">
+      <h2>3. Delivery Framework Placement</h2>
+      <p>
+        The extracted assets are injected dynamically into various phases of the I-Wish SDLC pipeline:
+      </p>
+      
+      <div class="tab-container">
+        <div class="tab-item">
+          <div class="tab-header" onclick="toggleTab(this)">Define & Planning (SDD Gate)</div>
+          <div class="tab-content">
+            Injected into:
+            <ul>
+              <li><code>/create-prd</code> — Enforces an explicit "Assumptions Elicitation" block.</li>
+              <li><code>/make-story</code> — Translates vague requirement descriptions into measurable, testable metrics.</li>
+              <li><code>/iwish-feature-create-ui-spec</code> — Specifies clear visual state boundaries before layout development begins.</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="tab-item">
+          <div class="tab-header" onclick="toggleTab(this)">Build & Verify (Doubt & Test Gates)</div>
+          <div class="tab-content">
+            Injected into:
+            <ul>
+              <li><code>/code</code> / <code>/iwish-feature-dev-story</code> — Runs self-skepticism checklists before commits.</li>
+              <li><code>/fix-bug</code> — Validates regression side-effects using a custom sandbox repro script.</li>
+              <li><code>/create-architecture</code> — Executes structured Socratic design debates.</li>
+              <li><code>/review</code> — Grades the final code across 5 core quality dimensions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-item">
+          <div class="tab-header" onclick="toggleTab(this)">Supportive Utilities</div>
+          <div class="tab-content">
+            <ul>
+              <li><strong>SDD Cache:</strong> Binds to fetch tools to skip redundant HTTP requests.</li>
+              <li><strong>Source-Driven Development:</strong> Grounding prompts in fresh official documentation endpoints rather than relying solely on older training weights.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Input & Process Flow -->
+    <section id="pipeline">
+      <h2>4. Input & Process Flow</h2>
+      <p>
+        The operational logic handles caching and code auditing through transparent pre/post hooks:
+      </p>
+      <pre><code>[Tool Request: Fetch URL]
+           │
+           ▼
+[Check Local ETag Cache] ──(Hit)──► [HTTP HEAD Request]
+           │                              │
+         (Miss)                         (304 Not Modified)
+           │                              │
+           ▼                              ▼
+[Perform Raw HTTP Fetch]          [Serve Local Cache]
+           │
+           ▼
+[Write ETag to Disk (0600)]</code></pre>
+    </section>
+
+    <!-- 5. Use Cases -->
+    <section id="usecases">
+      <h2>5. Use Cases</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Approved Scenarios</th>
+            <th>Do-Not-Use Scenarios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SDD Cache</strong></td>
+            <td>Large framework documentation pages, recurring reference API calls.</td>
+            <td>Dynamic JSON endpoints, live server telemetry, local file edits.</td>
+          </tr>
+          <tr>
+            <td><strong>Doubt Review</strong></td>
+            <td>High-stakes commits, schema migrations, cross-boundary routing logic.</td>
+            <td>Typo fixes, variable renaming, simple styling alignments.</td>
+          </tr>
+          <tr>
+            <td><strong>Simplification</strong></td>
+            <td>Reducing deep nesting (3+ levels), refactoring monolithic functions.</td>
+            <td>Performance-critical code where abstracting incurs overhead, <code>/caveman-mode</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. Edge Cases & Risks -->
+    <section id="constraints">
+      <h2>6. Edge Cases, Risks & Constraints</h2>
+      
+      <div class="highlight-box warning">
+        <div class="highlight-box-title warning-title">
+          <svg style="width:16px; height:16px; fill:currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          SSRF Redirect Egress (PR #294 Vulnerability Fix)
+        </div>
+        <p>
+          The original cache shell pre-hook allowed <code>curl</code> to follow arbitrary redirects, opening up SSRF vectors on loopbacks or metadata services (e.g. <code>169.254.169.254</code>).
+        </p>
+        <p><strong>Remediation:</strong> Force <code>--max-redirs 0</code> and validate target URLs against a local subnet whitelist before execution.</p>
+      </div>
+
+      <div class="highlight-box warning">
+        <div class="highlight-box-title warning-title">
+          <svg style="width:16px; height:16px; fill:currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          Cache Symlink Traversal
+        </div>
+        <p>
+          Unvalidated cache file writing could follow malicious symlinks placed inside the cache folder, leading to arbitrary host file overwrites.
+        </p>
+        <p><strong>Remediation:</strong> Pre-verify that the target cache path is a regular file or does not exist, and restrict cache files permissions to <code>0600</code>.</p>
+      </div>
+
+      <div class="highlight-box info">
+        <div class="highlight-box-title info-title">
+          <svg style="width:16px; height:16px; fill:currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          Doubt Loop Prevention
+        </div>
+        <p>
+          Adversarial agents can fall into infinite self-skepticism loops, wasting substantial context tokens.
+        </p>
+        <p><strong>Remediation:</strong> Set a strict limit of three (3) doubt iterations before forcing escalation to the human user.</p>
+      </div>
+    </section>
+
+    <!-- 7. Swarm Coordination -->
+    <section id="coordination">
+      <h2>7. Swarm Coordination</h2>
+      <p>
+        Different specialized agents inside the I-Wish swarm leverage these skills coordinate:
+      </p>
+      <ul>
+        <li><strong><code>review-agent</code>:</strong> Acts as the adversary for Doubt-Driven Development reviews. Strips target intent during checks.</li>
+        <li><strong><code>dev-agent</code>:</strong> Integrates Code Simplification metrics and executes incremental TDD checks.</li>
+        <li><strong><code>research-agent</code>:</strong> Orchestrates the Source-Driven doc fetching and citation formatting.</li>
+        <li><strong><code>orch-agent</code>:</strong> Evaluates debate outcomes and routes unresolved conflicts to the user.</li>
+      </ul>
+    </section>
+
+    <!-- 8. Router Hints -->
+    <section id="routing">
+      <h2>8. Orch Router Hints</h2>
+      <p>
+        The orchestrator routes requests containing specific cues:
+      </p>
+      <ul>
+        <li><strong>Trigger Keywords:</strong> <code>revalidate cache</code>, <code>verify complexity</code>, <code>doubt check</code>, <code>reduce nesting</code>, <code>LCP</code>, <code>ADR</code>.</li>
+        <li><strong>Anti-Triggers:</strong> <code>rename</code>, <code>typo</code>, <code>format</code>.</li>
+      </ul>
+    </section>
+
+    <!-- 9. Open Questions -->
+    <section id="feedback">
+      <h2>9. Review Questions for the User</h2>
+      <ul>
+        <li>Should the default cache time-to-live (<code>SDD_CACHE_MAX_AGE</code>) be set to 24 hours?</li>
+        <li>Should cross-model review checks default to using local CLI wrappers (like Gemini CLI)?</li>
+        <li>Are code complexity limits (max nesting $\ge 3$, function lines $\ge 50$) matching the project's standard styling?</li>
+      </ul>
+    </section>
+
+    <!-- 10. Live Scenarios -->
+    <section id="scenarios">
+      <h2>10. Example Scenarios</h2>
+      <h3>Scenario 1: Fetch Cache Revalidation</h3>
+      <ol>
+        <li>Agent calls <code>WebFetch</code> on documentation URL.</li>
+        <li>Pre-hook locates cached content and ETag.</li>
+        <li>Queries remote endpoint using ETag.</li>
+        <li>Server returns <code>304 Not Modified</code>.</li>
+        <li>Pre-hook exits with code 2, returning cached file content immediately.</li>
+      </ol>
+      
+      <h3>Scenario 2: Zero-Context Doubt Cycle</h3>
+      <ol>
+        <li>Agent updates authorization logic in <code>auth.ts</code>.</li>
+        <li>Agent prepares a clean diff file and target specification contract.</li>
+        <li>Agent starts a separate review agent without sharing the implementation reasoning.</li>
+        <li>Reviewer flags a boundary condition where token expiration might lock out active sessions.</li>
+        <li>Agent updates implementation, resolves finding, and completes story verification.</li>
+      </ol>
+    </section>
+
+    <!-- 11. Codebase Health & Code Simplification Synergy -->
+    <section id="synergy">
+      <h2>11. Codebase Health & Code Simplification Synergy</h2>
+      <p>
+        To ensure high-quality codebase maintenance without conflict:
+      </p>
+      
+      <div class="highlight-box info">
+        <div class="highlight-box-title info-title">
+          <svg style="width:16px; height:16px; fill:currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          The Feedback Loop: Diagnosis to Action
+        </div>
+        <p>
+          <strong>Codebase Health (<code>/codebase-health</code>)</strong> is a <strong>Macro Diagnostic Gate</strong> that scans the entire repository statically to detect files and functions that violate architectural boundaries or exceed metric thresholds (e.g. connections > 50, nesting >= 3).
+        </p>
+        <p>
+          <strong>Code Simplification (<code>code-simplification</code>)</strong> is a <strong>Micro Remediation Skill</strong>. It operates during active coding (in-flight) to give the developer agent step-by-step instructions on how to rewrite complex parts (using early returns, guard clauses, splitting files) to resolve the hotspot.
+        </p>
+      </div>
+
+      <h3>Coexistence Rules</h3>
+      <ol>
+        <li>
+          <strong>Targeted Hotspots:</strong> Files flagged by <code>/codebase-health</code> during milestone reviews are automatically marked for simplification.
+        </li>
+        <li>
+          <strong>In-flight Enforcement:</strong> If a developer agent is editing a file and either notices it is flagged as a health hotspot, or if the agent's new edits would push it beyond complexity thresholds, the agent <em>must</em> apply the <code>code-simplification</code> rules to simplify the module before completing the task.
+        </li>
+        <li>
+          <strong>Behavioral Parity:</strong> Every simplification step must be immediately tested to guarantee that behavior is exactly preserved.
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <script>
+    // Toggle Accordion Tabs
+    function toggleTab(header) {
+      const item = header.parentElement;
+      item.classList.toggle('open');
+    }
+
+    // Scroll Dots Sync & Navigation
+    function scrollToSec(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Highlight active link in sidebar and dot based on scroll position
+    window.addEventListener('scroll', () => {
+      const sections = ['about', 'purpose', 'placement', 'pipeline', 'usecases', 'constraints', 'coordination', 'routing', 'feedback', 'scenarios', 'synergy'];
+      let current = 'about';
+
+      for (const secId of sections) {
+        const el = document.getElementById(secId);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 200) {
+            current = secId;
+          }
+        }
+      }
+
+      // Update sidebar nav links
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        const link = item.querySelector('a');
+        if (link && link.getAttribute('href') === '#' + current) {
+          item.classList.add('active');
+        }
+      });
+
+      // Update scroll dots
+      const dots = document.querySelectorAll('.scroll-dot');
+      sections.forEach((secId, idx) => {
+        if (dots[idx]) {
+          dots[idx].classList.remove('active');
+          if (secId === current) {
+            dots[idx].classList.add('active');
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

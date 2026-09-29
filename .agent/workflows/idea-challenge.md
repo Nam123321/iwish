@@ -68,12 +68,17 @@ When running `/idea-challenge`, Orch or the owning agent should attach:
      - business model strength
      - pricing or distribution edge
 
-3. `research`
-   - attach when claims need evidence from:
-     - market
-     - domain
-     - competitor
-     - technical feasibility
+3. `research` **[PREREQUISITE — NOT OPTIONAL]**
+   - MUST be completed BEFORE `/idea-challenge` begins
+   - Agent MUST load and reference the following files during challenge:
+     - `market-research.md` — for market size, TAM/SAM/SOM claims
+     - `competitor-research.md` — for differentiation arguments
+     - `domain-research.md` — for industry-specific validation
+     - `technical-research.md` — for feasibility and ML/AI complexity assessment
+   - If any file is missing, agent should flag it and route to `/research` first
+
+4. `fragment-idea-discovery-framework`
+   - load and use to structure the raw idea clarification and pushback conversation
 
 ## Runtime Role
 
@@ -116,7 +121,7 @@ If an existing `idea-challenge-{project}.md` already exists, the workflow should
 
 ### Research-Grounded Mode
 
-If the concept depends on claims about the market, competitors, user behavior, or feasibility, Orch should attach `research` before allowing those claims to harden into the output artifact.
+**[MANDATORY]** Before entering `/idea-challenge`, the agent MUST verify that research outputs exist in the project's `_iwish-output/1. Idea Discovery/1.4. research/` directory. If research files (market-research.md, competitor-research.md, domain-research.md, technical-research.md) do NOT exist, the agent MUST route to `/research` first and BLOCK `/idea-challenge` from starting.
 
 ## Stage Map
 
@@ -160,6 +165,20 @@ This stage stress-tests external adoption objections.
 Read and execute: `step-ic-04-internal-faq.md`
 
 This stage stress-tests feasibility, risk, and execution reality.
+
+### Step 4b: Unknowns Intelligence Scan
+
+**[MANDATORY GATE]** Before proceeding to Strategic Advantage, you MUST run the `unknowns-scanner` skill with:
+- phase: discovery
+- scope: macro
+- depth: partial
+- tools: assumption-map (KU), pre-mortem (UU), confidence-scorer (KU), debiasing-check (UK)
+
+Append a new section `## IC-04b: Unknowns Intelligence Scan` to the challenge document containing:
+- Assumption Map with confidence scores (verified vs unverified)
+- Pre-Mortem findings (Tigers and Elephants)
+- Debiasing check: which IC-01-04 answers show anchoring/confirmation bias?
+- Confidence calibration: epistemic uncertainty score for each major claim
 
 ### Step 5: Strategic Advantage
 
@@ -256,7 +275,7 @@ This is the strategic lens, not the primary workflow owner.
 
 ### `research`
 
-Use when the concept makes factual claims that need grounding.
+> **Note:** Research is a **PREREQUISITE** for `/idea-challenge` (see Required Add-Ons above). This section describes how research data feeds INTO the challenge steps.
 
 Research should feed back into the challenge. It should not replace the challenge.
 
@@ -283,12 +302,14 @@ After `/idea-challenge`, Orch should usually route to:
 
 ## Orch Deep Chain
 
-When the user is not just asking for a light challenge, Orch should prefer this chain:
+When the user is not just asking for a light challenge, Orch MUST prefer this chain:
 
-1. `/idea-challenge`
-2. `/research` when market, domain, competitor, or feasibility evidence is still weak
-3. `unique-advantage-evaluator` when the concept needs stronger business advantage or `biz-stack` shaping
-4. `/plan` to turn the challenged concept into a product brief or PRD-ready planning artifact
+1. `/idea-discover` — clarify raw problem, persona, JTBD
+2. `/research` — gather market, domain, competitor, and technical evidence FIRST
+3. `/idea-challenge` — challenge the idea WITH research data as ammunition
+4. `unique-advantage-evaluator` when the concept needs stronger business advantage
+5. `/product-strategy` — synthesize all discovery outputs into Go/No-Go assessment
+6. `/plan` to turn the challenged concept into a PRD-ready planning artifact
 
 This chain should preserve and reuse:
 

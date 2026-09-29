@@ -4,7 +4,7 @@ description: 'Define comprehensive success metrics that include user success, bu
 
 # File References
 nextStepFile: './step-05-scope.md'
-outputFile: '{planning_artifacts}/product-brief-{{project_name}}-{{date}}.md'
+outputFile: '{planning_artifacts}/2. Product Planning/2.1. product-brief-or-prd.md'
 
 # Task References
 advancedElicitationTask: '{project-root}/_iwish/core/workflows/advanced-elicitation/workflow.xml'
@@ -148,6 +148,18 @@ Prepare the following structure for document append:
 ### Key Performance Indicators
 
 [Key performance indicators content based on conversation, or N/A if not discussed]
+
+### Unknowns Gate: Pre-Scope Check
+
+Before finalizing this phase and moving to scope, run the `unknowns-scanner` skill with:
+- phase: product-brief
+- depth: partial
+- tools: assumption-map (KU), debiasing-check (UK)
+
+Document findings here:
+- Assumptions embedded in user journeys that lack evidence
+- Metrics that may be unmeasurable or vanity
+- Domain constraints not yet explored
 ```
 
 ### 7. Present MENU OPTIONS

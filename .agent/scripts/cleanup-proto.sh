@@ -3,7 +3,7 @@
 # BMAD Prototype Cleanup Script
 # Purpose: Backup prototype as a patch and delete the branch safely.
 
-PROTO_DIR="_bmad-output/prototypes"
+PROTO_DIR="_iwish-output/prototypes"
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [[ ! "$CURRENT_BRANCH" =~ ^proto/ ]]; then
