@@ -1,0 +1,330 @@
+# JA Locale Dictionary
+tabs:
+  idea_to_prd: アイデアから PRD
+  epic_story_map: Epic & story マップ
+  feature_graph: Feature グラフ
+  sprint_kanban: Sprint 看板
+  orchestration: Orchestration グラフ
+  iwish_guide: I-Wish ガイド
+  code_graph: コード関係図
+  evolver: 進化済み Skills
+  plugins: Plugins & トーナメント
+fallbacks:
+  untranslated_title: i18n 翻訳ステータス
+  untranslated_text: 選択された言語では、このタブのコンテンツはまだ利用できません。デフォルトの英語版を表示しています。
+  no_node_selected: ノードが選択されていません
+  no_node_selected_desc: ノードをクリックすると、詳細なプロパティが表示されます。
+  no_evolved_skills: 進化済み Skills が見つかりません
+  no_evolved_skills_desc: "I-Wish Evolver（例: lineage-sync 追跡）を実行して、スキル突然変異の系統を記録し、ここに祖先 DAG ツリーを表示します。"
+  code_graph_not_available: コード関係図が利用できません
+  code_graph_not_available_desc: code-graph 生成コマンドを実行して、プロジェクトのアーキテクチャをインタラクティブな依存関係グラフとして視覚化します。
+  select_evolved_skill: 進化済み Skill を選択
+  skill_evolution_stats: Skill 進化統計
+  total_mutations: 総突然変異数
+  average_latency: 平均レイテンシ
+  average_success_rate: 平均成功率
+  no_version_selected: バージョンが選択されていません
+  no_version_selected_desc: ツリー内の突然変異バージョンノードをクリックすると、レイテンシ、成功メトリクス、タイムスタンプが表示されます。
+  epic_story_map_details: Epic & Story マップの詳細
+guide:
+  sidebar_title: ガイド目次
+  main_pipeline: 🚀 メイン開発パイプライン
+  output_structure: 📁 出力ディレクトリ構造
+  per: 🔄 範囲拡張レビュー (PER)
+  orch: 🤖 制御 Agent ルーティング
+  supportive_skills: 🛠️ 補助スキルシステム
+  usecases: 💡 主なユースケース
+  title: 🚀 メイン開発パイプライン
+  subtitle: I-Wish のソフトウェア開発ライフサイクルは、アイデアの発見からリリース＆メンテナンスまでの 7 つのフェーズからなる AI
+    ネイティブ工場として設計されています。
+  step_0:
+    title: Bootstrap (既存プロジェクトの中途統合)
+    focus: 目標：開発中の既存プロジェクトを I-Wish の管理下に置く (Brownfield Bootstrapping)。
+    badge: 🚀 ここから開始 - 既存プロジェクト
+    desc: ブラウンフィールドプロジェクト（既存コードベース）の場合：このコマンドを最初に実行して、I-Wish
+      にソースコードを自動スキャンさせ、依存関係をマップし、プロジェクトコンテキストを設定します。Discover/Plan
+      の流れを一から行う必要はありません。
+    output: 設定 📄 1. Idea Discovery/1.4.
+      research/project-context.md、コードベースグラフのインデックス作成、および最小バックログの生成。
+    note: メインの開発トラックに移行する前に、現在のプロジェクトコンテキストを自動的に正規化します。エイリアスもサポート：/document-project
+      または /generate-project-context。
+  step_1:
+    title: Discover & Idea Hardening (アイデア発見と強化)
+    focus: 目標：実現可能性を評価し、ビジネス仮説を策定し、プロジェクトドメインを調査する。
+    desc: 初期フェーズでは、市場調査、技術的実現可能性の調査、および製品の価値提案に対するストレステストに焦点を当てます。
+  step_1_discover:
+    output: 📄 1. Idea Discovery/1.1. idea-discovery.md (Mom Test & JTBD)。
+    note: 前提ステップ：ブレインストーミングを行う前に、アイデアとユーザーの痛みを明確にします。
+  step_1_brainstorm:
+    output: 📄 1. Idea Discovery/1.2. idea-bank.md (アイデア草案、複雑度スコア CS 1-5)。
+    note: discover ステップでコンテキストを明確にした後、詳細なソリューションと MVP の範囲をブレインストーミングします。
+  step_1_challenge:
+    output: 📄 1. Idea Discovery/1.3. idea-challenge.md (Amazon PRFAQ テンプレートを含む)。
+    note: コアとなる価値を見つけるために、Amazon の Working Backwards（逆向きの働き方）手法を使用してアイデアに挑戦します。
+  step_1_evaluator:
+    output: 持続可能な競争優位性の評価レポート (Moat Evaluator)。
+    note: アイデアを洗練させた後に実行し、独自のビジネス優位性を模索します。
+  step_1_research:
+    output: 📄 1. Idea Discovery/1.4. research/market-research.md,
+      competitor-research.md, domain-research.md, および technical-research.md。
+    note: ウェブアクセスを介して市場の詳細、コンプライアンス、または技術ライブラリのチェックを実行します。
+  step_1_competitor:
+    output: 📄 1. Idea Discovery/1.4. research/competitor-research.md。
+    note: 競合他社や代替案を分析し、現在のソリューションに対する不満を再検証します。
+  step_1_context:
+    output: 📄 1. Idea Discovery/1.4. research/project-context.md。
+    note: AI agent がプロジェクト全体で遵守し尊重するためのコアガイドラインを生成します。
+  quick_dev:
+    title: Quick Dev Mode (クイック開発モード/高速バイパス)
+    focus: 目標：完全な PRD や計画ドキュメントを作成せずに、小さな機能をすばやく実装する。
+    badge: ⚡ 今すぐ開発 - 高速バイパス
+    desc: プロセス全体のオーバーヘッドをバイパス：緊急のホットフィックスや小さな機能を、計画の定型ドキュメントを作らずに技術仕様/命令から直接実行する必要があるエンジニア向けに設計されています。速度が絶対的な優先事項である場合に使用します。
+    output: ドキュメント生成を肥大化させることなく、ソースコードを直接変更します。
+    note: システムは、コーディング速度を最大化するために、厳格な計画審査ゲートを自動的にバイパスします。
+  step_2:
+    title: Plan (製品要件の計画)
+    focus: 目標：製品の価値を明確な機能仕様ドキュメントに落とし込む。
+    desc: 計画フェーズを詳細化し、明確な成功指標を含む完全な製品要件ドキュメント (PRD) を構築します。
+  step_2_prd:
+    output: 📄 2. Product Planning/2.1. product-brief-or-prd.md (SMART PRD)。
+    note: 成功指標、技術スタック、機能要件 (FR) および非機能要件 (NFR) が含まれます。
+  step_2_brand:
+    output: 📄 圧縮アーカイブ _iwish-output/brand-identity/ (brand-guideline.html,
+      brand-guidelines.md, strategy/, assets/logo/, design-tokens.json を含む)
+      を作成し、代替ファイルを /assets にコピー。
+    note: "オプションステップ：プロジェクトにブランドアイデンティティがない場合は、UI/UX
+      の前に実行します。スタイルの詳細がデザインシステムに影響するためです。Kapferer のブランドプリズムを使用してロゴを生成し、3
+      つの再構成パス（A: クリーンアップ、B: 進化、C: 変革）で管理します。"
+  step_2_ux:
+    output: 📄 2. Product Planning/2.3. ui-ux-spec.md (ユーザー体験マップと全体の UX 仕様)。
+    note: PRD が完了した後に実行され、レイアウト構造とインタラクションを概説します。
+  step_3:
+    title: Solution (アーキテクチャとバックログ)
+    focus: 目標：技術設計の青写真を確立し、Epics & Stories を分解し、スプリントを初期化する。
+    desc: 技術アーキテクチャを設計し、ユーザー故事のバックログをまとめ、アクティブなスプリントサイクルを計画します。
+  step_3_arch:
+    output: 📄 docs/architecture.md (ADR) および 2. Product Planning/2.2.
+      database-spec.md。
+    note: データベース、ERD 図、API コントラクト、およびディレクトリ構造の設計を定義します。
+  step_3_stories:
+    output: 📄 2. Product Planning/2.4. epics-and-stories.md およびスケルトンユーザーストーリーファイル。
+    note: PRD 要件を、ユーザー価値に焦点を当てた独立した Epics と Stories に分解します。
+  step_4:
+    title: Implement (マイクロループ実装)
+    focus: 目標：個々の故事の詳細を詳述（マイクロループ）し、コーディングロジックを実行する。
+    desc: 各 Story の開発ループ：故事の詳細作成 -> UI/UX 仕様 -> データ仕様 -> コーディングロジックの実装。
+  step_4_story:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/story.md 開発準備完了。
+    note: 受入基準 (Acceptance Criteria)、実装上の注意、およびターゲット範囲を指定します。
+  step_4_ui:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/ui-ux-spec.md
+      (詳細な UI 仕様)。
+    note: 設定されたデザインツール（Stitch、Figma、Claude）を介してレイアウトを同期し、デザインモデルを同期します。
+  step_4_data:
+    output: 📄 3. Development/1. Epic & Story/Epic-[ID]/Story-[ID]/database-spec.md。
+    note: コーディングの前にデータベースの更新が必要な場合、自動的に作成されます。
+  step_4_code:
+    output: 💻 クリーンアーキテクチャ (Clean Architecture) に準拠したソースコードとユニットテスト（カバレッジ > 80%）。
+    note: コード実行を開始する canonical コマンド。データベース仕様に対する一貫性を自動チェックします。
+  step_4_per:
+    output: 📄 3. Development/project-expansion-review/PER-[feature-name].md。
+    note: 進行中のプロジェクト範囲の拡大を提案する際、影響と方向転換のリスクを評価します。エイリアス：/per、/feature-expansion-review。
+  step_5:
+    title: Validate (品質ゲート)
+    focus: 目標：コード品質のレビュー、アーキテクチャの監査、および回帰テストの実行。
+    desc: 自動レビューを実行し、後方互換性リスクを分析し、コードベース全体の健康状態を監査します。
+  step_5_review:
+    output: 📄 詳細なレビュー報告書、セキュリティスキャン (SAST)、および Hybrid QA スコアカード。
+    note: リリースビルドをコンパイルする前に、コードの品質、テストカバレッジ、およびセキュリティを確保します。
+  step_5_health:
+    output: 📄 コードベース健康レポート（デッドコード、循環依存、孤立ファイル）。
+    note: アーキテクチャの乖離を防ぎ、技術的負債をクリーンアップするために定期的に実行します。
+  step_6:
+    title: Deliver & Release (デリバリーとリリース)
+    focus: 目標：製品の引き渡し、CI/CD 構成、および安全なリリースの実行。
+    desc: 機能が検証されたら、リリースパイプラインを構成し、トラフィック割り当てを行い、リリースします。
+  step_6_canary:
+    output: カナリアリリース計画、ステージング/本番でのトラフィック制御構成。
+    note: デプロイリスクを最小限に抑えるために、段階的なリリースを実施します。
+  step_7:
+    title: Operate, Maintain & Evolve (運用、保守と進化)
+    focus: 目標：知識の増分を収集し、本番環境の問題に対処し、運用を最適化する。
+    desc: リリース後のメンテナンス、緊急のホットフィックスの実行、および進化したスキルのフィードバックを行います。
+  step_7_retro:
+    output: 📄 4. Verification & Release/4.3. retrospective.md。
+    note: 各スプリント後に知識の増分 (Knowledge Delta) を収集し、Corporate Brain（企業頭脳）にフィードバックします。
+  step_7_fix:
+    output: 📄 3. Development/2. Bug Report/ 下のバグ報告、ソースコードがホットフィックスされました。
+    note: 問題が発生したときに即座にトリガーされ、構造化された診断情報を生成します。
+  step_7_dashboard:
+    output: 🖥️ コンパイル済みの I-Wish ワークスペースユーザーガイド＆ダッシュボード（HTML 形式）。
+    note: スプリント追跡データとグラフをコンパイルします。CLI から実行可能：iwish gen-dashboard。
+  dir_title: 📁 標準出力ディレクトリ構造
+  dir_desc: I-Wish
+    は、フェーズ間の追跡可能性を確保するために、標準のディレクトリレイアウトの下で、すべての計画、設計、仕様、および検証ドキュメントを管理します：
+  per_title: 🔄 プロジェクト範囲拡張レビュー (PER) プロトコル
+  per_desc: 進行中（in-flight）のプロジェクトで新しい機能/モジュールが要求された場合、I-Wish は PER
+    ワークフローを起動し、範囲への影響を 3 つの階層に分類します：
+  per_tier_1:
+    title: 🟢 階層 1：低影響
+    desc: コアフローやデータベーススキーマを変更しない軽微な機能追加。ルート：ストーリーの生成 (/make-story)
+      を継続して開発。出力：story.md, sprint-status.yaml, task.md。
+  per_tier_2:
+    title: 🟡 階層 2：中程度の影響
+    desc: コアデータベースに影響を与える、またはコアユーザーフローを変更する大規模な機能モジュール。ルート：ストーリーの作成を凍結。/plan に戻って
+      PRD を更新し、データベース仕様を再設計し、Epics を再分解します。出力：PRD.md, epics-and-stories.md,
+      database-spec.md。
+  per_tier_3:
+    title: 🔴 階層 3：高影響（方向転換）
+    desc: 製品のコアバリュー、ユーザー画像、または基本技術スタックを変更します。ルート：すべての開発を凍結。/idea-challenge
+      に戻ってコア仮説をテストし、新しい /research を実行し、PRD を再構築します。出力：idea-challenge.md,
+      research/, architecture.md。
+  orch_title: 🤖 スマート制御ルーティング
+  orch_desc: これらすべての一連の流れに圧倒されていませんか？ご心配なく！ワークフローは構造を定義していますが、すべてのコマンドを手動で呼び出す必要はありません。I-Wish
+    の最高頭脳である Orch Agent に話しかけるだけです。コンテキストを分析してタスクを自動的に委任します！
+  orch_badge: 💡 今すぐ自動化 - コントローラー起動
+  orch_note: 統合されたコントローラーインターフェース。意図を自動検出し、リクエストをルーティングして、開発者の手動入力を最小限に抑えます。
+  skills_title: 🛠️ 補助的および基盤的スキルシステム
+  skills_desc: メインの開発トラックに加えて、I-Wish はコード品質の監査、セキュリティの検証、および UX の最適化を行う専門のスキルを統合しています。
+  skills:
+    desc_repo_absorption: GitHub からの外部リポジトリを分析、吸収、解体し、手順を自動的に統合して Orch ルーティングにリンクします。
+    desc_idea_hardening: 製品アイデアを厳しく評価し、トレードオフとコアバリューとともに少なくとも 2〜3 の実装アプローチを分析します。
+    desc_security_guardian: 外部セキュリティ制御：マージ/デプロイする前に、脆弱性やシークレットリークをスキャンし、信頼レベルをレビューして、最小権限を強制します。
+    desc_ux_guardian: ユーザーインターフェースがマスターデザインシステムと完全に一致するようにし、複数のスプリントにわたるスタイルの乖離を防ぎます。
+    desc_user_simulation_guardian: 第一原理思考を使用してさまざまなビジネスキャラクターの行動をシミュレートし、UX
+      フローのコヒーレンスをテストします（/simulate-user 経由で実行）。
+    desc_pivot_guardian: ループゲートキーパー：テストやビルドを実行せずに、エージェントが同じファイルを連続して 3 回以上編集した場合、自動的にエージェントを中断します。
+    desc_socratic_review: ソクラテス式の質問と回答を実行して、データベースの変更をレビューし、後方互換性を制御し、アーキテクチャの乖離を防ぎます。
+    desc_qa_simulator_guardian: 包括的なテストプロセスをシミュレートし、コードのリリース準備状況を評価するための Hybrid スコアカードを計算します。
+    desc_creative_agent: クリエイティブサポートエージェント：2〜3 の UI/UX デザイン方向性を提案し、HTML/Mermaid
+      モックアップの作成を支援し、Stitch デザインを統合します。
+    desc_ai_engineer_agent: AI/LLM
+      開発エージェント：プロンプトテンプレートの最適化、トークン予算の管理、プロンプトインジェクションの防止、およびモデル層の割り当てを行います。
+    desc_data_architect_agent: データ管理エージェント：データベーススキーマの設計、移行の同期 (Prisma)、およびデータ仕様
+      (Data Specs) の一貫性の検証を行います。
+    desc_data_strategist_agent: データ戦略エージェント：統合データ分析の計画、後方互換性の制御、およびプロジェクト情報構造のモデリングを行います。
+  usecases_title: 💡 ユースケースアクションガイド
+  usecases_desc: I-Wish における一般的な運用シナリオと、それらを解決するための重要なワークフロー：
+  usecase_1:
+    title: GitHub リポジトリの吸収 (RAP プロトコル)
+    desc: 外部のリポジトリやスキルテンプレートを GitHub から I-Wish にクローン、解析、吸収したい場合。
+    action: RAP パイプライン：security-guardian が信頼性/マルウェアをスキャンし、repo-absorption
+      がコード関係図をクローンおよびインデックス化し、統合ガイドを生成し、Orch ルーティング用のトリガータグをバインドします。
+  usecase_2:
+    title: 既存ウェブサイトの複製 (Cloner)
+    desc: 公開ウェブサイトのビジュアルレイアウトをコピーし、クリーンな React/HTML UI コンポーネントを出力する必要がある場合。
+    action: ブラウザ駆動の複製：DOM/CSS 構造をキャプチャし、フォント、レイアウトトークンを抽出し、コードをコンパイルします。
+  usecase_3:
+    title: UI デザインの同期 (Stitch / UX Pro Max)
+    desc: モックアップをデザインし、デザイン仕様を Stitch デザインサーバーと同期したい場合。
+    action: UX 同期ワークフロー：/create-ux-design と /make-ui-spec を実行。/sync-stitch-design
+      を呼び出して変更をプッシュ。Visual-fidelity-gate は、フロントエンドコードがモックアップと一致しているかを自動検証します。
+  usecase_4:
+    title: コードベース分析とナレッジグラフ化
+    desc: Orch ルーティングのために、ファイルのインポート関係をマップし、故事の実装による影響（Feature グラフ）を追跡します。
+    action: アナライザー：ソースコードをスキャンし、機能依存関係ノードを追跡し、ダッシュボードのグラフを更新します。
+  usecase_5:
+    title: カナリア試行とステージング検証
+    desc: 完全な本番リリースの前に、ステージングトラフィックの一部で新しいコードを試行します。
+    action: デプロイワークフロー：/canary を実行してサンドボックスを起動し、パフォーマンスを監視し、自動ロールバックを行います。
+  usecase_6:
+    title: 緊急ホットフィックスと運用診断
+    desc: 本番のバグを診断し、互換性を損なうことなく安全にホットフィックスを適用します。
+    action: 診断ループ：/fix-bug を実行して根本原因分析を行い、回帰テストを生成し、パッチを適用します。
+  usecase_7:
+    title: ブランドアイデンティティ、ロゴ、およびスタイルガイドライン
+    desc: ブランド資産、ロゴ、およびガイドラインを一から作成するか、既存の資産をリファクタリングします。
+    action: ブランドプリズムワークフロー：/brand
+      を実行してブランドプリズムアンケートを実施し、コンセプトロゴを作成し、デザイントークンをエクスポートします。
+  label_note: "備考:"
+  label_output: "出力:"
+plugins:
+  sidebar_title: Tournament 競技場
+  nav_intro: ℹ️ 基本紹介
+  nav_registry: 🔌 Plugins レジストリ
+  nav_workflow: ⚔️ 5段階の流れ
+  nav_usecases: 💡 実際のユースケース
+  nav_slash: 💬 コマンドラインの例
+  title: 🔌 Plugin駆動型 A/B トーナメント
+  intro: I-Wish は、柔軟なプラグインアーキテクチャと高度な A/B
+    トーナメントシステムを活用しています。吸収したすべてのリポジトリやスキルセットをコアコードベースに直接マージする代わりに、ユーザーはそれらを隔離されたプラグインとしてパッケージ化できます。タスクの実行が必要な場合、並列トーナメントをトリガーでき、複数の候補プラグインが独立したワークスペースでタスクを個別に実行します。その後、システムは結果を評価し、最良の結果を選択できるようにします。
+  card_isolation:
+    title: 🛡️ 安全な隔離
+    desc: 各候補は、隔離されたワークスペース内の異なる Git 分支上でタスクを実行します。ワークスペースの衝突やダーティな状態の心配はありません。
+  card_evaluation:
+    title: 📊 公正な評価
+    desc: review-agent は、要件、コード品質、安定性、および自動テストに照らして各候補を評価します。
+  card_hitl:
+    title: 👑 人員確認
+    desc: 明確なビジュアルレイアウトで競争スコアカードと差分 (diff) を確認し、どの候補をマージするかを選択します。
+  registry_title: 🔌 Plugins & Modules Registry (プラグインとモジュールのレジストリ)
+  registry_desc: 以下は、トーナメントの管理と構成に使用される、機能領域別に分類されたアクティブなプラグインのレジストリです：
+  registry_uiux: 🎨 UI/UX & Design Providers (デザインとインターフェース)
+  registry_coding: ⚡ Coding & Productivity (プログラミングとパフォーマンス)
+  registry_badge_illustrative: 図解サンプル
+  desc_uiux_pro_max: 応答性の高いインターフェース、カスタム遷移、および洗練された視覚的トークンのためのプラグイン。
+  desc_taste_skill: 美的なマイクロディテール、HSL パレット、および高級なタイポグラフィに特化したレイアウトプロバイダー。
+  desc_stitch: Stitch デザインサーバーと統合されたデフォルトの視覚仕様システム。
+  desc_superpower: 高度なコード生成とリファクタリングを提供する重いアルゴリズム最適化モジュール。
+  desc_vibecode: 速度を最優先する、簡素化されたプロンプト駆動の指示開発フレームワーク。
+  desc_native: コア I-Wish 開発実装ワークフロー（標準の dev-agent 実行）。
+  workflow_title: ⚔️ 5 フェーズのトーナメントパイプライン
+  workflow_desc: A/B トーナメントパイプラインは、コードの品質と安定性を保証するために、5 つの異なるフェーズを経て実行されます。
+  step_setup:
+    title: Arena Setup (アリーナのセットアップ)
+    focus: 目標：候補プラグイン間の完全な隔離を確保する。
+    desc: git のクリーンさを検証します。選択された各候補プラグインについて、I-Wish は自動的にベースラインコミットから新しい Git
+      分支を分岐させます。
+  step_dispatch:
+    title: Agent Dispatch (エージェントの配備)
+    focus: 目標：並列ワークスペースでタスクを実行する。
+    desc: "Workspace: branch 構成を持つ並列子エージェントを起動します。各エージェントは、隔離された分岐コンテキスト内で指示を実行します。"
+  step_gate:
+    title: Resolution Gate (決議の関門)
+    focus: 目標：客観的な採点と評価。
+    desc: コードをコンパイルし、自動テスト (npm test) を実行します。review-agent
+      は、要件、品質、安全性、およびテストの合格率に基づいて各候補を採点します。
+  step_human:
+    title: Human Checkpoint (人間のチェックポイント)
+    focus: 目標：ユーザーが最適なソリューションを承認する。
+    desc: 候補の diff とログを比較するスコアカードを表示します。ユーザーはマージするブランチを選択するか、トーナメントを完全に中止します。
+  step_merge:
+    title: Merge & Cleanup (マージとクリーンアップ)
+    focus: 目標：クリーンなマージを適用し、一時的なブランチを削除する。
+    desc: 承認された勝者ブランチをメインにマージします。すべての一時的なトーナメントブランチと子エージェントのワークスペースは自動的に削除されます。
+  usecases_title: 💡 実用的なユースケース
+  usecases_desc: A/B トーナメントを起動して複雑なアーキテクチャの選択を解決するのに役立つ現実のシナリオ。
+  usecase_design:
+    title: 🎨 シナリオ 1：視覚的なデザインレイアウトスタイルの比較
+    desc: "ユーザーインターフェース（例: ログインページ）を構築し、マージする前に複数のデザインプロバイダーを視覚的に比較したいとします。"
+    action: ui-ux-pro-max（アニメーション）、taste-skill（高級フォント）、および
+      native（デフォルト）を含むトーナメントを実行します。
+    cmd_label: 起動コマンド：
+    cmd_text: /tournament モジュール ui-ux-pro-max, taste-skill, と native
+      を使って高級なログインページをデザインする
+    result: 👉 結果：3つのブランチが並列で実行されます。最終的な人間の選択のために、スコアカードがデザインスタイルとコード品質を要約します。
+  usecase_optim:
+    title: ⚡ シナリオ 2：アルゴリズムの最適化とパフォーマンスベンチマーク
+    desc: リソース効率を評価するために、パフォーマンスが重要なデータプロセッサを作成する必要があります。
+    action: Superpower（重い数学的最適化）、vibecode-pro-max（軽量コード）、および native を競争させます。
+    cmd_label: 起動コマンド：
+    cmd_text: /tournament モジュール Superpower, vibecode-pro-max, と native
+      を使って10000ノードのパスファインダーアルゴリズムを最適化する
+    result: 👉 結果：競合する候補がスコアカードにベンチマーク指標（メモリ、速度）を出力し、客観的な比較を行います。
+  syntax_title: 💬 自然言語による起動構文
+  syntax_desc: 冗長な CLI フラグの代わりに、自然言語を使用して会話形式でトーナメントを呼び出すことができます。要求には 3
+    つの主要な部分が含まれている必要があります：
+  syntax_part1: 1. タスクのアクションと説明 (Task Action &
+    Description)：実行したい内容を明確にします（例：'高級なログインページをデザインする'）。
+  syntax_part2: 2. 接続キーワード (Connecting Keyword)：接続のキーワード（例：'を使用して'、'を使って'、'with
+    modules'、'using'）。
+  syntax_part3: 3. 候補リスト (Candidates
+    List)：カンマと「と」/「and」で区切られた候補モジュールのリスト（例：'ui-ux-pro-max, taste-skill と
+    native'）。
+  syntax_example_label: 要求の例は以下の通りです：
+  warning_title: ⚠️ エッジケース：候補モジュールの指定を忘れた場合はどうなりますか？
+  warning_desc: 候補者リストを完全に省略して `/tournament [タスクの説明]` を実行した場合（例：`/tournament
+    ログインページを作成`）、システムはフォールバックをトリガーします：
+  warning_point1: デフォルトで単一の候補でタスクを実行します：native（基本の開発者ワークフロー）。
+  warning_point2: 次回から候補を追加する方法を示す警告メッセージをログに出力します。
+  warning_point3: エラーのスローやシステムのロックを引き起こすことなく、運用の継続性を保証します。
