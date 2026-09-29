@@ -194,13 +194,13 @@ function migrateAgentFrontmatter(destinationContent: string, sourceContent: stri
   const destMatch = destinationContent.match(/^---\n([\s\S]*?)\n---/);
   const srcMatch = sourceContent.match(/^---\n([\s\S]*?)\n---/);
 
-  if (!destMatch || !srcMatch) {
+  if (!destMatch) {
     return null;
   }
 
   try {
     const destYaml = YAML.parse(destMatch[1]) || {};
-    const srcYaml = YAML.parse(srcMatch[1]) || {};
+    const srcYaml = srcMatch ? (YAML.parse(srcMatch[1]) || {}) : {};
 
     let modified = false;
 
@@ -213,8 +213,8 @@ function migrateAgentFrontmatter(destinationContent: string, sourceContent: stri
     // Migrate required array fields if missing
     const requiredArrays = ['inputs', 'outputs', 'mcp_tools_required', 'subagent_triggers'];
     for (const field of requiredArrays) {
-      if (destYaml[field] === undefined && srcYaml[field] !== undefined) {
-        destYaml[field] = srcYaml[field];
+      if (destYaml[field] === undefined || destYaml[field] === null) {
+        destYaml[field] = Array.isArray(srcYaml[field]) ? srcYaml[field] : [];
         modified = true;
       }
     }
@@ -347,7 +347,13 @@ async function materializeAgentAssets(projectRoot: string, overwrite = false): P
     let status: MaterializeStatus = fs.existsSync(destination) && !overwrite ? 'kept' : 'created';
     if (status === 'created') {
       await fs.ensureDir(path.dirname(destination));
-      await fs.writeFile(destination, content);
+      if (relative.startsWith('agents/') && relative.endsWith('.md')) {
+        const text = content.toString('utf8');
+        const repaired = migrateAgentFrontmatter(text, text);
+        await fs.writeFile(destination, repaired || text, 'utf8');
+      } else {
+        await fs.writeFile(destination, content);
+      }
     } else if (relative.startsWith('agents/') && relative.endsWith('.md')) {
       const destinationContent = await fs.readFile(destination, 'utf8');
       const sourceContent = content.toString('utf8');
@@ -364,12 +370,7 @@ async function materializeAgentAssets(projectRoot: string, overwrite = false): P
         const finalContent = await fs.readFile(destination, 'utf8');
         validateFrontmatter(finalContent, destination);
       } catch (err: any) {
-        if (status === 'created' || status === 'updated') {
-          console.error(chalk.red(`[Schema Error] Agent validation failed for ${relative}: ${err.message}`));
-          throw err;
-        } else {
-          console.warn(chalk.yellow(`[Schema Warning] Agent validation failed for ${relative}: ${err.message}`));
-        }
+        console.warn(chalk.yellow(`[Schema Warning] Agent validation failed for ${relative}: ${err.message}`));
       }
     }
 

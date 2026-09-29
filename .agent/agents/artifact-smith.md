@@ -1,6 +1,10 @@
 ---
 name: Artifact Smith
 description: On-demand interactive artifact generator for the Unknowns Intelligence Platform.
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # Artifact Smith

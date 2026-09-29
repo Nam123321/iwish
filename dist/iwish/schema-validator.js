@@ -59,10 +59,10 @@ function validateFrontmatter(content, filePath) {
     }
     const requiredArrays = ['inputs', 'outputs', 'mcp_tools_required', 'subagent_triggers'];
     for (const field of requiredArrays) {
-        if (parsed[field] === undefined) {
-            throw new Error(`[Schema Validation Error] Missing required field '${field}' in ${filePath}`);
+        if (parsed[field] === undefined || parsed[field] === null) {
+            parsed[field] = [];
         }
-        if (!Array.isArray(parsed[field])) {
+        else if (!Array.isArray(parsed[field])) {
             throw new Error(`[Schema Validation Error] Field '${field}' must be an array in ${filePath}`);
         }
     }

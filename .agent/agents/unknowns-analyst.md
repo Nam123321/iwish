@@ -1,6 +1,10 @@
 ---
 name: Unknowns Analyst
 description: Async trend analysis and calibration agent for the Unknowns Intelligence Platform.
+inputs: []
+outputs: []
+mcp_tools_required: []
+subagent_triggers: []
 ---
 
 # Unknowns Analyst

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as path from 'path';
-import { validateOKFDocument, OKF_TYPES_WHITELIST } from '../src/iwish/schema-validator';
+import { validateOKFDocument, OKF_TYPES_WHITELIST, validateFrontmatter } from '../src/iwish/schema-validator';
 
 describe('schema-validator', () => {
   const projectRoot = path.resolve(__dirname, '..');
@@ -133,6 +133,32 @@ links_to: [123]
 
       expect(() => validateOKFDocument(content, 'test-prd.md', projectRoot))
         .toThrow("Element at index 0 in field 'links_to' must be a string");
+    });
+  });
+
+  describe('validateFrontmatter for Agents', () => {
+    it('should pass and default missing arrays to empty arrays for minimal agent', () => {
+      const content = `---
+name: Artifact Smith
+description: On-demand interactive artifact generator
+---
+# Body`;
+      const metadata = validateFrontmatter(content, 'agents/artifact-smith.md');
+      expect(metadata.name).toBe('Artifact Smith');
+      expect(metadata.description).toBe('On-demand interactive artifact generator');
+      expect(metadata.inputs).toEqual([]);
+      expect(metadata.outputs).toEqual([]);
+      expect(metadata.mcp_tools_required).toEqual([]);
+      expect(metadata.subagent_triggers).toEqual([]);
+    });
+
+    it('should throw if array field is present but not an array', () => {
+      const content = `---
+name: Invalid Agent
+inputs: "not-an-array"
+---`;
+      expect(() => validateFrontmatter(content, 'agents/invalid.md'))
+        .toThrow("[Schema Validation Error] Field 'inputs' must be an array");
     });
   });
 });
