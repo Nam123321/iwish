@@ -16,6 +16,7 @@ description: 'Structured /audit-ux-patterns workflow to scan, map, and expose UX
    - **Bulk Actions**: Nằm ở Table header? Nằm ở cart trôi (floating)?
    - **Form Submission**: Luồng validation báo đỏ dưới ô text, hay báo toast trên góc màn hình? Toast ở vị trí nào?
    - **Empty States / Loading**: Sử dụng Skeleton hay Spinner?
+1.5. **[ZERO-TRUST DUPLICATE COMPONENT SCAN]**: Quét để phát hiện các Component nghiệp vụ nằm trong `src/features/[feature-name]/components/` có chức năng, cấu trúc, hoặc UX pattern trùng lặp với các Tier 1 Global Component đã được đăng ký tại Mục 5 của `_iwish-output/2. Product Planning/design-system/cowokai/DESIGN.md`. Vi phạm này chứng tỏ Dev-Agent không kế thừa thư viện chuẩn mà tự code lại. Đưa ngay vào danh sách bắt buộc Auto-Refactor.
 
 ## Phase 2: Behavioral Mapping (Với CodeGraphContext)
 

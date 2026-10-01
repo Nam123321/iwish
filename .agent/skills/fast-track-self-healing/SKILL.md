@@ -61,6 +61,18 @@ Initialized → Running → Pending_Approval (PASS)
                      ↘ Exhausted (FAIL, no retries) → HALT
 ```
 
+## Health Score Routing
+
+Before every fast-track retry, the agent MUST run:
+`python3 .agent/scripts/health-score-calculator.py <story_id>`
+Based on the returned score, the system enforces 6 routing levels (e.g. from Auto-Fix to Deep Socratic Review or Human Escalation). Follow the output instructions strictly.
+
+## Iron Law Auto-Fix Enforcement
+
+Before applying any fix during an auto-fix retry, the agent MUST validate the proposed fix against the Iron Law:
+`python3 .agent/scripts/validate-iron-law.py <story_id> --target <file_path>`
+If the Iron Law check fails (exit code 1), the retry MUST be aborted.
+
 ## Anti-Bypass Enforcement
 
 The `validate-qa-evidence.py` Gate 0 checks:

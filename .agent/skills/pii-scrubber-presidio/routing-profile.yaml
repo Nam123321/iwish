@@ -1,0 +1,6 @@
+id: pii-scrubber-presidio
+type: SKILL
+primary_triggers:
+  - anonymize dataset
+  - scrub pii
+  - presidio

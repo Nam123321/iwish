@@ -1,0 +1,13 @@
+id: idpi-scanner
+role: security-scanner
+shape: skill
+phase: pre-processing
+stage: ingestion
+triggers:
+  - "evaluate external web context"
+  - "prevent Planner bypass"
+  - "IDPI signatures"
+anti_triggers:
+  - "internal trusted code"
+primary_agents: []
+review_pack_link: integration-guide.md

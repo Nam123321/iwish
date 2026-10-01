@@ -1,0 +1,36 @@
+id: workflow-ai-engineer-agent
+name: ai-engineer-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases:
+- solution
+- implementation
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- ai-engineer-agent
+- /ai-engineer-agent
+- ai-agent
+- ai-systems
+- mlsd-eval
+- curriculum
+anti_triggers: []
+primary_agents:
+- ai-agent-persona
+- orch-agent
+primary_workflows:
+- ai-engineer-agent
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/agents/ai-agent.md
+tags:
+- workflow
+- canonical
+- ai-engineer-agent

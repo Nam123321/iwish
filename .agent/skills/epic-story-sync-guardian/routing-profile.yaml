@@ -1,0 +1,7 @@
+id: epic-story-sync-guardian
+type: SKILL
+description: Guards against drift in sprint status tracking by ensuring physical folders and YAML index match.
+triggers:
+  - keywords: ["sprint-status.yaml", "reconcile", "epic", "story", "missing story", "drift"]
+    context: ["planning", "reconciliation"]
+target: .agent/skills/epic-story-sync-guardian/SKILL.md

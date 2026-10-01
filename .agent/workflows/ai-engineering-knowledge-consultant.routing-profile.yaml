@@ -1,0 +1,35 @@
+id: skill-ai-engineering-knowledge-consultant
+name: ai-engineering-knowledge-consultant
+kind: skill
+shape: skill
+role: supportive
+phases:
+- discovery
+- solution
+- implementation
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- ai-engineering-knowledge-consultant
+- /ai-engineering-knowledge-consultant
+- knowledge-consultant
+- curriculum-consultant
+- curriculum
+anti_triggers: []
+primary_agents:
+- ai-agent-persona
+- architect-agent
+primary_workflows:
+- ai-engineering-knowledge-consultant
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/ai-engineering-knowledge-consultant/SKILL.md
+tags:
+- skill
+- canonical
+- ai-engineering-knowledge-consultant

@@ -1,0 +1,60 @@
+# Engineering Manager Agent Routing Profile
+# This profile defines how eng-manager-agent integrates with workflows and party-mode
+
+agent_id: eng-manager-agent-persona
+agent_name: eng-manager-agent
+agent_file: .agent/agents/eng-manager-agent.md
+workflow_file: .agent/workflows/eng-manager-agent.md
+
+# Domain triggers for automatic invocation by orch-agent and party-mode
+domain_triggers:
+  - engineering-management
+  - architecture
+  - infrastructure
+  - tech-debt
+  - team-capacity
+  - sprint-scoping
+  - performance
+  - scalability
+  - deployment-risk
+  - database-migration
+  - ci-cd
+  - observability
+
+# Workflows where this agent can be dynamically summoned
+workflow_integrations:
+  - workflow: party-mode
+    role: execution-challenger
+    trigger: domain_triggers match
+    
+  - workflow: create-architecture
+    role: em-reviewer
+    trigger: after-socratic-review
+    
+  - workflow: evaluate-epic
+    role: feasibility-assessor
+    trigger: cs_score >= 5
+
+  - workflow: check-implementation-readiness
+    role: infra-auditor
+    trigger: always
+
+  - workflow: create-epics-and-stories
+    role: technical-story-auditor
+    trigger: step-3-story-generation
+
+  - workflow: code-review-internal
+    role: architecture-reviewer
+    trigger: tier >= STANDARD
+
+# Anti-sycophancy requirements
+debate_rules:
+  min_pushbacks_per_round: 2
+  banned_phrases:
+    - "I agree"
+    - "Good compromise"
+    - "That sounds reasonable"
+  cognitive_patterns_required: true
+  veto_power:
+    - architecture-without-blast-radius
+    - novel-tech-without-justification

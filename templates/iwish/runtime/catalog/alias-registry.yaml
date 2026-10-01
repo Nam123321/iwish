@@ -52,4 +52,23 @@ commands:
   /brand-id: /brand
   /brand-guideline: /brand
   /logo: /brand
-
+  /watchmen-sync: /watchmen-sync
+  /capability-registry-manager: /capability-registry-manager
+  /ssot-backup: /ssot-backup
+  /worktree-port: /worktree-port
+  /ghost-file-guardian: /ghost-file-guardian
+  /worktree-init: /worktree-init
+  /pr-conflict-manager: /pr-conflict-manager
+  /deep-audit: /deep-audit
+  /plan-proven-safe: /plan-proven-safe
+  /workspace-hygiene-guardian: /workspace-hygiene-guardian
+  /release-worktree: /release-worktree
+  /pi-code-agent: /pi-code-agent
+  /sandbox-repo-sync: /sandbox-repo-sync
+  /sync-worktree-to-root: /sync-worktree-to-root
+  /ai-engineering-knowledge-consultant: /ai-engineering-knowledge-consultant
+  /ai-engineer-agent: /ai-engineer-agent
+  /ai-engineering-tutor: /ai-engineering-tutor
+  /mcp-tool-poisoning-defense: /mcp-tool-poisoning-defense
+  /subagent-path-jail: /subagent-path-jail
+  /plugin-lifecycle-6layer-auditor: /plugin-lifecycle-6layer-auditor

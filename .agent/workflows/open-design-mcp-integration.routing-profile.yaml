@@ -1,0 +1,16 @@
+id: workflow-open-design-mcp-integration
+name: open-design-mcp-integration
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [open-design-mcp-integration]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [open-design-mcp-integration]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/open-design-mcp-integration.md
+tags: [generated]

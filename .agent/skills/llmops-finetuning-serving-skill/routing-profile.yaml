@@ -1,0 +1,14 @@
+name: llmops-finetuning-serving-skill
+domain: ai-engineering
+keywords:
+  - fine-tuning
+  - peft
+  - qlora
+  - lora
+  - serving
+  - vllm
+  - lorax
+  - serverless gpu
+  - rag architecture
+  - multi-tenant
+  - llmops

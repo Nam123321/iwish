@@ -1,0 +1,14 @@
+capability: offline-predictive-router
+role: foundational
+shape: skill
+phase: operate
+stage: triaging
+triggers:
+  - offline predictive routing
+  - query complexity
+anti_triggers:
+  - semantic analysis
+  - deep reasoning
+primary_agents:
+  - orch-agent
+review_pack_link: integration-guide.md

@@ -1,0 +1,6 @@
+status: promoted
+type: SKILL
+origin:
+  created_by: create-skill
+promotion_target: .agent/skills/fmea-risk-extractor
+path_policy: runtime

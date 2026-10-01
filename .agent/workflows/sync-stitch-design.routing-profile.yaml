@@ -1,0 +1,16 @@
+id: workflow-sync-stitch-design
+name: sync-stitch-design
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [sync-stitch-design]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [sync-stitch-design]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-sync-stitch-design.md
+tags: [generated]

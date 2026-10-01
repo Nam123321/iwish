@@ -1,0 +1,9 @@
+capability: cloudflare-ip-sync
+type: SKILL
+status: complete
+completed_at: 2026-07-31
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: done

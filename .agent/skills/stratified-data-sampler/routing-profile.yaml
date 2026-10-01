@@ -1,0 +1,12 @@
+id: stratified-data-sampler
+name: Stratified Data Sampler
+type: skill
+domain: Data Engineering
+triggers:
+  - "stratified sampling"
+  - "prevent data bias"
+  - "sample by language and intent"
+  - "dataset stratification"
+description: >
+  Use when sampling datasets, handling class imbalance, preventing data bias, or selecting subsets by language and intent.
+dependencies: []

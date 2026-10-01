@@ -58,7 +58,9 @@ Before starting, the agent **MUST** verify these files exist. If any required fi
 
 ### Step 3: Populate Pillars
 
-For each Pillar in the template, cross-reference the relevant discovery artifacts:
+**[PULL & AE ORCHESTRATOR]** Use `/ae-notebook-orchestrator` to cross-query NotebookLM across all Research Layers (RL-1a, RL-2, RL-3, PC-4). You MUST save the aggregated analysis to a physical evidence file `_iwish-output/adhoc-workspace/scratch/ae_pull_evidence.json`.
+
+For each Pillar in the template, cross-reference the relevant discovery artifacts AND cite data from `ae_pull_evidence.json`:
 
 | Pillar | Primary Source(s) |
 |---|---|
@@ -90,7 +92,14 @@ Transform Pillar 5 from a static list into a living risk register:
 4. Include Pre-Mortem findings ("Why will this product fail in 12 months?").
 5. Output: Generate the full `_iwish-output/unknowns/macro-risks.yaml` — this becomes THE macro risk register for the entire project lifecycle.
 
+### Step 3.5: CEO-Review (Human Gate)
+
+Before finalizing the verdict, explicitly invoke the `ceo-agent` principles. Apply the 18 mental models (e.g., Inversion, Second-Order Thinking) and select one of the 4 Scope Modes. 
+Present the CEO-Review findings to the user and require explicit HUMAN GATE approval before computing the final verdict in Step 4.
+
 ### Step 4: Compute Verdict
+
+**[BUILD LAYER 2]** If not exists, request NotebookLM to compile/build `RL-1b` (Research-Business-Economics).
 
 Apply the verdict logic in this exact order:
 
@@ -126,6 +135,8 @@ Apply the verdict logic in this exact order:
 | **PIVOT** | Save document → Route to `/pivot-project` with specific pivot actions |
 | **KILL** | Save document → Archive all discovery artifacts under `_iwish-output/archived/` |
 
+**[ZERO-TRUST POST-PUSH]** Push the finalized strategy conclusions to `PC-4` and `RL-1b`. Save MCP response to `_iwish-output/adhoc-workspace/scratch/nlm_evidence_post_push.json` and validate with `pipeline-integrity-runner.py --target "project" --type project --phase discovery`.
+
 ## Output
 
 ```
@@ -153,3 +164,4 @@ After completing, invoke `navigator-guardian` to sync the dashboard:
 | Template file not found | STOP — report missing template |
 | All hypotheses unverified | Recommend re-running `/idea-challenge` |
 | Score = exactly 3.5 | Treat as borderline — present both GO and PIVOT options to user |
+

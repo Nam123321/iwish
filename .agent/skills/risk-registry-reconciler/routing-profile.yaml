@@ -1,0 +1,12 @@
+id: risk-registry-reconciler
+type: SKILL
+role: supportive
+stages: [Operate/Learn, Validate/Deliver]
+triggers:
+  - closing sprint
+  - checking macro risks
+  - resolving unknowns
+anti_triggers:
+  - generating new risks
+primary_agents: [unknowns-analyst, review-agent]
+review_pack_link: .agent/skills/risk-registry-reconciler/integration-guide.md

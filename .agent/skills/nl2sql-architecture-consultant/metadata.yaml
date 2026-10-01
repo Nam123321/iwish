@@ -1,0 +1,30 @@
+id: nl2sql-architecture-consultant
+type: SKILL
+status: draft
+origin:
+  type: external-absorption
+  created_by: create-skill
+  created_at: 2026-08-20T19:16:39Z
+  source_story: null
+origin_repo: https://github.com/HKUSTDial/NL2SQL_Handbook
+provenance:
+  source_nodes:
+    - id: null
+      type: ExternalSource
+      confidence: 9
+      sensitivity: public
+      ref: absorb_nl2sql_handbook_repo
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/nl2sql-architecture-consultant
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

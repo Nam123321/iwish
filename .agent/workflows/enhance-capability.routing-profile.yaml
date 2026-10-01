@@ -1,0 +1,16 @@
+id: workflow-enhance-capability
+name: enhance-capability
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [enhance-capability]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [enhance-capability]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/enhance-capability.md
+tags: [generated]

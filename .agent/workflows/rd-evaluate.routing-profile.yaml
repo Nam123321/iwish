@@ -1,0 +1,16 @@
+id: workflow-rd-evaluate
+name: rd-evaluate
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [rd-evaluate]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [rd-evaluate]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/rd-evaluate.md
+tags: [generated]

@@ -1,0 +1,35 @@
+id: skill-capability-registry-manager
+name: capability-registry-manager
+kind: skill
+shape: skill
+role: supportive
+phases:
+- solution
+- implementation
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- capability-registry-manager
+- /capability-registry-manager
+- register-capability
+- multi-platform
+- slash-command-register
+anti_triggers: []
+primary_agents:
+- orch-agent
+- capability-agent
+primary_workflows:
+- capability-registry-manager
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/capability-registry-manager/SKILL.md
+tags:
+- skill
+- canonical
+- capability-registry-manager

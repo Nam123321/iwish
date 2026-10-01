@@ -1,0 +1,32 @@
+id: skill-deep-audit
+name: deep-audit
+kind: skill
+shape: skill
+role: supportive
+phases:
+- implementation
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- deep-audit
+- /deep-audit
+- /audit
+anti_triggers: []
+primary_agents:
+- qa-agent-persona
+- orch-agent-persona
+primary_workflows:
+- deep-audit
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/codebase-drift-auditor/SKILL.md
+tags:
+- skill
+- canonical
+- deep-audit

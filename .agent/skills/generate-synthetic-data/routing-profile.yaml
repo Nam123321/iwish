@@ -1,0 +1,12 @@
+name: generate-synthetic-data
+role: process-primary
+shape: skill
+phase: Solution
+stage: test-fixture-generation
+triggers:
+  - generate mock data
+  - create seed data
+anti_triggers:
+  - connect to production db
+primary_agents: []
+review_pack_link: integration-guide.md

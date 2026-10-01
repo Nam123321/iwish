@@ -1,0 +1,32 @@
+id: skill-antigravity-grill-me-integration
+name: antigravity-grill-me-integration
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - discover
+  - plan
+stages:
+  - alignment
+  - concept-challenge
+triggers:
+  - phỏng vấn thiết kế
+  - grill-me
+  - grill me
+  - phỏng vấn ý tưởng
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - pm-agent
+primary_workflows:
+  - idea-challenge
+  - plan
+supportive_skills:
+  - antigravity-grill-me-integration
+tool_dependencies:
+  - google-antigravity
+constraints:
+  - Sử dụng công cụ ask_question để hiển thị trắc nghiệm nhanh cho người dùng.
+tags:
+  - platform-bridge
+  - interactive-alignment

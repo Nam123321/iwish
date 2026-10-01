@@ -1,0 +1,16 @@
+id: workflow-mcp-gateway-architect
+name: mcp-gateway-architect
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [mcp-gateway-architect]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [mcp-gateway-architect]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/mcp-gateway-architect.md
+tags: [generated]

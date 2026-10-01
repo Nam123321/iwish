@@ -1,0 +1,3 @@
+{"event": "candidate_created", "timestamp": "2026-07-27T14:47:00Z", "actor": "create-skill", "details": {"reason": "5 Whys RCA for Story 14.20 missing business logic due to SCS structural bias"}}
+{"event": "candidate_promoted", "timestamp": "2026-07-27T14:52:00Z", "actor": "create-skill", "details": {"reason": "User approved promotion in W-04"}}
+{"event": "capability_upgraded", "timestamp": "2026-08-02T09:08:21Z", "actor": "enhance-skill", "details": {"reason": "Added global coverage threshold (80%) to block story completion as determined by Retro AI Council, increasing Enforcement Maturity to 75%."}}

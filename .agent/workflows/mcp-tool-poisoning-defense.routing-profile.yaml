@@ -1,0 +1,34 @@
+id: skill-mcp-tool-poisoning-defense
+name: mcp-tool-poisoning-defense
+kind: skill
+shape: skill
+role: supportive
+phases:
+- solution
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- mcp-tool-poisoning-defense
+- /mcp-tool-poisoning-defense
+- mcp-defense
+- tool-poisoning
+- mcp-security
+anti_triggers: []
+primary_agents:
+- security-guardian
+- dev-agent
+primary_workflows:
+- mcp-tool-poisoning-defense
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/mcp-tool-poisoning-defense/SKILL.md
+tags:
+- skill
+- canonical
+- mcp-tool-poisoning-defense

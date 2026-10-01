@@ -1,0 +1,34 @@
+id: skill-sandbox-repo-sync
+name: sandbox-repo-sync
+kind: skill
+shape: skill
+role: supportive
+phases:
+- implementation
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- sandbox-repo-sync
+- /sandbox-repo-sync
+- sync-sandbox
+- audit-sandbox
+- update-sandbox
+anti_triggers: []
+primary_agents:
+- devops-agent
+- orch-agent
+primary_workflows:
+- sandbox-repo-sync
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/sandbox-repo-sync/SKILL.md
+tags:
+- skill
+- canonical
+- sandbox-repo-sync

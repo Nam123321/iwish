@@ -1,0 +1,9 @@
+name: cwv-analyzer
+type: skill
+triggers:
+  - "Core Web Vitals"
+  - "CWV"
+  - "Lighthouse report"
+  - "CrUX"
+  - "performance regression"
+description: "Analyzes Lighthouse and Chrome UX Report data to extract and trend Core Web Vitals across deployments."

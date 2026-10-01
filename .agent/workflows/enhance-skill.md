@@ -11,6 +11,16 @@ description: Analyze accumulated instincts and evolve existing
 ## Overview
 Analyze learned instincts from Machine Memory and evolve existing I-Wish capabilities while preserving legacy I-Wish compatibility.
 
+## 0. Gateways & Initialization
+
+**Concurrency Lock (Hard Gate):**
+- **Action:** Sanitize the capability name using regex `^[a-zA-Z0-9_-]{1,64}$`.
+- **Action:** Create an atomic lock directory: `mkdir .lock`. If it fails, check the timestamp. If older than 2 hours, prompt the user to override. If not, HALT and report that another pipeline is running.
+
+**State Machine Checkpoint:**
+- **Action:** Check for existing `state.json`. If found, prompt the user: "Checkpoint found. Resume or restart?"
+- **Action:** If corrupted or unparseable, DO NOT DELETE. Rename to `state.corrupt.json`, HALT the pipeline, and escalate to the user for manual intervention.
+
 Before proposing an update, merge, split, archive, or rewrite, load `.agent/fragments/capability-authoring-curator-rules.md`, `.agent/fragments/capability-provenance-lineage.md`, and `.agent/fragments/draft-skill-creation-governance.md`. Apply curator lifecycle, trigger-quality, duplicate-risk, context-budget, provenance, lineage, draft-versus-patch routing, and non-destructive approval rules. This workflow may recommend changes or create drafts, but it must not auto-delete, auto-archive, auto-merge, or overwrite canonical `.agent/` assets without explicit approval.
 
 If the overlap target is ambiguous, or if the user is effectively asking “what existing capability or repo should we use for this problem?”, run `research-solution-sources.md` first. Enhancement should start from the best target, not from the first skill that looks vaguely related.
@@ -26,13 +36,25 @@ I-Wish package preservation rules:
 - Keep compatibility aliases in manifest/catalog files rather than re-introducing legacy naming into canonical package bodies.
 - Preserve or adopt step-file execution for workflow-shaped and compound capabilities per `.agent/templates/iwish-step-file-standard.md`.
 
-## Steps
+## 1. Hard Gateway Delegation
 
-1. **Reflection & Input Processing** — Read and execute: `step-e-01-reflection.md`
-   - Accept manual triggers OR automated **Auto-Immune System** inputs (from `/fix-bug` Phase 7).
-   - If triggered by Auto-Immune, extract the `lesson_learned` and `hotspot_score` to formulate a Draft Skill or Patch.
-2. **Clustering** — Read and execute: `step-e-02-clustering.md`
-3. **Upgrade & Dual-Run Lab** — Read and execute: `step-e-03-upgrade.md`
-   - **CSO Validation Gate**: Explicitly audit the `description` field in the capability's YAML frontmatter. It MUST NOT contain workflow summaries and MUST ONLY contain triggering conditions (symptoms, keywords). If it contains verbs like "generates", "creates", "produces", or "reads", raise a warning flag and rewrite it. Fix any violations before proceeding.
-   - **Dual-Run Gate (HSEA-2.4)**: BẮT BUỘC route Draft Skills/Patches through the Dual-Run Evolution Lab. Run parallel evaluations (Inhouse vs Darwinian) and pause at the **Notification Gate** for explicit User Approval before merging.
-4. **Commit** — Read and execute: `step-e-04-commit.md`
+> [!IMPORTANT]
+> **DELEGATION MANTRA:**
+> This Master Router serves ONLY to enforce the Zero-Trust Concurrency and State locks. It MUST NOT execute the steps.
+> You MUST now immediately read and execute `step-e-01-reflection.md` to begin the pipeline.
+
+## 2. Zero-Trust Watchmen Enforcement
+
+When enhancing any capability that involves modifying **Zero-Trust Category A scripts** (e.g. scripts inside `.agent/scripts/`):
+
+1. **Mandatory Injection:** You MUST ensure the following lines exist at the absolute top of the Python script:
+   ```python
+   import watchmen_core
+   watchmen_core.verify_execution(__file__)
+   ```
+2. **Signature Registration:** You MUST prompt the Admin to run `watchmen_signer.py` to update the script's hash in `.agent/config/scripts-lock.sig`.
+3. **Automated Compliance Check:** Before finalizing the workflow, you MUST run the compliance detector:
+   ```bash
+   python3 .agent/scripts/validate-watchmen-compliance.py --script <path_to_modified_script>
+   ```
+   If this check fails, the workflow is BLOCKED. You must fix the script before ending your turn.

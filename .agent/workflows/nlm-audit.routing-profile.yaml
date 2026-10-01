@@ -1,0 +1,19 @@
+id: workflow-nlm-audit
+name: nlm-audit
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [planning, execution, validation]
+stages: [research, validation, audit]
+triggers: [nlm-audit, nlm audit, notebook audit, notebook health]
+anti_triggers: [deploy, test]
+primary_agents: [orch-agent, research-agent]
+primary_workflows: [nlm-audit]
+supportive_skills:
+  - notebook-lifecycle-manager
+  - notebook-registry-manager
+tool_dependencies: [notebooklm-mcp]
+constraints:
+  - Requires notebooklm-mcp server running and authenticated
+source_path: /.agent/workflows/nlm-audit.md
+tags: [research, notebooklm, audit, knowledge-management, sync]

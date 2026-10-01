@@ -140,6 +140,8 @@ Execute in this order:
 
 Read and execute: `step-ic-01-ignition.md`
 
+**[ZERO-TRUST PRE-PUSH]** Push the initial hypothesis to NotebookLM (Layer 1). Save MCP response to `_iwish-output/adhoc-workspace/scratch/nlm_evidence_pre_push.json` and validate using `python3 .agent/scripts/pipeline-integrity-runner.py --target "project" --type project --phase discovery`. HALT if failed.
+
 The goal is to capture enough truth to justify entering the full challenge.
 
 If the user cannot define the basic problem/user/stakes after a short loop, route them back to lighter ideation support instead of forcing a fake PRFAQ.
@@ -168,6 +170,8 @@ This stage stress-tests feasibility, risk, and execution reality.
 
 ### Step 4b: Unknowns Intelligence Scan
 
+**[PULL & AE ORCHESTRATOR]** Use `/ae-notebook-orchestrator` to cross-query NotebookLM for challenge data. You MUST save the aggregated analysis to a physical evidence file `_iwish-output/adhoc-workspace/scratch/ae_pull_evidence.json` and cite it for scanning.
+
 **[MANDATORY GATE]** Before proceeding to Strategic Advantage, you MUST run the `unknowns-scanner` skill with:
 - phase: discovery
 - scope: macro
@@ -179,6 +183,14 @@ Append a new section `## IC-04b: Unknowns Intelligence Scan` to the challenge do
 - Pre-Mortem findings (Tigers and Elephants)
 - Debiasing check: which IC-01-04 answers show anchoring/confirmation bias?
 - Confidence calibration: epistemic uncertainty score for each major claim
+
+### Step 4c: Office-Hours & Measurement Gate
+
+**[HUMAN GATE]** Before proceeding, run an Office-Hours session to challenge the user with 6 Forcing Questions about their idea. Then calculate the Complexity Score (CS).
+- **Light Mode** (CS ≤ 3): Minimal strategic advantage check.
+- **Standard Mode** (3 < CS ≤ 6): Normal flow.
+- **Deep Mode** (CS > 6): Full Socratic Review and Biz-Stack analysis.
+If the human does not explicitly approve proceeding to Step 5, HALT.
 
 ### Step 5: Strategic Advantage
 
@@ -194,6 +206,8 @@ This is where `unique-advantage-evaluator` becomes mandatory if the concept need
 ### Step 6: Distillate and Handoff
 
 Read and execute: `step-ic-06-distillate-and-handoff.md`
+
+**[ZERO-TRUST POST-PUSH]** Push the final distillate back to Notebook Layer 1 (`PC-4`). Save MCP response to `_iwish-output/adhoc-workspace/scratch/nlm_evidence_post_push.json` and validate with `pipeline-integrity-runner.py --target "project" --type project --phase discovery`.
 
 This stage decides whether the output is ready for:
 
@@ -333,3 +347,4 @@ the agent should invoke `navigator-guardian` so the HTML overview reflects the n
 - `idea-challenge` is the canonical I-Wish surface.
 - Legacy alias `/prfaq` should route here.
 - Use this workflow before heavy delivery planning when the concept is still weak, fuzzy, or strategically under-shaped.
+

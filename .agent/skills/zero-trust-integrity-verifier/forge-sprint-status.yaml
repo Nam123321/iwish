@@ -1,0 +1,8 @@
+capability: zero-trust-integrity-verifier
+type: SKILL
+status: forged
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: pending

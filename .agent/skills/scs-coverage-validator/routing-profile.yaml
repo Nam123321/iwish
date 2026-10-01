@@ -1,0 +1,21 @@
+id: skill-scs-coverage-validator
+name: scs-coverage-validator
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - Validate/Deliver
+stages: []
+triggers:
+  - validate coverage
+  - scs-coverage-validator
+  - schema modifications
+anti_triggers: []
+primary_agents: []
+primary_workflows: []
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: .agent/skills/scs-coverage-validator/SKILL.md
+story_refs: []
+tags: []

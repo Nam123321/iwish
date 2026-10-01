@@ -1,0 +1,16 @@
+id: workflow-market-research
+name: market-research
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [market-research]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [market-research]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-market-research.md
+tags: [generated]

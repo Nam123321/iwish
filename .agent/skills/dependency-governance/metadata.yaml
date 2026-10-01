@@ -1,0 +1,6 @@
+status: draft
+origin:
+  created_by: "create-skill"
+promotion_target: ".agents/skills/dependency-governance"
+path_policy: "runtime"
+enforcement_maturity: "66%"

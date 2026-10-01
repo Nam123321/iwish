@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Integration Guide: behavioral-coverage-guardian</title>
+</head>
+<body>
+    <h1>Integration Guide: behavioral-coverage-guardian</h1>
+    <p>To integrate this skill into your workflow:</p>
+    <ol>
+        <li><strong>Review Pipeline:</strong> Open <code>.agent/workflows/references/code-review-protocol.md</code>.</li>
+        <li><strong>Inject Step:</strong> Under Layer 1.5 or 1.8, add the following requirement:
+            <ul>
+                <li>"Standards Guardian Agent BẮT BUỘC phải thực thi cổng kiểm tra <code>behavioral-coverage-guardian</code> để xác minh test coverage cho các file business logic."</li>
+            </ul>
+        </li>
+        <li><strong>Execution Command:</strong> The agent must run:
+            <pre><code>npm run test:coverage
+python3 .agent/skills/behavioral-coverage-guardian/scripts/runner.py --story &lt;story_id&gt;</code></pre>
+        </li>
+        <li><strong>Enforcement:</strong> If <code>runner.py</code> fails (exit code 1), the review MUST be REJECTED.</li>
+    </ol>
+    <p>This ensures test execution is verified via a Category A gate.</p>
+</body>
+</html>

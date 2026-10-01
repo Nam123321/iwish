@@ -1,0 +1,30 @@
+id: payment-schema-sync
+type: SKILL
+status: draft
+origin:
+  type: curator-recommendation
+  created_by: create-skill
+  created_at: 2026-08-07T15:20:31+07:00
+  source_story: null
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: ExternalSource
+      confidence: 9
+      sensitivity: security-sensitive
+      ref: payment-schema-sync-headless-request
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/payment-schema-sync
+path_policy: runtime
+approval:
+  required: false
+  approved_by: headless-runner
+  approved_at: 2026-08-07T15:20:31+07:00

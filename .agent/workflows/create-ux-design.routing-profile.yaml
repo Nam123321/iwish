@@ -1,0 +1,16 @@
+id: workflow-create-ux-design
+name: create-ux-design
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [create-ux-design]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [create-ux-design]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-create-ux-design.md
+tags: [generated]

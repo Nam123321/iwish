@@ -71,14 +71,31 @@ Run the following checks:
 - [ ] **Double-Blind Evaluation:** Extract the outputs from Path A and Path B. Present them as "Output X" and "Output Y" to an independent evaluating agent (e.g., `review-agent`).
 - [ ] **Rejection Criteria (Bloat Prevention):** The judge evaluates based on Accuracy, Token Efficiency, and Robustness. If Path B does not empirically outperform Path A (or crashes on edge cases), the validation **FAILS**. The draft MUST be rejected or returned for refinement.
 
+### 3c. Injection Assessment (Watchmen Mode 2)
+
+**MANDATORY:** Run the capability audit to determine the Watchmen Injection Score (WIS) via the Out-of-Band MCP Daemon.
+```bash
+python3 .agent/scripts/mcp-signing-daemon.py ${IWISH_HOME:-~/.iwish}/generated-skills/<name>/SKILL.md --assess-injection
+```
+- [ ] Parse the output JSON which contains the `wis_score` and `signature`.
+- [ ] If WIS >= 6, verify the capability explicitly declares Watchmen Integration Gates before proceeding to promotion.
+- [ ] Store the signed evidence in the capability's lineage.
+
 ### 4. Promotion Gate
 
-Present the draft files, `metadata.yaml`, `lineage.jsonl`, `promotion-plan.md`, `integration-guide.md`, and `integration-guide.html` to the user. Wait for explicit approval before promoting.
+Present the draft files, `metadata.yaml`, `lineage.jsonl`, `promotion-plan.md`, `integration-guide.md`, `integration-guide.html`, and the `audit_evidence.json` WIS results to the user. Wait for explicit approval before promoting.
 
 If approved:
-- Copy approved files into their canonical `.agent/` destinations.
+- **Physical Checkpoint (Zero-Trust Gate):** Do not manually copy SKILL files. You MUST use the atomic commit script to promote the skill, which generates a Runtime Cryptographic Enclave (`.sig`) file.
+  - Run: `python3 .agent/scripts/commit-skill.py ${IWISH_HOME:-~/.iwish}/generated-skills/<name>/SKILL.md .agent/skills/<name>/SKILL.md`
+  - If the script fails (exit 1), you are FORBIDDEN from promoting the skill and must report the validation error.
+
+> [!WARNING]
+> **Anti-Bypass Rule (Runtime Cryptographic Enclave):** You are explicitly forbidden from using `cp` or `write_file` to copy SKILL.md into the canonical `.agent/skills/` directory. Doing so will bypass the `.sig` generation and the runtime will block the skill from loading. You MUST use `commit-skill.py`.
+
 - Sync `templates/` only when the promotion plan marks the capability public.
-- Register the new capability with `.agent/scripts/add-to-kg.sh`.
+- **Graph Sync (Zero-Trust):** You MUST write the skill's metadata (id, title, description, tags, depends_on, graph_visibility) to a temporary JSON file and run `python3 .agent/scripts/inject-skill-node.py --metadata-file <path_to_json>` to safely register the new capability in the Knowledge Graph.
+  - **[EC-P5-001] Workflow Desynchronization:** You MUST check the exit code of `inject-skill-node.py`. If the script fails (e.g., due to syntax error or permissions), you MUST emit a strong warning to the user prompting them to manually run `python3 .agent/scripts/batch-ingest-skills.py` to heal the system.
 - Run `.agent/scripts/validate-kg.sh`.
 - Run `.agent/scripts/validate-portability.sh`.
 - Update `metadata.yaml` from `status: draft` to `status: promoted`.
@@ -120,6 +137,12 @@ Next Steps:
   - <which agents benefit from it>
 ```
 
+
+### 4. Domain-Skill Registry Registration
+- Before finalizing, you MUST update `.agent/config/domain-skill-registry.yaml` if the skill belongs to a specific domain.
+- Add the skill name to the corresponding domain list. If the domain doesn't exist, create it with its trigger keywords.
+
+
 ## Exit Criteria
 - [ ] All structural validations pass
 - [ ] Convention compliance verified
@@ -131,3 +154,19 @@ Next Steps:
 - [ ] Sprint tracker finalized
 - [ ] User has received the completion report
 - [ ] Anti-Fabrication gate classification exists and Enforcement Maturity ≥ 30%
+
+
+## State Machine Checkpoint & Anti-Skip Lock
+
+> [!IMPORTANT]
+> **STATE MACHINE UPDATE (MANDATORY):**
+> Before exiting this step, you MUST update `state.json` atomically.
+> 1. Write updated state (using strict JSON serialization tools) to `state.tmp.json` containing the new phase. The `"phase"` key MUST be validated against the strict Enum of expected phases.
+> 2. Execute `mv state.tmp.json state.json`.
+> 3. You MUST check for OS-level filesystem errors (e.g., disk full, permission denied) during the `mv` command and gracefully HALT if it fails.
+
+> [!WARNING]
+> **ANTI-SKIP LOCK (MANDATORY):**
+> You MUST run the following command to validate integrity before proceeding:
+> `python3 .agent/scripts/pipeline-integrity-runner.py --target "<capability_name>" --phase "<current_phase>"`
+> - **Circuit Breaker:** If this script fails (non-zero exit), you MUST immediately HALT, report the error to the user, and do not retry more than 3 times. Do not silently ignore it.

@@ -1,0 +1,16 @@
+id: workflow-iwish-feature-unknowns
+name: iwish-feature-unknowns
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [iwish-feature-unknowns]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [iwish-feature-unknowns]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-unknowns.md
+tags: [generated]

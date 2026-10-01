@@ -1,0 +1,9 @@
+id: lighthouse-budget-analyzer
+type: skill
+name: lighthouse-budget-analyzer
+description: Analyzes Lighthouse CI JSON reports and enforces defined Core Web Vitals thresholds.
+status: active
+origin:
+  created_by: create-skill
+path_policy: canonical
+enforcement_maturity: "66%"

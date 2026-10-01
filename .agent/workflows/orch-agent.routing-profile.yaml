@@ -1,0 +1,16 @@
+id: workflow-orch-agent
+name: orch-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [orch-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [orch-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/orch-agent.md
+tags: [generated]

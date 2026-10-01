@@ -1,0 +1,37 @@
+id: skill-antigravity-browser-integration
+name: antigravity-browser-integration
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - implement
+  - review
+stages:
+  - ui-verification
+  - browser-automation
+triggers:
+  - mở trình duyệt
+  - chạy browser
+  - browser
+  - chụp screenshot
+  - chạy devtools
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - dev-agent
+  - review-agent
+  - ux-agent
+primary_workflows:
+  - make-ui-spec
+  - review
+  - code
+supportive_skills:
+  - antigravity-browser-integration
+tool_dependencies:
+  - chrome-devtools-mcp
+constraints:
+  - Ưu tiên sử dụng chrome-devtools-mcp của nền tảng hơn tự chạy Puppeteer cục
+    bộ.
+tags:
+  - platform-bridge
+  - browser-automation

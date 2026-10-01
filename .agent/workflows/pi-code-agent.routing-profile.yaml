@@ -1,0 +1,19 @@
+id: workflow-pi-code-agent
+name: pi-code-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [native-execution]
+stages: [entry-gate, task-loop, receipt-review, completion]
+triggers: [pi-code-agent, native-pi, native-execution]
+anti_triggers: [omp-orch-skill, tournament]
+primary_agents: [dev-agent, orch-agent]
+primary_workflows: [pi-code-agent]
+supportive_skills: [code-intelligence-adapter, task-review-guardian, execution-receipt-guardian]
+tool_dependencies: [python3, git]
+constraints:
+  - Requires an approved plan evidence file and compiled impl-plan.json.
+  - Requires a pinned capability catalog and task lease.
+  - Requires redacted receipt validation before acceptance.
+source_path: /.agent/workflows/pi-code-agent.md
+tags: [native, pi, omp-adoption, zero-byok, receipts]

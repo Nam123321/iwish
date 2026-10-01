@@ -37,3 +37,20 @@ IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_iwis
 > [!IMPORTANT]
 > **NAVIGATOR GUARDIAN SYNC (MANDATORY):**
 > Upon completing the brainstorming session and outputting any files, you MUST explicitly run `bash .agent/scripts/navigator-guardian.sh` via the terminal to synchronize the Idea Navigator dashboard.
+
+
+---
+
+## 📘 NotebookLM Integration Hook
+
+> This hook is auto-triggered when this workflow executes. Agent MUST read `notebook-registry-manager` skill before proceeding.
+> **CENS Gate**: Before executing this hook, load and evaluate `.agent/fragments/nlm-context-enrichment-gate.md` to determine enrichment level.
+> Auto-triggered after brainstorm output generation.
+
+### PULL + ENRICH: Leverage inherited General notebooks
+
+1. Load `notebook-registry-manager` → check inherited General notebooks in registry
+2. If relevant General notebooks exist: Load `notebook-retrieval-engine` → Pull related knowledge
+3. Load `notebook-request-engineer` → Enrich PC-4 with brainstorm output (source_add text)
+4. Cross-reference brainstorm ideas with pulled General knowledge for enrichment
+> **[ZERO-TRUST GATE]** You MUST save the raw MCP JSON output to a file (e.g. `_iwish-output/adhoc-workspace/scratch/nlm_evidence.json`) and run: `python3 .agent/scripts/pipeline-integrity-runner.py --target "project" --type project --phase discovery`. If it fails, HALT immediately and do not proceed.

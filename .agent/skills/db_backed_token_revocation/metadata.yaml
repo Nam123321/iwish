@@ -1,0 +1,9 @@
+status: active
+origin:
+  created_by: create-skill
+  source: "User Request"
+promotion_target: ".agent/skills/db_backed_token_revocation"
+path_policy: runtime
+enforcement_maturity: high
+hotspots_identified: []
+hmac_signatures: {}

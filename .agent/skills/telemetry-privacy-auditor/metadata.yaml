@@ -1,0 +1,5 @@
+status: draft
+origin:
+  created_by: create-skill
+promotion_target: ~/.iwish/generated-skills/telemetry-privacy-auditor/
+path_policy: runtime

@@ -1,0 +1,5 @@
+status: active
+origin:
+  created_by: capability-agent
+  classification: new_skill
+promotion_target: .agent/skills/vpc-mtls-diagnostics

@@ -90,6 +90,18 @@ Test 3 different visual styles with Stitch + Nano Banana Pro:
 2. Use `mcp_StitchMCP_generate_variants` or `mcp_StitchMCP_edit_screens` (Nano Banana Pro / Gemini Pro) to polish each
 3. Present all 3 variants side-by-side to user
 
+### 3.5 Component Prediction & Zero-Trust Traceability Gate
+
+Predict reusable UI components based on the visual exploration and trace them back to PRD requirements.
+"Let's identify potential reusable components from these visual concepts and ensure they map directly to your product requirements."
+
+**Agent Actions:**
+1. Analyze the selected visual style and screens to extract candidate UI components (e.g., Data Table, Advanced Filter, Status Badge, specific Modals).
+2. **[COMPONENT MUTATION DETECTED]**: Check if the component already exists in `DESIGN.md`. If it does, but the visual exploration suggests new behaviors or props, flag this as a mutation for Impact Analysis.
+3. For each candidate component, perform a Zero-Trust Traceability Check: Search the PRD (Functional Requirements, Epics, Stories) to find explicit justification for this component.
+4. If a component has Traceability > 0, propose it as a `Candidate for Library` (to be registered in DESIGN.md later).
+5. If a component cannot be traced to a PRD requirement (Traceability = 0), highlight it as a potential scope creep or unvalidated assumption, and ask the user for explicit approval before proceeding.
+
 ### 4. User Discussion & Direction Selection
 
 Facilitate user choice:

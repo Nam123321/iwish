@@ -1,0 +1,19 @@
+id: workflow-nlm-setup
+name: nlm-setup
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discovery, setup]
+stages: [idea-discovery, project-init, research]
+triggers: [nlm-setup, nlm setup, notebook setup, notebooklm setup]
+anti_triggers: [deploy, test, code]
+primary_agents: [orch-agent, research-agent]
+primary_workflows: [nlm-setup]
+supportive_skills:
+  - notebook-lifecycle-manager
+  - notebook-registry-manager
+tool_dependencies: [notebooklm-mcp]
+constraints:
+  - Requires notebooklm-mcp server running and authenticated
+source_path: /.agent/workflows/nlm-setup.md
+tags: [research, setup, notebooklm, knowledge-management, foundation]

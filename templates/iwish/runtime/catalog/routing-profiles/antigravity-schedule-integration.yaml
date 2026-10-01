@@ -1,0 +1,28 @@
+id: skill-antigravity-schedule-integration
+name: antigravity-schedule-integration
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - implement
+  - review
+stages:
+  - background-checks
+triggers:
+  - lập lịch
+  - schedule
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - dev-agent
+primary_workflows:
+  - code
+supportive_skills:
+  - antigravity-schedule-integration
+tool_dependencies:
+  - google-antigravity
+constraints:
+  - Sử dụng timers thay thế lệnh sleep của Bash.
+tags:
+  - platform-bridge
+  - timers

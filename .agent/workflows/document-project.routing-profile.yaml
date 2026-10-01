@@ -1,0 +1,16 @@
+id: workflow-document-project
+name: document-project
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [document-project]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [document-project]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-document-project.md
+tags: [generated]

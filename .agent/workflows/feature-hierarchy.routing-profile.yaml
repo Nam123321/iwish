@@ -1,0 +1,16 @@
+id: workflow-feature-hierarchy
+name: feature-hierarchy
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [feature-hierarchy]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [feature-hierarchy]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/feature-hierarchy.md
+tags: [generated]

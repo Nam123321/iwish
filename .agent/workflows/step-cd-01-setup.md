@@ -13,6 +13,26 @@ Execute the instructions defined in this step for the iwish-feature-dev-story.md
 ## Instructions
 
 <steps CRITICAL="TRUE">
+0. **SEC Compilation & Validation (Watchmen Category A Gate):** (MANDATORY BEFORE ANY WORK)
+   - Compile SEC: `python3 .agent/scripts/compile-sec.py <story_id>`
+   - Validate SEC: `python3 .agent/scripts/validate-sec.py <story_id>`
+   - **Freshness Verification:** After running `compile-sec.py`, you MUST physically verify the existence AND freshness (modified within the last 5 minutes) of `_iwish-output/sec/sec-compiled-<story_id>.json`. **[Edge Case Mitigation P1]** The freshness check MUST use UTC timestamps or relative monotonic time to prevent false failures from timezone mismatch. If this file is missing or stale, you MUST NOT trigger the `dev-agent` or write any code. HALT immediately.
+   - If story status is `refactored` or in an auto-fix loop, run SEC Drift Detection: `python3 .agent/scripts/diff-sec.py <story_id>`. If no SEC changes detected but the story was refactored, you MUST investigate potential Document vs Code context drift by clarifying via chat history before proceeding.
+0.5. **Implementation Plan Dual-Condition Gate (Watchmen Category A Gate):**
+   - Verify `{story_dir}/impl-plan.md` satisfies both conditions:
+     1. Passed `/plan-proven-safe` (4 pillars + `VERDICT: PROVEN_SAFE`).
+     2. Has `status: approved` and valid cryptographic human signature in `impl-plan-approval.json.sig`.
+   - This check is enforced by `pipeline-integrity-runner.py --phase pre-code`
+     (which includes `validate-impl-plan-approval.py` in its runner array).
+   - DO NOT call `validate-impl-plan-approval.py` directly.
+     Per global-core.mdc L21 "No Skipping" rule, all validation MUST 
+     route through pipeline-integrity-runner.py.
+   - **Cryptographic Lock**: Add `impl-plan.md` SHA-256 hash to the 
+     Spec Lock hashmap (alongside story/ui/data specs).
+0.8. **Zero-Trust Branch Routing Gate (Watchmen Category A Gate):**
+   - Execute branch routing: `python3 .agent/scripts/validate-branch.py <story_id>`
+   - **MANDATORY BLOCKER**: Dev-Agent MUST perform this step first. If Script returns exit code `1` (Blocked/Conflict), Agent MUST HALT immediately.
+   - **Fat PR Rule**: When submitting a Pull Request later in the pipeline (via GitHub CLI), the PR of a stacked branch MUST target its immediate parent branch as the `--base`, NOT `master` or `main`, to avoid Fat PR diffs.
 1. Always LOAD the FULL @{project-root}/_iwish/core/tasks/workflow.xml
 2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow-config @{project-root}/_iwish/delivery/workflows/4-implementation/code/workflow.yaml
 3. Pass the yaml path @{project-root}/_iwish/delivery/workflows/4-implementation/code/workflow.yaml as 'workflow-config' parameter to the workflow.xml instructions

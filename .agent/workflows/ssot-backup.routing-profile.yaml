@@ -1,0 +1,29 @@
+id: workflow-ssot-backup
+name: ssot-backup
+kind: workflow
+shape: workflow
+role: process-primary
+phases:
+- execution
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- ssot-backup
+- /ssot-backup
+anti_triggers: []
+primary_agents:
+- orch-agent
+primary_workflows:
+- ssot-backup
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/workflows/ssot-backup.md
+tags:
+- workflow
+- canonical
+- ssot-backup

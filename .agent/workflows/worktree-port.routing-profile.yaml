@@ -1,0 +1,32 @@
+id: workflow-worktree-port
+name: worktree-port
+kind: workflow
+shape: workflow
+role: process-primary
+phases:
+- assign
+- release
+- list
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- worktree-port
+- /worktree-port
+- /port
+anti_triggers: []
+primary_agents:
+- orch-agent
+primary_workflows:
+- worktree-port
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/workflows/worktree-port.md
+tags:
+- workflow
+- canonical
+- worktree-port

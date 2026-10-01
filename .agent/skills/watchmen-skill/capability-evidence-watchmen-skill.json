@@ -1,0 +1,29 @@
+{
+  "target": ".agent/skills/watchmen-skill/SKILL.md",
+  "timestamp": "2026-08-04T09:54:56.706373+00:00",
+  "enforcement_maturity": 75.0,
+  "wis_score": 8,
+  "gates": [
+    {
+      "name": "Integrity",
+      "category": "A",
+      "mechanism": "`pipeline-integrity-runner.py` exit 0"
+    },
+    {
+      "name": "Log Exists",
+      "category": "A",
+      "mechanism": "File `.agent/memory/instincts.jsonl` exists"
+    },
+    {
+      "name": "Quality",
+      "category": "B",
+      "mechanism": "Ask Review Agent to verify quality"
+    },
+    {
+      "name": "Watchmen Audit",
+      "category": "A",
+      "mechanism": "`session-compliance-auditor.py` (WIS 7)"
+    }
+  ],
+  "evidence_hash": "27431b302deca701db917ae992146b92807ccd4afaea939ac3d8ee884406441a"
+}

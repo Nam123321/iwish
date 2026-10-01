@@ -1,0 +1,17 @@
+id: workflow-flow-auto-approve
+name: flow-auto-approve
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution, implement, validate]
+stages: [orchestration, intent-triage, staged-planning]
+triggers: [flow-auto-approve, auto-approve flow, quy trình tự động, phát triển tự động]
+anti_triggers: []
+primary_agents: [orch-agent, delivery-manager-agent]
+primary_workflows: [flow-auto-approve]
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Must automatically run through the pipeline without pausing for human gates unless a conflict or business decision is required.
+source_path: /.agent/workflows/flow-auto-approve.md
+tags: [orchestrator, pipeline, auto-approve]

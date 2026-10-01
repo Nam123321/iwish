@@ -1,0 +1,16 @@
+id: workflow-update-design-policy
+name: update-design-policy
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [update-design-policy]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [update-design-policy]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/update-design-policy.md
+tags: [generated]

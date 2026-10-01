@@ -1,0 +1,9 @@
+name: db_backed_token_revocation
+type: skill
+triggers:
+  - "revoke session"
+  - "invalidate magic link"
+  - "single-session concurrency"
+  - "stateful JWT"
+  - "revoke token without redis"
+description: "Handles implementation patterns for DB-backed JWT token versioning and revocation."

@@ -1,0 +1,23 @@
+id: prisma-domain-boundary-linter
+type: SKILL
+status: promoted
+origin:
+  type: code-review
+  created_by: create-skill
+  created_at: 2026-07-30
+provenance:
+  source_nodes:
+    - id: FIX-68-03
+      type: Bug
+      confidence: 10
+      status: active
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/prisma-domain-boundary-linter/
+path_policy: canonical
+approval:
+  required: true
+  approved_by: headless-workflow
+  approved_at: 2026-07-30

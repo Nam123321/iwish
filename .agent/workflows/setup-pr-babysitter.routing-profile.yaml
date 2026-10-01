@@ -1,0 +1,16 @@
+id: workflow-setup-pr-babysitter
+name: setup-pr-babysitter
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [setup-pr-babysitter]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [setup-pr-babysitter]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-setup-pr-babysitter.md
+tags: [generated]

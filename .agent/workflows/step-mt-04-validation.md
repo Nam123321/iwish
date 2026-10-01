@@ -29,5 +29,26 @@ Execute the instructions defined in this step for the manual-test.md workflow.
 - Execute Lighthouse and Axe checks programmatically (via CLI or Playwright integration) rather than relying on GUI MCP tools.
 - Audit results MUST be captured and appended to the `qa/evidence` folder inside the Story directory.
 
+### 3D: Live Target Grounding & Anti-Mock Audit (MANDATORY GATE)
+- The Agent MUST run the Live Target Grounding verifier to ensure zero mock links were used and state deltas are authentic:
+  ```bash
+  python3 .agent/skills/live-target-grounding-guardian/scripts/verify-live-evidence.py --evidence-dir "<story_dir>/qa/evidence" --target-url "http://127.0.0.1:<ALLOCATED_PORT>" --dom-root "#root"
+  ```
+- If the verifier flags ANY mock link (`file://`, dummy HTML in `scratch/`), identical before/after hash (no-op action), or missing story keywords in DOM, the QA test MUST be marked as FAILED and routed to triage.
+
+### 3E: QA Acceptance Evidence Packaging & Sealing (Gate ZT-01B)
+1. **Package & Sanitize Evidence Manifest:**
+   Collect all evidence, sanitize confidential headers (`Authorization`, `Cookie` in HAR), and compile manifest JSON:
+   ```bash
+   python3 .agent/scripts/package-qa-acceptance.py --story-dir "<story_dir>" --sanitize-headers --output "<story_dir>/qa-acceptance-evidence.json"
+   ```
+2. **Watchmen Cryptographic Seal (Category A Gate):**
+   Request Out-of-Band HMAC Cryptographic Signature from Watchmen MCP:
+   `call_mcp_tool("watchmen-mcp", "sign_pipeline_gate", {"artifact_path": "<story_dir>/qa-acceptance-evidence.json", "gate_name": "qa-acceptance-gate"})`
+   - Downstream completion gates MUST verify the signature before allowing story status transition to `completed`.
+
 ## Exit Criteria
 - [ ] Completed all instructions in this step successfully.
+- [ ] Passed `verify-live-evidence.py` with zero mock link violations.
+- [ ] Evidence manifest packaged and cryptographically sealed via Gate ZT-01B (`qa-acceptance-evidence.json.sig` generated).
+

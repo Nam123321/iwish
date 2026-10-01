@@ -1,0 +1,16 @@
+id: workflow-qa-agent-automate
+name: qa-agent-automate
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [qa-agent-automate]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [qa-agent-automate]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-qa-automate.md
+tags: [generated]

@@ -1,0 +1,7 @@
+name: cwv-analyzer
+status: active
+origin:
+  created_by: create-skill
+  source: "User headless request"
+path_policy: runtime
+promotion_target: ".agent/skills/cwv-analyzer"

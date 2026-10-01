@@ -3,7 +3,7 @@ project_name: '{{project_name}}'
 user_name: '{{user_name}}'
 date: '{{date}}'
 sections_completed: ['technology_stack']
-existing_patterns_found: { { number_of_patterns_discovered } }
+existing_patterns_found: '{{number_of_patterns_discovered}}'
 ---
 
 # Project Context for AI Agents

@@ -1,0 +1,2 @@
+{"event": "candidate_created", "timestamp": "2026-07-30T18:23:00+07:00", "source": "create-skill", "candidate": "json-schema-validator"}
+{"event": "candidate_promoted", "timestamp": "2026-07-30T11:24:39Z", "source": "create-skill", "candidate": "json-schema-validator"}

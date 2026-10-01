@@ -1,0 +1,16 @@
+id: workflow-manual-test
+name: manual-test
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [manual-test]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [manual-test]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/manual-test.md
+tags: [generated]

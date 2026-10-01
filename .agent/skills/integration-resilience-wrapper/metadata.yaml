@@ -1,0 +1,30 @@
+id: integration-resilience-wrapper
+type: SKILL
+status: draft
+origin:
+  type: user-correction
+  created_by: create-skill
+  created_at: '2026-08-09'
+  source_story: null
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: ExternalSource
+      confidence: 10
+      sensitivity: public
+      ref: headless-request
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/integration-resilience-wrapper
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

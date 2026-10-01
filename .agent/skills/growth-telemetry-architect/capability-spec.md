@@ -8,7 +8,7 @@
 The I-Wish Orchestrator needs an automated way to generate Marketing Tracking Plans (telemetry schema) from PRD definitions for platforms like PostHog or Amplitude without manual data mapping.
 
 ### Knowledge Sources
-- Source 1: `/Users/hatrang20061988/Desktop/AI Project/iwish/_iwish-output/stories/story-24.4.md` — Story definition and Edge Case rules for telemetry generation.
+- Source 1: `{project-root}/_iwish-output/stories/story-24.4.md` — Story definition and Edge Case rules for telemetry generation.
 
 ### Core Concepts
 1. **Telemetry Schema Generation**: Analyzes PRDs to identify critical conversion events and North Star metrics.

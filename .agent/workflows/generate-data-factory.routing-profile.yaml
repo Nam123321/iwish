@@ -1,0 +1,7 @@
+name: "generate-data-factory"
+description: "Generate deterministic Fishery data factories from DB Schema and API Logic for FE/BE testing."
+triggers:
+  - "/generate-data-factory"
+category: "data-management"
+required_inputs:
+  - "model_name"

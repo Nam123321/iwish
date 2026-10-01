@@ -1,0 +1,2 @@
+{"event": "candidate_created", "timestamp": "2026-07-31T00:00:00Z", "actor": "create-skill", "description": "Initial draft candidate created to address FIX-PE-01-01"}
+{"event": "candidate_promoted", "timestamp": "2026-07-31T00:00:00Z", "actor": "create-skill", "description": "Promoted to active"}

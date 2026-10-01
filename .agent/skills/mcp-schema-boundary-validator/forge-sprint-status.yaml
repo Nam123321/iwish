@@ -1,0 +1,9 @@
+capability: mcp-schema-boundary-validator
+type: SKILL
+status: complete
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: done
+completed_at: 2026-08-08

@@ -1,0 +1,28 @@
+id: "otel-semantic-validator"
+type: "SKILL"
+status: "promoted"
+origin:
+  type: "manual"
+  created_by: "create-skill"
+  created_at: "2026-08-09"
+  source_story: null
+provenance:
+  source_nodes:
+    - id: "query-request"
+      type: "ExternalSource"
+      confidence: 10
+      sensitivity: "public"
+      ref: "user-request"
+      status: "active"
+  source_clusters: []
+  source_artifacts: []
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: "lineage.jsonl"
+path_policy: "runtime"
+promotion_target: ".agent/skills/otel-semantic-validator"
+approval:
+  required: true
+  approved_by: "user"
+  approved_at: "2026-08-09"

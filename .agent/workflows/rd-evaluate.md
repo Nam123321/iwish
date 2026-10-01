@@ -214,3 +214,19 @@ Based on ALL analysis from Steps 1-8, issue a **mandatory track recommendation:*
    - `BOTH` → Save to BOTH directories (one file, symlinked).
 3. Append the metadata entry to `docs/R&D-Library/R&D-Library.yaml`.
 4. Clean up: Remove cloned repo from temporary workspace.
+
+
+---
+
+## 📘 NotebookLM Integration Hook
+
+> This hook is auto-triggered when this workflow executes. Agent MUST read `notebook-registry-manager` skill before proceeding.
+> **CENS Gate**: Before executing this hook, load and evaluate `.agent/fragments/nlm-context-enrichment-gate.md` to determine enrichment level.
+> Auto-triggered at Step 4 (Community Intelligence) and Step 10 (Document Generation).
+
+### PUSH + SYNC: Research-backed R&D evaluation
+
+1. Step 4: Load `notebook-request-engineer` → Push community sentiment data to RL-3 (Template: Technical Evaluation)
+2. Step 10: Load `knowledge-collector` → Sync completed R&D evaluation report to RL-3
+3. Update registry with enriched source count
+> **[ZERO-TRUST GATE]** You MUST save the raw MCP JSON output to a file (e.g. `_iwish-output/adhoc-workspace/scratch/nlm_evidence.json`) and run: `python3 .agent/scripts/pipeline-integrity-runner.py --target "project" --type project --phase discovery`. If it fails, HALT immediately and do not proceed.

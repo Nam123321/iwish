@@ -1,0 +1,16 @@
+id: workflow-product-strategy
+name: product-strategy
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [product-strategy]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [product-strategy]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/product-strategy.md
+tags: [generated]

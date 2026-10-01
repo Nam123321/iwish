@@ -36,7 +36,7 @@ If an error occurs (e.g., `tsc` fails, `eslint` catches an issue, tests fail):
 
 ### 4. Hotspot Guardian & Auto-Immune System (Day 2 Analytics)
 **MANDATORY PRE-EDIT CHECK**: Before modifying any existing file, you MUST check its hotspot score to trigger the Auto-Immune System if necessary.
-- Use `run_command` to calculate the hotspot score. You MUST use the absolute path to this skill's script folder to support cross-repo execution (find it using `grep_search` if unsure). Command: `node .agent/skills/pivot-guardian/scripts/hotspot-calculator.js '<relative/path/to/file>'`
+- Use `run_command` to calculate the hotspot score. You MUST use the absolute path to this skill's script folder to support cross-repo execution (find it using `grep_search` if unsure). Command: `node <absolute_path_to_cowok_ai>/.agent/skills/pivot-guardian/scripts/hotspot-calculator.js '<relative/path/to/file>'`
 - **Thresholds**: The script will return a `hotspot_score` and a `bug_count`. If `hotspot_score >= 30` OR `bug_count >= 3`, you MUST output a 🚨 **"Hotspot Detected - Auto-Immune Triggered"** warning before proceeding.
 - **Auto-Immune Action**: 
   1. Proceed with extreme caution. Do not use band-aid fixes.

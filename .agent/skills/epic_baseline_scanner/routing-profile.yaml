@@ -1,0 +1,14 @@
+name: epic_baseline_scanner
+role: "Epic Baseline Scanner"
+shape: skill
+phase: Plan
+stage: Discovery
+triggers:
+  - "evaluate epic drift"
+  - "create epic"
+anti_triggers:
+  - "sync ledger directly"
+primary_agents:
+  - Unknowns Analyst
+  - pm-agent
+review_pack: "promotion-plan.md"

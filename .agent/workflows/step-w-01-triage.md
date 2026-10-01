@@ -89,3 +89,19 @@ Wait for user confirmation before proceeding to Step W-02.
 - [ ] Capability shape is classified and confirmed
 - [ ] Capability role is classified and confirmed
 - [ ] Proposed name is agreed upon
+
+
+## State Machine Checkpoint & Anti-Skip Lock
+
+> [!IMPORTANT]
+> **STATE MACHINE UPDATE (MANDATORY):**
+> Before exiting this step, you MUST update `state.json` atomically.
+> 1. Write updated state (using strict JSON serialization tools) to `state.tmp.json` containing the new phase. The `"phase"` key MUST be validated against the strict Enum of expected phases.
+> 2. Execute `mv state.tmp.json state.json`.
+> 3. You MUST check for OS-level filesystem errors (e.g., disk full, permission denied) during the `mv` command and gracefully HALT if it fails.
+
+> [!WARNING]
+> **ANTI-SKIP LOCK (MANDATORY):**
+> You MUST run the following command to validate integrity before proceeding:
+> `python3 .agent/scripts/pipeline-integrity-runner.py --target "<capability_name>" --phase "<current_phase>"`
+> - **Circuit Breaker:** If this script fails (non-zero exit), you MUST immediately HALT, report the error to the user, and do not retry more than 3 times. Do not silently ignore it.

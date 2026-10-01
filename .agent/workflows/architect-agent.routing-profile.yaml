@@ -1,0 +1,16 @@
+id: workflow-architect-agent
+name: architect-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [architect-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [architect-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/architect-agent.md
+tags: [generated]

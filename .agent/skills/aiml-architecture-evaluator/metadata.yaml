@@ -1,0 +1,12 @@
+id: aiml-architecture-evaluator
+name: "aiml-architecture-evaluator"
+type: SKILL
+version: 1.0.0
+created_at: '2026-09-03'
+domain: "AI Architecture & Evaluation"
+status: active
+provenance:
+  knowledge_repo: "AIMLInterviews"
+  notebook_id: "655d181d-af8c-48d3-b775-db3408e5a82e"
+enforcement_maturity: 100%
+gate_category: "Category A"

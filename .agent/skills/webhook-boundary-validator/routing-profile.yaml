@@ -1,0 +1,18 @@
+id: skill-webhook-boundary-validator
+name: webhook-boundary-validator
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - implement
+stages:
+  - task-execution
+triggers:
+  - webhook validation
+  - dataflow boundaries
+anti_triggers: []
+primary_agents:
+  - orch-agent
+primary_workflows:
+  - code
+source_path: .agent/skills/webhook-boundary-validator/SKILL.md

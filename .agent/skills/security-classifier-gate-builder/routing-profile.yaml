@@ -1,0 +1,7 @@
+name: security-classifier-gate-builder
+type: SKILL
+lifecycle: draft
+trigger_conditions:
+  - "evaluating a prompt for adversarial intent"
+  - "untrusted input requires a security gate"
+stages: [security-validation, input-sanitization]

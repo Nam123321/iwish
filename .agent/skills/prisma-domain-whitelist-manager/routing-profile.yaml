@@ -1,0 +1,14 @@
+name: prisma-domain-whitelist-manager
+role: supportive
+shape: skill
+phase: Implement
+stage: Validate
+triggers:
+  - "cross-domain Prisma relations"
+  - "domain boundary violations"
+  - "Prisma schema linting errors"
+  - "whitelist Prisma relation"
+anti_triggers:
+  - "modifying standard Prisma attributes"
+  - "using unsupported @@ attributes"
+review_pack_link: .agent/skills/prisma-domain-whitelist-manager/integration-guide.md

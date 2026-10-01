@@ -189,14 +189,52 @@ Search the web: "{{technology}} production readiness"
 - If user has preference: Discuss implications and record decision
 - If user wants alternatives: Explore other options
 
-**Record the Decision:**
+**Record the Decision (TDR Format — Mandatory):**
 
-- Category: {{category}}
-- Decision: {{user_choice}}
-- Version: {{verified_version_if_applicable}}
-- Rationale: {{user_reasoning_or_default}}
-- Affects: {{components_or_epics}}
-- Provided by Starter: {{yes_if_from_starter}}
+For EVERY decision, you MUST record using the Trade-off Decision Record (TDR) format:
+
+```markdown
+#### Decision
+**Chosen**: {{user_choice}} ({{verified_version_if_applicable}})
+**Status**: `active`
+**Decided**: {{today_date_ISO8601}}
+
+#### Options Evaluated
+
+| Option | Pros | Cons | Cost (Day 1) | Fit Phase |
+|--------|------|------|---------------|-----------|
+| {{user_choice}} (Chosen ✓) | {{pros}} | {{cons}} | {{cost}} | {{phase}} |
+| {{alternative_1}} | {{pros}} | {{cons}} | {{cost}} | {{phase}} |
+| {{alternative_2_if_applicable}} | {{pros}} | {{cons}} | {{cost}} | {{phase}} |
+
+#### Trade-off Analysis
+- **Why {{user_choice}} over {{alternative_1}}**: {{specific_reasoning}}
+- **Accepted risks**: {{risks_accepted_with_this_choice}}
+
+#### Scale-Phase Roadmap
+
+| Phase | Business Size | Trigger Metrics | Current Decision | Migration Path |
+|-------|--------------|-----------------|------------------|----------------|
+| 🌱 Seed (MVP) | 0-100 tenants | N/A | {{current_choice}} | N/A |
+| 🌿 Growth | 100-1K tenants | {{specific_metric > threshold}} | {{action}} | {{how}} |
+| 🌳 Scale | 1K-10K tenants | {{specific_metric > threshold}} | {{action}} | {{how}} |
+| 🏢 Enterprise | 10K+ tenants | {{specific_metric > threshold}} | {{action}} | {{how}} |
+
+**Trigger Metrics**: MUST be quantitative (e.g., "P95 latency > 200ms", "vector count > 10M", "QPS > 5000"). Vague metrics like "when it's big" are FORBIDDEN.
+
+#### Evidence & References
+- PRD NFR: {{link_to_specific_NFR_if_applicable}}
+- Research: {{link_to_AE_report_or_NLM_cross_query}}
+- Socratic Debate: {{link_to_party_mode_transcript_if_applicable}}
+
+#### Change Log
+
+| Date | Change | Reason | Evidence | Author |
+|------|--------|--------|----------|--------|
+| {{today_date}} | Initial decision | Architecture creation | architecture.md | architect-agent |
+```
+
+**CRITICAL — Scale-Phase Roadmap Rule**: After recording each decision, you MUST explicitly ask: *"At what business scale or load threshold does this decision need to change? What metric would signal the transition?"* Do NOT leave the Scale-Phase Roadmap with placeholder values.
 
 ### 4. Check for Cascading Implications
 

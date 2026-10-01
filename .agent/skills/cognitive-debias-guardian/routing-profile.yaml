@@ -1,0 +1,6 @@
+name: cognitive-debias-guardian
+type: skill
+description: "Analyzes architectural decisions or evaluations to detect and mitigate confirmation bias, ensuring balanced Socratic debate."
+triggers:
+  - keywords: ["architecture review", "bias", "socratic", "adr", "tool selection", "evaluate decision"]
+    confidence: 0.9

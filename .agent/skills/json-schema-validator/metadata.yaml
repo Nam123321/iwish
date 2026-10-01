@@ -1,0 +1,30 @@
+id: json-schema-validator
+type: SKILL
+status: promoted
+origin:
+  type: external-absorption
+  created_by: create-skill
+  created_at: 2026-07-30
+  source_story: FIX-41-04
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: ExternalSource
+      confidence: 10
+      sensitivity: public
+      ref: FIX-41-04
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/json-schema-validator
+path_policy: runtime
+approval:
+  required: true
+  approved_by: headless-auto
+  approved_at: 2026-07-30

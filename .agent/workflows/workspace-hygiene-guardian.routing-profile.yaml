@@ -1,0 +1,34 @@
+id: skill-workspace-hygiene-guardian
+name: workspace-hygiene-guardian
+kind: skill
+shape: skill
+role: supportive
+phases:
+- verification
+- release
+- lifecycle
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- workspace-hygiene-guardian
+- /workspace-hygiene-guardian
+- /workspace-hygiene
+- /workspace-janitor
+anti_triggers: []
+primary_agents:
+- review-agent-persona
+- orch-agent-persona
+primary_workflows:
+- workspace-hygiene-guardian
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/workspace-hygiene-guardian/SKILL.md
+tags:
+- skill
+- canonical
+- workspace-hygiene-guardian

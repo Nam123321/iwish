@@ -1,0 +1,2 @@
+{"event": "candidate_created", "timestamp": "2026-08-07T16:00:00Z", "agent": "capability-agent", "details": "Draft capability spec created for pii-scrubber-presidio."}
+{"event": "watchmen_audit", "wis_score": 1, "signature": "15d1c83238545c0e7bee4707feb796bb22f3582110902ef8d2446443b51ff25a"}

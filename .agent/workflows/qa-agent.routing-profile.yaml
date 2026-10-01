@@ -1,0 +1,16 @@
+id: workflow-qa-agent
+name: qa-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [qa-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [qa-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/qa-agent.md
+tags: [generated]

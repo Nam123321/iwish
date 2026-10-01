@@ -1,0 +1,16 @@
+id: workflow-taste-skill-injector
+name: taste-skill-injector
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [taste-skill-injector]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [taste-skill-injector]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/taste-skill-injector.md
+tags: [generated]

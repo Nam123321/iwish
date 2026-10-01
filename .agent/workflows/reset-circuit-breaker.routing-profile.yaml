@@ -1,0 +1,17 @@
+id: workflow-reset-circuit-breaker
+name: reset-circuit-breaker
+kind: workflow
+shape: workflow
+role: supportive
+phases: [review, qa, solution, execution]
+stages: [pipeline-integrity, manual-test]
+triggers: [reset circuit breaker, clear fails, unlock pipeline, reset circuit, reset lockout]
+anti_triggers: []
+primary_agents: [orch-agent, qa-agent, dev-agent, review-agent]
+primary_workflows: [reset-circuit-breaker]
+supportive_skills: [reset-circuit-breaker-skill]
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/reset-circuit-breaker.md
+story_refs: []
+tags: [active-noncanonical, integrity, watchmen, recovery]

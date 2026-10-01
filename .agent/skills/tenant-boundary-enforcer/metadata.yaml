@@ -1,0 +1,30 @@
+id: tenant-boundary-enforcer
+type: SKILL
+status: active
+origin:
+  type: manual
+  created_by: create-skill
+  created_at: 2026-08-08
+  source_story: null
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: UserCorrection
+      confidence: 10
+      sensitivity: security-sensitive
+      ref: tenant-boundary-enforcer-headless-query
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/tenant-boundary-enforcer
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

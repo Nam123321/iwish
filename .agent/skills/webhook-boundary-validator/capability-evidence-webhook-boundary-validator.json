@@ -1,0 +1,35 @@
+{
+  "target": "_iwish/generated-skills/webhook-boundary-validator/SKILL.md",
+  "timestamp": "2026-08-05T01:28:07.868197+00:00",
+  "enforcement_maturity": 80.0,
+  "wis_score": 2,
+  "gates": [
+    {
+      "name": "Cryptographic Verification",
+      "category": "A",
+      "mechanism": "Verify HMAC signature"
+    },
+    {
+      "name": "KMS Secret Retrieval",
+      "category": "A",
+      "mechanism": "Fetch secret from KMS"
+    },
+    {
+      "name": "Dataflow Drop",
+      "category": "A",
+      "mechanism": "Drop payload on invalid"
+    },
+    {
+      "name": "Replay Prevention",
+      "category": "A",
+      "mechanism": "Check timestamp < 5m"
+    },
+    {
+      "name": "Audit Logging",
+      "category": "B",
+      "mechanism": "Log outcome to Watchmen"
+    }
+  ],
+  "evidence_hash": "c61e63860040e6e26cbf8165d24daa4ee21b94bb3a7a61ecc0863d673cb9faf7",
+  "hmac_signature": "Ca71jsZU4tc4mGGNXpizyzp315SNDDn1gw7C2P11IJA="
+}

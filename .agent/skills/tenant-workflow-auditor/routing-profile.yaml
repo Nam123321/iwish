@@ -1,0 +1,4 @@
+name: tenant-workflow-auditor
+type: SKILL
+routes:
+  - description: Performs data-driven historical audits of existing tenant workflows

@@ -1,0 +1,16 @@
+id: workflow-analyst-agent
+name: analyst-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [analyst-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [analyst-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/analyst-agent.md
+tags: [generated]

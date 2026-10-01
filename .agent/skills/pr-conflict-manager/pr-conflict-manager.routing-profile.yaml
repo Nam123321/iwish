@@ -1,0 +1,12 @@
+name: pr-conflict-manager
+type: skill
+description: Intercepts, classifies, and safely resolves Git conflicts or semantic drift before a Pull Request is allowed to merge. Enforces Zero-Trust script tampering checks, Semantic Rebase & Test, and safe Workspace Hygiene.
+triggers:
+  - "/pr-conflict-manage"
+  - "/resolve-conflict"
+phases:
+  - implementation
+  - qa
+primary_agents:
+  - orch-agent-persona
+  - dev-agent-persona

@@ -1,0 +1,40 @@
+id: skill-antigravity-teamwork-integration
+name: antigravity-teamwork-integration
+kind: skill
+shape: skill
+role: supportive
+phases:
+  - solution
+  - implement
+stages:
+  - sprint-planning
+  - dev-story
+  - execution-delegation
+triggers:
+  - chạy teamwork
+  - teamwork-preview
+  - multi-agent code
+  - chạy song song sprint
+  - chạy đa agent
+anti_triggers:
+  - fix bug đơn lẻ
+  - sửa lỗi nhỏ
+primary_agents:
+  - orch-agent
+  - delivery-manager-agent
+primary_workflows:
+  - plan
+  - make-story
+supportive_skills:
+  - antigravity-teamwork-integration
+tool_dependencies:
+  - google-antigravity
+constraints:
+  - Chỉ kích hoạt khi có tệp prompt_draft.md được biên soạn đầy đủ và được User
+    phê duyệt.
+  - Không chạy song song với các sửa đổi trực tiếp (direct code edits) của
+    dev-agent trên cùng một component.
+review_pack: _iwish/catalog/routing-profiles/coexistence-guides/workflow-skill-creator-coexistence.md
+tags:
+  - platform-bridge
+  - multi-agent-execution

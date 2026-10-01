@@ -1,0 +1,28 @@
+id: tool-mcp-supabase
+name: supabase-mcp-adapter
+kind: tool
+shape: mcp
+role: supportive
+phases:
+  - implement
+  - review
+stages:
+  - tool-usage
+triggers:
+  - chạy supabase
+  - mcp supabase
+  - supabase tool
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - dev-agent
+primary_workflows:
+  - code
+supportive_skills: []
+tool_dependencies:
+  - supabase
+constraints:
+  - Gọi trực tiếp thông qua MCP client của host platform.
+tags:
+  - mcp-server
+  - tool-adapter

@@ -1,0 +1,10 @@
+name: critical-debias-reviewer
+type: skill
+domain: Review
+keywords:
+  - adversarial review
+  - bias
+  - contradiction
+routing_rules:
+  - if: "request contains 'review' and 'spec'"
+    action: invoke

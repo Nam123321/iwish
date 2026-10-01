@@ -1,0 +1,33 @@
+id: skill-pr-conflict-manager
+name: pr-conflict-manager
+kind: skill
+shape: skill
+role: supportive
+phases:
+- implementation
+- qa
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- pr-conflict-manager
+- /pr-conflict-manager
+- /pr-conflict-manage
+- /resolve-conflict
+anti_triggers: []
+primary_agents:
+- orch-agent-persona
+- dev-agent-persona
+primary_workflows:
+- pr-conflict-manager
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/pr-conflict-manager/SKILL.md
+tags:
+- skill
+- canonical
+- pr-conflict-manager

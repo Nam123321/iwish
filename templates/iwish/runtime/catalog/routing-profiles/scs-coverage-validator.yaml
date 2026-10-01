@@ -1,0 +1,30 @@
+id: external-module-scs-coverage-validator
+name: scs-coverage-validator
+kind: external-module
+shape: arbitrary-external
+role: supportive
+phases:
+  - operate-learn
+  - supporting-multiple-phases
+stages:
+  - intake
+  - assessment
+  - integration-planning
+triggers: []
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - capability-agent
+primary_workflows:
+  - register-skill-pack
+  - absorb-repo
+supportive_skills: []
+tool_dependencies: []
+constraints:
+  - Treat as reviewed external support until explicitly promoted.
+review_pack: docs/open-modules/scs-coverage-validator-integration-guide.md
+source_path: .agent/skills/scs-coverage-validator
+story_refs: []
+tags:
+  - arbitrary-external
+  - register

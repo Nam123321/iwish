@@ -1,0 +1,7 @@
+name: webhook-boundary-validator
+version: 1.0.0
+status: draft
+origin:
+  created_by: create-skill
+promotion_target: .agent/skills/webhook-boundary-validator
+path_policy: runtime

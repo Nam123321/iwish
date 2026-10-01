@@ -1,0 +1,32 @@
+id: skill-ghost-file-guardian
+name: ghost-file-guardian
+kind: skill
+shape: skill
+role: supportive
+phases:
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- ghost-file-guardian
+- /ghost-file-guardian
+- ghost-file
+- clean-workspace
+anti_triggers: []
+primary_agents:
+- orch-agent
+- review-agent
+primary_workflows:
+- ghost-file-guardian
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/ghost-file-guardian/SKILL.md
+tags:
+- skill
+- canonical
+- ghost-file-guardian

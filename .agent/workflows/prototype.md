@@ -20,7 +20,10 @@ description: 'Experimental workflow for generating State-driven UI mockups at th
 5. **Requirement to UI Mapping**:
    - For the chosen feature, summarize the FRs from the PRD into the specific User Story context.
    - Extract or generate the `ui-spec-*.md` for this story, detailing all required UI states (Idle, Loading, Success, Error, Empty).
-6. **Visual Design Synthesis (Stitch)**:
+6. **Verify Logic State**:
+   - Generate throwaway HTML/JS to verify the Logic State Machine (e.g. button clicks properly transition states).
+   - **Hard Limit**: Agents are allowed a maximum of 2 attempts to generate working Logic Code. If it fails, fallback immediately to static mockups to prevent infinite loops and token bloat.
+7. **Visual Design Synthesis (Stitch)**:
    - Call the Stitch MCP server (or external design platform equivalent) to generate the structural UI layout based strictly on the `ui-spec`.
 7. **Prototype Scaffold & Packaging**:
    - **File Storage Structure**: You MUST create a dedicated directory for the prototype inside the planning folder: `{_iwish-output}/2. Product Planning/2.8. prototypes/[scope-or-story-name]/`.

@@ -1,0 +1,14 @@
+role: supportive
+shape: skill
+phase: Solution
+stage: Architecture Design
+triggers:
+  - AWS RDS
+  - failover
+  - failback
+  - pg_rewind
+  - DR
+  - Disaster Recovery
+anti_triggers:
+  - self-hosted PostgreSQL
+  - on-premise

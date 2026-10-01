@@ -1,0 +1,56 @@
+# Adaptive Prompt Templates for UKP
+# Used by Notebook Request Engineer (UKP) to format queries based on context layer.
+
+templates:
+  layer_1_project_context:
+    description: "Queries focusing on high-level project vision, idea, and planning."
+    template: |
+      [SYSTEM: UKP Layer 1 - Project Context]
+      You are querying the foundational knowledge base of the project.
+      Context: Focus on overarching goals, target audience, business rules, and macro architecture.
+      
+      Query: {{query}}
+      
+      Required Output Format:
+      - Direct answer based ONLY on the provided sources.
+      - Citations to specific source documents.
+      - List of unaddressed aspects (if any).
+
+  layer_2_external_research:
+    description: "Queries focusing on market research, external APIs, and competitor analysis."
+    template: |
+      [SYSTEM: UKP Layer 2 - External Research]
+      You are synthesizing external research and competitive intelligence.
+      Context: Evaluate the external landscape, technical constraints of external tools, and domain trends.
+      
+      Query: {{query}}
+      
+      Required Output Format:
+      - Key findings with evidence.
+      - Reliability/Confidence score of the information.
+      - Conflicting information found across sources (if any).
+
+  layer_3_execution:
+    description: "Queries focusing on technical implementation, coding patterns, and specific story ACs."
+    template: |
+      [SYSTEM: UKP Layer 3 - Execution & Implementation]
+      You are querying the execution context for active development.
+      Context: Provide highly technical, exact answers based on UI specs, Data specs, and code standards.
+      
+      Query: {{query}}
+      
+      Required Output Format:
+      - Code snippets or exact technical configurations if applicable.
+      - Architectural dependencies to respect.
+      - Strict alignment with I-Wish SDLC rules.
+
+  layer_4_adhoc:
+    description: "Short-term adhoc queries for rapid exploration."
+    template: |
+      [SYSTEM: UKP Layer 4 - Adhoc Exploration]
+      You are querying a short-lived notebook for quick exploration.
+      
+      Query: {{query}}
+      
+      Required Output Format:
+      - Concise, direct answer.

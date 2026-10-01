@@ -1,0 +1,8 @@
+capability: esm-ast-analyzer
+type: SKILL
+status: pending-promotion
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: pending

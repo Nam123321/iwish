@@ -1,0 +1,24 @@
+{
+  "target": ".agent/skills/reset-circuit-breaker-skill/SKILL.md",
+  "timestamp": "2026-08-16T11:31:26.291627+00:00",
+  "enforcement_maturity": 66.66666666666666,
+  "wis_score": 4,
+  "gates": [
+    {
+      "name": "CB-01",
+      "category": "A",
+      "mechanism": "Call bash `rm` or python script to physically delete `.json` tracker files"
+    },
+    {
+      "name": "CB-02",
+      "category": "A",
+      "mechanism": "Verify the existence of the circuit breaker file before deleting"
+    },
+    {
+      "name": "CB-03",
+      "category": "B",
+      "mechanism": "Agent notifies the user after resetting the circuit breaker"
+    }
+  ],
+  "evidence_hash": "658accd4f1f5e06d64e702720441df38d7559ebcdd402605a49406939fbcb646"
+}

@@ -165,7 +165,10 @@ function getPlatformMode() {
     }
     return 'LEGACY_INJECTION';
 }
-function getRuntimeRoot(projectRoot, namespace) {
+function getRuntimeRoot(projectRoot, namespace = 'iwish') {
+    if (namespace === 'legacy-bmad') {
+        return path.join(projectRoot, '_bmad');
+    }
     return path.join(projectRoot, '_iwish');
 }
 function getInstallTargetDir(projectRoot, platform) {

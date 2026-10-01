@@ -1,0 +1,16 @@
+id: workflow-evaluate-epic
+name: evaluate-epic
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [evaluate-epic]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [evaluate-epic]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/evaluate-epic.md
+tags: [generated]

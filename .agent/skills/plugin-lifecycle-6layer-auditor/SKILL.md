@@ -1,18 +1,26 @@
 ---
 name: plugin-lifecycle-6layer-auditor
-description: Audits plugin completeness across Enterprise 6-Layer Agent Architecture — detects missing trigger mechanisms, layer coverage gaps, and operational readiness. Dual-purpose: (1) Platform feature development audit (2) Runtime plugin lifecycle guardian for Advisor/Evolution agents.
+description: 'Audits plugin completeness across Cowok 6-Layer architecture. Detects
+  missing trigger mechanisms, layer coverage gaps, and operational readiness. Dual-purpose:
+  Development-time audit and Runtime plugin lifecycle guardian for Advisor/Evolution
+  agents.'
+---
+
+---
+name: plugin-lifecycle-6layer-auditor
+description: Audits plugin completeness across Cowok's 6-Layer architecture — detects missing trigger mechanisms, layer coverage gaps, and operational readiness. Dual-purpose: (1) Cowok feature development audit (2) Runtime plugin lifecycle guardian for Advisor/Evolution agents.
 ---
 
 # 🔍 Plugin Lifecycle 6-Layer Auditor Skill
 
 ## Purpose
 
-Dual-purpose auditing skill that ensures every plugin (both during platform development and at runtime) is properly wired across all 6 architectural layers with correct trigger mechanisms.
+Dual-purpose auditing skill that ensures every plugin (both during Cowok platform development and at runtime) is properly wired across all 6 architectural layers with correct trigger mechanisms.
 
-**Mục đích 1 — Development-Time Audit (Dùng khi phát triển hệ thống/feature):**
+**Mục đích 1 — Development-Time Audit (Dùng khi phát triển Cowok):**
 Phát hiện các feature/story đang xây dựng plugin nhưng thiếu coverage ở một hoặc nhiều layer. Giúp team bổ sung gap trước khi ship.
 
-**Mục đích 2 — Runtime Plugin Guardian (Dùng bởi Advisor/Evolution Agent):**
+**Mục đích 2 — Runtime Plugin Guardian (Dùng bởi Advisor Agent):**
 Khi tạo plugin mới, import plugin bên ngoài, hoặc quản lý vòng đời plugin → skill này tạo plan, detect lỗi, audit để đảm bảo plugin đã đủ điều kiện vận hành thực tế xuyên 6 layer.
 
 ---
@@ -38,18 +46,18 @@ Mỗi plugin PHẢI khai báo ít nhất 1 trigger mode. Audit checklist:
 
 | Trigger Mode | Mô tả | Validation |
 |---|---|---|
-| `intent` | Agent tự phát hiện plugin qua NL intent matching (vector similarity search) | Verify embedding exists in `PluginCatalogEmbedding` or vector catalog table |
+| `intent` | Agent tự phát hiện plugin qua NL intent matching (pgvector similarity search) | Verify embedding exists in `PluginCatalogEmbedding` table |
 | `explicit` | User gọi trực tiếp bằng tên hoặc slash command | Verify `SlashCommandRegistry` entry hoặc `@mention` handler |
 | `workflow_node` | Plugin được gọi như một Node trong Workflow DAG | Verify `WorkflowNodeDefinition` binding exists |
 | `event` | Plugin phản ứng với system events (webhook, state change) | Verify event subscription config in manifest |
-| `cron` | Plugin chạy theo lịch định kỳ | Verify cron expression in manifest + job scheduler binding |
+| `cron` | Plugin chạy theo lịch định kỳ | Verify cron expression in manifest + BullMQ job scheduler binding |
 
 ---
 
 ## Mode 1: Development-Time Audit
 
 ### Khi nào kích hoạt:
-- Khi dev team đang xây plugin feature mới (plugin integrations, external connectors, tool extensions)
+- Khi dev team đang xây plugin feature mới (Epic-41, Epic-92, Epic-95)
 - Khi review Story specs cho plugin-related stories
 - Khi chạy `/deep-audit` hoặc `/reconcile-change` liên quan đến plugin
 
@@ -83,8 +91,8 @@ Scope: {epic/story/global}
 ### Coverage Summary
 | Plugin/Feature | L1 | L2 | L3 | L4 | L5 | L6 | Triggers | Score |
 |---|---|---|---|---|---|---|---|---|
-| enterprise-connector | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ❌ | intent,workflow | 4/6 |
-| ocr-engine           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | intent,explicit | 6/6 |
+| misa-connector | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ❌ | intent,workflow | 4/6 |
+| ocr-engine     | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | intent,explicit | 6/6 |
 
 ### Critical Gaps (Must Fix Before Ship)
 1. [PLUGIN_ID]: Missing L2 safetyTier → RISK: unclassified plugin may bypass EffectGate
@@ -92,7 +100,7 @@ Scope: {epic/story/global}
 
 ### Recommended Stories/Tasks
 1. Create task to add OTel instrumentation to [PLUGIN_ID]
-2. Create task to register [PLUGIN_ID] in vector catalog
+2. Create task to register [PLUGIN_ID] in pgvector catalog
 ```
 
 **Step 4: Sign Report**
@@ -163,7 +171,7 @@ Any CRITICAL gate FAIL → Block activation + Generate remediation plan
 
 ## Anti-Patterns to Detect
 
-1. **Ghost Plugin**: Plugin in PluginRegistry but no embedding in vector catalog → unreachable by agents
+1. **Ghost Plugin**: Plugin in PluginRegistry but no embedding in pgvector → unreachable by agents
 2. **Orphan Tool**: Tool defined in plugin but no NodeDefinition binding → workflow engine can't compose it
 3. **Naked Plugin**: Plugin without safetyTier → bypasses EffectGate security entirely
 4. **Silent Plugin**: Plugin without OTel instrumentation → invisible to performance dashboard and Co-Evolution

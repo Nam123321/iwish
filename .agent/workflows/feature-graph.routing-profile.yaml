@@ -1,0 +1,16 @@
+id: workflow-feature-graph
+name: feature-graph
+description: "Run the FeatureGraph indexer to populate FalkorDB with feature dependency data."
+
+# Common aliases / triggers for this workflow
+triggers: [feature-graph, featuregraph, index-featuregraph]
+
+# The main workflows to load
+primary_workflows: [feature-graph]
+
+# Tools required for this workflow
+tools:
+  - run_command
+
+# The actual source file
+source_path: /.agent/workflows/feature-graph.md

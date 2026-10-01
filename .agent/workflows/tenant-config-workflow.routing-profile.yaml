@@ -1,0 +1,16 @@
+id: workflow-tenant-config-workflow
+name: tenant-config-workflow
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [tenant-config-workflow]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [tenant-config-workflow]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/tenant-config-workflow.md
+tags: [generated]

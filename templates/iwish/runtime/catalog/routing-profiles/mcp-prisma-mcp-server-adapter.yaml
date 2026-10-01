@@ -1,0 +1,28 @@
+id: tool-mcp-prisma-mcp-server
+name: prisma-mcp-server-mcp-adapter
+kind: tool
+shape: mcp
+role: supportive
+phases:
+  - implement
+  - review
+stages:
+  - tool-usage
+triggers:
+  - chạy prisma-mcp-server
+  - mcp prisma-mcp-server
+  - prisma-mcp-server tool
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - dev-agent
+primary_workflows:
+  - code
+supportive_skills: []
+tool_dependencies:
+  - prisma-mcp-server
+constraints:
+  - Gọi trực tiếp thông qua MCP client của host platform.
+tags:
+  - mcp-server
+  - tool-adapter

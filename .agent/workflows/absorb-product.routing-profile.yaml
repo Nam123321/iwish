@@ -1,0 +1,18 @@
+id: workflow-absorb-product
+name: absorb-product
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [operate-learn]
+stages: [product-reverse-engineering, technical-analysis, library-extraction]
+triggers: [absorb product, reverse engineer, product library, os toolset analysis, absorb-product]
+anti_triggers: [absorb-repo, simple-doc-edit]
+primary_agents: [orch-agent, architect-agent, pm-agent]
+primary_workflows: [absorb-product]
+supportive_skills: [magika-binary-filter]
+tool_dependencies: [graph]
+constraints:
+  - Do not use for extracting Agent Skills or Workflows (use absorb-repo instead).
+source_path: /.agent/workflows/absorb-product.md
+story_refs: []
+tags: [absorption, product, library]

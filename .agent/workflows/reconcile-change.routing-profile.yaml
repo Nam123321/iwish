@@ -1,0 +1,16 @@
+id: workflow-reconcile-change
+name: reconcile-change
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [reconcile-change]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [reconcile-change]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/reconcile-change.md
+tags: [generated]

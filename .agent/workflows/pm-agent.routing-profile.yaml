@@ -1,0 +1,16 @@
+id: workflow-pm-agent
+name: pm-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [pm-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [pm-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/pm-agent.md
+tags: [generated]

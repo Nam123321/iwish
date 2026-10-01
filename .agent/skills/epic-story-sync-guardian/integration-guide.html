@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Integration Guide: epic-story-sync-guardian</title>
+</head>
+<body>
+    <h1>Integration Guide: epic-story-sync-guardian</h1>
+    <p>To integrate this skill:</p>
+    <ol>
+        <li>Ensure <code>.agent/skills/epic-story-sync-guardian/SKILL.md</code> is present in the workspace.</li>
+        <li>In <code>.agent/workflows/iwish-feature-reconcile-change.md</code>, append a step to execute <code>validate-sprint-status.py</code> at the very beginning of the flow (Pre-flight checks).</li>
+        <li>If the script exits with <code>1</code>, the agent must HALT and report the drift to the user.</li>
+    </ol>
+</body>
+</html>

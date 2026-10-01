@@ -1,0 +1,16 @@
+id: workflow-brainstorm
+name: brainstorm
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [brainstorm]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [brainstorm]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-brainstorming.md
+tags: [generated]

@@ -30,3 +30,10 @@ This orchestrator runs the following steps:
 3. step-mt-03-execution
 4. step-mt-04-validation
 5. step-mt-05-guided-loop
+
+> [!IMPORTANT]
+> **WORKSPACE HYGIENE CLEANUP (MANDATORY GATE):**
+> Before marking the QA test as completed, you MUST:
+> 1. Move all generated screenshots and testing scripts to `_iwish-output/adhoc-workspace/screenshots/` and `_iwish-output/adhoc-workspace/scratch/`.
+> 2. Delete any temporary files left in the workspace root.
+> 3. Verify cleanup by running: `python3 _iwish-output/adhoc-workspace/scratch/clean_workspace.py` (if available) or manually deleting the files.

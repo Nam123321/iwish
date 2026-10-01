@@ -1,0 +1,11 @@
+id: fmea-ui-spec-generator
+type: SKILL
+status: promoted
+origin:
+  type: manual
+  created_by: create-skill
+  created_at: 2026-08-02
+  source_story: null
+origin_repo: null
+promotion_target: .agent/skills/fmea-ui-spec-generator
+path_policy: runtime

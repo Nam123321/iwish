@@ -1,0 +1,8 @@
+capability: stripe-webhook-simulator
+type: SKILL
+status: spec-approved
+phases:
+  triage: done
+  spec: done
+  forge: pending
+  validate: pending

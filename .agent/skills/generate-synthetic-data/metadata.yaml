@@ -1,0 +1,30 @@
+id: generate-synthetic-data
+type: SKILL
+status: promoted
+origin:
+  type: bug-fix
+  created_by: create-skill
+  created_at: '2026-07-31'
+  source_story: FIX-58-02
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: FIX-58-02
+      type: Bug
+      confidence: 10
+      sensitivity: project
+      ref: FIX-58-02
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/generate-synthetic-data
+path_policy: canonical
+approval:
+  required: true
+  approved_by: headless-workflow
+  approved_at: '2026-07-31'

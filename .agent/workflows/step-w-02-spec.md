@@ -17,6 +17,7 @@ Ask the user for all relevant inputs. Supported source types:
 |-------------|---------------|
 | **Documentation URL** | Use `read_url_content` tool to crawl. Follow pagination/sub-pages recursively (max depth 3). |
 | **GitHub Repository** | **MANDATORY 3-Layer MCP Deep Dive:** Use `github-mcp-server` to run a 3-layer scan:<br>1. Read `README`/`ARCHITECTURE.md`.<br>2. Scan file trees (via search/tree/list routes) specifically looking for `.github/workflows`, `.agents`, `scripts/`, or `prompts/`.<br>3. Use `get_file_contents` to extract and reverse-engineer the raw code/prompt logic of the core files found in Layer 2. NEVER rely solely on the README. |
+| **NotebookLM / Knowledge Graph** | **MANDATORY Pre-Computation Research:** Invoke `/nlm pull` and `/ae-notebook-orchestrator` to gather internal context and similar capabilities *before* drafting the specification. Do not wait for post-creation hooks. |
 | **PDF Document** | Ask user to place in project directory. Read with `view_file`. |
 | **Raw Text / Paste** | User pastes content directly into chat. Capture as-is. |
 | **Existing Codebase** | Use `grep_search`, `view_file_outline`, `view_code_item` to analyze patterns. |
@@ -48,6 +49,13 @@ ${IWISH_HOME}/generated-agents/<name>/capability-spec.md
 
 ```markdown
 # Capability Spec: <name>
+
+
+### 4. Domain & Trigger Registration Planning
+- Identify which Domains (e.g., UI/UX, AI Engineering, DevOps) this skill belongs to.
+- Determine the keywords that should trigger this skill.
+- Explicitly state in the Specification that the skill must be registered in `.agent/config/domain-skill-registry.yaml` during the Forge/Validate phase.
+
 
 ## Type: [SKILL / WORKFLOW / AGENT]
 ## Status: Draft
@@ -133,3 +141,19 @@ phases:
 - [ ] `lineage.jsonl` exists with an initial `candidate_created` event
 - [ ] `forge-sprint-status.yaml` is created
 - [ ] User approves the spec before proceeding to Forge
+
+
+## State Machine Checkpoint & Anti-Skip Lock
+
+> [!IMPORTANT]
+> **STATE MACHINE UPDATE (MANDATORY):**
+> Before exiting this step, you MUST update `state.json` atomically.
+> 1. Write updated state (using strict JSON serialization tools) to `state.tmp.json` containing the new phase. The `"phase"` key MUST be validated against the strict Enum of expected phases.
+> 2. Execute `mv state.tmp.json state.json`.
+> 3. You MUST check for OS-level filesystem errors (e.g., disk full, permission denied) during the `mv` command and gracefully HALT if it fails.
+
+> [!WARNING]
+> **ANTI-SKIP LOCK (MANDATORY):**
+> You MUST run the following command to validate integrity before proceeding:
+> `python3 .agent/scripts/pipeline-integrity-runner.py --target "<capability_name>" --phase "<current_phase>"`
+> - **Circuit Breaker:** If this script fails (non-zero exit), you MUST immediately HALT, report the error to the user, and do not retry more than 3 times. Do not silently ignore it.

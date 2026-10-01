@@ -1,0 +1,6 @@
+capability: cloudflare-ip-sync
+match_patterns:
+  - "cloudflare ips"
+  - "whitelist cloudflare"
+  - "origin protection"
+  - "update security groups for cloudflare"

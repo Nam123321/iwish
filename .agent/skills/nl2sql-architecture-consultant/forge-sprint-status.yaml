@@ -1,0 +1,8 @@
+capability: nl2sql-architecture-consultant
+type: SKILL
+status: ready-for-promotion
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: done

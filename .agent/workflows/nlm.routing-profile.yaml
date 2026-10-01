@@ -1,0 +1,25 @@
+id: workflow-nlm
+name: nlm
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [discovery, planning, execution]
+stages: [idea-discovery, research, architecture, dev]
+triggers: [nlm, notebooklm, notebook, research qua cổng, research via notebook, notebook research]
+anti_triggers: [deploy, test]
+primary_agents: [orch-agent, research-agent]
+primary_workflows: [nlm]
+supportive_skills:
+  - notebook-lifecycle-manager
+  - notebook-registry-manager
+  - notebook-request-engineer
+  - notebook-retrieval-engine
+  - notebook-cross-query-engine
+  - notebook-quality-gate
+  - knowledge-collector
+  - ae-notebook-orchestrator
+tool_dependencies: [notebooklm-mcp]
+constraints:
+  - Requires notebooklm-mcp server running and authenticated
+source_path: /.agent/workflows/nlm.md
+tags: [research, canonical, notebooklm, knowledge-management]

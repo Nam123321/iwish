@@ -1,0 +1,11 @@
+name: fmea-risk-extractor
+type: skill
+description: Analyzes epic stories, architecture documents, and code changes to extract implicit assumptions, failure modes, and edge cases to automatically populate the unknowns ledger.
+triggers:
+  - "extract failure modes"
+  - "populate unknowns ledger"
+  - "fmea risk extraction"
+anti_triggers: []
+primary_agents:
+  - orch-agent
+review_pack: .agent/skills/fmea-risk-extractor/integration-guide.md

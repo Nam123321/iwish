@@ -1,0 +1,30 @@
+id: langfuse-memory-extractor
+type: SKILL
+status: draft
+origin:
+  type: manual
+  created_by: create-skill
+  created_at: 2026-08-11T00:54:00+07:00
+  source_story: null
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: ExternalSource
+      confidence: 10
+      sensitivity: project
+      ref: langfuse-docs
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/langfuse-memory-extractor/
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

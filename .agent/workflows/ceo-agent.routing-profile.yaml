@@ -1,0 +1,53 @@
+# CEO Agent Routing Profile
+# This profile defines how ceo-agent integrates with workflows and party-mode
+
+agent_id: ceo-agent-persona
+agent_name: ceo-agent
+agent_file: .agent/agents/ceo-agent.md
+workflow_file: .agent/workflows/ceo-agent.md
+
+# Domain triggers for automatic invocation by orch-agent and party-mode
+domain_triggers:
+  - strategy
+  - scope
+  - business-model
+  - pricing
+  - pivot
+  - market
+  - go-to-market
+  - resource-allocation
+  - product-vision
+  - business-viability
+
+# Workflows where this agent can be dynamically summoned
+workflow_integrations:
+  - workflow: party-mode
+    role: strategic-challenger
+    trigger: domain_triggers match
+    
+  - workflow: product-strategy
+    role: ceo-reviewer
+    trigger: step-3.5-ceo-review
+    
+  - workflow: evaluate-epic
+    role: scope-advisor
+    trigger: cs_score >= 5
+
+  - workflow: idea-challenge
+    role: strategic-evaluator
+    trigger: always
+
+  - workflow: pivot-project
+    role: pivot-advisor
+    trigger: always
+
+# Anti-sycophancy requirements
+debate_rules:
+  min_pushbacks_per_round: 2
+  banned_phrases:
+    - "I agree"
+    - "Good compromise"
+    - "That sounds reasonable"
+  mental_models_required: true
+  veto_power:
+    - scope-expansion-without-justification

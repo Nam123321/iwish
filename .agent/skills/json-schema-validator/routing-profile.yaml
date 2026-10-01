@@ -1,0 +1,10 @@
+role: supportive
+shape: skill
+phase: Solution
+stage: Implement
+triggers:
+  - when validating JSON
+  - when generating schemas
+anti_triggers:
+  - when generating non-JSON structures
+review_pack_link: integration-guide.md

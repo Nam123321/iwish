@@ -1,0 +1,27 @@
+id: workflow-visualize-architecture
+name: visualize-architecture
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution, architecture, design]
+stages: [orchestration, visual-design]
+triggers:
+  - visualize-architecture
+  - archify
+  - visualize
+  - diagram
+  - draw-architecture
+anti_triggers: []
+primary_agents:
+  - architect-agent-persona
+  - orch-agent-persona
+primary_workflows:
+  - visualize-architecture
+supportive_skills:
+  - archify
+  - system-design-consultant
+tool_dependencies: []
+constraints:
+  - dual-file-rule
+source_path: /.agent/workflows/visualize-architecture.md
+tags: [architecture, visual, diagram, archify, workflow-dag]

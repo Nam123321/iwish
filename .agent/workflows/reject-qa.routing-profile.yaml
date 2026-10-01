@@ -1,0 +1,16 @@
+id: workflow-reject-qa
+name: reject-qa
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [reject-qa]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [reject-qa]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/reject-qa.md
+tags: [generated]

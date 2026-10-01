@@ -1,0 +1,2 @@
+{"timestamp": "2026-08-08T02:30:00Z", "event": "candidate_created", "actor": "create-skill", "details": {"reason": "Manual user request for Stripe webhook simulator"}}
+{"ts":"2026-08-07T19:37:24Z","type":"candidate_promoted","actor":"agent"}

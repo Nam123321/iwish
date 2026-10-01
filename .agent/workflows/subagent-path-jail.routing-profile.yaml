@@ -1,0 +1,33 @@
+id: skill-subagent-path-jail
+name: subagent-path-jail
+kind: skill
+shape: skill
+role: supportive
+phases:
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- subagent-path-jail
+- /subagent-path-jail
+- path-jail
+- path-isolation
+- jail
+anti_triggers: []
+primary_agents:
+- security-guardian
+- orch-agent
+primary_workflows:
+- subagent-path-jail
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/subagent-path-jail/SKILL.md
+tags:
+- skill
+- canonical
+- subagent-path-jail

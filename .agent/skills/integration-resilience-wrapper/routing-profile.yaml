@@ -1,0 +1,7 @@
+id: integration-resilience-wrapper
+type: SKILL
+primary_trigger: "implementing external HTTP/SMTP calls"
+domain_tags:
+  - backend
+  - resilience
+  - architecture

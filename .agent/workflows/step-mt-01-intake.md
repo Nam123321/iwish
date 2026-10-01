@@ -42,17 +42,32 @@ This workflow orchestrates the QA testing phase by strictly enforcing Zero-Trust
 
 
 ## Step 1: Intake & Parse Spec
-1. Agent locates `manual-test-guide.md` for the given Epic/Story.
-   - **Multi-Portal Check:** If the Epic/Story impacts multiple portals (e.g., Customer App and Admin Dashboard), the Agent MUST generate/read separate spec files for each portal (e.g., `manual-test-guide-{id}-customer.md` and `manual-test-guide-{id}-admin.md`).
-2. Extract the `Preferred Engine` and `Target Portal` metadata.
-3. Extract the Required Evidence Constraints (which of the 7 methods must be collected).
-4. **Mock Account Constraint:** Before testing, the Agent MUST use `code-search` or investigate `seed` files to find existing mock test accounts. The Agent MUST NOT create new junk accounts to test (unless the test case is explicitly about the Registration flow).
+1. Agent checks if `manual-test-guide.md` exists for the target Epic/Story:
+   - **Auto-Generation Fallback (MANDATORY):** If `manual-test-guide.md` does NOT exist, the Agent MUST NOT halt. It MUST execute:
+     ```bash
+     python3 .agent/scripts/generate-qa-scenario.py --epic-id "<epic_id>" --story-id "<story_id>" --story-dir "<story_dir>" --output "<story_dir>/qa/manual-test-guide.md"
+     ```
+2. **Gate ZT-01A: Cryptographic Sealing of QA Spec (MANDATORY ZERO-TRUST GATE):**
+   - Calculate checksum and provenance:
+     ```bash
+     python3 .agent/scripts/verify-zero-trust-integrity.py --file "<story_dir>/qa/manual-test-guide.md" --conversation-id "<CONVERSATION_ID>" --output "_iwish-output/adhoc-workspace/scratch/{story_id}-spec-integrity.json"
+     ```
+   - Request Out-of-Band HMAC Cryptographic Signature from Watchmen MCP:
+     `call_mcp_tool("watchmen-mcp", "sign_pipeline_gate", {"artifact_path": "<story_dir>/qa/manual-test-guide.md", "gate_name": "qa-scenario-spec"})`
+   - **Physical TOCTOU Lock (EC-P2-02):**
+     Immediately lock the file to Read-Only to prevent post-seal tampering:
+     ```bash
+     chmod 444 "<story_dir>/qa/manual-test-guide.md"
+     ```
+3. Extract `Preferred Engine` and `Target Portal` metadata.
+4. Extract Required Evidence Constraints (Live Port, DOM hydration root, Hash Delta $\Delta > 0$).
+5. **Mock Account Constraint:** Before testing, use existing mock test accounts or generate ephemeral accounts using UUID dynamic prefixes (`qa-test-<uuid>@cowok.ai`).
 
-
-## Step 1.4: Graph-Context Resolution (MANDATORY)
-Before searching blindly for code files, the Agent MUST consult the knowledge graphs to pinpoint exact dependencies and edge cases:
-1. **FeatureGraph & Data Spec:** Read the `FeatureGraph` or `data-spec.md` for this Epic/Story to extract the EXACT names of UI components, API endpoints, and Data Models involved.
-2. **KnowledgeGraph & Risk Matrix:** Read `Epic-{id}-risk-matrix.md` or consult the Edge Case Guardian output to extract documented edge cases, negative flows, and potential failure points. Incorporate these into the test scenarios automatically.
+## Step 1.4: Graph-Context Resolution & FMEA Enforcement (MANDATORY)
+Before searching blindly for code files, consult the knowledge graphs:
+1. **FeatureGraph & Data Spec:** Read the `FeatureGraph` or `data-spec.md` to extract exact component names, routes, and API endpoints.
+2. **KnowledgeGraph & Risk Matrix:** Read `Epic-{id}-risk-matrix.md` and verify that 100% of risk items with $RPN \ge 25$ are mapped to explicit test cases (`TC-*`) in the FMEA Traceability Matrix.
 
 ## Exit Criteria
-- [ ] Completed all instructions in this step successfully.
+- [ ] `manual-test-guide.md` exists, verified, and sealed with `.sig` file.
+- [ ] File permissions locked to read-only (`chmod 444`).

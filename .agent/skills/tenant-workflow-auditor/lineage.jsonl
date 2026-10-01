@@ -1,0 +1,2 @@
+{"event": "candidate_created", "timestamp": "2026-07-30T18:24:14Z", "reason": "User requested tenant-workflow-auditor"}
+{"event": "candidate_promoted", "timestamp": "2026-07-30T18:25:31Z", "reason": "Headless approval"}

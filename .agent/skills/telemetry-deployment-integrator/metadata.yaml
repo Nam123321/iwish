@@ -1,0 +1,6 @@
+name: telemetry-deployment-integrator
+status: draft
+origin:
+  created_by: create-skill
+promotion_target: .agent/skills/telemetry-deployment-integrator
+path_policy: runtime

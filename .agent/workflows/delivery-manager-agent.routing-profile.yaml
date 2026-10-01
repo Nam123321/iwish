@@ -1,0 +1,16 @@
+id: workflow-delivery-manager-agent
+name: delivery-manager-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [delivery-manager-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [delivery-manager-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/delivery-manager-agent.md
+tags: [generated]

@@ -1,0 +1,14 @@
+name: lighthouse-budget-analyzer
+description: Analyzes Lighthouse CI JSON reports and enforces defined Core Web Vitals thresholds.
+triggers:
+  - "lighthouse"
+  - "core web vitals"
+  - "cwv"
+  - "performance budget"
+  - "lcp"
+  - "inp"
+  - "cls"
+contexts:
+  - performance-testing
+  - frontend-optimization
+  - ci-pipeline

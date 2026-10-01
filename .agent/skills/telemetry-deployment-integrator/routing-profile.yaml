@@ -1,0 +1,2 @@
+name: telemetry-deployment-integrator
+description: Use when configuring CI/CD pipelines to block or rollback deployments based on real-time telemetry metrics.

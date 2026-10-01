@@ -1,0 +1,23 @@
+name: dependency-resilience-analyzer
+description: Analyzes architecture dependency graphs and evaluates systemic cascading failure risk.
+
+triggers:
+  - keywords:
+      - cascading failure
+      - dependency graph
+      - resilience analysis
+      - blast radius
+      - architecture risk
+      - failure risk
+    confidence: 0.9
+
+  - intent: evaluate systemic failure risk based on architecture dependencies
+    confidence: 0.95
+
+requirements:
+  - Ensure the input contains a valid architecture description or dependency graph.
+
+capabilities:
+  - Graph traversal and dependency mapping.
+  - Resilience pattern evaluation.
+  - Cascading failure simulation and impact analysis.

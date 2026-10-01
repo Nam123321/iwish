@@ -1,0 +1,310 @@
+#!/usr/bin/env python3
+"""
+Universal Multi-Platform Capability & Slash Command Registrar (I-Wish v2.0)
+Registers workflows and skills across Google Antigravity, I-Wish Runtime,
+Knowledge Graph, IDEs (Cursor, Roo, Cline, Windsurf), Claude Code, OpenAI Codex, and Locales.
+Also propagates changes across active Git Worktrees.
+"""
+
+import os
+import sys
+import json
+import yaml
+import fcntl
+import argparse
+import subprocess
+from pathlib import Path
+
+def find_project_root():
+    current = Path.cwd().resolve()
+    while current != current.parent:
+        if (current / ".agent").exists() or (current / "_iwish").exists():
+            return current
+        current = current.parent
+    return Path.cwd().resolve()
+
+def ensure_yaml_frontmatter(file_path, name, description):
+    if not file_path.exists():
+        return
+    content = file_path.read_text(encoding="utf-8")
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            try:
+                fm = yaml.safe_load(parts[1]) or {}
+                fm["name"] = name
+                fm["description"] = description
+                new_fm_str = yaml.dump(fm, default_flow_style=False, sort_keys=False).strip()
+                file_path.write_text(f"---\n{new_fm_str}\n---\n{parts[2].lstrip()}", encoding="utf-8")
+                return
+            except Exception:
+                pass
+    fm = {"name": name, "description": description}
+    fm_str = yaml.dump(fm, default_flow_style=False, sort_keys=False).strip()
+    file_path.write_text(f"---\n{fm_str}\n---\n\n{content}", encoding="utf-8")
+
+def update_knowledge_graph(project_root, node_id, node_type, path_rel, description, tags, depends_on):
+    kg_file = project_root / ".agent" / "knowledge-graph.yaml"
+    lock_file = project_root / ".agent" / "knowledge-graph.lock"
+    
+    node = {
+        "id": node_id,
+        "type": node_type,
+        "path": path_rel if path_rel.startswith("/") else f"/{path_rel}",
+        "title": node_id,
+        "description": description,
+        "graph_visibility": "public",
+        "tags": tags,
+        "depends_on": depends_on
+    }
+    
+    with open(lock_file, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        graph_data = {"nodes": []}
+        if kg_file.exists():
+            try:
+                with open(kg_file, "r", encoding="utf-8") as f:
+                    graph_data = yaml.safe_load(f) or {"nodes": []}
+            except Exception:
+                graph_data = {"nodes": []}
+                
+        if "nodes" not in graph_data or not isinstance(graph_data["nodes"], list):
+            graph_data["nodes"] = []
+            
+        nodes_dict = {}
+        for n in graph_data["nodes"]:
+            if isinstance(n, dict) and "id" in n:
+                nodes_dict[str(n["id"]).lower()] = n
+                
+        nodes_dict[node_id.lower()] = node
+        graph_data["nodes"] = list(nodes_dict.values())
+        
+        tmp_file = kg_file.with_suffix(".tmp")
+        with open(tmp_file, "w", encoding="utf-8") as tf:
+            yaml.dump(graph_data, tf, sort_keys=False, allow_unicode=True)
+            tf.flush()
+            os.fsync(tf.fileno())
+        os.replace(tmp_file, kg_file)
+
+def generate_routing_profile(project_root, name, node_type, triggers, phases, primary_agents, source_path, description):
+    profile_path = project_root / ".agent" / "workflows" / f"{name}.routing-profile.yaml"
+    profile_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    clean_triggers = list(dict.fromkeys([name, f"/{name}"] + triggers))
+    
+    profile_data = {
+        "id": f"workflow-{name}" if node_type == "workflow" else f"skill-{name}",
+        "name": name,
+        "kind": node_type,
+        "shape": node_type,
+        "role": "process-primary" if node_type == "workflow" else "supportive",
+        "phases": phases if phases else ["solution", "implementation", "validate"],
+        "stages": ["orchestration", "intent-triage", "execution"],
+        "triggers": clean_triggers,
+        "anti_triggers": [],
+        "primary_agents": primary_agents if primary_agents else ["orch-agent", "dev-agent"],
+        "primary_workflows": [name],
+        "supportive_skills": [],
+        "tool_dependencies": [],
+        "constraints": ["Must automatically pause at checkpoints requiring approval and automatically resume afterwards."],
+        "source_path": source_path if source_path.startswith("/") else f"/{source_path}",
+        "tags": [node_type, "canonical", name]
+    }
+    
+    with open(profile_path, "w", encoding="utf-8") as f:
+        yaml.dump(profile_data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
+def materialize_iwish_workflow(project_root, name, source_rel):
+    wf_dir = project_root / "_iwish" / "delivery" / "workflows" / "4-implementation" / name
+    wf_dir.mkdir(parents=True, exist_ok=True)
+    wf_file = wf_dir / "workflow.yaml"
+    
+    content = f"""# Generated by register-capability-multiplatform.py
+name: "{name}"
+runtime_kind: "wrapper-config"
+source_wrapper: "{{project-root}}/{source_rel.lstrip('/')}"
+source_mode_engine: "{{project-root}}/.agent/workflows/workflow-engine.xml"
+project_runtime_engine: "{{project-root}}/_iwish/core/tasks/workflow.xml"
+installed_path: "{{project-root}}/_iwish/delivery/workflows/4-implementation/{name}"
+instructions: "{{project-root}}/{source_rel.lstrip('/')}"
+template: false
+source_mode_fallback: true
+compatibility:
+  canonical_namespace: "iwish"
+  legacy_runtime_root: "_bmad"
+execution:
+  mode: "wrapper-backed"
+  contract: "Load project_runtime_engine, then load this config, then load source_wrapper and execute its steps."
+notes:
+  - "This config is executable by the I-Wish generic workflow engine as a wrapper-backed workflow."
+"""
+    wf_file.write_text(content, encoding="utf-8")
+
+def update_manifest_and_aliases(project_root, name):
+    alias_file = project_root / "_iwish" / "catalog" / "alias-registry.yaml"
+    if alias_file.exists():
+        try:
+            with open(alias_file, "r", encoding="utf-8") as f:
+                data = yaml.safe_load(f) or {}
+            if "commands" not in data or not isinstance(data["commands"], dict):
+                data["commands"] = {}
+            data["commands"][f"/{name}"] = f"/{name}"
+            with open(alias_file, "w", encoding="utf-8") as f:
+                yaml.dump(data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+        except Exception as e:
+            print(f"Warning: Failed to update alias-registry.yaml: {e}")
+            
+    manifest_file = project_root / "_iwish" / "runtime" / "manifest.json"
+    if manifest_file.exists():
+        try:
+            with open(manifest_file, "r", encoding="utf-8") as f:
+                mdata = json.load(f)
+            if "aliases" not in mdata:
+                mdata["aliases"] = {}
+            if "commandAliases" not in mdata["aliases"]:
+                mdata["aliases"]["commandAliases"] = {}
+            mdata["aliases"]["commandAliases"][f"/{name}"] = f"/{name}"
+            with open(manifest_file, "w", encoding="utf-8") as f:
+                json.dump(mdata, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Warning: Failed to update manifest.json: {e}")
+
+def update_ide_rules(project_root, name, description, triggers):
+    rules_dir = project_root / ".agents" / "rules"
+    rules_dir.mkdir(parents=True, exist_ok=True)
+    mdc_file = rules_dir / f"{name}.mdc"
+    
+    triggers_str = ", ".join([f"`/{t.lstrip('/')}`" for t in triggers])
+    content = f"""---
+description: {description}
+globs: ["*"]
+---
+
+# /{name} - Capability Rule
+
+## Triggers
+Active when the user specifies {triggers_str} or mentions task intent related to {name}.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/{name}.md` or `/.agent/skills/{name}/SKILL.md`.
+"""
+    mdc_file.write_text(content, encoding="utf-8")
+
+def update_locales(project_root, name, description):
+    for lang, desc_text in [("vi", f"Lệnh nhanh: /{name} - {description}"), ("en", f"Fast command: /{name} - {description}")]:
+        locale_file = project_root / ".agent" / "templates" / "locales" / f"{lang}.yaml"
+        if locale_file.exists():
+            try:
+                with open(locale_file, "r", encoding="utf-8") as f:
+                    ldata = yaml.safe_load(f) or {}
+                key = f"cmd_{name.replace('-', '_')}"
+                if key not in ldata:
+                    ldata[key] = {"desc": desc_text}
+                    with open(locale_file, "w", encoding="utf-8") as f:
+                        yaml.dump(ldata, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+            except Exception as e:
+                print(f"Warning: Failed to update locale {lang}: {e}")
+
+def propagate_to_worktrees(project_root, files_to_sync):
+    try:
+        res = subprocess.run(["git", "worktree", "list", "--porcelain"], cwd=project_root, capture_output=True, text=True)
+        if res.returncode != 0:
+            return
+        worktree_paths = []
+        for line in res.stdout.splitlines():
+            if line.startswith("worktree "):
+                wt = Path(line.split("worktree ", 1)[1].strip())
+                if wt.resolve() != project_root.resolve():
+                    worktree_paths.append(wt)
+                    
+        for wt in worktree_paths:
+            for src_rel in files_to_sync:
+                src = project_root / src_rel
+                dst = wt / src_rel
+                if src.exists():
+                    dst.parent.mkdir(parents=True, exist_ok=True)
+                    if src.is_dir():
+                        subprocess.run(["cp", "-r", str(src) + "/.", str(dst)], check=False)
+                    else:
+                        subprocess.run(["cp", str(src), str(dst)], check=False)
+    except Exception as e:
+        print(f"Warning: Worktree propagation skipped: {e}")
+
+def main():
+    parser = argparse.ArgumentParser(description="Universal Multi-Platform Capability Registrar")
+    parser.add_argument("--name", required=True, help="Capability / slash command name")
+    parser.add_argument("--type", choices=["workflow", "skill"], default="workflow", help="Type of capability")
+    parser.add_argument("--file", required=True, help="Path to markdown file (relative to repo root)")
+    parser.add_argument("--description", default="", help="Description of capability")
+    parser.add_argument("--triggers", default="", help="Comma-separated trigger keywords")
+    parser.add_argument("--phases", default="solution,implementation,validate", help="Comma-separated phases")
+    parser.add_argument("--primary-agents", default="orch-agent,dev-agent", help="Comma-separated primary agents")
+    parser.add_argument("--tags", default="", help="Comma-separated tags")
+    parser.add_argument("--depends-on", default="", help="Comma-separated dependencies")
+    
+    args = parser.parse_args()
+    project_root = find_project_root()
+    
+    name = args.name.strip().lstrip("/")
+    node_type = args.type
+    desc = args.description.strip() or f"{name} capability"
+    triggers = [t.strip() for t in args.triggers.split(",") if t.strip()]
+    if name not in triggers:
+        triggers.insert(0, name)
+    phases = [p.strip() for p in args.phases.split(",") if p.strip()]
+    agents = [a.strip() for a in args.primary_agents.split(",") if a.strip()]
+    tags = [t.strip() for t in args.tags.split(",") if t.strip()]
+    deps = [d.strip() for d in args.depends_on.split(",") if d.strip()]
+    
+    source_file = project_root / args.file.lstrip("/")
+    source_rel = str(source_file.relative_to(project_root))
+    
+    print(f"🚀 Registering Multi-Platform Capability: /{name} ({node_type})")
+    
+    # 1. Frontmatter
+    ensure_yaml_frontmatter(source_file, name, desc)
+    print("  ✅ 1. YAML Frontmatter verified")
+    
+    # 2. Routing profile
+    generate_routing_profile(project_root, name, node_type, triggers, phases, agents, "/" + source_rel, desc)
+    print("  ✅ 2. Routing Profile generated")
+    
+    # 3. Knowledge Graph
+    update_knowledge_graph(project_root, name, node_type, "/" + source_rel, desc, tags, deps)
+    print("  ✅ 3. Knowledge Graph updated")
+    
+    # 4. I-Wish Runtime Materialization
+    materialize_iwish_workflow(project_root, name, source_rel)
+    print("  ✅ 4. I-Wish Runtime materialized")
+    
+    # 5. Manifest & Aliases
+    update_manifest_and_aliases(project_root, name)
+    print("  ✅ 5. Manifest and Command Aliases registered")
+    
+    # 6. IDE Rules (.mdc)
+    update_ide_rules(project_root, name, desc, triggers)
+    print("  ✅ 6. IDE .mdc Rules generated")
+    
+    # 7. Locales
+    update_locales(project_root, name, desc)
+    print("  ✅ 7. Locales (vi/en) updated")
+    
+    # 8. Propagate across worktrees
+    files_to_sync = [
+        source_rel,
+        f".agent/workflows/{name}.routing-profile.yaml",
+        ".agent/knowledge-graph.yaml",
+        f".agents/rules/{name}.mdc",
+        f"_iwish/delivery/workflows/4-implementation/{name}",
+        "_iwish/catalog/alias-registry.yaml",
+        "_iwish/runtime/manifest.json",
+        ".agent/templates/locales/vi.yaml",
+        ".agent/templates/locales/en.yaml"
+    ]
+    propagate_to_worktrees(project_root, files_to_sync)
+    print("  ✅ 8. Propagated to all active Git Worktrees")
+    
+    print(f"\n🎉 Slash Command /{name} is now registered across ALL platforms and ready to use!")
+
+if __name__ == "__main__":
+    main()

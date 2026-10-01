@@ -1,0 +1,1 @@
+{"timestamp": "2026-07-28T23:18:00+07:00", "action": "enhance", "target": "absorb-repo", "reason": "Added strict Zero-Trust anti-bypass rules, Anti-Sycophancy Scoping constraints, and physical script gates to prevent agents from skipping pipeline phases due to narrow data extraction scopes.", "agent": "capability-agent"}

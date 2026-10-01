@@ -1,0 +1,8 @@
+capability: epic-story-sync-guardian
+type: SKILL
+status: complete
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: done

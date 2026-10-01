@@ -1,0 +1,18 @@
+id: workflow-make-story-auto-approve
+name: make-story-auto-approve
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [solution]
+stages: [epics-and-stories, acceptance-criteria, implementation-slicing]
+triggers: [make-story-auto-approve, auto-approve story, tạo story tự động]
+anti_triggers: [raw-ux-audit, deploy]
+primary_agents: [delivery-manager-agent, orch-agent]
+primary_workflows: [make-story-auto-approve]
+supportive_skills: []
+tool_dependencies: [graph]
+constraints:
+  - Prefer after planning clarity exists or when a known story/epic needs refinement.
+  - Skips UI spec review human gate if no visual/HTML changes are needed.
+source_path: /.agent/workflows/make-story-auto-approve.md
+tags: [solutioning, auto-approve]

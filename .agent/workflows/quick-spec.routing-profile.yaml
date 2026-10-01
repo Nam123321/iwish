@@ -1,0 +1,16 @@
+id: workflow-quick-spec
+name: quick-spec
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [quick-spec]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [quick-spec]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-quick-spec.md
+tags: [generated]

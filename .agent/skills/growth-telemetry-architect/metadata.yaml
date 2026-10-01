@@ -16,7 +16,7 @@ evolution_lineage:
   parent_id: null
   generation: 1
   lineage_file: lineage.jsonl
-promotion_target: /Users/hatrang20061988/Desktop/AI Project/iwish/.agent/skills/growth-telemetry-architect
+promotion_target: {project-root}/.agent/skills/growth-telemetry-architect
 path_policy: runtime
 approval:
   required: true

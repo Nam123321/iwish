@@ -1,0 +1,16 @@
+id: workflow-party-mode
+name: party-mode
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [party-mode]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [party-mode]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-party-mode.md
+tags: [generated]

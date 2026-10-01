@@ -15,7 +15,19 @@ Read the `capability-spec.md` and `metadata.yaml` generated in Step W-02. Verify
 ### 2. Generate Files Based on Capability Type
 
 #### If Type = SKILL
-First, classify the skill based on `.agent/fragments/zero-trust-capability-standard.md`. Is it Tier 1 (High-Stakes/Physical) or Tier 2 (Cognitive)?
+First, check if `hybrid_rag_context` was passed in the intake payload or state.
+**If `hybrid_rag_context` is present:**
+You MUST load `.agent/fragments/hybrid-rag-skill-template.md`.
+You MUST build the skill EXACTLY according to this template, using `notebook_query` and `falkordb_query`.
+**Zero-Trust Gate (Anti-Stuffing):** You MUST run the following deterministic check:
+```bash
+SKILL_PATH="${IWISH_HOME:-~/.iwish}/generated-skills/<skill-name>/SKILL.md"
+[ $(wc -l < "$SKILL_PATH") -le 100 ] && [ $(wc -l < "$SKILL_PATH") -ge 5 ] || exit 1
+```
+If this fails, HALT immediately.
+
+**Otherwise (Standard Skill):**
+Classify the skill based on `.agent/fragments/zero-trust-capability-standard.md`. Is it Tier 1 (High-Stakes/Physical) or Tier 2 (Cognitive)?
 
 Create directories:
 ```bash
@@ -121,3 +133,19 @@ phases:
 - [ ] Draft remains under `${IWISH_HOME}` with no canonical repo writes.
 - [ ] `promotion-plan.md` exists.
 - [ ] Ready for validation in Step W-04.
+
+
+## State Machine Checkpoint & Anti-Skip Lock
+
+> [!IMPORTANT]
+> **STATE MACHINE UPDATE (MANDATORY):**
+> Before exiting this step, you MUST update `state.json` atomically.
+> 1. Write updated state (using strict JSON serialization tools) to `state.tmp.json` containing the new phase. The `"phase"` key MUST be validated against the strict Enum of expected phases.
+> 2. Execute `mv state.tmp.json state.json`.
+> 3. You MUST check for OS-level filesystem errors (e.g., disk full, permission denied) during the `mv` command and gracefully HALT if it fails.
+
+> [!WARNING]
+> **ANTI-SKIP LOCK (MANDATORY):**
+> You MUST run the following command to validate integrity before proceeding:
+> `python3 .agent/scripts/pipeline-integrity-runner.py --target "<capability_name>" --phase "<current_phase>"`
+> - **Circuit Breaker:** If this script fails (non-zero exit), you MUST immediately HALT, report the error to the user, and do not retry more than 3 times. Do not silently ignore it.

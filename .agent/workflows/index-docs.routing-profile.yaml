@@ -1,0 +1,16 @@
+id: workflow-index-docs
+name: index-docs
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [index-docs]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [index-docs]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-index-docs.md
+tags: [generated]

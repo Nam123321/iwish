@@ -1,0 +1,30 @@
+id: epic_baseline_scanner
+type: SKILL
+status: promoted
+origin:
+  type: curator-recommendation
+  created_by: create-skill
+  created_at: 2026-07-31
+  source_story: null
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: FIX-71-01
+      type: CuratorRecommendation
+      confidence: 10
+      sensitivity: project
+      ref: Epic-71
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/epic_baseline_scanner
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

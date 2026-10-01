@@ -1,0 +1,8 @@
+name: zero-trust-integrity-verifier
+type: SKILL
+primary_triggers:
+  - "verify integrity"
+  - "checksum check"
+  - "zero trust validation"
+  - "provenance check"
+description: "Use when external artifacts, code, or data are ingested or when instructed to verify the integrity of an asset. Do not use for generic linting."

@@ -1,0 +1,3 @@
+{"event": "candidate_created", "timestamp": "2026-07-25T00:10:50+07:00", "actor": "create-skill", "details": "Draft created"}
+{"event": "forge_completed", "timestamp": "2026-07-25T00:15:00+07:00", "actor": "create-skill", "details": "Physical files generated"}
+{"event": "candidate_promoted", "timestamp": "2026-07-25T00:16:30+07:00", "actor": "create-skill", "details": "Promoted to canonical dir"}

@@ -1,0 +1,16 @@
+id: workflow-approve-qa
+name: approve-qa
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [approve-qa]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [approve-qa]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/approve-qa.md
+tags: [generated]

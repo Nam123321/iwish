@@ -1,0 +1,16 @@
+id: workflow-sync-ssot-worktree
+name: sync-ssot-worktree
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [sync-ssot-worktree]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [sync-ssot-worktree]
+supportive_skills: [sync-ssot-worktree]
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/sync-ssot-worktree.md
+tags: [generated, utility]

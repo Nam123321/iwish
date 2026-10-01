@@ -1,0 +1,12 @@
+name: nl2sql-architecture-consultant
+type: skill
+description: "Consultant for Text-to-SQL architecture evaluation, design, and optimization."
+triggers:
+  - "nl2sql"
+  - "text-to-sql"
+  - "sql generation"
+  - "schema linking"
+domains:
+  - AI Engineering
+  - System Architecture
+dependencies: []

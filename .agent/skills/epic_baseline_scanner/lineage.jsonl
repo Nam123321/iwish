@@ -1,0 +1,2 @@
+{"event": "candidate_created", "timestamp": "2026-07-31T01:30:00Z", "source": "epic-drift-evaluation", "rationale": "Missing capability to scan Epics for initial unknowns and seed the ledger (FIX-71-01)."}
+{"event": "candidate_promoted", "timestamp": "2026-07-31T01:35:00Z", "source": "W-04-validate", "rationale": "User approved promotion plan."}

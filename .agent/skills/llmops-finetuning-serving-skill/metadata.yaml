@@ -1,0 +1,11 @@
+capability_type: skill
+name: llmops-finetuning-serving-skill
+description: Layer 1 Gateway for LLMOps, PEFT, Quantization, and Serving.
+status: active
+path_policy: canonical
+promotion_target: .agent/skills/llmops-finetuning-serving-skill
+origin:
+  created_by: create-skill
+  source: 
+    - Ebook/fine-tuning-serving-playbooktxt
+    - Ebook/fine_tuning_and_serving_llms_full.txt

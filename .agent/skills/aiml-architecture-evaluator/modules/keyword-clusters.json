@@ -1,0 +1,23 @@
+{
+  "core_aiml": [
+    "machine learning", "deep learning", "model training", "inference",
+    "feature engineering", "dataset", "ground truth", "precision", "recall",
+    "f1 score", "roc-auc", "data drift", "concept drift"
+  ],
+  "genai_models": [
+    "llm", "slm", "gen ai", "generative ai", "rag", "retrieval augmented generation",
+    "embedding", "embeddings", "vector db", "vector database", "pgvector", "pinecone",
+    "milvus", "qdrant", "prompt engineering", "few-shot", "hallucination",
+    "system prompt", "context window", "fine-tuning", "lora", "qlora"
+  ],
+  "agentic_systems": [
+    "agent", "agents", "agentic", "multi-agent", "tool calling", "function calling",
+    "react loop", "autonomous agent", "planner", "subagent", "orchestrator",
+    "workflow dag", "swarm"
+  ],
+  "evolution_adaptation": [
+    "continuous learning", "self-learning", "self-evolution", "active learning",
+    "feedback loop", "reinforcement learning", "rlhf", "model evaluation",
+    "prompt evaluation", "shadow deployment"
+  ]
+}

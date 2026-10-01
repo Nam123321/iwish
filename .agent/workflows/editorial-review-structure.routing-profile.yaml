@@ -1,0 +1,16 @@
+id: workflow-editorial-review-structure
+name: editorial-review-structure
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [editorial-review-structure]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [editorial-review-structure]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-editorial-review-structure.md
+tags: [generated]

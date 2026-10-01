@@ -1,0 +1,9 @@
+capability: tenant-workflow-auditor
+type: SKILL
+status: complete
+completed_at: 2026-07-30
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: done

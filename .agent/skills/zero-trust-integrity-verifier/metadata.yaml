@@ -1,0 +1,30 @@
+id: zero-trust-integrity-verifier
+type: SKILL
+status: promoted
+origin:
+  type: bug-fix
+  created_by: create-skill
+  created_at: '2026-07-31'
+  source_story: FIX-PE-01-01
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: Bug
+      confidence: 10
+      sensitivity: security-sensitive
+      ref: FIX-PE-01-01
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/zero-trust-integrity-verifier
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

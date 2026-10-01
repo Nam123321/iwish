@@ -1,0 +1,16 @@
+id: skill-otel-semantic-validator
+name: otel-semantic-validator
+kind: skill
+shape: skill
+role: supportive
+phases: [implementation, validation]
+stages: [telemetry-validation]
+triggers: [otel, semantic-mapping, cardinality-budgets, telemetry]
+anti_triggers: []
+primary_agents: []
+primary_workflows: []
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: .agent/skills/otel-semantic-validator/SKILL.md
+tags: [generated, otel, telemetry]

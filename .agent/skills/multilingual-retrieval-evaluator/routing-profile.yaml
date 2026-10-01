@@ -1,0 +1,5 @@
+name: multilingual-retrieval-evaluator
+triggers:
+  - evaluate multilingual search
+  - baseline truth sets
+  - retrieval evaluation

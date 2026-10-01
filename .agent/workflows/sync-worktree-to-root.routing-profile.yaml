@@ -1,0 +1,34 @@
+id: skill-sync-worktree-to-root
+name: sync-worktree-to-root
+kind: skill
+shape: skill
+role: supportive
+phases:
+- implementation
+- validate
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- sync-worktree-to-root
+- /sync-worktree-to-root
+- sync-master
+- sync-root
+- sync-worktree
+anti_triggers: []
+primary_agents:
+- devops-agent
+- orch-agent
+primary_workflows:
+- sync-worktree-to-root
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/sync-worktree-to-root/SKILL.md
+tags:
+- skill
+- canonical
+- sync-worktree-to-root

@@ -1,0 +1,16 @@
+id: workflow-data-strategist-agent
+name: data-strategist-agent
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [data-strategist-agent]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [data-strategist-agent]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/data-strategist-agent.md
+tags: [generated]

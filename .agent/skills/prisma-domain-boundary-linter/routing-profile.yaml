@@ -1,0 +1,8 @@
+name: prisma-domain-boundary-linter
+role: supportive
+shape: skill
+phase: Implement
+stage: Validate
+triggers:
+  - "lint prisma domain boundaries"
+  - "check cross-domain coupling"

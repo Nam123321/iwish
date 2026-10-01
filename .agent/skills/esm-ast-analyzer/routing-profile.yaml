@@ -1,0 +1,3 @@
+id: esm-ast-analyzer
+type: skill
+description: Support for ESM AST parsing and tree-shaking manifest generation

@@ -1,0 +1,1522 @@
+{
+  "registry": [
+    {
+      "adr_id": "ADR-2.1",
+      "category": "hosting",
+      "technology": "gcpcloudrun",
+      "chosen_raw": "gcp-cloud-run",
+      "chosen_text": "GCP Cloud Run + Cloud SQL for fast time-to-market before K8s migration.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.1",
+      "category": "hosting",
+      "technology": "gkekubernetes",
+      "chosen_raw": "gke-kubernetes",
+      "chosen_text": "Migrate to GKE for cloud-agnostic full control at 1K-10K tenants.",
+      "status": "future",
+      "phase": "scale"
+    },
+    {
+      "adr_id": "ADR-2.1",
+      "category": "hosting",
+      "technology": "multiclusterkubernetes",
+      "chosen_raw": "multi-cluster-kubernetes",
+      "chosen_text": "Self-hosted or multi-cloud K8s for strict multi-region deployment.",
+      "status": "future",
+      "phase": "enterprise"
+    },
+    {
+      "adr_id": "ADR-2.2",
+      "category": "database",
+      "technology": "pgvector",
+      "chosen_raw": "pgvector",
+      "chosen_text": "pgvector inside PostgreSQL simplifies Day 1 ops and transactions.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.2",
+      "category": "database",
+      "technology": "qdrantsinglenode",
+      "chosen_raw": "qdrant-single-node",
+      "chosen_text": "Decouple vector lookup from relational transactions.",
+      "status": "future",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.2",
+      "category": "database",
+      "technology": "qdrantcluster",
+      "chosen_raw": "qdrant-cluster",
+      "chosen_text": "Logical partitioning for 1K-10K tenants scale.",
+      "status": "future",
+      "phase": "scale"
+    },
+    {
+      "adr_id": "ADR-2.3",
+      "category": "sandbox",
+      "technology": "e2b",
+      "chosen_raw": "e2b",
+      "chosen_text": "E2B Firecracker MicroVMs for sub-150ms boot and kernel isolation.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.3",
+      "category": "sandbox",
+      "technology": "selfhostedfirecracker",
+      "chosen_raw": "self-hosted-firecracker",
+      "chosen_text": "For air-gapped / VPC requirements.",
+      "status": "future",
+      "phase": "enterprise"
+    },
+    {
+      "adr_id": "ADR-2.4",
+      "category": "sandbox",
+      "technology": "extism",
+      "chosen_raw": "extism",
+      "chosen_text": "Extism WebAssembly sandboxes user-forged plugins with strict memory isolation.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.5",
+      "category": "llm-framework",
+      "technology": "hybrid3layer",
+      "chosen_raw": "hybrid-3-layer",
+      "chosen_text": "Hybrid 3-Layer isolates budgeting (Optimistic Deduction with Node.js Escrow), PII scrubbing, and agentic reasoning. Tier",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.5",
+      "category": "llm-framework",
+      "technology": "dedicatedvrampods",
+      "chosen_raw": "dedicated-vram-pods",
+      "chosen_text": "Dedicated VRAM pods to scale out vLLM L4 GPU nodes.",
+      "status": "future",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "inter-service-comm",
+      "technology": "typescriptpythonrust",
+      "chosen_raw": "typescript-python-rust",
+      "chosen_text": "TypeScript for web I/O, Python (LangGraph) for AI/RAG, Rust for systems.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.7",
+      "category": "localization",
+      "technology": "localemiddleware",
+      "chosen_raw": "locale-middleware",
+      "chosen_text": "Middleware-level locale formatting standardizes all API responses and AI prompts.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.8",
+      "category": "auth",
+      "technology": "customoauthsession",
+      "chosen_raw": "custom-oauth-session",
+      "chosen_text": "Reverse proxy domain routing + unified session identity engine.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.9",
+      "category": "payment",
+      "technology": "stripe",
+      "chosen_raw": "stripe",
+      "chosen_text": "Async Stripe webhooks + background queue for billing state machine.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.10",
+      "category": "security",
+      "technology": "googlemagika",
+      "chosen_raw": "google-magika",
+      "chosen_text": "Google Magika deep learning for true file type detection in ~1ms.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.11",
+      "category": "search-engine",
+      "technology": "dualscoperag",
+      "chosen_raw": "dual-scope-rag",
+      "chosen_text": "Dual-scope RAG merges private + tenant shared vector namespaces.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.12",
+      "category": "editor",
+      "technology": "blocknotetiptap",
+      "chosen_raw": "blocknote-tiptap",
+      "chosen_text": "Block-based rich text editors with PostgreSQL JSONB + Google Drive ACL.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.13",
+      "category": "document-processing",
+      "technology": "doclingqwenunstructured",
+      "chosen_raw": "docling-qwen-unstructured",
+      "chosen_text": "3-tier parsing pipeline for 97% cost reduction using existing vLLM infra.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.14",
+      "category": "desktop-client",
+      "technology": "tauriv2",
+      "chosen_raw": "tauri-v2",
+      "chosen_text": "Tauri v2 with Rust backend for 10-20x smaller binaries and lower RAM.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.15",
+      "category": "state-machine",
+      "technology": "zustand",
+      "chosen_raw": "zustand",
+      "chosen_text": "Zustand stores with platform-adaptive sync middleware.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.16",
+      "category": "desktop-client",
+      "technology": "rustofficecrates",
+      "chosen_raw": "rust-office-crates",
+      "chosen_text": "Rust-native file processing with zero cloud upload required.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.17",
+      "category": "analytics",
+      "technology": "sqlite",
+      "chosen_raw": "sqlite",
+      "chosen_text": "Encrypted SQLite for local activity telemetry with local AI aggregation.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "job-queue",
+      "technology": "bullmq",
+      "chosen_raw": "bullmq",
+      "chosen_text": "BullMQ handles high-throughput, low-latency ephemeral tasks without locking PostgreSQL.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "durable-execution",
+      "technology": "inngest",
+      "chosen_raw": "inngest",
+      "chosen_text": "Inngest Pure handles durable workflow state, retries, and sleep operations without Split-Brain risk.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "state-machine",
+      "technology": "xstate",
+      "chosen_raw": "xstate",
+      "chosen_text": "XState for JSON state machine definitions alongside BullMQ scheduling.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "workflow-engine",
+      "technology": "langgraph",
+      "chosen_raw": "langgraph",
+      "chosen_text": "LangGraph for micro-level agentic reasoning within workflow steps.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "durable-execution",
+      "technology": "temporal",
+      "chosen_raw": "temporal",
+      "chosen_text": "Deprecated for Phase 5+ in favor of custom BullMQ Saga Orchestrator.",
+      "status": "deprecated",
+      "phase": "enterprise"
+    },
+    {
+      "adr_id": "ADR-2.19",
+      "category": "database",
+      "technology": "adapterpatternhitl",
+      "chosen_raw": "adapter-pattern-hitl",
+      "chosen_text": "Adapter pattern + HITL approval engine for external data warehouse queries.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.20",
+      "category": "workflow-engine",
+      "technology": "pluginmanifests",
+      "chosen_raw": "plugin-manifests",
+      "chosen_text": "Standardized plugin manifests for dynamic cross-channel rendering.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.21",
+      "category": "database",
+      "technology": "postgresql",
+      "chosen_raw": "postgresql-materialized-views",
+      "chosen_text": "PostgreSQL materialized views with RLS for department-specific data marts.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.22",
+      "category": "storage",
+      "technology": "hybridindexvirtualfolder",
+      "chosen_raw": "hybrid-index-virtual-folder",
+      "chosen_text": "Virtual folder overlays for Google Drive/OneDrive without massive downloads.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.23",
+      "category": "security",
+      "technology": "intersectionrulev2",
+      "chosen_raw": "intersection-rule-v2",
+      "chosen_text": "4-Layer Data Architecture with zero privilege escalation.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.22-D++",
+      "category": "computer-use",
+      "technology": "webwrightplaywrightnutjs",
+      "chosen_raw": "webwright-playwright-nutjs",
+      "chosen_text": "5-tier execution hierarchy from API direct to vision fallback.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.19-Telemetry",
+      "category": "monitoring",
+      "technology": "opentelemetry",
+      "chosen_raw": "opentelemetry",
+      "chosen_text": "Backend-neutral OTLP telemetry decoupled from PostgreSQL audit logs.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.19-AI-Observability",
+      "category": "monitoring",
+      "technology": "langfuseselfhosted",
+      "chosen_raw": "langfuse-self-hosted",
+      "chosen_text": "TDR-025 (OTel) covers telemetry collection/transport. This TDR adds the AI-specific intelligence layer ON TOP of OTel: e",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.20-OKF",
+      "category": "storage",
+      "technology": "okfdualstorage",
+      "chosen_raw": "okf-dual-storage",
+      "chosen_text": "CQRS dual-storage: ACID facts in PostgreSQL + OKF projections for RAG.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.21-Trace",
+      "category": "monitoring",
+      "technology": "categorizeddecisionevents",
+      "chosen_raw": "categorized-decision-events",
+      "chosen_text": "Structured telemetry by resource category explains agent reasoning without PII.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.22-Analytics",
+      "category": "analytics",
+      "technology": "unifiedsemanticlayer",
+      "chosen_raw": "unified-semantic-layer",
+      "chosen_text": "Single governed semantic layer for consistent superadmin/builder/tenant metrics.",
+      "status": "active",
+      "phase": "scale"
+    },
+    {
+      "adr_id": "ADR-2.23-Redis",
+      "category": "cache-store",
+      "technology": "redis",
+      "chosen_raw": "redis",
+      "chosen_text": "Redis cluster for transient caches, sessions, and BullMQ queues.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.24",
+      "category": "inter-service-comm",
+      "technology": "domaindrivenmodules",
+      "chosen_raw": "domain-driven-modules",
+      "chosen_text": "Domain-driven modules reduce code fragility and merge conflicts.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.25",
+      "category": "testing",
+      "technology": "playwright",
+      "chosen_raw": "playwright",
+      "chosen_text": "Testing pyramid with Playwright UI end-to-end user journeys.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.26",
+      "category": "ci-cd",
+      "technology": "githubactions",
+      "chosen_raw": "github-actions",
+      "chosen_text": "GitHub Actions + HashiCorp Vault for automated deploy and secrets.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.27",
+      "category": "inter-service-comm",
+      "technology": "connectrpc",
+      "chosen_raw": "connectrpc",
+      "chosen_text": "ConnectRPC (gRPC-web) for type-safe internal APIs and streaming.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.28",
+      "category": "editor",
+      "technology": "tiptap",
+      "chosen_raw": "tiptap",
+      "chosen_text": "ProseMirror-based Tiptap with rich extensions and sanitized JSON/HTML output.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.29",
+      "category": "search-engine",
+      "technology": "segregatedretrievalboundary",
+      "chosen_raw": "segregated-retrieval-boundary",
+      "chosen_text": "Separate retrieval intelligence from knowledge assets and workflow runtime.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.30",
+      "category": "monitoring",
+      "technology": "linkedevidencepools",
+      "chosen_raw": "linked-evidence-pools",
+      "chosen_text": "Link user intentions, execution evidence, and verified business outcomes.",
+      "status": "active",
+      "phase": "scale"
+    },
+    {
+      "adr_id": "ADR-2.31",
+      "category": "workflow-engine",
+      "technology": "consolidatedactuationapi",
+      "chosen_raw": "consolidated-actuation-api",
+      "chosen_text": "Consolidated optimization adapters behind a reversible actuation API.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.32",
+      "category": "llm-framework",
+      "technology": "providerneutralexecutioncontract",
+      "chosen_raw": "provider-neutral-execution-contract",
+      "chosen_text": "Registry-driven provider-neutral contract prevents vendor lock-in.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.33",
+      "category": "testing",
+      "technology": "automatedproofchain",
+      "chosen_raw": "automated-proof-chain",
+      "chosen_text": "Automated proof chain traces requirements \u2192 tests \u2192 effects \u2192 evidence.",
+      "status": "active",
+      "phase": "scale"
+    },
+    {
+      "adr_id": "ADR-2.34",
+      "category": "inter-service-comm",
+      "technology": "isolatedrestqueueadapter",
+      "chosen_raw": "isolated-rest-queue-adapter",
+      "chosen_text": "Isolate AGPL-3.0 pm4py via REST API + Message Queue Adapter.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.35",
+      "category": "security",
+      "technology": "fastifyedgevalidation",
+      "chosen_raw": "fastify-edge-validation",
+      "chosen_text": "Validates task payload integrity at HTTP Edge using Fastify before BullMQ.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.36",
+      "category": "monitoring",
+      "technology": "hmacsha256",
+      "chosen_raw": "hmac-sha256",
+      "chosen_text": "HMAC-SHA256 pseudonymization + IP subnet truncation at middleware level.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.37",
+      "category": "database",
+      "technology": "postgresql",
+      "chosen_raw": "postgresql",
+      "chosen_text": "PostgreSQL monolith with facade patterns, decoupling vector/graph phase-by-phase.",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.37",
+      "category": "orm",
+      "technology": "prisma",
+      "chosen_raw": "prisma",
+      "chosen_text": "Prisma as canonical ORM for PostgreSQL across all phases.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.38",
+      "category": "security",
+      "technology": "applicationsidehmacsha256",
+      "chosen_raw": "application-side-hmac-sha256",
+      "chosen_text": "HMAC-SHA256 with native User-Agent parsing without AGPL libraries.",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "MACRO-73-01",
+      "category": "event-bus",
+      "technology": "eventbridge",
+      "chosen_raw": "eventbridge",
+      "chosen_text": "Rejected in favor of BullMQ per MACRO-73-01.",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "workflow-engine",
+      "technology": "bullmq",
+      "chosen_raw": "bullmq saga orchestrator",
+      "chosen_text": "Using Multi-Cursor Queuing, Transactional Outbox, and Epoch Fencing over BullMQ avoids heavyweight DAG engines while ens",
+      "status": "active",
+      "phase": "enterprise"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "job-queue",
+      "technology": "inngestpurescheduler",
+      "chosen_raw": "inngest-pure-scheduler",
+      "chosen_text": "Inngest planned as a Pilot for Phase Gated Evolution (Sprint N+2) while BullMQ is active orchestrator.",
+      "status": "pilot",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.13",
+      "category": "document-processing",
+      "technology": "llamaindexworkflowspgvector",
+      "chosen_raw": "llamaindex-workflows-pgvector",
+      "chosen_text": "Orchestration layer between Docling parser and LangGraph agents. Resolves cross-document entity mismatch (GraphRAG) nati",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.19-AI-Observability",
+      "category": "ai-memory",
+      "technology": "hybridpgvectorlangfuse",
+      "chosen_raw": "hybrid-pgvector-langfuse",
+      "chosen_text": "Captures user preferences and task patterns across sessions, establishing the \"system learns over time\" moat. Separated ",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.41",
+      "category": "nlp",
+      "technology": "tier1statictier2slmtier3llm",
+      "chosen_raw": "tier1-static-tier2-slm-tier3-llm",
+      "chosen_text": "Highly optimized processing pipeline. VN (VnCoreNLP) handles 90% traffic, reducing token cost while increasing localizat",
+      "status": "active",
+      "phase": "mvp"
+    },
+    {
+      "adr_id": "ADR-2.20-OKF",
+      "category": "version-control",
+      "technology": "langfusegitsemver",
+      "chosen_raw": "langfuse-git-semver",
+      "chosen_text": "Centralized, versioned control for all AI artifacts with automated rollback mechanisms and mandatory Eval gates.",
+      "status": "active",
+      "phase": "growth"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "backend-framework",
+      "technology": "fastify",
+      "chosen_raw": "fastify",
+      "chosen_text": "Fastify provides superior I/O performance and better JSON schema validation out of the box compared to Express. Express ",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "frontend-framework",
+      "technology": "vitespaandnextjsadmin",
+      "chosen_raw": "vite-spa-and-nextjs-admin",
+      "chosen_text": "Vite SPA used for Core Workspace to enable offline/local-first capabilities. Next.js used for Admin Portal and Legacy in",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.33",
+      "category": "sandbox",
+      "technology": "firecracker",
+      "chosen_raw": "firecracker",
+      "chosen_text": "Firecracker microVMs with a pre-warmed pool provides strong isolation with low latency. Pessimistic resource-level locks",
+      "status": "active",
+      "phase": "all"
+    },
+    {
+      "adr_id": "ADR-2.1",
+      "category": "hosting",
+      "technology": "kubernetesfromday1",
+      "chosen_raw": "kubernetesfromday1",
+      "chosen_text": "Rejected in favor of gcp-cloud-run",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.2",
+      "category": "database",
+      "technology": "qdrantclusterfromday1",
+      "chosen_raw": "qdrantclusterfromday1",
+      "chosen_text": "Rejected in favor of pgvector",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.2",
+      "category": "database",
+      "technology": "pinecone",
+      "chosen_raw": "pinecone",
+      "chosen_text": "Rejected in favor of pgvector",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.3",
+      "category": "sandbox",
+      "technology": "dockercontainers",
+      "chosen_raw": "dockercontainers",
+      "chosen_text": "Rejected in favor of e2b",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.3",
+      "category": "sandbox",
+      "technology": "webassemblyruntime",
+      "chosen_raw": "webassemblyruntime",
+      "chosen_text": "Rejected in favor of e2b",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.4",
+      "category": "sandbox",
+      "technology": "nativenodejspython",
+      "chosen_raw": "nativenodejspython",
+      "chosen_text": "Rejected in favor of extism",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.4",
+      "category": "sandbox",
+      "technology": "awslambda",
+      "chosen_raw": "awslambda",
+      "chosen_text": "Rejected in favor of extism",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.5",
+      "category": "llm-framework",
+      "technology": "100pctexternalapi",
+      "chosen_raw": "100pctexternalapi",
+      "chosen_text": "Rejected in favor of hybrid-3-layer",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "inter-service-comm",
+      "technology": "100pcttypescript",
+      "chosen_raw": "100pcttypescript",
+      "chosen_text": "Rejected in favor of typescript-python-rust",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "inter-service-comm",
+      "technology": "pythongo",
+      "chosen_raw": "pythongo",
+      "chosen_text": "Rejected in favor of typescript-python-rust",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.7",
+      "category": "localization",
+      "technology": "clientsideonly",
+      "chosen_raw": "clientsideonly",
+      "chosen_text": "Rejected in favor of locale-middleware",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.7",
+      "category": "localization",
+      "technology": "hardcodedlocales",
+      "chosen_raw": "hardcodedlocales",
+      "chosen_text": "Rejected in favor of locale-middleware",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.8",
+      "category": "auth",
+      "technology": "isolatedtenantaccounts",
+      "chosen_raw": "isolatedtenantaccounts",
+      "chosen_text": "Rejected in favor of custom-oauth-session",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.8",
+      "category": "auth",
+      "technology": "oktaauth0",
+      "chosen_raw": "oktaauth0",
+      "chosen_text": "Rejected in favor of custom-oauth-session",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.9",
+      "category": "payment",
+      "technology": "synchronousapipolling",
+      "chosen_raw": "synchronousapipolling",
+      "chosen_text": "Rejected in favor of stripe",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.9",
+      "category": "payment",
+      "technology": "thirdpartysubscriptionb2b",
+      "chosen_raw": "thirdpartysubscriptionb2b",
+      "chosen_text": "Rejected in favor of stripe",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.10",
+      "category": "security",
+      "technology": "mimetypechecking",
+      "chosen_raw": "mimetypechecking",
+      "chosen_text": "Rejected in favor of google-magika",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.10",
+      "category": "security",
+      "technology": "magicbytes",
+      "chosen_raw": "magicbytes",
+      "chosen_text": "Rejected in favor of google-magika",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.11",
+      "category": "search-engine",
+      "technology": "singletenantwiderag",
+      "chosen_raw": "singletenantwiderag",
+      "chosen_text": "Rejected in favor of dual-scope-rag",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.11",
+      "category": "search-engine",
+      "technology": "fullyisolatedpersonalagents",
+      "chosen_raw": "fullyisolatedpersonalagents",
+      "chosen_text": "Rejected in favor of dual-scope-rag",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.12",
+      "category": "editor",
+      "technology": "standardmarkdowneditor",
+      "chosen_raw": "standardmarkdowneditor",
+      "chosen_text": "Rejected in favor of blocknote-tiptap",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.12",
+      "category": "editor",
+      "technology": "thirdpartyheadlesscms",
+      "chosen_raw": "thirdpartyheadlesscms",
+      "chosen_text": "Rejected in favor of blocknote-tiptap",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.13",
+      "category": "document-processing",
+      "technology": "100pctunstructuredapi",
+      "chosen_raw": "100pctunstructuredapi",
+      "chosen_text": "Rejected in favor of docling-qwen-unstructured",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.13",
+      "category": "document-processing",
+      "technology": "100pctopensource",
+      "chosen_raw": "100pctopensource",
+      "chosen_text": "Rejected in favor of docling-qwen-unstructured",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.14",
+      "category": "desktop-client",
+      "technology": "electron",
+      "chosen_raw": "electron",
+      "chosen_text": "Rejected in favor of tauri-v2",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.15",
+      "category": "state-machine",
+      "technology": "centralizeddbsynconly",
+      "chosen_raw": "centralizeddbsynconly",
+      "chosen_text": "Rejected in favor of zustand",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.15",
+      "category": "state-machine",
+      "technology": "sharedworkeronly",
+      "chosen_raw": "sharedworkeronly",
+      "chosen_text": "Rejected in favor of zustand",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.16",
+      "category": "desktop-client",
+      "technology": "cloudbasedprocessing",
+      "chosen_raw": "cloudbasedprocessing",
+      "chosen_text": "Rejected in favor of rust-office-crates",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.16",
+      "category": "desktop-client",
+      "technology": "screenshotbasedagent",
+      "chosen_raw": "screenshotbasedagent",
+      "chosen_text": "Rejected in favor of rust-office-crates",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.17",
+      "category": "analytics",
+      "technology": "cloudsyncalltelemetry",
+      "chosen_raw": "cloudsyncalltelemetry",
+      "chosen_text": "Rejected in favor of sqlite",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.17",
+      "category": "analytics",
+      "technology": "fullscreenrecording",
+      "chosen_raw": "fullscreenrecording",
+      "chosen_text": "Rejected in favor of sqlite",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "job-queue",
+      "technology": "dedicatedworkflowengine",
+      "chosen_raw": "dedicatedworkflowengine",
+      "chosen_text": "Rejected in favor of bullmq",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "job-queue",
+      "technology": "purecodegeneration",
+      "chosen_raw": "purecodegeneration",
+      "chosen_text": "Rejected in favor of bullmq",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19",
+      "category": "database",
+      "technology": "directdbconnections",
+      "chosen_raw": "directdbconnections",
+      "chosen_text": "Rejected in favor of adapter-pattern-hitl",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19",
+      "category": "database",
+      "technology": "singleintegrateddatalake",
+      "chosen_raw": "singleintegrateddatalake",
+      "chosen_text": "Rejected in favor of adapter-pattern-hitl",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.20",
+      "category": "workflow-engine",
+      "technology": "hardcodeduicomponents",
+      "chosen_raw": "hardcodeduicomponents",
+      "chosen_text": "Rejected in favor of plugin-manifests",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.20",
+      "category": "workflow-engine",
+      "technology": "iframebasedplugins",
+      "chosen_raw": "iframebasedplugins",
+      "chosen_text": "Rejected in favor of plugin-manifests",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.21",
+      "category": "database",
+      "technology": "liveviewqueries",
+      "chosen_raw": "liveviewqueries",
+      "chosen_text": "Rejected in favor of postgresql-materialized-views",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.21",
+      "category": "database",
+      "technology": "clickhouse",
+      "chosen_raw": "clickhouse",
+      "chosen_text": "Rejected in favor of postgresql-materialized-views",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.22",
+      "category": "storage",
+      "technology": "fullclouddrivemirroring",
+      "chosen_raw": "fullclouddrivemirroring",
+      "chosen_text": "Rejected in favor of hybrid-index-virtual-folder",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.22",
+      "category": "storage",
+      "technology": "realtimeapionly",
+      "chosen_raw": "realtimeapionly",
+      "chosen_text": "Rejected in favor of hybrid-index-virtual-folder",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.23",
+      "category": "security",
+      "technology": "mirrornativepermissions",
+      "chosen_raw": "mirrornativepermissions",
+      "chosen_text": "Rejected in favor of intersection-rule-v2",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.23",
+      "category": "security",
+      "technology": "cowokonlypermissions",
+      "chosen_raw": "cowokonlypermissions",
+      "chosen_text": "Rejected in favor of intersection-rule-v2",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.22-D++",
+      "category": "computer-use",
+      "technology": "singleclaudecu",
+      "chosen_raw": "singleclaudecu",
+      "chosen_text": "Rejected in favor of webwright-playwright-nutjs",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.22-D++",
+      "category": "computer-use",
+      "technology": "pureplaywrightonly",
+      "chosen_raw": "pureplaywrightonly",
+      "chosen_text": "Rejected in favor of webwright-playwright-nutjs",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19-Telemetry",
+      "category": "monitoring",
+      "technology": "postgreselkforeverything",
+      "chosen_raw": "postgreselkforeverything",
+      "chosen_text": "Rejected in favor of opentelemetry",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19-Telemetry",
+      "category": "monitoring",
+      "technology": "directcouplinglokiprometheus",
+      "chosen_raw": "directcouplinglokiprometheus",
+      "chosen_text": "Rejected in favor of opentelemetry",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19-AI-Observability",
+      "category": "monitoring",
+      "technology": "fullcustombuild",
+      "chosen_raw": "fullcustombuild",
+      "chosen_text": "Rejected in favor of langfuse-self-hosted",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19-AI-Observability",
+      "category": "monitoring",
+      "technology": "braintrustcloud",
+      "chosen_raw": "braintrustcloud",
+      "chosen_text": "Rejected in favor of langfuse-self-hosted",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19-AI-Observability",
+      "category": "monitoring",
+      "technology": "lightweightcustomcherrypick",
+      "chosen_raw": "lightweightcustomcherrypick",
+      "chosen_text": "Rejected in favor of langfuse-self-hosted",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.20-OKF",
+      "category": "storage",
+      "technology": "purefilesystemgitops",
+      "chosen_raw": "purefilesystemgitops",
+      "chosen_text": "Rejected in favor of okf-dual-storage",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.21-Trace",
+      "category": "monitoring",
+      "technology": "rawpromptcompletionlogging",
+      "chosen_raw": "rawpromptcompletionlogging",
+      "chosen_text": "Rejected in favor of categorized-decision-events",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.21-Trace",
+      "category": "monitoring",
+      "technology": "basictokencountingonly",
+      "chosen_raw": "basictokencountingonly",
+      "chosen_text": "Rejected in favor of categorized-decision-events",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.22-Analytics",
+      "category": "analytics",
+      "technology": "directdbqueriesperpersona",
+      "chosen_raw": "directdbqueriesperpersona",
+      "chosen_text": "Rejected in favor of unified-semantic-layer",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.22-Analytics",
+      "category": "analytics",
+      "technology": "thirdpartyembeddedbi",
+      "chosen_raw": "thirdpartyembeddedbi",
+      "chosen_text": "Rejected in favor of unified-semantic-layer",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.23-Redis",
+      "category": "cache-store",
+      "technology": "inmemorynodejsstate",
+      "chosen_raw": "inmemorynodejsstate",
+      "chosen_text": "Rejected in favor of redis",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.24",
+      "category": "inter-service-comm",
+      "technology": "godcomponentsmonolith",
+      "chosen_raw": "godcomponentsmonolith",
+      "chosen_text": "Rejected in favor of domain-driven-modules",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.24",
+      "category": "inter-service-comm",
+      "technology": "fullmicroservices",
+      "chosen_raw": "fullmicroservices",
+      "chosen_text": "Rejected in favor of domain-driven-modules",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.25",
+      "category": "testing",
+      "technology": "manualqaonly",
+      "chosen_raw": "manualqaonly",
+      "chosen_text": "Rejected in favor of playwright",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.25",
+      "category": "testing",
+      "technology": "e2etestsonly",
+      "chosen_raw": "e2etestsonly",
+      "chosen_text": "Rejected in favor of playwright",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.26",
+      "category": "ci-cd",
+      "technology": "manualdeployenvfiles",
+      "chosen_raw": "manualdeployenvfiles",
+      "chosen_text": "Rejected in favor of github-actions",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.26",
+      "category": "ci-cd",
+      "technology": "managedpaasvercelheroku",
+      "chosen_raw": "managedpaasvercelheroku",
+      "chosen_text": "Rejected in favor of github-actions",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.27",
+      "category": "inter-service-comm",
+      "technology": "purerestwebsockets",
+      "chosen_raw": "purerestwebsockets",
+      "chosen_text": "Rejected in favor of connectrpc",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.27",
+      "category": "inter-service-comm",
+      "technology": "puregrpcjsontranscoding",
+      "chosen_raw": "puregrpcjsontranscoding",
+      "chosen_text": "Rejected in favor of connectrpc",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.28",
+      "category": "editor",
+      "technology": "lexical",
+      "chosen_raw": "lexical",
+      "chosen_text": "Rejected in favor of tiptap",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.28",
+      "category": "editor",
+      "technology": "slatejs",
+      "chosen_raw": "slatejs",
+      "chosen_text": "Rejected in favor of tiptap",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.31",
+      "category": "workflow-engine",
+      "technology": "decentralizedadhocoptimizations",
+      "chosen_raw": "decentralizedadhocoptimizations",
+      "chosen_text": "Rejected in favor of consolidated-actuation-api",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.32",
+      "category": "llm-framework",
+      "technology": "directprovidersdks",
+      "chosen_raw": "directprovidersdks",
+      "chosen_text": "Rejected in favor of provider-neutral-execution-contract",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.33",
+      "category": "testing",
+      "technology": "manualqademocompleteness",
+      "chosen_raw": "manualqademocompleteness",
+      "chosen_text": "Rejected in favor of automated-proof-chain",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.34",
+      "category": "inter-service-comm",
+      "technology": "directlibrarylinking",
+      "chosen_raw": "directlibrarylinking",
+      "chosen_text": "Rejected in favor of isolated-rest-queue-adapter",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.34",
+      "category": "inter-service-comm",
+      "technology": "temporal",
+      "chosen_raw": "temporal",
+      "chosen_text": "Rejected in favor of isolated-rest-queue-adapter",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "workflow-engine",
+      "technology": "temporal",
+      "chosen_raw": "temporal",
+      "chosen_text": "Rejected in favor of bullmq saga orchestrator",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.18",
+      "category": "job-queue",
+      "technology": "temporal",
+      "chosen_raw": "temporal",
+      "chosen_text": "Rejected in favor of inngest-pure-scheduler",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.35",
+      "category": "security",
+      "technology": "workersideverification",
+      "chosen_raw": "workersideverification",
+      "chosen_text": "Rejected in favor of fastify-edge-validation",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.36",
+      "category": "monitoring",
+      "technology": "rawpiilogging",
+      "chosen_raw": "rawpiilogging",
+      "chosen_text": "Rejected in favor of hmac-sha256",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.36",
+      "category": "monitoring",
+      "technology": "completeredaction",
+      "chosen_raw": "completeredaction",
+      "chosen_text": "Rejected in favor of hmac-sha256",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.37",
+      "category": "database",
+      "technology": "polyglotqdrantneo4jinngest",
+      "chosen_raw": "polyglotqdrantneo4jinngest",
+      "chosen_text": "Rejected in favor of postgresql",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.38",
+      "category": "security",
+      "technology": "uaparserjs",
+      "chosen_raw": "uaparserjs",
+      "chosen_text": "Rejected in favor of application-side-hmac-sha256",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.13",
+      "category": "document-processing",
+      "technology": "neo4jgraphrag",
+      "chosen_raw": "neo4jgraphrag",
+      "chosen_text": "Rejected in favor of llamaindex-workflows-pgvector",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.19-AI-Observability",
+      "category": "ai-memory",
+      "technology": "mem0cloud",
+      "chosen_raw": "mem0cloud",
+      "chosen_text": "Rejected in favor of hybrid-pgvector-langfuse",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.41",
+      "category": "nlp",
+      "technology": "100pctllm",
+      "chosen_raw": "100pctllm",
+      "chosen_text": "Rejected in favor of tier1-static-tier2-slm-tier3-llm",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.20-OKF",
+      "category": "version-control",
+      "technology": "databaseonlyversioning",
+      "chosen_raw": "databaseonlyversioning",
+      "chosen_text": "Rejected in favor of langfuse-git-semver",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "backend-framework",
+      "technology": "nestjs",
+      "chosen_raw": "nestjs",
+      "chosen_text": "Rejected in favor of fastify",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "frontend-framework",
+      "technology": "purenextjs",
+      "chosen_raw": "purenextjs",
+      "chosen_text": "Rejected in favor of vite-spa-and-nextjs-admin",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.6",
+      "category": "frontend-framework",
+      "technology": "purevite",
+      "chosen_raw": "purevite",
+      "chosen_text": "Rejected in favor of vite-spa-and-nextjs-admin",
+      "status": "deprecated",
+      "phase": "none"
+    },
+    {
+      "adr_id": "ADR-2.33",
+      "category": "sandbox",
+      "technology": "gvisor",
+      "chosen_raw": "gvisor",
+      "chosen_text": "Rejected in favor of firecracker",
+      "status": "deprecated",
+      "phase": "none"
+    }
+  ],
+  "tech_patterns": {
+    "gcpcloudrun": "\\bgcpcloudrun\\b",
+    "kubernetesfromday1": "\\bkubernetesfromday1\\b",
+    "gkekubernetes": "\\bgkekubernetes\\b",
+    "multiclusterkubernetes": "\\bmulticlusterkubernetes\\b",
+    "pgvector": "\\bpgvector\\b",
+    "qdrantclusterfromday1": "\\bqdrantclusterfromday1\\b",
+    "pinecone": "\\bpinecone\\b",
+    "qdrantsinglenode": "\\bqdrantsinglenode\\b",
+    "qdrantcluster": "\\bqdrantcluster\\b",
+    "e2b": "\\be2b\\b",
+    "dockercontainers": "\\bdockercontainers\\b",
+    "webassemblyruntime": "\\bwebassemblyruntime\\b",
+    "selfhostedfirecracker": "\\bselfhostedfirecracker\\b",
+    "extism": "\\bextism\\b",
+    "nativenodejspython": "\\bnativenodejspython\\b",
+    "awslambda": "\\bawslambda\\b",
+    "hybrid3layer": "\\bhybrid3layer\\b",
+    "langgraph": "langgraph|lang\\s*graph",
+    "100pctexternalapi": "\\b100pctexternalapi\\b",
+    "dedicatedvrampods": "\\bdedicatedvrampods\\b",
+    "typescriptpythonrust": "\\btypescriptpythonrust\\b",
+    "100pcttypescript": "\\b100pcttypescript\\b",
+    "pythongo": "\\bpythongo\\b",
+    "localemiddleware": "\\blocalemiddleware\\b",
+    "clientsideonly": "\\bclientsideonly\\b",
+    "hardcodedlocales": "\\bhardcodedlocales\\b",
+    "customoauthsession": "\\bcustomoauthsession\\b",
+    "isolatedtenantaccounts": "\\bisolatedtenantaccounts\\b",
+    "oktaauth0": "\\boktaauth0\\b",
+    "stripe": "\\bstripe\\b",
+    "synchronousapipolling": "\\bsynchronousapipolling\\b",
+    "thirdpartysubscriptionb2b": "\\bthirdpartysubscriptionb2b\\b",
+    "googlemagika": "\\bgooglemagika\\b",
+    "mimetypechecking": "\\bmimetypechecking\\b",
+    "magicbytes": "\\bmagicbytes\\b",
+    "dualscoperag": "\\bdualscoperag\\b",
+    "singletenantwiderag": "\\bsingletenantwiderag\\b",
+    "fullyisolatedpersonalagents": "\\bfullyisolatedpersonalagents\\b",
+    "blocknotetiptap": "\\bblocknotetiptap\\b",
+    "standardmarkdowneditor": "\\bstandardmarkdowneditor\\b",
+    "thirdpartyheadlesscms": "\\bthirdpartyheadlesscms\\b",
+    "doclingqwenunstructured": "\\bdoclingqwenunstructured\\b",
+    "100pctunstructuredapi": "\\b100pctunstructuredapi\\b",
+    "100pctopensource": "\\b100pctopensource\\b",
+    "tauriv2": "\\btauriv2\\b",
+    "electron": "\\belectron\\b",
+    "zustand": "\\bzustand\\b",
+    "centralizeddbsynconly": "\\bcentralizeddbsynconly\\b",
+    "sharedworkeronly": "\\bsharedworkeronly\\b",
+    "rustofficecrates": "\\brustofficecrates\\b",
+    "cloudbasedprocessing": "\\bcloudbasedprocessing\\b",
+    "screenshotbasedagent": "\\bscreenshotbasedagent\\b",
+    "sqlite": "\\bsqlite\\b",
+    "cloudsyncalltelemetry": "\\bcloudsyncalltelemetry\\b",
+    "fullscreenrecording": "\\bfullscreenrecording\\b",
+    "bullmq": "bullmq|bull\\s+queue|bull\\s+mq",
+    "dedicatedworkflowengine": "\\bdedicatedworkflowengine\\b",
+    "purecodegeneration": "\\bpurecodegeneration\\b",
+    "inngest": "\\binngest\\b",
+    "xstate": "\\bxstate\\b|x\\s*state",
+    "temporal": "temporal\\.io|temporal\\s+sdk|temporal\\s+client|temporal\\s+worker|temporal\\s+server|temporal\\s+activity|temporal\\s+workflow",
+    "adapterpatternhitl": "\\badapterpatternhitl\\b",
+    "directdbconnections": "\\bdirectdbconnections\\b",
+    "singleintegrateddatalake": "\\bsingleintegrateddatalake\\b",
+    "pluginmanifests": "\\bpluginmanifests\\b",
+    "hardcodeduicomponents": "\\bhardcodeduicomponents\\b",
+    "iframebasedplugins": "\\biframebasedplugins\\b",
+    "postgresql": "postgresql|postgres\\b",
+    "liveviewqueries": "\\bliveviewqueries\\b",
+    "clickhouse": "\\bclickhouse\\b",
+    "hybridindexvirtualfolder": "\\bhybridindexvirtualfolder\\b",
+    "fullclouddrivemirroring": "\\bfullclouddrivemirroring\\b",
+    "realtimeapionly": "\\brealtimeapionly\\b",
+    "intersectionrulev2": "\\bintersectionrulev2\\b",
+    "mirrornativepermissions": "\\bmirrornativepermissions\\b",
+    "cowokonlypermissions": "\\bcowokonlypermissions\\b",
+    "webwrightplaywrightnutjs": "\\bwebwrightplaywrightnutjs\\b",
+    "singleclaudecu": "\\bsingleclaudecu\\b",
+    "pureplaywrightonly": "\\bpureplaywrightonly\\b",
+    "opentelemetry": "\\bopentelemetry\\b",
+    "postgreselkforeverything": "\\bpostgreselkforeverything\\b",
+    "directcouplinglokiprometheus": "\\bdirectcouplinglokiprometheus\\b",
+    "langfuseselfhosted": "\\blangfuseselfhosted\\b",
+    "fullcustombuild": "\\bfullcustombuild\\b",
+    "braintrustcloud": "\\bbraintrustcloud\\b",
+    "lightweightcustomcherrypick": "\\blightweightcustomcherrypick\\b",
+    "okfdualstorage": "\\bokfdualstorage\\b",
+    "purefilesystemgitops": "\\bpurefilesystemgitops\\b",
+    "categorizeddecisionevents": "\\bcategorizeddecisionevents\\b",
+    "rawpromptcompletionlogging": "\\brawpromptcompletionlogging\\b",
+    "basictokencountingonly": "\\bbasictokencountingonly\\b",
+    "unifiedsemanticlayer": "\\bunifiedsemanticlayer\\b",
+    "directdbqueriesperpersona": "\\bdirectdbqueriesperpersona\\b",
+    "thirdpartyembeddedbi": "\\bthirdpartyembeddedbi\\b",
+    "redis": "\\bredis\\b|ioredis",
+    "inmemorynodejsstate": "\\binmemorynodejsstate\\b",
+    "domaindrivenmodules": "\\bdomaindrivenmodules\\b",
+    "godcomponentsmonolith": "\\bgodcomponentsmonolith\\b",
+    "fullmicroservices": "\\bfullmicroservices\\b",
+    "playwright": "\\bplaywright\\b",
+    "manualqaonly": "\\bmanualqaonly\\b",
+    "e2etestsonly": "\\be2etestsonly\\b",
+    "githubactions": "\\bgithubactions\\b",
+    "manualdeployenvfiles": "\\bmanualdeployenvfiles\\b",
+    "managedpaasvercelheroku": "\\bmanagedpaasvercelheroku\\b",
+    "connectrpc": "\\bconnectrpc\\b",
+    "purerestwebsockets": "\\bpurerestwebsockets\\b",
+    "puregrpcjsontranscoding": "\\bpuregrpcjsontranscoding\\b",
+    "tiptap": "\\btiptap\\b",
+    "lexical": "\\blexical\\b",
+    "slatejs": "\\bslatejs\\b",
+    "segregatedretrievalboundary": "\\bsegregatedretrievalboundary\\b",
+    "linkedevidencepools": "\\blinkedevidencepools\\b",
+    "consolidatedactuationapi": "\\bconsolidatedactuationapi\\b",
+    "decentralizedadhocoptimizations": "\\bdecentralizedadhocoptimizations\\b",
+    "providerneutralexecutioncontract": "\\bproviderneutralexecutioncontract\\b",
+    "directprovidersdks": "\\bdirectprovidersdks\\b",
+    "automatedproofchain": "\\bautomatedproofchain\\b",
+    "manualqademocompleteness": "\\bmanualqademocompleteness\\b",
+    "isolatedrestqueueadapter": "\\bisolatedrestqueueadapter\\b",
+    "directlibrarylinking": "\\bdirectlibrarylinking\\b",
+    "fastifyedgevalidation": "\\bfastifyedgevalidation\\b",
+    "workersideverification": "\\bworkersideverification\\b",
+    "hmacsha256": "\\bhmacsha256\\b",
+    "rawpiilogging": "\\brawpiilogging\\b",
+    "completeredaction": "\\bcompleteredaction\\b",
+    "polyglotqdrantneo4jinngest": "\\bpolyglotqdrantneo4jinngest\\b",
+    "prisma": "\\bprisma\\b",
+    "applicationsidehmacsha256": "\\bapplicationsidehmacsha256\\b",
+    "uaparserjs": "\\buaparserjs\\b",
+    "eventbridge": "eventbridge|event\\s+bridge|aws\\s+eventbridge",
+    "inngestpurescheduler": "\\binngestpurescheduler\\b",
+    "llamaindexworkflowspgvector": "\\bllamaindexworkflowspgvector\\b",
+    "neo4jgraphrag": "\\bneo4jgraphrag\\b",
+    "hybridpgvectorlangfuse": "\\bhybridpgvectorlangfuse\\b",
+    "mem0cloud": "\\bmem0cloud\\b",
+    "tier1statictier2slmtier3llm": "\\btier1statictier2slmtier3llm\\b",
+    "100pctllm": "\\b100pctllm\\b",
+    "langfusegitsemver": "\\blangfusegitsemver\\b",
+    "databaseonlyversioning": "\\bdatabaseonlyversioning\\b",
+    "fastify": "\\bfastify\\b",
+    "nestjs": "\\bnestjs\\b",
+    "vitespaandnextjsadmin": "\\bvitespaandnextjsadmin\\b",
+    "purenextjs": "\\bpurenextjs\\b",
+    "purevite": "\\bpurevite\\b",
+    "firecracker": "\\bfirecracker\\b",
+    "gvisor": "\\bgvisor\\b"
+  },
+  "epic_restrictions": {}
+}

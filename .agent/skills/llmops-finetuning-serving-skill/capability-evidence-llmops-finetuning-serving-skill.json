@@ -1,0 +1,34 @@
+{
+  "target": "~/.iwish/generated-skills/llmops-finetuning-serving-skill/SKILL.md",
+  "timestamp": "2026-08-05T06:59:42.730042+00:00",
+  "enforcement_maturity": 0.0,
+  "wis_score": 8,
+  "gates": [
+    {
+      "name": "Gate ID",
+      "category": "Name",
+      "mechanism": "Category"
+    },
+    {
+      "name": "EC-P1-001",
+      "category": "Architecture Scan",
+      "mechanism": "A (Deterministic)"
+    },
+    {
+      "name": "FT-001",
+      "category": "VRAM Validation",
+      "mechanism": "A (Deterministic)"
+    },
+    {
+      "name": "FT-002",
+      "category": "Unsloth Target Modules",
+      "mechanism": "A (Deterministic)"
+    },
+    {
+      "name": "SV-001",
+      "category": "Multi-LoRA Enforcer",
+      "mechanism": "B (Trust-Based)"
+    }
+  ],
+  "evidence_hash": "1a91d036ebf56db8264d27105e1d682d2c39bd9e70ab93b1be479aa36af71f09"
+}

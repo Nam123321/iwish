@@ -1,0 +1,36 @@
+id: workflow-watchmen-sync
+name: watchmen-sync
+kind: workflow
+shape: workflow
+role: process-primary
+phases:
+- solution
+- implementation
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- watchmen-sync
+- /watchmen-sync
+- sync
+- watchmen
+- lock
+- branch
+anti_triggers: []
+primary_agents:
+- orch-agent
+- dev-agent
+- devops-agent
+primary_workflows:
+- watchmen-sync
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/workflows/watchmen-sync.md
+tags:
+- workflow
+- canonical
+- watchmen-sync

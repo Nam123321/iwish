@@ -1,0 +1,28 @@
+id: tool-mcp-open-design
+name: open-design-mcp-adapter
+kind: tool
+shape: mcp
+role: supportive
+phases:
+  - implement
+  - review
+stages:
+  - tool-usage
+triggers:
+  - chạy open-design
+  - mcp open-design
+  - open-design tool
+anti_triggers: []
+primary_agents:
+  - orch-agent
+  - dev-agent
+primary_workflows:
+  - code
+supportive_skills: []
+tool_dependencies:
+  - open-design
+constraints:
+  - Gọi trực tiếp thông qua MCP client của host platform.
+tags:
+  - mcp-server
+  - tool-adapter

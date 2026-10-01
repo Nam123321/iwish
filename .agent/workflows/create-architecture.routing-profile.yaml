@@ -1,0 +1,16 @@
+id: workflow-create-architecture
+name: create-architecture
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [create-architecture]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [create-architecture]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/create-architecture.md
+tags: [generated]

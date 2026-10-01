@@ -1,0 +1,30 @@
+id: behavioral-coverage-guardian
+type: SKILL
+status: promoted
+origin:
+  type: code-review
+  created_by: create-skill
+  created_at: 2026-07-27
+  source_story: 14.20
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: ReviewFinding
+      confidence: 10
+      sensitivity: project
+      ref: 14.20
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/behavioral-coverage-guardian/SKILL.md
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null

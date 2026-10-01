@@ -1,0 +1,15 @@
+id: ai-system-architect
+name: "ai-system-architect"
+type: SKILL
+version: 1.0.0
+created_at: '2026-09-03'
+domain: "AI Architecture Orchestration"
+status: active
+sub_skills:
+  - aiml-architecture-evaluator
+  - system-design-consultant
+  - llm-engineering-skill
+  - ai-native-architecture
+  - llmops-finetuning-serving-skill
+enforcement_maturity: 100%
+gate_category: "Category A"

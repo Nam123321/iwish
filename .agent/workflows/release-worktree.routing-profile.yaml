@@ -1,0 +1,34 @@
+id: workflow-release-worktree
+name: release-worktree
+kind: workflow
+shape: workflow
+role: process-primary
+phases:
+- validate
+- implementation
+- cleanup
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- release-worktree
+- /release-worktree
+- teardown-worktree
+anti_triggers: []
+primary_agents:
+- orch-agent
+- dev-agent
+- devops-agent
+primary_workflows:
+- release-worktree
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/workflows/release-worktree.md
+tags:
+- workflow
+- canonical
+- release-worktree

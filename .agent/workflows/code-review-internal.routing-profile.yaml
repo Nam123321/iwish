@@ -1,0 +1,16 @@
+id: workflow-code-review-internal
+name: code-review-internal
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [code-review-internal]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [code-review-internal]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-code-review.md
+tags: [generated]

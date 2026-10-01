@@ -1,0 +1,34 @@
+id: skill-ai-engineering-tutor
+name: ai-engineering-tutor
+kind: skill
+shape: skill
+role: supportive
+phases:
+- discovery
+- solution
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- ai-engineering-tutor
+- /ai-engineering-tutor
+- ai-tutor
+- tutor
+- learning-path
+- learning
+anti_triggers: []
+primary_agents:
+- ai-agent-persona
+primary_workflows:
+- ai-engineering-tutor
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/ai-engineering-tutor/SKILL.md
+tags:
+- skill
+- canonical
+- ai-engineering-tutor

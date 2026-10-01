@@ -1,0 +1,8 @@
+capability: cognitive-debias-guardian
+type: SKILL
+status: spec-approved
+phases:
+  triage: done
+  spec: done
+  forge: done
+  validate: pending

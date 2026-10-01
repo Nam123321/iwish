@@ -1,0 +1,32 @@
+id: "sensitivity-auditor"
+type: "SKILL"
+status: "promoted"
+origin:
+  type: "curator-recommendation"
+  created_by: "create-skill"
+  created_at: "2026-08-01"
+  source_story: "FIX-44-02"
+provenance:
+  source_nodes:
+    - id: "query-headless"
+      type: "ExternalSource"
+      confidence: 9
+      sensitivity: "project"
+      ref: "FIX-44-02"
+      status: "active"
+  source_clusters:
+    - ctx: "boundary-validation"
+      count: 1
+      max_severity: 3
+  source_artifacts:
+    - "FIX-44-02"
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: "lineage.jsonl"
+path_policy: "runtime"
+promotion_target: ".agent/skills/sensitivity-auditor"
+approval:
+  required: true
+  approved_by: "system"
+  approved_at: "2026-08-01"

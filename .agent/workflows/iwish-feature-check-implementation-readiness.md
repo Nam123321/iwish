@@ -14,8 +14,26 @@ disable-model-invocation: true
 
 <steps CRITICAL="TRUE">
 1. FOLLOW THIS COMMAND FIRST: LOAD the FULL @{project-root}/.agent/workflows/step-01-document-discovery.md, READ its entire contents and follow its directions exactly to complete the readiness assessment!
-2. If the readiness check PASSES (no blocking gaps found and user is ready to proceed to development):
+2. **Zero-Trust Infrastructure Checklist:** Run `python3 .agent/scripts/validate-implementation-readiness.py`. Evaluate Redis, Queue, CDN, Search requirements. If missing, flag them as blockers.
+3. If the readiness check PASSES (no blocking gaps found and user is ready to proceed to development):
    a. You MUST run the `python3 .agent/scripts/populate_development.py` script. This script will parse `2.4. epics-and-stories.md` and mass-generate physical Epic and Story stub files in the Development tracking folders.
    b. Explain to the user that the physical stubs have been generated in `status: backlog`. Remind them that they still need to run `/make-story` or `/flow` on a story before developing it to generate the full ACs and FMEA edge cases.
    c. Suggest the user to run `/sprint-planning` now. This will allow them to activate the generated stub stories into `ready-for-dev` status, compile the `sprint-status.yaml`, and index the feature graph.
 </steps>
+
+
+---
+
+## 📘 NotebookLM Integration Hook
+
+> This hook is auto-triggered when this workflow executes. Agent MUST read `notebook-registry-manager` skill before proceeding.
+> **CENS Gate**: Before executing this hook, load and evaluate `.agent/fragments/nlm-context-enrichment-gate.md` to determine enrichment level.
+> Auto-triggered at readiness gate.
+
+### FOUNDATION GATE: Verify notebook foundation
+
+1. Load `notebook-lifecycle-manager` → Read `_iwish-output/notebooks/foundation-checklist.yaml`
+2. Count notebooks with status != 'pending': must be >= 10/14
+3. Gate mode: **SOFT WARNING** — if < 10/14, warn user but allow continuation
+4. Report which notebooks are missing and which workflows would create them
+> **[ZERO-TRUST GATE]** You MUST save the raw MCP JSON output to a file (e.g. `_iwish-output/adhoc-workspace/scratch/nlm_evidence.json`) and run: `python3 .agent/scripts/pipeline-integrity-runner.py --target "project" --type project --phase discovery`. If it fails, HALT immediately and do not proceed.

@@ -1,0 +1,6 @@
+name: process_mining_pm4py
+description: Analyzes workflow event logs using pm4py to discover, monitor, and optimize dynamic processes.
+status: active
+origin:
+  created_by: create-skill
+path_policy: canonical

@@ -1,0 +1,16 @@
+id: workflow-review-adversarial-general
+name: review-adversarial-general
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [review-adversarial-general]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [review-adversarial-general]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-review-adversarial-general.md
+tags: [generated]

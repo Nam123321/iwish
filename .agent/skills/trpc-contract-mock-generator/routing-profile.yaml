@@ -1,0 +1,3 @@
+name: trpc-contract-mock-generator
+type: skill
+description: "Use when asked to write or update frontend mock data for a tRPC backend, or when generating exact-match test contracts based on backend tRPC router definitions."

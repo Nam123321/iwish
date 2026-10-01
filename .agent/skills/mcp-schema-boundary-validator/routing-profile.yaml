@@ -1,0 +1,13 @@
+name: mcp-schema-boundary-validator
+role: supportive
+shape: skill
+phase: Implement
+stage: Validation
+triggers:
+  - "external MCP schema"
+  - "new MCP tool"
+anti_triggers:
+  - "internal database migration"
+primary_agents:
+  - mcp-analyzer-agent
+review_pack: integration-guide.md

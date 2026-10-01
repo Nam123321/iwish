@@ -1,0 +1,5 @@
+name: algorithm-consultant
+status: live
+type: skill
+tier: 2
+enforcement_maturity: "High (Category A Gates via Hybrid RAG)"

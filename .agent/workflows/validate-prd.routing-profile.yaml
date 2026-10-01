@@ -1,0 +1,16 @@
+id: workflow-validate-prd
+name: validate-prd
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [validate-prd]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [validate-prd]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/iwish-feature-validate-prd.md
+tags: [generated]

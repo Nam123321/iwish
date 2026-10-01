@@ -1,0 +1,16 @@
+id: workflow-design-access-control
+name: design-access-control
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [design-access-control]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [design-access-control]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/design-access-control.md
+tags: [generated]

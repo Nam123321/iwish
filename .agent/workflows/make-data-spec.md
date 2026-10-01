@@ -10,6 +10,25 @@ This workflow generates a comprehensive Data Specification document for a story.
 > **FeatureGraph Profile Gate:** Load `.agent/fragments/graph-backend-selection-policy.md` before graph-backed data-spec validation. If FeatureGraph is unavailable, label graph evidence unavailable and do not silently infer that no DataEntity/Event/SeedData dependency exists.
 
 <steps CRITICAL="TRUE">
+
+0.5. **[INHERITED BASE MODE DETECTION - CONDITIONAL GATE]**:
+   - Check if the target `data-spec.md` already exists and contains approved content (file size > 500 bytes).
+   - Check the story's YAML frontmatter `status` field. If `status` is `refactored` **OR** the `/flow` pipeline set `INHERITED_SPEC_MODE = true`:
+     - **ACTIVATE Inherited Base Mode:**
+       1. Copy the existing `data-spec.md` → `data-spec-base.md` as a backup.
+       2. Read the existing `data-spec.md` content completely using `view_file`. This is your **"Approved Base"**.
+       3. Identify **AC Delta**: Compare current story ACs against the data spec's coverage. Determine which sections (schemas, API contracts, DTOs) are affected by new/modified ACs.
+       4. **If NO data-impacting AC changes detected** (e.g., only UI cosmetic changes): **SKIP** the entire `/make-data-spec` workflow. Print: `"✅ No data-impacting AC changes detected. Existing data-spec.md preserved."` and exit.
+       5. **If data-impacting changes exist**: Continue to Step 1, but with the following constraints:
+          - You MUST load the Approved Base into your generation context as read-only reference.
+          - You MUST generate ONLY a diff/patch for the affected sections (schemas, endpoints, DTOs), NOT a full spec rewrite.
+          - Your output MUST preserve 100% of content from the Approved Base that is NOT affected by the AC delta.
+          - **[HUMAN GATE]**: Before saving, present a DIFF showing only the changed sections. The user MUST approve the delta changes.
+   - If `status` is `backlog` or there is no existing `data-spec.md`: Proceed normally (full generation mode).
+
+   > [!WARNING]
+   > **OVERWRITE PROTECTION**: When Inherited Base Mode is active, using `write_to_file` with `Overwrite: true` on `data-spec.md` is **STRICTLY FORBIDDEN**. You MUST use `replace_file_content` or `multi_replace_file_content` to apply surgical edits to the Approved Base content.
+
 1. Locate and load the target story file. This could be in `_iwish-output/3. Development/1. Epic & Story/{Feature_Group}/Epic-{epic_id}/Story-{story_id}/story.md`, `_iwish-output/stories/story-{story_id}.md`, or `.agent/evolution-lab/stories/story-{story_id}.md`.
 2. Read policy from `.agent/fragments/graph-backend-selection-policy.md`.
 3. Activate data-architect-agent behavior from `.agent/agents/data-architect-agent.md`.

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Integration Guide: prisma-domain-whitelist-manager</title></head>
+<body>
+  <h1>Integration Guide: prisma-domain-whitelist-manager</h1>
+  <h2>Purpose</h2>
+  <p>This skill manages cross-domain boundaries in Prisma safely by relying on triple-slash (<code>///</code>) comments or a centralized JSON whitelist rather than illegal <code>@@</code> attributes that break the Prisma AST and CLI.</p>
+  <h2>How to Use</h2>
+  <p>When evaluating a Prisma schema for cross-domain relations, invoke this skill to parse <code>/// @ignoreBoundary</code> comments or to query the central whitelist file (<code>prisma/domain-whitelist.json</code>).</p>
+  <h2>Constraints</h2>
+  <ul>
+    <li>MUST NOT use <code>@@ignoreBoundary</code> (illegal syntax).</li>
+    <li>MUST ONLY use <code>///</code> doc comments for models and fields.</li>
+  </ul>
+</body>
+</html>

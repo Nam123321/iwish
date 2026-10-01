@@ -20,6 +20,25 @@ Execute the instructions defined in this step for the fix-bug-protocol.md workfl
 > **Two-Stage Scoring Engine & Pause & Spawn (Option D):** When calculating Drift, use Stage 1 (FeatureGraph Gate) and Stage 2 (Point-Matrix), present the score and you MUST explicitly STOP execution (e.g., using `request_feedback` flag) to allow User Override. If the final Score > 7, you MUST update the story-specific or session artifact `task.md` with `[PAUSED - WAITING FOR DRIFT SYNC]`, run `git stash -u`, PAUSE the fix workflow, and instruct the User to open a NEW CHAT SESSION to sync the documentation.
 > **Context Refresh (Resume):** Upon returning, first read the story-specific or session artifact `task.md` to recover your SBRP phase state. Then run `git stash pop`, resolve conflicts, and CRITICALLY use `git diff --name-only stash@{0}^!` or `git status` to deterministically identify and `view_file` the updated files, ensuring the LLM Context Window is synchronized before proceeding.
 
+14b. **Code Engine Selection Gate (MANDATORY)**:
+     - **[HUMAN GATE]**: Before writing any fix code, present the user with engine choice via `ask_question`:
+       - Option 1: `dev-agent` (Standard Dev Agent — direct code editing, faster for simple fixes)
+       - Option 2: `/pi-code-agent` (Bounded contract loop — scope-locked edits, ast-grep checks, reviewer checkpoint per task. Recommended for SBRP-Standard/Full or multi-file fixes)
+     - **If user selects Option 1 (dev-agent):** Proceed with standard Phase 5 instructions below (direct code editing by dev-agent).
+     - **If user selects Option 2 (`/pi-code-agent`):**
+       1. Generate a fix-scoped `impl-plan.md` from SBRP Phase 1-4 findings (RCA, impact files, regression intent) in `<bug_report_dir>/execution/pi-code-agent/fix-1/impl-plan.md`.
+       2. Compile to machine contract: `python3 scripts/compile-impl-plan-json.py --story-dir "<bug_report_dir>/execution/pi-code-agent/fix-1"`
+       3. Cryptographic Engine Gate: Sign the engine selection with authorized OpenSSL keypair:
+          `python3 .agent/scripts/sign-engine-selection.py --story-id "<bug_id>" --engine pi-code-agent --output-json "<bug_report_dir>/execution/pi-code-agent/fix-1/engine-selection.json" --output-sig "<bug_report_dir>/execution/pi-code-agent/fix-1/engine-selection.json.sig"`
+       4. Dispatch with strict engine evidence & authorization receipt:
+          `python3 scripts/dispatch-code-engine.py --engine pi-code-agent --story-id "<bug_id>" --engine-evidence "<bug_report_dir>/execution/pi-code-agent/fix-1/engine-selection.json.sig" --story-dir "<bug_report_dir>/execution/pi-code-agent/fix-1" --root "<worktree_dir>" --platform "<active_platform>" --invocation-profile fix-bug --caller-capability fix-bug --caller-source .agent/workflows/step-fb-03-fix.md --authorization-receipt "<bug_report_dir>/sbrp_authorization.json.sig" --output "<bug_report_dir>/execution/pi-code-agent/fix-1/handoff.json"`
+       5. Execute `/pi-code-agent` per-task loop. Each task gets bounded working set, ast-grep scan, and reviewer checkpoint.
+       6. After all tasks accepted, continue to Phase 6 (Verify).
+     - **SBRP Tier Recommendation:**
+       - 🟢 SBRP-Lite (RPN < 15): Recommend `dev-agent` (overkill to use Pi for trivial fixes)
+       - 🟡 SBRP-Standard (RPN 15-59): User's choice
+       - 🔴 SBRP-Full (RPN ≥ 60): Recommend `/pi-code-agent` (bounded scope prevents regression)
+
 15. **Fix theo spec, không shortcut:**
     - **GOLDEN RULE (Never Delegate Understanding):** Coordinator/Orchestrator must write explicit, line-specific prompt instructions for worker agents. Do not delegate understanding.
     - **SEQUENTIAL WRITES:** If fixing multiple files, apply edits sequentially one-by-one.

@@ -1,0 +1,19 @@
+id: agent-qa-agent
+name: 'qa-agent-wrapper'
+kind: agent
+shape: agent
+role: process-primary
+phases: [validate]
+stages: [testing, qa, automation, bug-triage]
+triggers: [qa, test, testing, automate, quality-assurance, qa-agent]
+anti_triggers: [greenfield-planning]
+primary_agents: [qa-agent]
+primary_workflows: [review]
+supportive_skills: [qa-simulator-guardian]
+tool_dependencies: []
+constraints:
+  - Automate-first stance on validation.
+review_pack: docs/cowok-design-system.md
+source_path: /.agent/agents/qa-agent.md
+story_refs: [story-1.7]
+tags: [testing, canonical]

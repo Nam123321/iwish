@@ -1,0 +1,16 @@
+id: workflow-build-mcp-gateway
+name: build-mcp-gateway
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [build-mcp-gateway]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [build-mcp-gateway]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/build-mcp-gateway.md
+tags: [generated]

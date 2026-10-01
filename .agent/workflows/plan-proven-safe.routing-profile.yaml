@@ -1,0 +1,35 @@
+id: skill-plan-proven-safe
+name: plan-proven-safe
+kind: skill
+shape: skill
+role: supportive
+phases:
+- deep-audit
+- unknowns
+- party-mode
+- edge-case
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- plan-proven-safe
+- /plan-proven-safe
+- proven-safe
+anti_triggers: []
+primary_agents:
+- architect-agent-persona
+- dev-agent-persona
+- review-agent-persona
+primary_workflows:
+- plan-proven-safe
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/plan-proven-safe/SKILL.md
+tags:
+- skill
+- canonical
+- plan-proven-safe

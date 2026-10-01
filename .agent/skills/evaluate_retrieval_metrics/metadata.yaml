@@ -1,0 +1,10 @@
+status: draft
+promotion_target: .agent/skills/evaluate_regional_retrieval
+path_policy: runtime
+origin:
+  created_by: create-skill
+  epic: Unknown
+  justification: "Assess SOI and create capability for regional retrieval evaluation"
+maturity:
+  category_a_enforcement: 40%
+  category_b_enforcement: 60%

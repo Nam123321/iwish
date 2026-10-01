@@ -1,0 +1,35 @@
+id: workflow-worktree-init
+name: worktree-init
+kind: workflow
+shape: workflow
+role: process-primary
+phases:
+- setup
+- sync
+- security
+- install
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- worktree-init
+- /worktree-init
+- init-worktree
+- start-worktree
+- setup-worktree
+anti_triggers: []
+primary_agents:
+- orch-agent
+primary_workflows:
+- worktree-init
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/workflows/worktree-init.md
+tags:
+- workflow
+- canonical
+- worktree-init

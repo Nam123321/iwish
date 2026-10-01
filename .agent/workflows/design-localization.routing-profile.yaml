@@ -1,0 +1,16 @@
+id: workflow-design-localization
+name: design-localization
+kind: workflow
+shape: workflow
+role: process-primary
+phases: [execution]
+stages: [orchestration]
+triggers: [design-localization]
+anti_triggers: []
+primary_agents: [orch-agent]
+primary_workflows: [design-localization]
+supportive_skills: []
+tool_dependencies: []
+constraints: []
+source_path: /.agent/workflows/design-localization.md
+tags: [generated]

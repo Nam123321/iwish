@@ -1,0 +1,6 @@
+name: workload-economics-validator
+description: Validates canary telemetry against baseline cost thresholds.
+triggers:
+  - "measure canary cost"
+  - "validate economics before deployment"
+  - "staging cost thresholds"

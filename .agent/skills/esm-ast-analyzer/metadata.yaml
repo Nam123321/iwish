@@ -1,0 +1,30 @@
+id: esm-ast-analyzer
+type: SKILL
+status: draft
+origin:
+  type: manual
+  created_by: create-skill
+  created_at: 2026-08-01T08:35:00+07:00
+  source_story: FIX-64-01
+origin_repo: null
+provenance:
+  source_nodes:
+    - id: null
+      type: ExternalSource
+      confidence: 10
+      sensitivity: project
+      ref: FIX-64-01
+      status: active
+  source_clusters: []
+  source_artifacts:
+    - capability-spec
+evolution_lineage:
+  parent_id: null
+  generation: 1
+  lineage_file: lineage.jsonl
+promotion_target: .agent/skills/esm-ast-analyzer
+path_policy: runtime
+approval:
+  required: true
+  approved_by: null
+  approved_at: null
