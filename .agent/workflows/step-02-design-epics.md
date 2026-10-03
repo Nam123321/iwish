@@ -106,7 +106,7 @@ Organize by USER VALUE, not technical layers:
 
 **Step A: Identify Feature Groups & User Value Themes**
 
-- Look for natural high-level groupings in the FRs to form **Feature Groups** (e.g., FG-01. Platform Foundation, FG-02. Core Product, etc.)
+- Look for natural high-level groupings in the FRs to form **Feature Groups**. ⚠️ MUST format the folder name strictly in kebab-case (e.g., FG-01-Platform-Foundation-Connectors) without spaces or special characters to maintain Antigravity `@mention` compatibility.
 - Identify user journeys or workflows
 - Consider user types and their goals
 

@@ -1,0 +1,12 @@
+---
+description: Tự động cập nhật, đồng bộ mã nguồn và re-index kho kiến thức AI Engineering (ai-engineering-from-scratch)
+globs: ["*"]
+---
+
+# /sandbox-repo-sync - Capability Rule
+
+## Triggers
+Active when the user specifies `/sandbox-repo-sync`, `/sync-sandbox`, `/audit-sandbox`, `/update-sandbox` or mentions task intent related to sandbox-repo-sync.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/sandbox-repo-sync.md` or `/.agent/skills/sandbox-repo-sync/SKILL.md`.

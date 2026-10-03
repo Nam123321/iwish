@@ -20,12 +20,12 @@ with open(file_path, "r") as f:
     content = f.read()
 
 # Fix traceability matrix broken links
-content = re.sub(r'<br>\[_iwish-output/integrity-fails-story-01.9.json\]\({project-root}/_iwish-output/integrity-fails-story-01.9.json\)', '', content)
+content = re.sub(r'<br>\[_iwish-output/integrity-fails-story-01.9.json\]\(file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/integrity-fails-story-01.9.json\)', '', content)
 
 # Check if there are any other broken links (like WorkspaceAdminSettings.jsx)
-content = re.sub(r'\[_iwish-output/integrity-fails-story-01.9.json\]\({project-root}/_iwish-output/integrity-fails-story-01.9.json\)<br>', '', content)
-content = re.sub(r'\[WorkspaceAdminSettings.jsx\]\({project-root}/src/features/settings/workspace/WorkspaceAdminSettings.jsx\)<br>', '', content)
-content = re.sub(r'<br>\[WorkspaceAdminSettings.jsx\]\({project-root}/src/features/settings/workspace/WorkspaceAdminSettings.jsx\)', '', content)
+content = re.sub(r'\[_iwish-output/integrity-fails-story-01.9.json\]\(file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/integrity-fails-story-01.9.json\)<br>', '', content)
+content = re.sub(r'\[WorkspaceAdminSettings.jsx\]\(file://{project-root}/src/features/settings/workspace/WorkspaceAdminSettings.jsx\)<br>', '', content)
+content = re.sub(r'<br>\[WorkspaceAdminSettings.jsx\]\(file://{project-root}/src/features/settings/workspace/WorkspaceAdminSettings.jsx\)', '', content)
 
 # Write it back
 with open(file_path, "w") as f:

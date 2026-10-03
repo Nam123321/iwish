@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentTaskContract",
+  "type": "object",
+  "required": ["schema_version", "run_id", "task_id", "story_id", "plan_sha256", "target_files", "checker_ids", "checker_registry_sha256", "validator_public_key_sha256", "risk_tier", "capability_catalog_sha256", "state"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "run_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$" },
+    "task_id": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "story_id": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "plan_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "capability_catalog_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "checker_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "uniqueItems": true },
+    "checker_registry_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "validator_public_key_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "target_files": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(?!/)(?!.*\\.\\.)(?!^\\.git/)(?!^_iwish-output/).+$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "risk_tier": { "enum": ["low", "medium", "high", "critical"] },
+    "allowed_tools": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "mandatory_edges": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "state": { "enum": ["planned", "ready", "executing", "review", "accepted", "rejected", "blocked", "cancelled"] }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+schema_version: "1.0"
+typescript:
+  semantic_adapter: ts-morph
+  required: false
+  version_source: package-lock.json
+  binary_hash: resolve-at-probe-time
+structural_adapter:
+  name: ast-grep
+  required: false
+  approval: pinned-only
+  version_source: explicit-project-pin
+lsp:
+  required: false
+  fallback: truthful-structural-diagnostics
+update_policy:
+  task_time_install: prohibited
+  unavailable_tool: fail-closed-or-truthful-fallback

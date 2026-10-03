@@ -1,3 +1,4 @@
+require('./watchmen_core.js').verify_execution(__filename);
 const fs = require('fs');
 const path = require('path');
 

@@ -1,4 +1,15 @@
 #!/usr/bin/env python3
+import os, sys
+script_dir = os.path.dirname(os.path.abspath(__file__))
+agent_dir = os.path.abspath(os.path.join(script_dir, ".."))
+if agent_dir not in sys.path:
+    sys.path.insert(0, agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass
+
 import os
 import sys
 import yaml

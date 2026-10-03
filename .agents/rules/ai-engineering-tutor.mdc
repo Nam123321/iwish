@@ -1,0 +1,12 @@
+---
+description: Diagnostic AI engineering skill evaluator, personalized learning path generator, and quiz engine
+globs: ["*"]
+---
+
+# /ai-engineering-tutor - Capability Rule
+
+## Triggers
+Active when the user specifies `/ai-engineering-tutor`, `/ai-tutor`, `/tutor`, `/learning-path`, `/learning` or mentions task intent related to ai-engineering-tutor.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/ai-engineering-tutor.md` or `/.agent/skills/ai-engineering-tutor/SKILL.md`.

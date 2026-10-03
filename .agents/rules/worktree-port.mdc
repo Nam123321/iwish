@@ -1,0 +1,12 @@
+---
+description: Interactive Slash Command to manage Worktree Ports
+globs: ["*"]
+---
+
+# /worktree-port - Capability Rule
+
+## Triggers
+Active when the user specifies `/worktree-port`, `/worktree-port`, `/port` or mentions task intent related to worktree-port.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/worktree-port.md` or `/.agent/skills/worktree-port/SKILL.md`.

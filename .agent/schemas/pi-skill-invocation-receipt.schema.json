@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentSkillInvocationReceipt",
+  "type": "object",
+  "required": ["skill", "route", "authorized", "catalog_sha256"],
+  "properties": {
+    "skill": { "type": "string", "minLength": 1 },
+    "route": { "enum": ["user-slash", "workflow-required", "routed", "autoload-denied", "not-found"] },
+    "authorized": { "type": "boolean" },
+    "catalog_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "reason": { "type": "string" }
+  },
+  "additionalProperties": false
+}

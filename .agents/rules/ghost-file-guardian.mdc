@@ -1,0 +1,12 @@
+---
+description: Phát hiện và thanh tẩy Ghost Files (hiện tượng rác vật lý đa nhánh)
+globs: ["*"]
+---
+
+# /ghost-file-guardian - Capability Rule
+
+## Triggers
+Active when the user specifies `/ghost-file-guardian`, `/ghost-file`, `/clean-workspace` or mentions task intent related to ghost-file-guardian.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/ghost-file-guardian.md` or `/.agent/skills/ghost-file-guardian/SKILL.md`.

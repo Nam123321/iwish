@@ -1,0 +1,12 @@
+---
+description: Canonical workflow for executing an on-demand SSOT backup.
+globs: ["*"]
+---
+
+# /ssot-backup - Capability Rule
+
+## Triggers
+Active when the user specifies `/ssot-backup` or mentions task intent related to ssot-backup.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/ssot-backup.md` or `/.agent/skills/ssot-backup/SKILL.md`.

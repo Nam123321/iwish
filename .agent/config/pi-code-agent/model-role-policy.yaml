@@ -1,0 +1,41 @@
+schema_version: "1.0"
+policy_id: cowok-ai-native-role-policy-v1
+roles:
+  default:
+    tier: balanced
+    independence_required: false
+    allow_fallback: false
+  planner:
+    tier: high_reasoning
+    independence_required: false
+    allow_fallback: false
+  scout:
+    tier: economy
+    independence_required: false
+    allow_fallback: true
+  worker:
+    tier: balanced
+    independence_required: false
+    allow_fallback: true
+  reviewer:
+    tier: high_reasoning
+    independence_required: true
+    allow_fallback: false
+  security:
+    tier: high_reasoning
+    independence_required: true
+    allow_fallback: false
+  cleanse:
+    tier: balanced
+    independence_required: false
+    allow_fallback: true
+  learning:
+    tier: economy
+    independence_required: false
+    allow_fallback: true
+precedence:
+  - authorized_task_override
+  - project_platform_binding
+  - approved_same_tier_fallback
+  - user_decision
+  - blocked

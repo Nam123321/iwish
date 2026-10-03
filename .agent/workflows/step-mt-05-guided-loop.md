@@ -52,11 +52,11 @@ The self-healing loop is **enforced by `self-healing-runner.py` v2.0**, NOT by a
 
 ### Agent Loop Behavior:
 - **If `self-healing-runner.py run` exits 0 (PASS):**
-  - Validator already ran (integrated in runner v2.0). Transition story to `Pending_Approval`, halt, notify user.
+  - Validator already ran (integrated in runner v2.0). Transition story to `Pending_Approval`. **EXCEPTION (Auto-Approve Mode):** If `--auto-approve` is active, automatically invoke `/approve-qa` without halting. Otherwise, halt and notify user.
 - **If `self-healing-runner.py run` exits 1 with `action: HEAL`:**
   - Read the HEALING REPORT JSON output.
   - If `failureType: Type1_ScriptFailure`: Fix the test script (wrong selectors, timeouts), loop back to Step 4.
-  - If `failureType: Type2_AppBug`: **MANDATORY** — Invoke `/fix-bug` to fix app code. **Do NOT rewrite the test script to avoid the broken page/component.** Changing the test to route around a missing UI element is a "sophisticated fake-pass" and is STRICTLY FORBIDDEN.
+  - If `failureType: Type2_AppBug`: **MANDATORY** — Invoke `/fix-bug` (or `/fix-bug --auto-approve` in Auto-Approve Mode) to fix app code. **Do NOT rewrite the test script to avoid the broken page/component.** Changing the test to route around a missing UI element is a "sophisticated fake-pass" and is STRICTLY FORBIDDEN.
 - **If `self-healing-runner.py run` exits 1 with `action: HALT`:**
   - **STOP IMMEDIATELY.** Do NOT attempt further runs.
   - Notify user: *"Maximum retries (3) reached. Test still failing. Run `/reject-qa` to reset or `/approve-qa` to override."*

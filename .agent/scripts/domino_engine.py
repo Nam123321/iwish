@@ -1,3 +1,16 @@
+import os, sys
+# --- [Watchmen Core Injection] ---
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_agent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
+if _agent_dir not in sys.path:
+    sys.path.insert(0, _agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass # Ignore for environment without watchmen_core, let the system handle it
+# ---------------------------------
+
 import os
 import json
 import re
@@ -60,7 +73,7 @@ class DominoEngine:
         # Try to connect to FalkorDB
         if FALKOR_AVAILABLE:
             try:
-                self.db = FalkorDB(host='localhost', port=6380)
+                self.db = FalkorDB(host='localhost', port=6379)
                 self.graph = self.db.select_graph("iwish_domino")
                 # Test connection
                 self.graph.query("RETURN 1")
@@ -171,7 +184,7 @@ class DominoEngine:
             frs = fr_match.group(1).strip()
             
         fg = "Uncategorized"
-        fg_match = re.search(r'(?:Feature Group|FG):\s*([^\n]+)', content, re.IGNORECASE)
+        fg_match = re.search(r'(?:\*\*)?(?:Feature Group|FG)(?:\*\*)?:(?:\*\*)?\s*([^\n]+)', content, re.IGNORECASE)
         if fg_match:
             fg = fg_match.group(1).strip()
         else:

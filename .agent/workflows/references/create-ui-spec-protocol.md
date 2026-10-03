@@ -351,6 +351,8 @@ The final story UI spec MUST include these sections in addition to the existing 
 ### Component Hierarchy Layout Diagram
 - The spec MUST contain a Mermaid diagram representing the layout of the page's components (headers, panels, sidebars, grids, forms, list views).
 - The Mermaid diagram code MUST be copied to Section 10 `[STITCH_PROMPT_INJECTION]`.
+- **MANDATORY**: Any UI Spec containing Modals, Drawers, or Popovers MUST explicitly mandate the use of opaque semantic background variables (e.g., `var(--bg-card)`) rather than transparent ones (e.g., `var(--bg-color)`). Must specify `React.createPortal` or adequate padding to prevent overflow within 3rd sidebars.
+- **FORBIDDEN**: The UI Spec MUST explicitly forbid the use of inline Tailwind utility classes (e.g. `bg-white`, `opacity-50`, `p-4`) for styling. Ensure the HTML preview relies entirely on semantic CSS classes from `DESIGN.md`.
 
 ### User Simulation Results
 - Personas tested
@@ -380,6 +382,33 @@ The final story UI spec MUST include these sections in addition to the existing 
 - If `Enrichment_Required: true`, this section MUST be populated by the `/enrich-ux` workflow AFTER design approval.
 - Before design approval, leave this section empty with a note: "Pending `/enrich-ux` execution post-design approval."
 - This section strictly decouples dynamic interaction from the static layout.
+
+### Deterministic AST JSON Manifest (MANDATORY)
+- A separate file `ast-constraint-story-{story_id}.json` MUST be generated alongside the UI Spec.
+- It MUST contain deterministic constraints mapping UI elements to `data-testid` or `required_fields`, bounded by Component file scope (`file`), and optionally hierarchical (`children`).
+- The `data-testid` and `required_fields` will be evaluated by `spec-compliance-checker.py` as a Category A script check.
+- Example format:
+```json
+{
+  "TopicHeader": {
+    "file": "components/TopicHeader.tsx",
+    "data-testid": "topic-header",
+    "required_fields": ["topic-title", "privacy-icon", "more-options-btn"]
+  },
+  "CreateTopicModal": {
+    "file": "components/CreateTopicModal.tsx",
+    "data-testid": "create-topic-modal",
+    "children": [
+      {
+        "data-testid": "topic-name-input"
+      },
+      {
+        "data-testid": "privacy-toggle"
+      }
+    ]
+  }
+}
+```
 
 **Comparison table MUST be included in the UI spec:**
 
@@ -526,6 +555,9 @@ After the design options are approved by the user, **APPEND** this section to th
 | Location | Icon | Library | Import |
 |----------|------|---------|--------|
 (Every icon in design → exact project import)
+
+### AST Constraint Clean-up (Production Build)
+- [ ] dev-agent MUST configure Vite/Babel plugin (e.g. `babel-plugin-jsx-remove-data-test-id` or Vite `esbuild` drop rules) to automatically strip `data-testid` from the DOM during production builds to maintain zero runtime bloat.
 ```
 
 > [!IMPORTANT]

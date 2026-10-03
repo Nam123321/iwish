@@ -118,7 +118,7 @@ Stories must be independently completable in sequence:
 **Feature Group:** FG-{FG}: {feature_group_name}
 **Epic:** Epic {N}: {epic_title}
 **Story Title:** {story_title}
-**FR Covered:** [{FR-ID}: {FR-Name}] (e.g., [FR-1.1: Platform Mode Detection](file:///path/to/prd.md#FR-1.1))
+**FR Covered:** [{FR-ID}: {FR-Name}] (e.g., [FR-1.1: Platform Mode Detection](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md#FR-1.1))
 **Goal:** {story_goal}
 
 As a {user_type},

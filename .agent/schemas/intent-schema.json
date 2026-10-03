@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "planned_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "action"
+        ]
+      }
+    },
+    "database_mutations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_considerations": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "planned_files",
+    "database_mutations",
+    "security_considerations"
+  ]
+}

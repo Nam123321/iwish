@@ -1,0 +1,34 @@
+---
+description: NotebookLM integration, Research Traceability, and external evidence gathering rules.
+globs: ["_iwish-output/notebooks/**/*.yaml", "_iwish-output/research/**/*.md", "**/*architecture*.md", "**/*prd*.md"]
+---
+
+# NotebookLM & Research Rules
+
+> **CRITICAL:** Rules in `global-core.mdc` ALWAYS take precedence over these instructions.
+
+## 📘 NotebookLM Integration Rule
+Whenever any agent (dev-agent, orch-agent, research-agent, pm-agent, ux-agent, architect-agent, review-agent, qa-agent) performs research, knowledge capture, or external evidence gathering:
+
+1. **REGISTRY FIRST**: Agent PHẢI đọc `_iwish-output/notebooks/notebook-registry.yaml` TRƯỚC KHI tạo notebook mới hoặc query. Notebook ngoài Registry = CẤM. Load `notebook-registry-manager` skill để lookup.
+2. **SSOT PROTECTION**: NotebookLM = READ-ONLY reference. Markdown files (`.md`) trong workspace = truth. Agent KHÔNG ĐƯỢC coi NotebookLM output là authoritative mà không cross-verify với local files.
+3. **DYNAMIC NOTEBOOK RESOLUTION**: MỌI workflow cần query NotebookLM PHẢI chạy `python3 .agent/scripts/resolve-notebook-targets.py` với context phù hợp (story ID, epic ID, hoặc topic keywords). Agent KHÔNG ĐƯỢC tự chọn notebooks bằng LLM judgment. Script output là danh sách deterministic dựa trên `notebook-registry.yaml` + `domain-taxonomy.yaml` + dependency graph. Load `notebook-cross-query-engine` cho cross-query giữa các notebooks trong output set. Backbone notebooks (PC-1/PC-2/PC-3) được tự động include bởi resolver khi relevant.
+4. **FOUNDATION GATE**: Khi `/flow` chạy lần đầu → Load `notebook-lifecycle-manager` → Check `foundation-checklist.yaml`. Nếu < 10/14 standard notebooks đã tạo → **SOFT WARNING** (cảnh báo nhưng cho tiếp). Report notebooks nào còn thiếu.
+5. **QUALITY GATE**: Trước mọi Push request tới NotebookLM → PHẢI qua `notebook-quality-gate` skill (Specificity ≥ 3/5, Dimensions ≥ 4, Anti-patterns defined, Research mode justified, Target resolved).
+6. **BREAK-EVEN RULE**: Chỉ dùng NotebookLM khi total sources > 1.5M tokens HOẶC cần multi-modal HOẶC cross-project knowledge. Tham khảo `.agent/fragments/knowledge-routing-engine.md`.
+7. **EPHEMERAL FOR AD-HOC**: One-off research → create ephemeral notebook → query → delete sau khi xong. Nếu pattern ≥ 2 occurrences → auto-promote thành persistent (không cần user approval).
+8. **PERSISTENT FOR DOMAIN**: Research libraries (RL-*), Architecture (PC-2), Design (PC-3) → maintain long-term. KHÔNG delete khi chưa user approve.
+9. **WRITE-THEN-SYNC**: Workflow thay đổi tracked file (PRD, Architecture, Design System, Story, v.v.) → PHẢI sync notebook tương ứng trước khi kết thúc turn. Stale queries = CẤM. **KHÔNG hardcode tên file** — resolve bằng directory scan + keyword matching (xem Sync Eligibility Matrix trong `notebook-lifecycle-manager` skill).
+10. **RECURSIVE MAX-2**: Notes Recursive (Knowledge Distillation Loop) KHÔNG ĐƯỢC vượt quá 2 vòng. SAU vòng 2 PHẢI verify với ≥ 1 raw source gốc (anti-echo-chamber).
+11. **TRIANGULATION MANDATORY**: Party-Mode deadlock HOẶC `/unknowns` MACRO confidence < 0.5 → BẮT BUỘC Dual-Source Triangulation (NotebookLM + Agent reasoning).
+12. **AE PRE-PULL**: Advanced Elicitation (AE) workflow PHẢI Pull từ Registry trước khi deep-dive. AE output PHẢI được inject vào PC-2 sau khi hoàn thành.
+13. **AUTH RECOVERY**: Nếu NotebookLM MCP fails với auth error → Gọi `notebooklm-mcp/refresh_auth` hoặc `save_auth_tokens`. MCP repo: `jacob-bd/gemini-notebook-mcp-cli` có cơ chế auto-reconnect.
+14. **ANTI-HARDCODE FILE NAMES**: Agent KHÔNG ĐƯỢC hardcode tên file khi sync sources lên NotebookLM (ví dụ: KHÔNG dùng `PRD.md` vì file thực tế có thể là `2.1. product-brief-or-prd.md`). PHẢI dùng directory scan + semantic keyword matching (`*prd*`, `*architecture*`, `*product-brief*`, v.v.) theo Sync Eligibility Matrix. Việc hardcode dẫn đến agent bỏ sót file khi naming convention thay đổi.
+15. **KNOWLEDGE-FIRST PRINCIPLE**: Trước khi agent thực hiện web search hoặc suy diễn nội bộ bằng LLM weights, agent PHẢI ưu tiên truy vấn NotebookLM ecosystem thông qua `/nlm-check` hoặc `ae-notebook-orchestrator`.
+16. **UKP ORCHESTRATOR**: Từ V3, mọi request liên quan đến NotebookLM đều PHẢI thông qua `ae-notebook-orchestrator`. Không gọi trực tiếp các MCP tools rời rạc nếu không phải là subagent thuộc orchestrator.
+
+## 🔍 Research Traceability & Integration Rule
+Whenever any agent is involved in generating architectural decisions, technical designs, or creating stories:
+1. **Mandatory Research Lookup**: The agent MUST query the Knowledge Graph or check the `_iwish-output/research/` directory for any relevant `research-record-*.md` files related to the feature or technology being discussed.
+2. **Context Window Protection (P11)**: To avoid Context Overflow, agents MUST NOT load the entire content of large research record files into their context. Instead, they MUST extract only the `Summary` or `Final Synthesis` sections, or utilize a semantic search retrieval tool.
+3. **Traceability Links**: Any decisions made in ADRs, TDRs, Architecture docs, or Stories MUST include a `## References` section that provides explicit, clickable links to the underlying `research-record-*.md` files that influenced the decision.

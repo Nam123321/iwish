@@ -1,0 +1,37 @@
+schema_version: "1.0"
+profiles:
+  flow-story:
+    allowed_callers: [flow-stage-3b-code]
+    requires: [plan-approved-evidence, impl-plan]
+    completion_sink: flow-stage-4-review
+    permits_status_mutation: false
+  flow-auto-approve:
+    allowed_callers: [flow-auto-approve]
+    requires: [plan-approved-evidence, impl-plan, engine-selection]
+    completion_sink: flow-stage-4-review
+    permits_status_mutation: false
+  manual-approved-plan:
+    allowed_callers: [pi-code-agent]
+    requires: [approved-plan, explicit-scope-authorization]
+    completion_sink: standalone
+    permits_status_mutation: false
+  manual-adhoc:
+    allowed_callers: [pi-code-agent]
+    requires: [signed-execution-request, explicit-scope-authorization]
+    completion_sink: standalone
+    permits_status_mutation: false
+  fix-bug:
+    allowed_callers: [fix-bug]
+    requires: [sbrp-tier, rca, impact-analysis, regression-intent]
+    completion_sink: fix-bug-verify
+    permits_status_mutation: false
+  review-fix:
+    allowed_callers: [flow-stage-4-review]
+    requires: [aggregated-review-json, impl-plan]
+    completion_sink: flow-stage-4-review
+    permits_status_mutation: false
+rules:
+  caller_source_must_be_project_local: true
+  external_bridge_requires_explicit_pin: true
+  unregistered_profile: blocked
+  slash_intent_is_not_authorization: true

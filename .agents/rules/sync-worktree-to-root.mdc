@@ -1,0 +1,12 @@
+---
+description: Đồng bộ an toàn thay đổi từ worktree sang root workspace và commit vào master
+globs: ["*"]
+---
+
+# /sync-worktree-to-root - Capability Rule
+
+## Triggers
+Active when the user specifies `/sync-worktree-to-root`, `/sync-master`, `/sync-root`, `/sync-worktree` or mentions task intent related to sync-worktree-to-root.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/sync-worktree-to-root.md` or `/.agent/skills/sync-worktree-to-root/SKILL.md`.

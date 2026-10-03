@@ -1,0 +1,26 @@
+schema_version: "1.0"
+checkers:
+  - id: project-test-ci
+    executable: pnpm
+    args: [test:ci]
+    requires_local_node_modules: true
+    version_policy: project-lockfile
+    hash_policy: lockfile-and-package-script
+    trusted: true
+  - id: tsc
+    executable: npx
+    args: [tsc, --noEmit]
+    requires_local_node_modules: true
+    version_policy: project-lockfile
+    hash_policy: lockfile-and-resolved-binary
+    trusted: true
+  - id: vitest
+    executable: npx
+    args: [vitest, run]
+    requires_local_node_modules: true
+    version_policy: project-lockfile
+    hash_policy: lockfile-and-resolved-binary
+    trusted: true
+update_policy:
+  task_time_install: prohibited
+  changes_require: isolated-review-and-manifest-refresh

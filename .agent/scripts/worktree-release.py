@@ -10,7 +10,6 @@ Safely releases local and remote resources when a task/story worktree is complet
 """
 
 import os
-import getpass
 import sys
 # --- [Watchmen Core Injection] ---
 _script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -195,7 +194,7 @@ def unlock_permissions(target_path):
     scripts_dir = os.path.join(target_path, ".agent", "scripts")
     if os.path.exists(scripts_dir):
         print("🔓 [UNLOCK] Restoring write permissions on .agent/scripts...")
-        current_user = os.environ.get("USER", "getpass.getuser()")
+        current_user = os.environ.get("USER", "default_user")
         try:
             subprocess.run(["chmod", "-R", "755", scripts_dir], stderr=subprocess.DEVNULL)
         except Exception:

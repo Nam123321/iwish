@@ -1,0 +1,12 @@
+---
+description: Lệnh All-in-one khởi tạo Worktree: Tự động đồng bộ dữ liệu SSOT, gài cắm bảo mật Watchmen và cài đặt môi trường
+globs: ["*"]
+---
+
+# /worktree-init - Capability Rule
+
+## Triggers
+Active when the user specifies `/worktree-init`, `/init-worktree`, `/start-worktree`, `/setup-worktree` or mentions task intent related to worktree-init.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/worktree-init.md` or `/.agent/skills/worktree-init/SKILL.md`.

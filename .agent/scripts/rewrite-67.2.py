@@ -30,7 +30,7 @@ timestamp: '2026-08-08T13:00:00+07:00'
 # Story 67.2: Tenant-isolated Soft Deletes & Trash Bin Recovery
 
 **Epic:** Epic 67
-FR Covered: [FR-SYS-03: Soft Delete & Trash Bin]({project-root}/_iwish-output/1.%20Discovery/PRD.md)
+FR Covered: [FR-SYS-03: Soft Delete & Trash Bin](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/1.%20Discovery/PRD.md)
 Complexity Score: 5 (Standard backend logic, cron job, standard UI)
 
 ## 1. Mục tiêu (Goal)

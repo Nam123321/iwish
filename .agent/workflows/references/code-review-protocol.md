@@ -13,7 +13,13 @@ Quy trình đánh giá mã nguồn này là chốt chặn cuối cùng trước 
 
 ## ⚙️ CÁC LỚP BẢO VỆ CHÍNH (THE 3-LAYER QUALITY GATES)
 
-### 🔴 LỚP 1: CỔNG KIỂM TRA CƠ HỌC (LAYER 1 - MECHANICAL GATE)
+> [!WARNING]
+> **PHÂN TÁN NHẬN THỨC (PARALLEL EXECUTION):**
+> Lớp 1, 1.8 và 2 ĐƯỢC GIAO CHO **Standards Guardian Agent**.
+> Lớp 1.5 ĐƯỢC GIAO CHO **Spec Guardian Agent**.
+> Lớp 3 ĐƯỢC GIAO CHO **Master Orchestrator**.
+
+### 🔴 LỚP 1: CỔNG KIỂM TRA CƠ HỌC & MÙI CODE (LAYER 1 - MECHANICAL & SMELL GATE)
 Trước khi tiến hành đọc logic code, Reviewer phải xác nhận các kiểm tra cơ học tự động đã hoàn thành xuất sắc. Chạy các lệnh sau tại root dự án:
 
 1. **Anti-Cheat Linter:**
@@ -34,45 +40,56 @@ Trước khi tiến hành đọc logic code, Reviewer phải xác nhận các ki
    ```
    *Yêu cầu: Đảm bảo cấu trúc tệp `schema.prisma` hợp lệ và không bị trôi lệch.*
 
+4. **[NEW] SMELL BASELINE AUDIT (ZERO-TRUST GATE):**
+   Standards Guardian Agent BẮT BUỘC phải đối chiếu mã nguồn với danh sách 5 Code Smells cốt lõi:
+   - **Mysterious Name:** Tên hàm/biến có phản ánh đúng chức năng không?
+   - **Duplicated Code:** Có logic nào bị lặp lại đáng kể không?
+   - **Feature Envy:** Method có thao tác với dữ liệu của class khác nhiều hơn dữ liệu của chính nó?
+   - **Primitive Obsession:** Dùng string/int thay cho Domain Object (ví dụ: ZipCode, Email)?
+   - **Shotgun Surgery:** Một sửa đổi nhỏ có khiến nhiều file bị đổi theo không?
+   
+   **Đầu ra bắt buộc:** Agent phải xuất ra một cấu trúc JSON (được nhúng trong file `raw-layer1-2.json`) chứa mảng `smell_matrix`, liệt kê trạng thái `[Passed]` hoặc `[Failed]` cho từng loại Smell. Thiếu ma trận này = TỰ ĐỘNG BÁC BỎ.
+
 ---
 
-### 🟠 LỚP 1.5: CỔNG TUÂN THỦ ĐẶC TẢ (LAYER 1.5 - SPEC COMPLIANCE GATE)
-Trước khi chuyển sang đánh giá đối lập, Reviewer phải xác minh code thực sự triển khai đúng những gì đặc tả đã định nghĩa. **Đây là bước bắt buộc — không được bỏ qua.**
+### 🟠 LỚP 1.5: CỔNG TUÂN THỦ ĐẶC TẢ VẬT LÝ (LAYER 1.5 - SPEC COMPLIANCE PHYSICAL GATE)
+**Thực thi bởi: Spec Guardian Agent**
+Trước khi chuyển sang đánh giá đối lập, Agent phải xác minh code thực sự triển khai đúng những gì đặc tả đã định nghĩa bằng cách chạy **verify-review-evidence.py**. **Đây là bước bắt buộc — không được bỏ qua.**
 
-> **[CRITICAL]** Nạp skill Spec Compliance Guardian: `view_file .agent/skills/spec-compliance-guardian/SKILL.md`
+> **[CRITICAL COMPLIANCE REQUIREMENT]**
+> Reviewer tuyệt đối KHÔNG tự tính điểm SCS hoặc tự báo cáo điểm SCS theo cách thủ công.
+> Chỉ có điểm SCS được tính bởi `spec-compliance-checker.py` và ghi nhận trong `checker-output-{id}.json` mới là hợp lệ.
 
-1. **Nạp đặc tả bắt buộc (Mandatory Spec Loading):**
-   - BẮT BUỘC nạp file Story (với đầy đủ ACs và Tasks)
-   - BẮT BUỘC nạp file UI Spec (nếu story liên quan đến giao diện)
-   - BẮT BUỘC nạp file Data Spec (nếu story liên quan đến dữ liệu/API)
-   - BẮT BUỘC nạp file `api-routes.ts` (nếu story liên quan đến API endpoints)
-   - Nếu bất kỳ file đặc tả bắt buộc nào THIẾU → **DỪNG ĐÁNH GIÁ** với lỗi "Missing spec file"
+1. **Chạy script kiểm tra tự động:**
+   Reviewer BẮT BUỘC phải thực thi lệnh kiểm định vật lý:
+   ```bash
+   python3 .agent/scripts/verify-review-evidence.py <story_dir> <story_id> --ui-spec <path> --data-spec <path> --story <path> --scs-threshold 95
+   ```
+   *Yêu cầu: Script phải trả về mã thoát `0`. Nếu script báo lỗi hoặc exit code là `1` (do SCS < 95%, trôi lệch spec hash do sửa spec mà chưa cập nhật checker baseline, hoặc phát hiện mock chưa được phê duyệt/auth mocks), Reviewer phải lập tức dừng đánh giá và bác bỏ (REJECT) story.*
 
-2. **Kiểm tra Đồng bộ UI Spec ↔ Code:**
-   - `[UI-1]` So sánh cây component trong UI Spec với cấu trúc file component thực tế. Ghi nhận: component thiếu, sai cấu trúc lồng nhau, component thừa không có trong spec.
-   - `[UI-2]` Trích xuất design tokens từ UI Spec và kiểm tra code sử dụng đúng token. Ghi nhận: màu hardcoded, tham chiếu token sai.
-   - `[UI-3]` Trích xuất responsive rules từ UI Spec và kiểm tra breakpoint classes. Ghi nhận: thiếu breakpoint, logic breakpoint sai.
-   - `[UI-4]` Trích xuất state definitions (loading/empty/error) từ UI Spec và kiểm tra code paths. Ghi nhận: thiếu xử lý state.
+1b. **[NEW] BEHAVIORAL COVERAGE GUARDIAN (ZERO-TRUST EXECUTION GATE):**
+   Standards Guardian Agent BẮT BUỘC phải xác minh test coverage bằng skill `behavioral-coverage-guardian`.
+   - Nạp skill: `.agent/skills/behavioral-coverage-guardian/SKILL.md`
+   - BẮT BUỘC thực thi script python runner để xác minh physical coverage của các file business logic.
+   ```bash
+   python3 .agent/skills/behavioral-coverage-guardian/scripts/runner.py --story <story_id> --coverage-file coverage/lcov.info
+   ```
+   *Yêu cầu: Lệnh phải trả về exit code `0`. Nếu exit code `1` (Type 1: Thiếu file, hoặc Type 2: Thiếu coverage cho business logic), lập tức TỪ CHỐI (REJECT) bản đánh giá.*
 
-3. **Kiểm tra Đồng bộ Data Spec ↔ Code:**
-   - `[DATA-1]` So sánh entity fields trong Data Spec với Prisma schema field-by-field. Ghi nhận: field thiếu, type sai, relation thiếu, constraint sai.
-   - `[DATA-2]` So sánh DTO contracts trong Data Spec với TypeScript interfaces thực tế trong controllers/api-client. Ghi nhận: field thiếu, type sai, nesting sai.
-   - `[DATA-3]` So sánh API routes trong Data Spec với `api-routes.ts` và controller decorators thực tế. Ghi nhận: route thiếu, HTTP method sai, params sai.
-
-4. **Ma trận Truy vết AC (AC Traceability Matrix):**
+2. **Kiểm tra Mocks chưa được phê duyệt:**
+   - Script tự động quét xem có mock nào không có annotation `[MOCK_APPROVED]`. Mọi auth mocks (Category E) sẽ bị chặn cứng (exit 1) và không thể phê duyệt.
+   
+3. **Đồng bộ hóa SSOT:**
+   - Nếu spec bị chỉnh sửa sau khi chạy baseline checker, script sẽ báo lỗi trôi lệch hash. Dev phải chạy lại baseline checker trước khi gửi review.
+   
+4. **Kết quả:**
+   - Ghi lại kết quả chạy script `verify-review-evidence.py` vào báo cáo đánh giá (review report) trước khi tiến hành Lớp 2.
    - Với MỖI Acceptance Criterion trong story:
      - Xác định artifact code cụ thể triển khai AC đó (file:line reference)
      - Xác định artifact test cụ thể kiểm thử AC đó
      - Tạo hàng: `[AC Text] → [Code Reference] → [Test Reference]`
    - Nếu bất kỳ AC nào thiếu Code Reference → **BÁC BỎ (REJECT)**
    - Nếu bất kỳ AC nào thiếu Test Reference → **CẢNH BÁO (WARN)**
-
-5. **Tính điểm SCS (Spec Compliance Score):**
-   ```
-   SCS = (UI compliance × 0.30 + Data compliance × 0.30 + AC coverage × 0.40) × 100
-   ```
-   - Nếu SCS < 85% → **BÁC BỎ** với báo cáo diff chi tiết, gửi lại cho dev.
-   - Nếu SCS ≥ 85% → Ghi nhận SCS vào review report, chuyển sang Lớp 1.8 (nếu có logic code) hoặc Lớp 2.
 
 ---
 
@@ -97,6 +114,7 @@ Cổng này đảm bảo code thực sự chạy được, chống lỗi Vite 50
 ---
 
 ### 🟡 LỚP 2: ĐỐI LẬP & PHẢN BIỆN (LAYER 2 - ADVERSARIAL AUDIT GATE)
+**Thực thi bởi: Standards Guardian Agent**
 Đóng vai trò là **Cynical Auditor** để tìm kiếm các lỗi logic và lỗ hổng:
 
 1. **Khóa ghi trạng thái Task (Task Lock Gate):**
@@ -119,6 +137,7 @@ Cổng này đảm bảo code thực sự chạy được, chống lỗi Vite 50
 ---
 
 ### 🔵 LỚP 3: KIỂM TRA CHÉO & KẾT NỐI (LAYER 3 - CROSS-STORY GATE)
+**Thực thi bởi: Master Orchestrator**
 Kiểm tra tác động chéo giữa các story đang chạy song song để tránh xung đột hệ thống:
 
 1. **Truy vấn FeatureGraph:**
@@ -142,7 +161,24 @@ Reviewer phải kết luận đợt đánh giá bằng các thông tin sau:
 3. **Tier 1 Hybrid Graph Update:** BẮT BUỘC lưu lại kết quả Review (đặc biệt là Scorecard và Disposition) vào Knowledge Graph qua CLI:
    `iwish inject-node --file "_iwish-output/reviews/<tên-file-review>.md" --metadata '{"summary": "Code Review Scorecard", "tags": ["review", "audit"], "layer": "quality-control", "complexity": "medium"}'`
 
-4. **Cập nhật trạng thái Story (Story Status Update):**
-   - NẾU đợt đánh giá được CHẤP THUẬN (APPROVED), bạn BẮT BUỘC phải cập nhật trường `status` trong frontmatter của file `story.md` thành `testing` hoặc `pending_qa`. Chạy lệnh: `python3 .agent/scripts/update-story-status.py <path-to-story.md> pending_qa`.
+4. **Cập nhật trạng thái Story & Auto-Sync (Story Status Update & Git Sync):**
+   - NẾU đợt đánh giá được CHẤP THUẬN (APPROVED):
+     - Bạn BẮT BUỘC phải cập nhật trường `status` trong frontmatter của file `story.md` thành `pending_qa`. Chạy lệnh: `python3 .agent/scripts/update-story-status.py <path-to-story.md> pending_qa`.
+     - **[DATA LOSS PREVENTION RULE]** Nếu điểm Spec Compliance Score (SCS) đạt **trên 95%**, hệ thống BẮT BUỘC phải tự động đồng bộ (auto-sync) lên GitHub ngay lập tức để bảo toàn dữ liệu (hỗ trợ Loop Engineering & DevOps workflow). 
+       - LƯU Ý CHO SUB-AGENT: Bạn (Review Agent) phải TƯỜNG MINH yêu cầu Agent điều phối chính (Orchestrator) chạy chuỗi lệnh sau trong báo cáo kết quả của bạn, vì Orchestrator mới là người nắm quyền ghi lệnh vào terminal:
+       `git add <các_file_thuộc_scope_của_story> && git commit -m "chore(auto-sync): story <story_id> completed with SCS > 95% [pending_qa]" && git push origin HEAD`
+       - LƯU Ý CHO ORCHESTRATOR: Nếu nhận được kết quả SCS > 95% từ sub-agent, bạn BẮT BUỘC phải thực thi chuỗi lệnh git push trên trực tiếp trên terminal của mình.
    - NẾU bị BÁC BỎ (REJECTED), bạn phải cập nhật `status` thành `in-progress` hoặc `dev_failed`. Chạy lệnh: `python3 .agent/scripts/update-story-status.py <path-to-story.md> dev_failed`.
    - Tuyệt đối không để nguyên trạng thái cũ.
+
+5. **Lesson Captured (BẮT BUỘC):**
+   - Đặc biệt khi bản đánh giá bị **BÁC BỎ (REJECTED)**, bạn BẮT BUỘC phải đúc kết kinh nghiệm ở cuối báo cáo bằng ĐÚNG định dạng thẻ Markdown sau (để script có thể tự động trích xuất):
+   ```markdown
+   ### Root Cause
+   [Giải thích nguyên nhân cốt lõi gây ra lỗi]
+   ### Actionable Rule
+   [Quy tắc hành động cụ thể để sửa lỗi]
+   ### Bài học
+   [Đúc kết bài học hệ thống nếu có]
+   ```
+   - Thiếu các thẻ này sẽ khiến hệ thống không thể tự động rút trích bài học và cập nhật Knowledge Graph.

@@ -1,0 +1,33 @@
+id: skill-detect-drift
+name: detect-drift
+kind: skill
+shape: skill
+role: supportive
+phases:
+- validate
+- analysis
+stages:
+- orchestration
+- intent-triage
+- execution
+triggers:
+- detect-drift
+- /detect-drift
+- drift
+- audit
+anti_triggers: []
+primary_agents:
+- review-agent-persona
+- orch-agent-persona
+primary_workflows:
+- detect-drift
+supportive_skills: []
+tool_dependencies: []
+constraints:
+- Must automatically pause at checkpoints requiring approval and automatically resume
+  afterwards.
+source_path: /.agent/skills/detect-drift/SKILL.md
+tags:
+- skill
+- canonical
+- detect-drift

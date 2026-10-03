@@ -39,9 +39,10 @@ Execute the instructions defined in this step for the fix-bug-protocol.md workfl
 20. **Tự động phân tích Lesson từ RCA:**
     - Tổng hợp RCA (Five Whys) và Code Graph context từ các phase trước.
     - Tạo `lesson_learned` summary cho bug. Trả lời: "Agent / Human cần làm gì khác đi để KHÔNG xảy ra lỗi này?".
+    - **[MANDATORY LESSON CAPTURE]** Run: `python3 .agent/scripts/capture-lesson.py --story-id <story_id> --tags "bug-fix,rca" --lesson "<lesson_learned_summary>"`
     
 21. **Cập nhật Hệ miễn dịch (Auto-Immune Update):**
-    - **MANDATORY HOTSPOT CHECK**: Bắt buộc chạy `node scripts/hotspot-calculator.js '<file_path>'` cho các file quan trọng vừa được sửa.
+    - **MANDATORY HOTSPOT CHECK**: Bắt buộc chạy `node <absolute_path_to_cowok_ai>/.agent/skills/pivot-guardian/scripts/hotspot-calculator.js '<file_path>'` cho các file quan trọng vừa được sửa. (Tìm đường dẫn tuyệt đối của repo nếu cần).
     - Nếu `hotspot_score >= 30` hoặc `bug_count >= 3`, HOẶC bug là **Type A (Lặp lại)** hoặc **RPN ≥ 60**, BẮT BUỘC:
       - Thêm lesson vào `project-context.md` (vùng `### Watchouts / Immune System`) hoặc tạo một Knowledge Item mới.
       - **Auto-Immune Trigger**: Kích hoạt tự động quá trình tạo Draft Skill (Lesson Extraction) chứa các directive giúp tránh lỗi tương tự.

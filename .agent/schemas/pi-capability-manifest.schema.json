@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentCapabilityManifest",
+  "type": "object",
+  "required": ["schema_version", "manifest_id", "catalog_sha256", "policy_sha256", "checker_manifest_sha256", "sources"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "manifest_id": { "type": "string", "minLength": 8 },
+    "catalog_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "policy_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "checker_manifest_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sources": { "type": "array", "items": { "type": "object" }, "uniqueItems": true }
+  },
+  "additionalProperties": false
+}

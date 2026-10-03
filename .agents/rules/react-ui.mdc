@@ -1,0 +1,47 @@
+---
+description: Rules for React/UI implementation, including path aliasing, semantic CSS, and mockups.
+globs: ["src/frontend/**/*.tsx", "src/frontend/**/*.ts", "src/components/**/*.tsx", "src/components/**/*.ts", "src/app/**/*.tsx", "src/app/**/*.ts", "**/*.css", "!src/backend/**", "!server/**"]
+---
+
+# React UI & Styling Rules
+
+> **CRITICAL:** Rules in `global-core.mdc` ALWAYS take precedence over these instructions.
+
+## 🔌 Port Configuration Rule
+All agents MUST strictly operate the development server (Vite) on port `3004`.
+- The port `3004` is enforced at the workspace level via `vite.config.js`.
+- Agents must NOT default to port 3000, 5173, or any other standard ports when running tests, rendering previews, or interacting with the browser.
+- Hardcode port `3004` in any test scripts, playwright scripts, or MCP navigation actions requiring a localhost URL.
+
+## 🛣️ Absolute Path Aliasing Rule
+Whenever any agent (dev-agent, orch-agent) writes or refactors code that imports modules (especially in React/Vite/TypeScript projects):
+1. **Ban Long Relative Paths:** The agent MUST NOT use long relative paths (e.g., `../../`, `../../../`). Relative paths are only permitted for files within the exact same immediate directory (e.g., `./Button.jsx` or `../utils`).
+2. **Mandatory Absolute Aliasing:** The agent MUST use absolute path aliasing (e.g., `@/features/billing/components/...`, `@/shared/...`) defined in the project's configuration (`tsconfig.json`, `vite.config.js`).
+3. **Context Drift Prevention:** This rule prevents the Review-Agent from failing to detect physical pathing errors and reduces LLM hallucination regarding directory structures.
+
+## 🎨 Semantic CSS & CSS Variables Rule
+Whenever any agent (dev-agent, ux-agent) designs or implements frontend components, they MUST adhere to the Cowok.ai styling standards:
+1. **Prioritize Semantic Classes:** The agent MUST prioritize existing semantic CSS classes defined by the `cowokai-design-system` (e.g., `btn`, `btn-primary`, `bento-card`, `input-field`) instead of relying purely on Tailwind CSS utility classes.
+2. **Light/Dark Mode via CSS Variables:** The agent MUST NOT use Tailwind's `dark:` variant classes to manage light/dark modes. Instead, the agent MUST use CSS variables (e.g., `var(--bg-card)`, `var(--text-primary)`) configured globally. This ensures architectural consistency and avoids CSS drift in future stories.
+3. **Tailwind as Fallback:** Tailwind utility classes (e.g., `flex`, `items-center`, `gap-2`) are permitted ONLY for layout positioning or micro-adjustments where a semantic class does not exist.
+
+## 🎨 Mockup Consultation Rule
+Whenever any agent (including orchestrator, ux-agent, or dev-agent) uses a Design Platform MCP (like Stitch, Figma, Claude Design, etc.) to generate or render a UI mockup, the following steps are **MANDATORY**:
+1. **Prompt for Consultation**: The agent MUST explicitly prompt the MCP to output UX recommendations (Design Consultation Report) alongside the visual design.
+2. **Checklist for Empty Recommendations**: The agent MUST explicitly check if the Native AI returned any recommendations. If NO recommendations were returned, the agent MUST explicitly state in the report: "Request for consultation was sent to Native AI, but no recommendations were returned. Fallback to internal UX evaluation."
+3. **Socratic Debate**: The agent MUST orchestrate a Socratic Debate between internal agents (e.g., `ux-agent` for design consistency and `dev-agent` for technical/data feasibility) to evaluate the platform's recommendations (or evaluate the design directly if no recommendations were returned).
+4. **Mandatory Output**: The final UI Specification MUST include a `Platform AI Consultation & Debate Report` section detailing the accepted and rejected recommendations (or the fallback evaluation).
+5. **Validation**: If the debate report section is missing, the Mockup generation is considered invalid and must be rejected.
+
+## 🌐 MacOS Browser Tooling Rule
+Whenever any agent (including orchestrator, qa-agent, ux-agent, dev-agent, etc.) needs to automate a browser, verify a UI, or capture screenshots, the agent MUST obey the OS environment limitations:
+1. **Never use `browser_subagent` for local UI on macOS**: `browser_subagent` (Agentic Browser) only supports local Chrome mode on Linux. Since this workspace runs on macOS, invoking it for local URLs will fail and cause interruptions.
+2. **Use `chrome-devtools-mcp`**: Agents MUST explicitly use the `chrome-devtools-mcp` tools (e.g., `navigate_page`, `take_screenshot`, `evaluate_script`) to interact with the browser on macOS environments. 
+3. **Static Fallback**: If complex interactions are not needed, use `read_url_content` or `search_web`.
+
+## 📁 File Naming Standards Rule
+To prevent technical debt and maintain professional React architecture, Agents MUST strictly adhere to the following file naming conventions. Never name a file after an Agile artifact (e.g. `impl_01.8.tsx`, `story_5.tsx`).
+1. **React Components (PascalCase)**: Any file exporting a React component (e.g. in `src/components`, `src/frontend`) MUST be named using PascalCase and must clearly describe its Domain Purpose (e.g. `DeactivateAccountModal.tsx`, `UserProfile.tsx`). `index.tsx` is permitted for module exports.
+2. **Hooks & Utilities (camelCase)**: Files exporting hooks, helper functions, or constants (e.g. in `src/hooks`, `src/utils`) MUST be named using camelCase (e.g. `useAuth.ts`, `apiClient.ts`).
+3. **Semantic/Domain Naming**: File names must reveal their exact intent. Placeholder prefixes (`impl_`, `temp_`, `story_`) are strictly FORBIDDEN.
+4. **General Assets (kebab-case)**: Non-React generic files or directories (like `src/styles/deactivate-modal.css`) should use kebab-case.

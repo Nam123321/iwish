@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ImplementationPlanMachineContract",
+  "type": "object",
+  "required": [
+    "story_id",
+    "epic_id",
+    "target_files",
+    "tasks",
+    "testing"
+  ],
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "pattern": "^story-[0-9]+(\\.[0-9]+[a-z]?)?$"
+    },
+    "epic_id": {
+      "type": "string",
+      "pattern": "^(Epic|EPIC|epic)-[0-9]+$"
+    },
+    "execution_engine": {
+      "type": "string",
+      "default": "oh-my-pi"
+    },
+    "target_files": {
+      "type": "object",
+      "required": ["create", "modify", "delete"],
+      "properties": {
+        "create": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!.*\\.\\.)(?!^/)(?!^\\.git/)(?!^_iwish-output/).+$"
+          }
+        },
+        "modify": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!.*\\.\\.)(?!^/)(?!^\\.git/)(?!^_iwish-output/).+$"
+          }
+        },
+        "delete": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!.*\\.\\.)(?!^/)(?!^\\.git/)(?!^_iwish-output/).+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "contracts": {
+      "type": "object",
+      "properties": {
+        "shared_types_file": {
+          "type": "string"
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["task_id", "name", "target", "ac_covered"],
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "ac_covered": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "test_command": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "required": ["test_command"],
+      "properties": {
+        "test_command": {
+          "type": "string"
+        },
+        "typecheck_command": {
+          "type": "string"
+        },
+        "required_coverage_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

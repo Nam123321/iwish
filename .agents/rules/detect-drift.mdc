@@ -1,0 +1,12 @@
+---
+description: Manual Macro-Auditor for SSOT V6. Detects contract collision, semantic drift, and pipeline integrity violations at Epic or Story level.
+globs: ["*"]
+---
+
+# /detect-drift - Capability Rule
+
+## Triggers
+Active when the user specifies `/detect-drift`, `/drift`, `/audit` or mentions task intent related to detect-drift.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/detect-drift.md` or `/.agent/skills/detect-drift/SKILL.md`.

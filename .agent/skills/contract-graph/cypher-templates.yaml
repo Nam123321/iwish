@@ -1,0 +1,5 @@
+templates:
+  insert_model: "CREATE (n:PrismaModel {name: $name, hash: $hash, drift_status: 'CODE_ONLY'})"
+  insert_endpoint: "CREATE (n:APIEndpoint {key: $key, path: $path, method: $method})"
+  insert_component: "CREATE (n:UIComponent {name: $name, path: $path})"
+  link_calls: "MATCH (c:UIComponent {name: $component}), (a:APIEndpoint {key: $endpoint}) CREATE (c)-[:CALLS]->(a)"

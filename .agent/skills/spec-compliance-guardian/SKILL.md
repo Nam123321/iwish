@@ -134,16 +134,18 @@ Task Coverage: 1/2 = 50% ← BELOW THRESHOLD (90%)
 
 ### 3.1 Score Calculation
 
+The Spec Compliance Score (SCS) is computed mechanically by the `spec-compliance-checker.py` script. The formula is:
+
 ```
 SCS = Weighted Average of:
-  - SCS_UI × 0.30    (if UI changes present)
-  - SCS_DATA × 0.30  (if data changes present)
+  - SCS_UI × 0.30    (if UI Spec is present)
+  - SCS_DATA × 0.30  (if Data Spec is present)
   - SCS_AC × 0.40    (always applicable)
 
 Where:
-  SCS_UI   = (Passed UI checks + 0.5 × Partial) / Total UI checks × 100
-  SCS_DATA = (Passed Data checks + 0.5 × Partial) / Total Data checks × 100
-  SCS_AC   = (Covered ACs + 0.5 × Partial ACs) / Total ACs × 100
+  SCS_UI   = percentage of extracted UI tokens (from Screen Inventory, Component Hierarchy, Design Tokens, Interaction Patterns) found in the codebase.
+  SCS_DATA = percentage of extracted Data tokens (from Data Contracts, Prisma/Schema) found in the codebase.
+  SCS_AC   = percentage of Acceptance Criteria marked as completed in story.md matrix or checked off in task.md.
 ```
 
 ### 3.2 Thresholds
@@ -151,17 +153,16 @@ Where:
 | Pipeline Stage | Minimum SCS | Action if Below |
 |---------------|:-----------:|-----------------|
 | Post-Dev (CD-03 exit) | **≥ 75%** | HALT — fix before proceeding to review |
-| Post-Review (Layer 1.5 exit) | **≥ 85%** | REJECT review — send back to dev |
+| Post-Review (Layer 1.5 exit) | **≥ 95%** | REJECT review — send back to dev |
 | Post-QA (final) | **≥ 90%** | BLOCK release |
 
 ### 3.3 Drift Escalation
 
-| SCS Range | Classification | Action |
-|-----------|---------------|--------|
-| 90-100% | 🟢 **Compliant** | Proceed normally |
-| 75-89% | 🟡 **Minor Drift** | Fix before next stage |
-| 50-74% | 🟠 **Significant Drift** | HALT — user review required |
-| 0-49% | 🔴 **Critical Drift** | BLOCK — re-read specs and re-implement |
+SCS values are loaded directly from `checker-output-{id}.json` by the pipeline:
+- **90-100% (🟢 Compliant):** Proceed normally.
+- **75-89% (🟡 Minor Drift):** Fix before proceeding to review.
+- **50-74% (🟠 Significant Drift):** HALT — user review required.
+- **0-49% (🔴 Critical Drift):** BLOCK — re-read specs and re-implement.
 
 ---
 
@@ -189,46 +190,43 @@ PROCEDURE:
 
 ### 5.1 For Dev Agent (`/dev-story`)
 
-Insert in **step-cd-02** after Socratic Review Gate 3:
+Insert in **step-cd-02** under Tier 1 Hard Gates:
 ```
 4.7b. CRITICAL — SPEC RE-READ CHECKPOINT. After completing every 3 tasks
 (or after any context truncation event), you MUST re-read the applicable
-spec files (UI Spec and/or Data Spec) using view_file and cross-check
-your current implementation. If you detect more than 2 drift items,
-HALT and remediate before continuing.
+spec files (UI Spec and/or Data Spec) using view_file and run the
+spec-compliance-checker.py script to compare your current implementation.
+If SCS drops > 10% from baseline, HALT and remediate.
 ```
 
 Insert in **step-cd-03** before Story Status Update:
 ```
-NEW GATE — AC TRACEABILITY MATRIX. Before marking story as dev_completed,
-you MUST generate an AC Traceability Matrix following
-.agent/skills/spec-compliance-guardian/SKILL.md §2.3.
-Every AC must have a Code Reference. Output the matrix in the walkthrough.
-If AC Coverage < 95%, HALT and implement missing items.
+NEW GATE — BASENAMES & PHYSICAL ARTIFACTS. Before marking story as completed:
+1. Re-run spec-compliance-checker.py to output checker-output-{id}.json
+2. Run anti-cheat-linter.js to output linter-output-{id}.json
+3. Verify exit code of both is 0. If SCS < 75% or unapproved mocks exist, HALT and fix.
 ```
 
 ### 5.2 For Review Agent (`/review`)
 
 Insert as **Layer 1.5** in 3-Layer Code Review Protocol:
 ```
-LAYER 1.5 — SPEC STRUCTURAL GATE (NEW)
-Before Layer 2 Adversarial Audit:
-1. LOAD all applicable spec files (story, UI spec, data spec)
-2. Run Spec Compliance Guardian checks (§2.1, §2.2, §2.3)
-3. Calculate SCS score
-4. If SCS < 85% → REJECT with detailed diff report
-5. If SCS ≥ 85% → Record SCS in review report, proceed to Layer 2
+LAYER 1.5 — SPEC COMPLIANCE PHYSICAL GATE (NEW)
+Before proceeding with Layer 2 review:
+1. Run verify-review-evidence.py to automatically verify all evidence.
+   python3 .agent/scripts/verify-review-evidence.py <story_dir> <story_id> --ui-spec <path> --data-spec <path> --story <path> --scs-threshold 95
+2. If the command exits 1 → REJECT immediately. Do NOT calculate SCS manually.
+3. If it exits 0 → Record results in review report and proceed.
 ```
 
 ### 5.3 For QA Agent (`/manual-test`)
 
 Insert as **pre-flight** before test execution:
 ```
-PRE-FLIGHT — SPEC COMPLIANCE PRE-CHECK
+PRE-FLIGHT — EVIDENCE VALIDATION
 Before executing manual tests:
-1. Load the AC Traceability Matrix from dev walkthrough
-2. Verify all ACs marked as COVERED actually function in the running app
-3. Record final SCS_Final score
+1. Run verify-review-evidence.py --scs-threshold 90 to ensure release quality.
+2. If it exits 1 → BLOCK test execution.
 ```
 
 ---
@@ -275,124 +273,33 @@ DISPOSITION:          {COMPLIANT | MINOR_DRIFT | SIGNIFICANT_DRIFT | CRITICAL_DR
 
 ---
 
-## 8. Anti-Fabrication Hardening (Who Watches the Watchmen?)
+## 8. Anti-Fabrication Hardening (Physical Artifact Chain)
 
-The Spec Compliance Guardian is itself subject to fabrication risks — agents may claim compliance without actually performing checks. This section defines 3 tiers of defense against fabrication.
+The Spec Compliance Guardian prevents fabrication by enforcing a strict physical artifact chain verified by scripts, rather than trusting agent claims.
 
-> **Reference:** `.agent/fragments/anti-fabrication-watchmen-pattern.md` for the universal pattern.
+### 8.1 Tầng 1: Deterministic Script Enforcement (Cannot be Fabricated)
 
-### 8.1 Tầng 1: Deterministic Enforcement (Script-Verified Gates)
+The pipeline requires physical `.json` artifact files containing execution outputs before a step is allowed to pass:
 
-The following checks MUST be performed via `run_command` with `spec-compliance-checker.py`, NOT by agent self-reporting:
+| Artifact | Generated By | verified By | Gate Checked |
+|---|---|---|---|
+| `checker-output-{id}.json` | `spec-compliance-checker.py` | `verify-review-evidence.py` | SCS score, spec file hashes, missing token list |
+| `linter-output-{id}.json` | `anti-cheat-linter.js` | `verify-review-evidence.py` | Mock counts, auth mocks presence, localization |
 
-```
-DETERMINISTIC GATES (Agent CANNOT fabricate):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Component existence check    → grep-verified, exit code
-✅ AST data-testid constraints  → Component Scoped Tag-Aware Regex via checker.py
-✅ Prisma model existence       → schema.prisma parse, exit code  
-✅ AC count extraction          → regex parse from story.md
-✅ Task count extraction        → regex parse from story.md
-✅ Script SCS output            → JSON line in stdout
-✅ Exit code (0=pass, 1=fail)   → Cannot be faked
+Agents cannot write or modify these JSON files. They are generated strictly by the python/node scripts and check-summed dynamically using Normalized SHA-256 spec hashes.
 
-TRUST-BASED GATES (Require Tầng 2 & 3 to verify):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚠️ Spec was actually loaded     → Verify via evidence trail
-⚠️ Structural diff was honest   → Cross-agent verification
-⚠️ SCS score is accurate        → Independent recalculation
-⚠️ Drift items were all found   → Cross-agent verification
-⚠️ Re-read checkpoint executed  → Verify via tool call trace
-```
+### 8.2 Tầng 2: Independent Script-based Verification (The Referee)
 
-**MANDATORY RULE:** Whenever a compliance check is performed, the agent MUST invoke `run_command` to execute:
-```bash
-python3 .agent/scripts/spec-compliance-checker.py <path-to-story.md> [--ui-spec <path>] [--data-spec <path>]
-```
-The agent MUST paste the COMPLETE raw stdout output — including the `[JSON]` line — into the compliance report. Agents are FORBIDDEN from summarizing, paraphrasing, or selectively quoting the script output. The raw output IS the evidence.
+The review agent does not trust reported scores. It must execute the `verify-review-evidence.py` script. The script is the final arbiter:
+- It checks that `checker-output-{id}.json` and `linter-output-{id}.json` exist.
+- It compares the stored `spec_hash` in `checker-output-{id}.json` against the live `spec_hash` of spec files. Any mismatch signals a **SSOT VIOLATION** (specs edited after checker ran).
+- It verifies that the SCS is ≥ 95% (or 95% for release) and that no unapproved or auth mocks exist.
 
-### 8.2 Tầng 2: Cross-Agent Independent Verification
+### 8.3 Tầng 3: Evidence Trail & Git Checkpoints
 
-To prevent single-agent bias, the pipeline enforces independent verification:
-
-```
-CROSS-AGENT VERIFICATION PROTOCOL:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. DEV AGENT produces:
-   - AC Traceability Matrix
-   - SCS_dev score (from checker.py output)
-   - Drift item list
-
-2. REVIEW AGENT must INDEPENDENTLY:
-   - Re-run spec-compliance-checker.py (its own invocation)
-   - Produce SCS_review score
-   - Compare: |SCS_dev - SCS_review| > 10% → SUSPICIOUS
-   - If suspicious → ESCALATE to user with both scores
-
-3. TRUST SCORE ADJUSTMENT:
-   - If dev SCS and review SCS match (±5%): Trust Score += 1
-   - If dev SCS optimistically inflated (>10% higher): Trust Score -= 2
-   - Trust Score < 0 → BLOCK story, require user audit
-```
-
-**CRITICAL RULE for Review Agent:** The review-agent MUST NOT trust or reference the SCS score reported by dev-agent. The review-agent MUST run `spec-compliance-checker.py` independently and calculate its OWN SCS score. Any review that references dev-agent's SCS score without independent verification is INVALID.
-
-### 8.3 Tầng 3: Evidence Trail (Audit Log Requirements)
-
-Every spec compliance check MUST produce verifiable evidence:
-
-```
-EVIDENCE REQUIREMENTS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. SPEC_LOAD_EVIDENCE:
-   - Agent MUST use `view_file` tool to load each spec
-   - The tool call ID is recorded in the conversation transcript
-   - If no `view_file` call for spec exists in transcript → SPEC NOT LOADED
-   - Claiming "I have already read the spec" without a traceable
-     `view_file` call is FABRICATION
-
-2. DIFF_EVIDENCE:
-   - Agent MUST paste RAW diff output (not summarized)
-   - Minimum: 1 code block for UI diff, 1 code block for Data diff
-   - Each diff item must reference specific file:line in the codebase
-   - References MUST be verifiable via `view_file` or `grep_search`
-
-3. SCS_EVIDENCE:
-   - Script output MUST contain the [JSON] line from checker.py
-   - Agent MUST NOT modify, round, or "adjust" the JSON output
-   - Review agent MUST cross-reference JSON values vs prose report
-   - If prose SCS ≠ JSON SCS → FABRICATION DETECTED → REJECT
-
-4. MATRIX_EVIDENCE:
-   - AC Traceability Matrix MUST contain file:line references
-   - Review agent MUST spot-check at least 3 random file:line refs
-   - If any reference points to non-existent code → FABRICATION
-   - Spot-check method: `view_file <path> --start <line> --end <line>`
-```
-
-### 8.4 Fabrication Detection Heuristics
-
-| # | Red Flag | Detection Method | Action |
-|---|---------|-----------------|--------|
-| 1 | Agent reports SCS without `run_command` in transcript | Transcript audit | REJECT — require script run |
-| 2 | Agent claims "spec loaded" but no `view_file` for spec file | Transcript audit | REJECT — require re-load |
-| 3 | Dev SCS > Review SCS by >10% | Cross-agent comparison | ESCALATE to user |
-| 4 | All AC references point to same file | Matrix pattern analysis | FLAG — likely copy-paste |
-| 5 | AC matrix has no test references | Matrix completeness | WARN — may be real but suspicious |
-| 6 | Agent produces compliance report in <30 seconds | Timing analysis | FLAG — too fast for real analysis |
-| 7 | Drift count = 0 on first implementation | Statistical improbability | FLAG — verify independently |
-
-### 8.5 Enforcement Escalation Chain
-
-```
-Level 0: Script gate passes              → Proceed normally
-Level 1: Trust-based gate fails          → Agent must remediate and re-run
-Level 2: Cross-agent SCS mismatch        → User notification + audit
-Level 3: Evidence trail missing           → BLOCK story + full audit
-Level 4: Fabrication confirmed            → REJECT entire review/implementation
-```
+- **Script outputs:** Raw script output stdout block containing the `[JSON]` prefix must be visible in the conversation logs.
+- **Physical files:** The `.json` artifact files remain in the story directory and are committed to the codebase alongside implementation files, establishing a permanent compliance trail.
+- **No manual bypass:** If a mock is approved, it must be explicitly annotated in source code as `[MOCK_APPROVED]` to be accepted by `anti-cheat-linter.js`. Otherwise, the gate fails.
 
 ---
 
@@ -400,19 +307,14 @@ Level 4: Fabrication confirmed            → REJECT entire review/implementatio
 
 | Gate ID | Description | Category | Enforcement Mechanism | Evidence Trail |
 |---------|------------|----------|----------------------|----------------|
-| G-1 | Component existence | A (Deterministic) | grep exit code via checker.py | Script stdout |
-| G-1.5 | AST JSON Constraint | A (Deterministic) | parse JSON + grep via checker.py | Script stdout |
-| G-2 | Prisma model existence | A (Deterministic) | schema.prisma parse via checker.py | Script stdout |
-| G-3 | AC/Task count | A (Deterministic) | regex parse via checker.py | JSON output |
-| G-4 | Script SCS score | A (Deterministic) | checker.py calculation | `[JSON]` line |
-| G-5 | Spec file loading | B (Trust-Based) | `view_file` tool call | Transcript audit |
-| G-6 | UI structural diff | B (Trust-Based) | Agent comparison | Raw diff block in report |
-| G-7 | Data structural diff | B (Trust-Based) | Agent comparison | Raw diff block in report |
-| G-8 | AC→Code mapping | B (Trust-Based) | Agent traces code | file:line spot-check |
-| G-9 | AC→Test mapping | B (Trust-Based) | Agent traces tests | file:line spot-check |
-| G-10 | Drift item detection | B (Trust-Based) | Agent judgment | Cross-agent verification |
-| G-11 | SCS final calculation | A+B (Hybrid) | Script base + agent semantic | JSON vs prose cross-check |
-| G-12 | Spec re-read checkpoint | B (Trust-Based) | `view_file` recurrence | Transcript audit |
+| G-1 | Token existence | A (Deterministic) | grep exit code via checker.py | JSON output |
+| G-1.5 | Upstream spec format | A (Deterministic) | `validate-spec-format.py` | CLI stdout |
+| G-2 | Prisma model presence | A (Deterministic) | `schema.prisma` parse via checker.py | JSON output |
+| G-3 | Spec Hashing (SSOT) | A (Deterministic) | SHA-256 check via verifier | JSON spec_hash |
+| G-4 | Script SCS score | A (Deterministic) | checker.py calculation | `checker-output.json` |
+| G-5 | Mock checking | A (Deterministic) | `anti-cheat-linter.js` | `linter-output.json` |
+| G-6 | Live Spec Sync | A (Deterministic) | `verify-review-evidence.py` check | Verifier output |
+| G-7 | Spec re-read checkpoint | B (Trust-Based) | `view_file` recurrence | Transcript audit |
 
-**Enforcement Maturity:** 5/12 = 42% Category A → Medium Maturity ✅
+**Enforcement Maturity: High (7/8 gates are Category A Deterministic).**
 

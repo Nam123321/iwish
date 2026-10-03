@@ -72,3 +72,6 @@ commands:
   /mcp-tool-poisoning-defense: /mcp-tool-poisoning-defense
   /subagent-path-jail: /subagent-path-jail
   /plugin-lifecycle-6layer-auditor: /plugin-lifecycle-6layer-auditor
+  /detect-drift: /detect-drift
+  /contract-graph: /contract-graph
+  /epic-layer-api: /epic-layer-api

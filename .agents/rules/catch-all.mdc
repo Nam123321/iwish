@@ -1,0 +1,13 @@
+---
+description: Fallback rules for any file that does not match specific domain globs.
+globs: ["**/*"]
+---
+
+# Catch-All Safety Rules
+
+> **CRITICAL:** Rules in `global-core.mdc` ALWAYS take precedence over these instructions.
+
+## 🛡️ General Code Safety
+1. **Fallback Validation:** Any file not matching a specific domain rule (e.g., UI, SDLC) falls into this category. The agent MUST NOT assume relaxed security standards.
+2. **Minimal Edit Policy:** When modifying arbitrary files, the agent MUST adhere to the principle of least privilege. Do not reformat or clean up unrelated code.
+3. **No Unknown Binaries:** Do not execute or modify unknown binary files or shell scripts without explicit user permission.

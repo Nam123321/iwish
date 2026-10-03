@@ -543,8 +543,7 @@ cmd_mcp_tool_poisoning_defense:
 cmd_subagent_path_jail:
   desc: 'Lệnh nhanh: /subagent-path-jail - Strict file path isolation and containment
     validator preventing subagents from writing outside boundaries'
-cmd_plugin_lifecycle_6layer_auditor:
-  desc: 'Lệnh nhanh: /plugin-lifecycle-6layer-auditor - Audits plugin completeness
-    across Enterprise 6-Layer architecture. Detects missing trigger mechanisms, layer coverage
-    gaps, and operational readiness. Dual-purpose: Development-time audit and Runtime
-    plugin lifecycle guardian for Advisor/Evolution agents.'
+cmd_detect_drift:
+  desc: 'Lệnh nhanh: /detect-drift - Manual Macro-Auditor for SSOT V6. Detects contract
+    collision, semantic drift, and pipeline integrity violations at Epic or Story
+    level.'

@@ -7,6 +7,9 @@ description: Canonical short workflow for market, domain, and technical research
 
 Canonical workflow entry for research.
 
+> **[MANDATORY KNOWLEDGE-FIRST RULE]**
+> Before executing ANY specific research workflow below, you MUST check the Unified Knowledge Pipeline (UKP) by invoking the `ae-notebook-orchestrator` or running `/nlm-check`. Do NOT start with `search_web` unless UKP reports a gap.
+
 If the ask is market-oriented, read and execute: `iwish-feature-market-research.md`
 
 If the ask is domain-oriented, read and execute: `iwish-feature-domain-research.md`

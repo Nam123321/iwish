@@ -1,3 +1,16 @@
+import os, sys
+# --- [Watchmen Core Injection] ---
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_agent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
+if _agent_dir not in sys.path:
+    sys.path.insert(0, _agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass # Ignore for environment without watchmen_core, let the system handle it
+# ---------------------------------
+
 import os
 import json
 import time
@@ -204,6 +217,44 @@ class ZeroTrustRunner:
                 "status": status,
                 "report": failure_report
             }))
+
+    def on_turn_complete(self, agent_context: Dict[str, Any], transcript_path: str) -> Dict[str, Any]:
+        """
+        Synchronous Turn Lifecycle Interceptor.
+        Executes session-compliance-auditor.py against the raw LLM stream logs.
+        If audit fails, blocks output and returns a <SYSTEM_MESSAGE> remediation payload.
+        """
+        import subprocess
+        
+        auditor_path = os.path.join(os.path.dirname(__file__), "session-compliance-auditor.py")
+        if not os.path.exists(auditor_path):
+            return {"status": "PASS", "message": "Auditor not found, skipping enforcement."}
+            
+        try:
+            # We enforce array-based subprocess execution
+            cmd = ["python3", auditor_path, "--transcript", transcript_path]
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+            
+            if result.returncode != 0:
+                failure_report = {
+                    "type": "ComplianceViolation",
+                    "action": "HALT_TURN",
+                    "reason": "Agent failed mandatory Watchmen session compliance audit.",
+                    "details": result.stderr.strip() or result.stdout.strip(),
+                    "system_message_payload": f"<SYSTEM_MESSAGE>\nWatchmen Compliance Audit Failed.\n{result.stdout}\nYou MUST remediate this missing step immediately before ending your turn.\n</SYSTEM_MESSAGE>"
+                }
+                # Log failure to history
+                state = self.load_state()
+                state["history"].append(failure_report)
+                self.save_state(state)
+                return failure_report
+                
+            return {"status": "PASS", "message": "Turn compliance audit passed."}
+            
+        except subprocess.TimeoutExpired:
+            return {"status": "FAIL", "action": "HALT_TURN", "reason": "Auditor timed out."}
+        except Exception as e:
+            return {"status": "FAIL", "action": "HALT_TURN", "reason": f"Auditor exception: {str(e)}"}
 
 if __name__ == "__main__":
     # Example usage for LLM reference

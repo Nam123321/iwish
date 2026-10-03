@@ -1,3 +1,4 @@
+require('./watchmen_core.js').verify_execution(__filename);
 #!/usr/bin/env node
 
 const fs = require('fs');

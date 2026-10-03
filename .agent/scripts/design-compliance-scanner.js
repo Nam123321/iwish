@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+require('./watchmen_core.js').verify_execution(__filename);
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Normalizes hex colors to 6-digit lowercase representation
@@ -111,8 +112,9 @@ function main() {
   }
 }
 
-if (require.main === module) {
+import { fileURLToPath } from 'url';
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
 
-module.exports = { normalizeHex, extractHexColors };
+export { normalizeHex, extractHexColors };

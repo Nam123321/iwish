@@ -33,7 +33,7 @@ def get_structural_files_from_graph(story_id: str):
     if not FalkorDB:
         return []
     try:
-        db = FalkorDB(host='localhost', port=6380)
+        db = FalkorDB(host='localhost', port=6379)
         graph = db.select_graph("iwish_domino")
         query = f"MATCH (s:Story {{id: '{story_id.lower()}'}})-[*1..2]-(f:File) RETURN f.path"
         result = graph.query(query)

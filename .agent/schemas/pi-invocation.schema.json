@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentInvocation",
+  "type": "object",
+  "required": ["schema_version", "invocation_id", "invocation_profile_id", "caller_capability_id", "caller_source_path", "caller_source_sha256", "invocation_mode", "authorized", "mandatory", "completion_sink"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "invocation_id": { "type": "string", "minLength": 8 },
+    "invocation_profile_id": { "type": "string", "minLength": 1 },
+    "caller_capability_id": { "type": "string", "minLength": 1 },
+    "caller_source_path": { "type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+" },
+    "caller_source_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "invocation_mode": { "enum": ["workflow", "manual", "bug-fix"] },
+    "parent_run_id": { "type": ["string", "null"] },
+    "predecessor_receipt_ids": { "type": "array", "items": { "type": "string" } },
+    "authorized": { "type": "boolean" },
+    "mandatory": { "type": "boolean" },
+    "completion_sink": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

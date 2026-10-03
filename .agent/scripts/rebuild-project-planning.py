@@ -66,7 +66,7 @@ output.append("""---
 type: I-Wish Epic Breakdown
 title: "Epics & Stories: Cowok.ai Product Planning Roadmap"
 description: "Tài liệu này kế thừa và liên kết trực tiếp tới các tài liệu nghiệp vụ ở các giai đoạn trước:"
-resource: {project-root}/_iwish-output/2.%20Product%20Planning/2.4.%20epics-and-stories.md
+resource: file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.4.%20epics-and-stories.md
 tags: []
 timestamp: """ + datetime.now().isoformat() + """
 links_to: []
@@ -76,11 +76,11 @@ links_to: []
 
 ## 0. Upstream References
 Tài liệu này kế thừa và liên kết trực tiếp tới các tài liệu nghiệp vụ ở các giai đoạn trước:
-- **PRD chính:** [2.1. product-brief-or-prd.md]({project-root}/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md)
-- **Thiết kế Database:** [2.2. data-spec.md]({project-root}/_iwish-output/2.%20Product%20Planning/2.2.%20data-spec.md)
-- **Đặc tả UI/UX:** [2.3. ui-spec.md]({project-root}/_iwish-output/2.%20Product%20Planning/2.3.%20ui-spec.md)
-- **Kiến trúc kỹ thuật:** [3.1. architecture.md]({project-root}/_iwish-output/2.%20Product%20Planning/3.1.%20architecture.md)
-- **Bối cảnh & Quy tắc Dự án:** [project-context.md]({project-root}/_iwish-output/1.%20Idea%20Discovery/1.4.%20research/project-context.md)
+- **PRD chính:** [2.1. product-brief-or-prd.md](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md)
+- **Thiết kế Database:** [2.2. data-spec.md](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.2.%20data-spec.md)
+- **Đặc tả UI/UX:** [2.3. ui-spec.md](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.3.%20ui-spec.md)
+- **Kiến trúc kỹ thuật:** [3.1. architecture.md](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/3.1.%20architecture.md)
+- **Bối cảnh & Quy tắc Dự án:** [project-context.md](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/1.%20Idea%20Discovery/1.4.%20research/project-context.md)
 
 ---
 

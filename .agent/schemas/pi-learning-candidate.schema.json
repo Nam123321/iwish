@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentLearningCandidate",
+  "type": "object",
+  "required": ["schema_version", "candidate_id", "source_receipts", "evidence", "status", "promotion_required"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "candidate_id": { "type": "string", "minLength": 8 },
+    "source_receipts": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true },
+    "evidence": { "type": "array", "items": { "type": "object" }, "minItems": 1 },
+    "status": { "enum": ["candidate", "no_candidate", "rejected", "promoted"] },
+    "promotion_required": { "const": true }
+  },
+  "additionalProperties": false
+}

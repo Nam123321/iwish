@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentCapabilityCatalog",
+  "type": "object",
+  "required": ["schema_version", "catalog_sha256", "sources", "collisions"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "catalog_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "kind", "source_path", "sha256", "priority", "invocation_modes"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "kind": { "enum": ["workflow", "agent", "skill"] },
+          "source_path": { "type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+$" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "description": { "type": "string" },
+          "priority": { "type": "integer", "minimum": 0 },
+          "risk_tier": { "enum": ["low", "medium", "high", "critical"] },
+          "invocation_modes": { "type": "array", "items": { "enum": ["user-slash", "workflow-required", "routed", "autoload-denied"] }, "uniqueItems": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "collisions": { "type": "array", "items": { "type": "object" } }
+  },
+  "additionalProperties": false
+}

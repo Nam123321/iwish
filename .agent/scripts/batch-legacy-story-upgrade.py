@@ -33,13 +33,13 @@ def fix_fr_covered(content):
             text = link_match.group(1)
             link = link_match.group(2)
             # Force the new PRD path
-            new_link = f"{project-root}/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md#{text}"
+            new_link = f"file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md#{text}"
             return f"{prefix}[{text}]({new_link})"
         
         # If it's just text
         text = value
         # Hardcode PRD link
-        new_link = f"{project-root}/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md#{text}"
+        new_link = f"file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md#{text}"
         return f"{prefix}[{text}]({new_link})"
         
     def repl_lines(line_match):

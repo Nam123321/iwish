@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentRun",
+  "type": "object",
+  "required": ["schema_version", "run_id", "story_id", "plan_sha256", "capability_catalog_sha256", "state"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "run_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$" },
+    "story_id": { "type": "string", "minLength": 1 },
+    "plan_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "capability_catalog_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "state": { "enum": ["planned", "ready", "executing", "review", "accepted", "rejected", "blocked", "cancelled"] },
+    "migration_from_run_id": { "type": "string" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,32 @@
+version: "1.0"
+description: "SSOT for testing conventions. Parsed by QA validation scripts (Category A) to prevent naming fragmentation."
+enforcement_mode: strict
+tiers:
+  unit:
+    tool: vitest
+    pattern: "*.test.ts"
+    coverage_threshold: 80
+  integration:
+    tool: vitest
+    pattern: "*.test.ts"
+    coverage_threshold: 80
+  e2e:
+    tool: playwright
+    pattern: "*.spec.ts"
+    coverage_threshold: 0
+
+clean_code_rules:
+  forbidden_assertions:
+    - "expect(true).toBe(true)"
+    - "expect(true).toBeTruthy()"
+    - "expect(1).toBe(1)"
+    - "expect(false).toBe(false)"
+    - "expect(false).toBeFalsy()"
+    - "expect(res).toBeDefined()"
+    - "expect(result).toBeDefined()"
+  mandatory_structure: "AAA (Arrange - Act - Assert)"
+  naming_convention: 
+    unit: "^should .* when .*"
+    integration: "^should .* when .*"
+    e2e: "^should .* when .*"
+

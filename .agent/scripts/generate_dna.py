@@ -13,7 +13,7 @@ except ImportError:
 
 import os
 
-base_dir = os.path.expanduser("{project-root}")
+base_dir = os.path.expanduser("~/Desktop/AI Project/Cowok-ai")
 output_path = os.path.join(base_dir, "_iwish-output/repo-dna/layer5_multi_agent_graph_llms_full-5D2BE7CD-ACEC-4EF7-B80D-5D3E5E1AB19B-dna.md")
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 

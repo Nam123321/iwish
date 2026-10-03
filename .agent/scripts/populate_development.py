@@ -1,5 +1,20 @@
+import os, sys
+# --- [Watchmen Core Injection] ---
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_agent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
+if _agent_dir not in sys.path:
+    sys.path.insert(0, _agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass # Ignore for environment without watchmen_core, let the system handle it
+# ---------------------------------
+
 import os
 import re
+import watchmen_core
+watchmen_core.verify_execution(__file__)
 
 INPUT_FILE = "_iwish-output/2. Product Planning/2.4. epics-and-stories.md"
 FLAT_DIR = "_iwish-output/stories"
@@ -27,7 +42,7 @@ def main():
     # regexes
     fg_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?(?:Feature Group|FG-?|Module|Portal)\s*(\d+):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
     epic_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Epic\s+(\d+):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
-    story_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Story\s+(\d+\.\d+):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
+    story_regex = re.compile(r'^#{2,5}\s*(?:\*\*)?Story\s+(\d+\.\d+[a-zA-Z]?):\s*(?:\*\*)?\s*(.+)', re.IGNORECASE)
     
     # State tracking
     current_epic_num = None
@@ -104,7 +119,7 @@ dependencies: []
                 
                 if f"**Story-{current_story_id}**" not in existing_epic_content:
                     with open(epic_file_path, "a", encoding="utf-8") as ef:
-                        ef.write(f"| **Story-{current_story_id}** | {current_story_title} | | backlog |\n")
+                        ef.write(f"| [Story-{current_story_id}](./Story-{current_story_id}/story.md) | {current_story_title} | | backlog |\n")
                     
         # Reset
         current_story_id = None

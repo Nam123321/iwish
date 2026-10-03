@@ -1,0 +1,12 @@
+---
+description: Watchmen Branch Synchronization Protocol via /watchmen-sync command.
+globs: ["*"]
+---
+
+# /watchmen-sync - Capability Rule
+
+## Triggers
+Active when the user specifies `/watchmen-sync`, `/sync`, `/watchmen`, `/lock`, `/branch` or mentions task intent related to watchmen-sync.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/watchmen-sync.md` or `/.agent/skills/watchmen-sync/SKILL.md`.

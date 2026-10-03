@@ -112,23 +112,8 @@ The opposite problem: stories that are too granular. Agent MUST detect and propo
 
 ## Part D: AC-to-Task Traceability Matrix
 
-After finalizing a Story's ACs, Agent MUST generate this mapping table:
-
-```markdown
-## AC-Task Traceability
-| AC ID | AC Summary | Task | Sub-tasks | Status |
-|-------|------------|------|-----------|--------|
-| AC1 | [brief] | T1: [task name] | ST1.1, ST1.2 | ☐ |
-| AC2 | [brief] | T2: [task name] | — | ☐ |
-| AC3 | [brief] | — | — | ⚠️ MISSING |
-```
-
-### Traceability Rules
-
-1. **Every AC MUST map to at least 1 Task.** If any AC shows `⚠️ MISSING` → Workflow **HALTS** until a task is assigned.
-2. **Every Task MUST trace back to an AC.** Tasks without an AC parent are flagged as `⚠️ ORPHAN TASK` — they add scope without adding value. Remove or justify.
-3. **Sub-tasks are optional** but recommended for Tasks touching > 1 file or requiring both backend and frontend work.
-4. **Status column** is updated by dev-agent during execution: `☐` → `🔄` → `✅`.
+> [!WARNING]
+> **DEPRECATED**: Do NOT generate the AC-to-Task matrix manually in Markdown. The system now uses a Zero-Trust `traceability.json` model. You MUST NOT add any Markdown tables for traceability. Instead, ensure your ACs and Tasks are cleanly numbered so the out-of-band daemon (`ac-to-task-mapper.py`) can parse them.
 
 ---
 

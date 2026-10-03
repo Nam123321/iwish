@@ -1,0 +1,12 @@
+---
+description: Unified AI Meta-Orchestrator coordinating 9 specialized AI engineering skills, design patterns, cost optimization, and curriculum knowledge grounding
+globs: ["*"]
+---
+
+# /ai-engineer-agent - Capability Rule
+
+## Triggers
+Active when the user specifies `/ai-engineer-agent`, `/ai-agent`, `/ai-systems`, `/mlsd-eval`, `/curriculum` or mentions task intent related to ai-engineer-agent.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/ai-engineer-agent.md` or `/.agent/skills/ai-engineer-agent/SKILL.md`.

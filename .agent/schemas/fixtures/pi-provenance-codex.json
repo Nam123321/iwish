@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "receipt_id": "prov-codex-0001",
+  "platform": "codex",
+  "session_id": "codex-session-0001",
+  "run_id": "run-codex-0001",
+  "worktree_identity": "worktree-cowok-0001",
+  "observed_events": [{"event_type": "tool-call", "event_id": "evt-1", "redacted": true}],
+  "observation_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "signer_observer_separated": true
+}

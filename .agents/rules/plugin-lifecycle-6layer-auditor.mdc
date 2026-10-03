@@ -1,0 +1,12 @@
+---
+description: Audits plugin completeness across Cowok 6-Layer architecture. Detects missing trigger mechanisms, layer coverage gaps, and operational readiness. Dual-purpose: Development-time audit and Runtime plugin lifecycle guardian for Advisor/Evolution agents.
+globs: ["*"]
+---
+
+# /plugin-lifecycle-6layer-auditor - Capability Rule
+
+## Triggers
+Active when the user specifies `/plugin-lifecycle-6layer-auditor`, `/deep-audit`, `/reconcile-change`, `/plugin-import`, `/advisor-detect`, `/evolution-propose` or mentions task intent related to plugin-lifecycle-6layer-auditor.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/plugin-lifecycle-6layer-auditor.md` or `/.agent/skills/plugin-lifecycle-6layer-auditor/SKILL.md`.

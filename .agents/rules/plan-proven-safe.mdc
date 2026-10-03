@@ -1,0 +1,12 @@
+---
+description: Autonomous 4-pillar self-healing verification engine for technical implementation plans
+globs: ["*"]
+---
+
+# /plan-proven-safe - Capability Rule
+
+## Triggers
+Active when the user specifies `/plan-proven-safe`, `/proven-safe` or mentions task intent related to plan-proven-safe.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/plan-proven-safe.md` or `/.agent/skills/plan-proven-safe/SKILL.md`.

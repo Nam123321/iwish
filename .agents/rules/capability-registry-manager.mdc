@@ -1,0 +1,12 @@
+---
+description: Manages zero-friction, multi-platform registration of skills and workflows across Antigravity, Cursor, Roo, Cline, Windsurf, Claude Code, Codex, and I-Wish.
+globs: ["*"]
+---
+
+# /capability-registry-manager - Capability Rule
+
+## Triggers
+Active when the user specifies `/capability-registry-manager`, `/register-capability`, `/multi-platform`, `/slash-command-register` or mentions task intent related to capability-registry-manager.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/capability-registry-manager.md` or `/.agent/skills/capability-registry-manager/SKILL.md`.

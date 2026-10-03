@@ -1,0 +1,12 @@
+---
+description: Intercepts, classifies, and safely resolves Git conflicts or semantic drift before a Pull Request is allowed to merge.
+globs: ["*"]
+---
+
+# /pr-conflict-manager - Capability Rule
+
+## Triggers
+Active when the user specifies `/pr-conflict-manager`, `/pr-conflict-manage`, `/resolve-conflict` or mentions task intent related to pr-conflict-manager.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/pr-conflict-manager.md` or `/.agent/skills/pr-conflict-manager/SKILL.md`.

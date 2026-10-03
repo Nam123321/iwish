@@ -1,0 +1,13 @@
+schema_version: "1.0"
+status: observed-codex-workspace-baseline
+required_metrics: [wall_clock_ms, model_turns, context_tokens, diagnostics_count, defect_rework_count]
+sample_policy:
+  minimum_tasks: 3
+  task_classes: [typescript-bug-fix, workflow-change, review-fix-loop]
+  require_real_workspace: true
+  synthetic_only_is_invalid: true
+comparison:
+  baseline: native-iwish-code
+  candidate: pi-code-agent-contract-loop
+  report_requires_same_story_and_worktree_class: true
+  current_gap: native IDE does not expose model turns or context token counts to the shell observer

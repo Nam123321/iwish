@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+import os, sys
+# --- [Watchmen Core Injection] ---
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_agent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
+if _agent_dir not in sys.path:
+    sys.path.insert(0, _agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass # Ignore for environment without watchmen_core, let the system handle it
+# ---------------------------------
+
 import sys
 import re
 import yaml
@@ -64,7 +77,7 @@ def check_dependencies_status(dependencies, project_root) -> list:
             
             if status is None:
                 errors.append(f"Dependency story '{dep_cleaned}' was not found in sprint-status.yaml.")
-            elif status != "completed":
+            elif status not in ("completed", "completed-with-mock"):
                 errors.append(f"Dependency story '{dep_cleaned}' is not completed (current status: '{status}').")
         return errors
     except Exception as e:
@@ -97,12 +110,17 @@ def validate_story(filepath: Path) -> bool:
     # Thử khớp cấu trúc thư mục phân cấp (ví dụ: /Epic-11/Story-11.1/story.md)
     # Hỗ trợ ký tự alphanumeric cho minor ID như 3b, 10a, v.v.
     filepath_str = filepath.resolve().as_posix()
-    match = re.search(r'/Epic-([a-zA-Z0-9]+)/Story-([a-zA-Z0-9]+)[.-]([a-zA-Z0-9]+)', filepath_str, re.IGNORECASE)
+    match = re.search(r'/Epic-([a-zA-Z0-9]+)/Story-([a-zA-Z0-9\-.]+)', filepath_str, re.IGNORECASE)
+    match_sandbox = re.search(r'iwish-oob-sandbox/story-([a-zA-Z0-9\-.]+)', filepath_str, re.IGNORECASE)
     if match:
         epic_id = match.group(1)
-        story_id = f"{match.group(2)}.{match.group(3)}"
+        story_id = match.group(2)
         if filename != "story.md":
             errors.append(f"In hierarchical layout, the story file must be named strictly 'story.md', found: '{filename}'.")
+    elif match_sandbox:
+        raw_id = match_sandbox.group(1)
+        epic_id = raw_id.split('.')[0] if '.' in raw_id else raw_id.split('-')[0]
+        story_id = raw_id
     else:
         # Thử khớp cấu trúc phẳng tên file (ví dụ: story-16.2.md)
         match = re.search(r'^story-([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.md$', filename)

@@ -174,7 +174,7 @@ For each epic, review stories in order:
 
 4. **Save Location:** `{_iwish-output}/2. Product Planning/2.5. feature-hierarchy.md`
 
-5. **Reference Template:** Load `templates/library/code-intelligence-pack/featuregraph/feature-hierarchy-template.md` for the canonical document structure.
+5. **Reference Template:** Load `.agent/templates/featuregraph/feature-hierarchy-template.md` for the canonical document structure.
 
 > **NOTE:** For existing projects upgrading to this I-Wish version, run `iwish featuregraph-retrofit` to generate this document retroactively from existing artifacts.
 

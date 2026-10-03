@@ -1,0 +1,12 @@
+---
+description: Zero-Loss Workspace Hygiene Guardian and Janitor
+globs: ["*"]
+---
+
+# /workspace-hygiene-guardian - Capability Rule
+
+## Triggers
+Active when the user specifies `/workspace-hygiene-guardian`, `/workspace-hygiene`, `/workspace-janitor` or mentions task intent related to workspace-hygiene-guardian.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/workspace-hygiene-guardian.md` or `/.agent/skills/workspace-hygiene-guardian/SKILL.md`.

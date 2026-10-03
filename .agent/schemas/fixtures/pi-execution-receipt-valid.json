@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "receipt_id": "receipt-fixture-0001",
+  "run_id": "run-fixture-0001",
+  "task_id": "task-fixture-0001",
+  "plan_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "diff_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "tool_events": [{"tool": "fixture-checker", "status": "passed", "redacted": true}],
+  "diagnostics": [],
+  "tests": [{"name": "fixture", "status": "passed"}],
+  "reviewer_decisions": [{"role": "independent", "decision": "accepted"}],
+  "validator_decision": "accepted",
+  "redactions": []
+}

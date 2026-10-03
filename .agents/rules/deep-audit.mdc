@@ -1,0 +1,12 @@
+---
+description: Perform deep structural codebase audit using ts-morph to detect API contract gaps, any types, and monorepo violations.
+globs: ["*"]
+---
+
+# /deep-audit - Capability Rule
+
+## Triggers
+Active when the user specifies `/deep-audit`, `/deep-audit`, `/audit` or mentions task intent related to deep-audit.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/deep-audit.md` or `/.agent/skills/deep-audit/SKILL.md`.

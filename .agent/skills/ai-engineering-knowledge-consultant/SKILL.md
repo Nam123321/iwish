@@ -58,7 +58,7 @@ When operating in **DUAL-ORACLE** mode, format response with strict source separ
 ### 💻 Source B: ai-engineering-from-scratch Perspective (Curriculum & Code)
 - **Phase & Lesson**: [Phase XX, Lesson YY: Name]
 - **Foundational Code Insight**: [Scratch-built mechanics or mathematical formulation]
-- **Direct Citation**: file://~/.iwish/sandbox/ai-engineering-from-scratch/phases/...
+- **Direct Citation**: file://{home}/.iwish/sandbox/ai-engineering-from-scratch/phases/...
 
 ### ⚖️ Trade-off & Synthesis Matrix
 | Dimension | NotebookLM Perspective | Curriculum Perspective | Recommended Choice |

@@ -1,0 +1,12 @@
+---
+description: Dual-Oracle Knowledge Gateway connecting 523 scratch-built lessons from ai-engineering-from-scratch
+globs: ["*"]
+---
+
+# /ai-engineering-knowledge-consultant - Capability Rule
+
+## Triggers
+Active when the user specifies `/ai-engineering-knowledge-consultant`, `/knowledge-consultant`, `/curriculum-consultant`, `/curriculum` or mentions task intent related to ai-engineering-knowledge-consultant.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/ai-engineering-knowledge-consultant.md` or `/.agent/skills/ai-engineering-knowledge-consultant/SKILL.md`.

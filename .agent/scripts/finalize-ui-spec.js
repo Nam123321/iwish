@@ -1,3 +1,4 @@
+require('./watchmen_core.js').verify_execution(__filename);
 import fs from 'fs';
 import path from 'path';
 

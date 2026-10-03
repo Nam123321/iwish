@@ -1,0 +1,24 @@
+domains:
+  "AI Architecture":
+    tags: ["domain: AI-ML", "AI-ML", "ai-native"]
+    keywords: ["llm", "embedding", "vector db", "vector database", "rag", "fine-tuning", "data drift", "concept drift", "machine learning", "deep learning"]
+    mandatory_skills:
+      - aiml-architecture-evaluator
+      - ai-system-architect
+  "AI Engineering":
+    tags: ["llm-engineering", "genai"]
+    keywords: ["prompt engineering", "tool calling", "react loop", "multi-agent", "agentic"]
+    mandatory_skills:
+      - llm-engineering-skill
+      - ai-native-architecture
+  "AI Ops":
+    tags: ["llmops", "model-serving"]
+    keywords: ["vllm", "lora", "quantization", "gpu", "fine-tuning", "peft"]
+    mandatory_skills:
+      - llmops-finetuning-serving-skill
+  "AI Engineering Knowledge":
+    tags: ["curriculum", "ai-engineering-from-scratch", "scratch-built", "dual-oracle", "ai-knowledge"]
+    keywords: ["curriculum", "ai engineering from scratch", "scratch built", "grounding", "theory", "523 lessons", "ai-engineering-knowledge-consultant", "lesson", "phase"]
+    mandatory_skills:
+      - ai-engineering-knowledge-consultant
+      - sandbox-repo-sync

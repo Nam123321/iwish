@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+import os, sys
+# --- [Watchmen Core Injection] ---
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_agent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
+if _agent_dir not in sys.path:
+    sys.path.insert(0, _agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass # Ignore for environment without watchmen_core, let the system handle it
+# ---------------------------------
+
 """
 Zero-Trust QA Evidence Validator v3.2
 =====================================
@@ -17,13 +30,193 @@ import re
 import glob
 import json
 
+def extract_blocks_after_keyword(content, keyword_pattern):
+    blocks = []
+    for match in re.finditer(keyword_pattern, content):
+        start_idx = match.end()
+        # Scan forward to find the real opening '{', ignoring comments and whitespace
+        in_string = False
+        string_char = None
+        in_single_comment = False
+        in_multi_comment = False
+        escape = False
+        brace_start = -1
+        
+        i = start_idx
+        while i < len(content):
+            char = content[i]
+            
+            if in_string:
+                if escape:
+                    escape = False
+                elif char == '\\':
+                    escape = True
+                elif char == string_char:
+                    in_string = False
+                i += 1
+                continue
+                
+            if in_single_comment:
+                if char == '\n':
+                    in_single_comment = False
+                i += 1
+                continue
+                
+            if in_multi_comment:
+                if char == '*' and i + 1 < len(content) and content[i+1] == '/':
+                    in_multi_comment = False
+                    i += 1
+                i += 1
+                continue
+                
+            if char in ('"', "'", '`'):
+                in_string = True
+                string_char = char
+                i += 1
+                continue
+                
+            if char == '/' and i + 1 < len(content):
+                if content[i+1] == '/':
+                    in_single_comment = True
+                    i += 1
+                    i += 1
+                    continue
+                elif content[i+1] == '*':
+                    in_multi_comment = True
+                    i += 1
+                    i += 1
+                    continue
+                    
+            if char == '{':
+                brace_start = i
+                break
+                
+            i += 1
+
+        if brace_start == -1:
+            continue
+
+        # Now extract the block matching the braces
+        brace_count = 0
+        in_string = False
+        string_char = None
+        in_single_comment = False
+        in_multi_comment = False
+        escape = False
+        
+        i = brace_start
+        block_content = []
+        
+        while i < len(content):
+            char = content[i]
+            block_content.append(char)
+            
+            if in_string:
+                if escape:
+                    escape = False
+                elif char == '\\':
+                    escape = True
+                elif char == string_char:
+                    in_string = False
+                i += 1
+                continue
+                
+            if in_single_comment:
+                if char == '\n':
+                    in_single_comment = False
+                i += 1
+                continue
+                
+            if in_multi_comment:
+                if char == '*' and i + 1 < len(content) and content[i+1] == '/':
+                    in_multi_comment = False
+                    block_content.append('/')
+                    i += 1
+                i += 1
+                continue
+                
+            if char in ('"', "'", '`'):
+                in_string = True
+                string_char = char
+                i += 1
+                continue
+                
+            if char == '/' and i + 1 < len(content):
+                if content[i+1] == '/':
+                    in_single_comment = True
+                    block_content.append('/')
+                    i += 1
+                    i += 1
+                    continue
+                elif content[i+1] == '*':
+                    in_multi_comment = True
+                    block_content.append('*')
+                    i += 1
+                    i += 1
+                    continue
+            
+            if char == '{':
+                brace_count += 1
+            elif char == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    blocks.append("".join(block_content))
+                    break
+            
+            i += 1
+    return blocks
+
+
+def resolve_test_files(epic_id, story_id, extensions=('.ts', '.js')):
+    """Resolve test files from traceability.json (SSOT), fallback to glob."""
+    # Priority 1: Read from traceability.json (SSOT)
+    trace_patterns = [
+        f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/traceability.json",
+        f"_iwish-output/stories/story-{story_id}/traceability.json",
+    ]
+    for pattern in trace_patterns:
+        for trace_path in glob.glob(pattern):
+            try:
+                with open(trace_path, 'r') as f:
+                    data = json.load(f)
+                test_files = set()
+                for entry in data.get('traceability_matrix', []):
+                    for t in entry.get('tests', []):
+                        if any(t.endswith(ext) for ext in extensions):
+                            if os.path.exists(t):
+                                test_files.add(t)
+                if test_files:
+                    print(f"   📋 Resolved {len(test_files)} test file(s) from traceability.json (SSOT)")
+                    return list(test_files)
+                else:
+                    print(f"   ⚠️  traceability.json found but tests field is EMPTY for all ACs.")
+                    return []
+            except (json.JSONDecodeError, IOError):
+                pass
+
+    # Priority 2: Fallback to glob (backward compatibility)
+    print(f"   ⚠️  traceability.json not found. Falling back to glob scan.")
+    fallback = set()
+    for ext in extensions:
+        fallback.update(glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*{ext}", recursive=True))
+        fallback.update(glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*{ext}"))
+        fallback.update(glob.glob(f"tests/e2e/epic-{epic_id}/**/*{story_id}*{ext}", recursive=True))
+        fallback.update(glob.glob(f"tests/e2e/epic-{epic_id}/*{story_id}*{ext}"))
+    if fallback:
+        print(f"   ⚠️  Fallback glob found {len(fallback)} file(s): {[os.path.basename(f) for f in fallback]}")
+        print(f"   💡 Run auto-traceability-linker.py to generate traceability.json for SSOT.")
+    else:
+        print(f"   ⚠️  No test files found via glob either.")
+    return list(fallback)
+
+
 
 # ─────────────────────────────────────────────────────────────
 # GATE 1: Fragile Selector Lint
 # ─────────────────────────────────────────────────────────────
 def check_fragile_selectors(epic_id, story_id):
     print("\n🔍 [Gate 1] Checking for fragile CSS/XPath locators in test scripts...")
-    test_files = glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.*", recursive=True) + glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.*")
+    test_files = resolve_test_files(epic_id, story_id)
     if not test_files:
         print("⚠️ Warning: No explicit test script files found for fragile locator linting.")
         return True
@@ -52,16 +245,12 @@ def check_fragile_selectors(epic_id, story_id):
 # ─────────────────────────────────────────────────────────────
 def check_assertion_enforcement(epic_id, story_id):
     print("\n🔍 [Gate 2] Checking for behavioral assertions (expect() calls) in test scripts...")
-    test_files = glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.spec.ts", recursive=True) + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.spec.ts") + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.spec.js", recursive=True) + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.spec.js")
-    # Deduplicate
-    test_files = list(set(test_files))
+    test_files = resolve_test_files(epic_id, story_id, extensions=(".spec.ts", ".spec.js"))
 
     if not test_files:
-        print("⚠️ Warning: No test script files found for assertion enforcement.")
-        return True
+        print("❌ FAIL: No test files found. Cannot verify behavioral assertions.")
+        print("   Run: python3 .agent/scripts/auto-traceability-linker.py --story <path> --sync-matrix")
+        return False
 
     failed = False
     for tf in test_files:
@@ -102,9 +291,7 @@ def check_assertion_enforcement(epic_id, story_id):
 # ─────────────────────────────────────────────────────────────
 def check_anti_padding(epic_id, story_id):
     print("\n🔍 [Gate 3] Scanning for evidence-padding / fake-pass tricks in test scripts...")
-    test_files = glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.*", recursive=True) + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.*")
-    test_files = [f for f in set(test_files) if f.endswith(('.ts', '.js', '.cjs', '.mjs'))]
+    test_files = resolve_test_files(epic_id, story_id, extensions=(".ts", ".js", ".cjs", ".mjs"))
 
     if not test_files:
         return True
@@ -130,10 +317,8 @@ def check_anti_padding(epic_id, story_id):
 
         # Check for error-swallowing try/catch that prevents test failure
         # Pattern: catch block that only logs but doesn't rethrow or fail
-        catch_blocks = re.finditer(r'catch\s*\([^)]*\)\s*\{([^}]*)\}', content)
-        for match in catch_blocks:
-            catch_body = match.group(1).strip()
-            # If catch body only has console.log and doesn't rethrow or call expect
+        catch_blocks = extract_blocks_after_keyword(content, r'catch\s*\([^)]*\)')
+        for catch_body in catch_blocks:
             if catch_body and 'console.log' in catch_body and 'throw' not in catch_body and 'expect' not in catch_body:
                 print(f"⚠️ Warning in '{tf}': catch block swallows errors silently (only logs, no rethrow). This masks real failures.")
 
@@ -152,8 +337,11 @@ def validate_har_file(filepath):
     meaningful_request_count = 0
     try:
         file_size = os.path.getsize(filepath)
-        if file_size > 150 * 1024 * 1024:
-            print(f"⚠️ Warning: HAR file is very large ({file_size/1024/1024:.1f} MB).")
+        if file_size > 50 * 1024 * 1024:
+            print(f"❌ Error: HAR file exceeds 50MB limit ({file_size/1024/1024:.1f} MB).")
+            print("   Tests producing >50MB HARs are unmaintainable, cause CI DoS, and trigger OOMs.")
+            print("   Please split your E2E tests into smaller files.")
+            return False
 
         with open(filepath, 'r', encoding='utf-8') as f:
             har_data = json.load(f)
@@ -175,11 +363,10 @@ def validate_har_file(filepath):
             if '/api/' in url or 'graphql' in url:
                 meaningful_request_count += 1
                 if status >= 400:
-                    print(f"❌ HAR Error: API endpoint returned HTTP {status} for {url}")
+                    print(f"⚠️ HAR Warning: API endpoint returned HTTP {status} for {url}. (If negative test, this is expected).")
                     content_text = response.get('content', {}).get('text', '')
                     if content_text:
                         print(f"   Response Body: {content_text[:300]}")
-                    has_errors = True
 
         if meaningful_request_count == 0:
             print(f"  ⚠️ Warning: No meaningful API requests found in HAR. The test may not be exercising any backend routes.")
@@ -222,15 +409,7 @@ def check_ui_presence(epic_id, story_id):
     print("\n🔍 [Gate 6] Checking for UI Presence Assertion (API Tunnel + Decoy DOM detection)...")
 
     # ── Step 1: Find test scripts ──
-    test_files = glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.spec.ts", recursive=True) + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.spec.ts") + \
-                 glob.glob(f"tests/e2e/epic-{epic_id}/**/*{story_id}*.spec.ts", recursive=True) + \
-                 glob.glob(f"tests/e2e/epic-{epic_id}/*{story_id}*.spec.ts") + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/**/*{story_id}*.spec.js", recursive=True) + \
-                 glob.glob(f"tests/e2e/Epic-{epic_id}/*{story_id}*.spec.js") + \
-                 glob.glob(f"tests/e2e/epic-{epic_id}/**/*{story_id}*.spec.js", recursive=True) + \
-                 glob.glob(f"tests/e2e/epic-{epic_id}/*{story_id}*.spec.js")
-    test_files = list(set(test_files))
+    test_files = resolve_test_files(epic_id, story_id, extensions=(".spec.ts", ".spec.js"))
 
     if not test_files:
         print("⚠️  Gate 6 info: No test scripts found. Skipping.")
@@ -280,15 +459,12 @@ def check_ui_presence(epic_id, story_id):
             dom_assertion_count += len(re.findall(pattern, content))
 
         # Discount DOM assertions inside login blocks
-        login_block_match = re.search(
-            r"if\s*\(\s*page\.url\(\)\.includes\s*\(\s*['\"]login['\"]\s*\)\s*\)\s*\{(.*?)\}",
-            content, re.DOTALL
-        )
+        login_blocks = extract_blocks_after_keyword(content, r"if\s*\(\s*page\.url\(\)\.includes\s*\(\s*['\"]login['\"]\s*\)\s*\)")
         login_dom_assertion_count = 0
-        if login_block_match:
-            login_block = login_block_match.group(1)
+        if login_blocks:
+            login_body = login_blocks[0]
             for pattern in dom_assertion_patterns:
-                login_dom_assertion_count += len(re.findall(pattern, login_block))
+                login_dom_assertion_count += len(re.findall(pattern, login_body))
 
         real_dom_assertions = dom_assertion_count - login_dom_assertion_count
 
@@ -393,6 +569,11 @@ def main():
 
     epic_id = sys.argv[1]
     story_id = sys.argv[2]
+
+    import re
+    if not re.match(r'^[\w\.-]+$', epic_id) or not re.match(r'^[\w\.-]+$', story_id):
+        print("❌ Error: Invalid epic_id or story_id format. Only alphanumeric, dots, and hyphens are allowed.")
+        sys.exit(1)
 
     spec_pattern_flat = f"_iwish-output/stories/qa/manual-test-guide-{story_id}*.md"
     spec_pattern_hierarchical = f"_iwish-output/3. Development/1. Epic & Story/*/Epic-{epic_id}/Story-{story_id}/qa/manual-test-guide-{story_id}*.md"

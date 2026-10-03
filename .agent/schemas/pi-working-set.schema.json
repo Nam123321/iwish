@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentWorkingSet",
+  "type": "object",
+  "required": ["schema_version", "manifest_sha256", "plan_sha256", "files", "skills", "token_budget"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "manifest_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "plan_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "files": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "skills": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "token_budget": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": false
+}

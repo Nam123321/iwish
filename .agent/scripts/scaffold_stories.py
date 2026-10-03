@@ -28,7 +28,7 @@ links_to: ["Epic-08", "PRD"]
 dependencies: {deps}
 ---
 
-**FR Covered:** [FR-3.2: LLM Gateway Infrastructure]({project-root}/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md)
+**FR Covered:** [FR-3.2: LLM Gateway Infrastructure](file://{home}/Desktop/AI%20Project/Cowok-ai/_iwish-output/2.%20Product%20Planning/2.1.%20product-brief-or-prd.md)
 
 # Story {story_id}: {title}
 

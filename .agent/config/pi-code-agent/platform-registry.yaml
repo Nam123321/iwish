@@ -1,0 +1,19 @@
+schema_version: "1.0"
+project_id: cowok-ai
+platforms:
+  - id: codex
+    display_name: Codex
+    status: authorized
+    capabilities:
+      model_probe: true
+      independent_context: false
+      subagents: false
+      provenance_receipt: true
+  - id: antigravity
+    display_name: Antigravity
+    status: declared
+    capabilities:
+      model_probe: true
+      independent_context: true
+      subagents: true
+      provenance_receipt: true

@@ -1,0 +1,12 @@
+---
+description: Active defense and schema validation against Model Context Protocol tool poisoning and malicious definition tampering
+globs: ["*"]
+---
+
+# /mcp-tool-poisoning-defense - Capability Rule
+
+## Triggers
+Active when the user specifies `/mcp-tool-poisoning-defense`, `/mcp-defense`, `/tool-poisoning`, `/mcp-security` or mentions task intent related to mcp-tool-poisoning-defense.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/mcp-tool-poisoning-defense.md` or `/.agent/skills/mcp-tool-poisoning-defense/SKILL.md`.

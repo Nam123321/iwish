@@ -1,0 +1,80 @@
+# Standardized FalkorDB Cypher Templates for UCG
+
+templates:
+  # 1. Bootstrap Nodes
+  upsert_prisma_model: |
+    MERGE (m:PrismaModel {name: $name})
+    SET m.fields_count = $fields_count,
+        m.field_names = $field_names,
+        m.enums_count = $enums_count,
+        m.hash = $hash,
+        m.drift_status = $drift_status,
+        m.updated_at = timestamp()
+
+  upsert_planning_entity: |
+    MERGE (p:PlanningEntity {name: $name})
+    SET p.section = $section,
+        p.planned_fields = $planned_fields,
+        p.drift_status = $drift_status,
+        p.updated_at = timestamp()
+
+  upsert_ui_component: |
+    MERGE (u:UIComponent {name: $name})
+    SET u.path = $path,
+        u.props = $props,
+        u.api_calls = $api_calls,
+        u.updated_at = timestamp()
+
+  upsert_api_endpoint: |
+    MERGE (a:APIEndpoint {key: $key})
+    SET a.method = $method,
+        a.path = $path,
+        a.handler_file = $handler_file,
+        a.updated_at = timestamp()
+
+  upsert_story: |
+    MERGE (s:Story {story_id: $story_id})
+    SET s.epic_id = $epic_id,
+        s.value_stream = $value_stream,
+        s.status = $status,
+        s.updated_at = timestamp()
+
+  # 2. Cross-Layer Edges
+  link_planning_to_prisma: |
+    MATCH (p:PlanningEntity {name: $planning_name}), (m:PrismaModel {name: $prisma_name})
+    MERGE (p)-[r:MAPS_TO]->(m)
+    SET r.confidence = $confidence, r.mapped_at = timestamp()
+
+  link_story_claim: |
+    MATCH (m:PrismaModel {name: $model_name}), (s:Story {story_id: $story_id})
+    MERGE (m)-[r:CLAIMED_BY]->(s)
+    SET r.role = $role, r.operations = $operations, r.updated_at = timestamp()
+
+  link_component_calls_api: |
+    MATCH (u:UIComponent {name: $component_name}), (a:APIEndpoint {key: $endpoint_key})
+    MERGE (u)-[r:CALLS]->(a)
+    SET r.updated_at = timestamp()
+
+  link_api_mutates_model: |
+    MATCH (a:APIEndpoint {key: $endpoint_key}), (m:PrismaModel {name: $model_name})
+    MERGE (a)-[r:MUTATES]->(m)
+    SET r.operations = $operations, r.updated_at = timestamp()
+
+  # 3. Collision & Drift Queries
+  check_model_collision: |
+    MATCH (m:PrismaModel {name: $model_name})-[r:CLAIMED_BY]->(s:Story)
+    WHERE s.story_id <> $story_id
+    RETURN s.story_id AS colliding_story, s.epic_id AS colliding_epic, r.role AS claimed_role
+
+  find_orphaned_prisma_models: |
+    MATCH (m:PrismaModel)
+    WHERE NOT (m)<-[:MAPS_TO]-(:PlanningEntity) AND NOT (m)-[:CLAIMED_BY]->(:Story)
+    RETURN m.name AS model_name, m.fields_count AS fields_count
+
+  count_triangulation_alignment: |
+    MATCH (m:PrismaModel)
+    OPTIONAL MATCH (m)<-[:MAPS_TO]-(p:PlanningEntity)
+    OPTIONAL MATCH (m)-[:CLAIMED_BY]->(s:Story)
+    RETURN count(m) AS total_models,
+           count(p) AS models_in_planning,
+           count(s) AS models_claimed_in_stories

@@ -1,0 +1,12 @@
+---
+description: Giải phóng an toàn tài nguyên Worktree trên máy (RAM, Port, Disk, SQLite) và dọn dẹp Git/GitHub (Branch, PR) khi hoàn thành story/task
+globs: ["*"]
+---
+
+# /release-worktree - Capability Rule
+
+## Triggers
+Active when the user specifies `/release-worktree`, `/release-worktree`, `/teardown-worktree` or mentions task intent related to release-worktree.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/release-worktree.md` or `/.agent/skills/release-worktree/SKILL.md`.

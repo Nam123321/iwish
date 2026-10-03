@@ -359,31 +359,26 @@
        related_features_checked: [list]
        ```
 
-18. **Regression test:**
-    - Test các feature liên quan (từ Phase 4.14)
-    - Test cross-story scenarios
-    - Browser visual verification (nếu UI bug):
-      - Load SKILL: `@{project-root}/.agent/skills/browser-visual-verification/SKILL.md`
-
-18b. **INVERSE DELETION TEST GATE (🔴 SBRP-Full Only):**
-     - Dành cho bug High-Priority (RPN ≥ 60). Bắt buộc chạy Inverse Deletion Test để chứng minh fix hợp lệ.
-     - Dùng `bash .agent/scripts/iwish-deletion-test.sh <target-fix>` hoặc comment out đoạn code vừa fix.
-     - Chạy regression test suite. Test BẮT BUỘC phải FAIL (chứng tỏ test suite bắt được lỗi và fix có tác dụng).
-     - Restore fix, test suite phải PASS.
-
-19. **Code review & QA Simulator Guardian Audit (Fat-Guardian Adversarial):**
-    - Load SKILL: `@{project-root}/.agent/skills/qa-simulator-guardian.md`
-    - qa-agent (hoặc Auditor Agent) phải kích hoạt Simulator để phân loại Code Fix (1 trong 13 Types) và chấm điểm.
-    - Bắt buộc phải có **TOTAL AVERAGE Score ≥ 8.5/10** (trên 6 Core Axes + UX Empathy).
-    - **Delta Lock Loop Protection:** Check `fixAttempts` trong `_iwish-output/bug-tracker.yaml`.
-      - Nếu trả về `[FIXABLE]` và Delta Score cải thiện `>= 0.5`, bẻ khóa workflow trở lại Phase 5 bắt dev-agent fix tiếp.
-      - Nếu số vòng lặp `fixAttempts` đã vượt quá 3, HOẶC Delta tăng không đủ `< 0.5` → **HALT workflow**, không được gán cờ `RESOLVED`, báo cáo thất bại cho User!
+18. **Uỷ quyền Code Review (Delegation to `/review`):**
+    - Sau khi bản vá vượt qua các bước kiểm tra thực tế (Page-Agent/Build) ở Phase 6, hệ thống BẮT BUỘC KHÔNG được tự động approve.
+    - Orchestrator PHẢI gọi lệnh `/review --source=fix-bug --sbrp-report=<path>`.
+    - `/review` sẽ thực hiện kiểm tra tĩnh 3 lớp (3-Layer Parallel Review) để đối chiếu bản vá với chuẩn mực kiến trúc và Root Cause.
+    - **Delta Lock Loop:** Nếu `/review` trả về `AUTO_FIX`, workflow sẽ bị bẻ khóa quay lại Phase 5 để Dev-agent sửa lại code.
 
 ---
 
-## Phase 7: DOCUMENT (Ghi nhận)
+## Phase 7: BROWSER AUTOMATION (Uỷ quyền)
 
-### 7a. SBRP Report File Rules
+19. **Uỷ quyền Manual Test (Delegation to `/manual-test`):**
+    - Sau khi `/review` thành công, Orchestrator PHẢI gọi lệnh `/manual-test` để thực hiện End-to-End Regression Test.
+    - `/manual-test` sẽ thực hiện Test các feature liên quan (từ Phase 4.14), cross-story scenarios, và Browser visual verification.
+    - Đảm bảo `/manual-test` sinh ra Playwright automation scripts cho bản vá này để chống hồi quy.
+
+---
+
+## Phase 8: DOCUMENT & MEASURE (Ghi nhận & Đo lường)
+
+### 8a. SBRP Report File Rules
 
 - Tìm file SBRP report hiện tại của session: `_iwish-output/bug-reports/YYYY-MM-sbrp-round{N}.md`
 - **Nếu chưa có file cho session này** → tạo file mới, N = max(existing rounds) + 1. File mới BẮT BUỘC phải bắt đầu bằng khối OKF YAML frontmatter:
@@ -403,14 +398,23 @@
 - Header bắt buộc: Khối OKF YAML Frontmatter ở đầu file, Date, Tier, Session scope, Bug count summary
 - Naming convention: `YYYY-MM-sbrp-round{N}.md`
 
-### 7b. Lesson Extraction & Auto-Immune Knowledge
+### 8b. Lesson Extraction & Auto-Immune Knowledge
 
 20. **Tự động phân tích Lesson từ RCA:**
     - Tổng hợp RCA (Five Whys) và Code Graph context từ các phase trước.
     - Tạo `lesson_learned` summary cho bug. Trả lời: "Agent / Human cần làm gì khác đi để KHÔNG xảy ra lỗi này?".
+    - **MANDATORY LESSON FORMAT:** Trình bày kết quả trong SBRP Report (file báo cáo cuối cùng) BẮT BUỘC bằng các thẻ Markdown cụ thể sau để cho phép tự động trích xuất:
+      ```markdown
+      ### Root Cause
+      [Mô tả nguyên nhân cốt lõi đã phân tích]
+      ### Actionable Rule
+      [Quy tắc cụ thể cần áp dụng để tránh lặp lại]
+      ### Bài học
+      [Đúc kết kiến thức tổng quan/cấu trúc]
+      ```
     
 21. **Cập nhật Hệ miễn dịch (Auto-Immune Update):**
-    - **MANDATORY HOTSPOT CHECK**: Bắt buộc chạy `node scripts/hotspot-calculator.js '<file_path>'` cho các file quan trọng vừa được sửa.
+    - **MANDATORY HOTSPOT CHECK**: Bắt buộc chạy `node <absolute_path_to_cowok_ai>/.agent/skills/pivot-guardian/scripts/hotspot-calculator.js '<file_path>'` cho các file quan trọng vừa được sửa. (Tìm đường dẫn tuyệt đối của repo nếu cần).
     - Nếu `hotspot_score >= 30` hoặc `bug_count >= 3`, HOẶC bug là **Type A (Lặp lại)**, **RPN ≥ 60**, hoặc phân loại là **SystemDesignBug / Security**, BẮT BUỘC:
       - Thêm lesson vào `project-context.md` (vùng `### Watchouts / Immune System`) hoặc tạo một Knowledge Item mới.
       - **[NEW] Auto-Immune Trigger via Gateway**: Thay vì tự ghi file Draft Skill thủ công, Agent BẮT BUỘC phải gọi Cổng Intake `/skill` với JSON payload như sau (yêu cầu set timeout 60 giây):
@@ -431,7 +435,7 @@
        ```
      - Cú pháp `|| echo ...` là fallback bắt buộc. Nếu Knowledge Graph (FalkorDB) offline, lỗi sẽ không làm crash workflow mà tự động ghi log thủ công vào thư mục edge-case-knowledge tương ứng của Epic.
 
-### 7c. Update Documents
+### 8c. Update Documents
 
 22. **Update Edge Case Knowledge Graph:**
     - Thêm node mới vào `_iwish-output/edge-case-knowledge/pillars/p[N]-*.md`
@@ -486,7 +490,7 @@
 
 ---
 
-## Phase 8: SCORING & MEASUREMENT (Đo lường)
+### 8d. SCORING & MEASUREMENT (Đo lường)
 
 26. **Cập nhật Bug Scorecard** trong `_iwish-output/bug-tracker.yaml`:
 
@@ -555,6 +559,10 @@
 30. **Generate Operation Report & Health Dashboard (HSEA-4.6):**
     - Execute `node scripts/operation-report-gen.js` to aggregate the latest sprint, codebase, and defect metrics.
     - **AGENT INSTRUCTION**: After running the report generator, explicitly notify the user in the chat that the Operation Report has been updated, and provide the absolute file URI to `_iwish-output/operation-report/index.html`.
+
+31. **Đồng bộ GitHub (Delegation to `/approve-qa`):**
+    - Sau khi hoàn tất tất cả các bước ghi nhận và báo cáo ở Phase 8, Orchestrator sẽ tự động chuyển tiếp sang lệnh `/approve-qa` (hoặc thông qua cơ chế `--auto-approve`).
+    - `/approve-qa` sẽ đảm nhận việc commit code, đẩy lên kho chứa, và đóng vòng đời của tiến trình sửa lỗi.
 
 ---
 

@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PiCodeAgentWorkerOutput",
+  "type": "object",
+  "required": ["schema_version", "run_id", "task_id", "plan_sha256", "changed_files", "diff_sha256", "status"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "run_id": { "type": "string", "minLength": 8 },
+    "task_id": { "type": "string", "minLength": 1 },
+    "plan_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "changed_files": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "diff_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "status": { "enum": ["completed", "blocked", "rejected"] }
+  },
+  "additionalProperties": false
+}

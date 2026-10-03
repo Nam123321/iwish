@@ -1,0 +1,12 @@
+---
+description: Strict file path isolation and containment validator preventing subagents from writing outside boundaries
+globs: ["*"]
+---
+
+# /subagent-path-jail - Capability Rule
+
+## Triggers
+Active when the user specifies `/subagent-path-jail`, `/path-jail`, `/path-isolation`, `/jail` or mentions task intent related to subagent-path-jail.
+
+## Execution Mandate
+Execute canonical instructions defined in `/.agent/workflows/subagent-path-jail.md` or `/.agent/skills/subagent-path-jail/SKILL.md`.

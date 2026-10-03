@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+import os, sys
+# --- [Watchmen Core Injection] ---
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_agent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
+if _agent_dir not in sys.path:
+    sys.path.insert(0, _agent_dir)
+try:
+    import watchmen_core
+    watchmen_core.verify_execution(__file__)
+except ImportError:
+    pass # Ignore for environment without watchmen_core, let the system handle it
+# ---------------------------------
+
 """UIP FMEA Scanner — Type A+B failure mode & effects analysis tool.
 
 Phase 1 (Type A): Deterministic regex-based analysis for error-handling patterns,
@@ -7,7 +21,6 @@ Phase 2 (Type B, --deep): YAML prompt template for LLM reasoning.
 
 Exit codes: 0=success, 1=fatal error, 2=partial results.
 """
-from __future__ import annotations
 
 import argparse
 import json
